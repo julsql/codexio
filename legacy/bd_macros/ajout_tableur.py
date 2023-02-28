@@ -3,7 +3,7 @@ import pandas
 import numpy as np
 import os
 import sys
-from tkinter import messagebox, Tk
+# from tkinter import messagebox, Tk
 from datetime import datetime
 
 path = "/path/to/project/"
@@ -16,12 +16,12 @@ ssh = path + "path.txt"
 
 ISBN = 9782749301273 # Peter Pan
 
-def alert(title, message, kind='info', hidemain=True):
+"""def alert(title, message, kind='info', hidemain=True):
     if kind not in ('error', 'warning', 'info'):
         raise ValueError('Unsupported alert kind.')
 
     show_method = getattr(messagebox, 'show{}'.format(kind))
-    show_method(title, message)
+    show_method(title, message)"""
 
 def deja(ISBN):
     df = pandas.read_excel(fichier)
