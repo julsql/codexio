@@ -161,6 +161,6 @@ if __name__ == "__main__":
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
         f.write("\n" + dt_string + " : " +  ISBN)
-    os.popen('mkdir {}'.format(fichier2))
+    # os.popen('mkdir {}'.format(fichier2))
     os.popen('cp "{0}" "{1}BD_{2}.xlsx"'.format(fichier, fichier2, ISBN))
     update(ISBN)
