@@ -68,7 +68,8 @@ def update(ISBN):
             addLog(ISBN, infos)
             #alert('Erreur', infos, kind='warning')
             #raise ValueError(infos)
-            print('Erreur ' + infos)
+            print('Erreur ', end="")
+            print(infos)
             print("\n/!\\_____________________________ ERREUR !! _____________________________/!\\\n")
             return None
     except:
@@ -146,7 +147,8 @@ def update(ISBN):
 
 
 
-            print('Erreur ' + infos)
+            print('Erreur ', end="")
+            print(infos)
             print("\n/!\\_____________________________ ERREUR !! _____________________________/!\\\n")
 
 
