@@ -1,7 +1,6 @@
-cd /path/to/bd/;
-
 #! /bin/bash
 
+cd /path/to/bd/;
 git pull;
 python3 /path/to/bd/ajout_tableur.py $1;
 git add *;
