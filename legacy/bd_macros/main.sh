@@ -1,3 +1,5 @@
+cd /path/to/bd/;
+
 #! /bin/bash
 
 git pull;
