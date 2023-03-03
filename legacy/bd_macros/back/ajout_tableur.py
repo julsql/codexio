@@ -10,18 +10,18 @@ from datetime import datetime
 
 path = "/path/to/project/"
 path = "/path/to/project/"
-path = "/path/to/bd/"
+#path = "/path/to/bd/back/"
 path_back = path + "back/"
-fichier = path + "BD.xlsm"
-fichier_x = path_back + "BD.xlsx"
-fichier2 = path + "BD_Backup/"
+fichier_xlsm = path + "BD.xlsm"
+fichier_xlsx = path_back + "BD.xlsx"
+fichier2 = path_back + "BD_Backup/"
 log = path_back + "logs.txt"
 ssh = path_back + "path.txt"
 
 ISBN = 9782749301273 # Peter Pan
 
 def deja(ISBN):
-    df = pandas.read_excel(fichier)
+    df = pandas.read_excel(fichier_xlsx)
     liste_ISBN = []
     for row in df.itertuples():
         value = str(int(float(str(row[1]))))
@@ -30,16 +30,16 @@ def deja(ISBN):
     return ISBN in liste_ISBN
     
 def addLog(ISBN, message):
-    fichier = open(log, "a")
+    f = open(log, "a")
     now = datetime.now()
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-    fichier.write("\n" + dt_string + " " +  ISBN + " : " + message)
-    fichier.close()
+    f.write("\n" + dt_string + " " +  ISBN + " : " + message)
+    f.close()
 
 def backUp():
     try:
-        print(fichier)
-        df = pandas.read_excel(fichier)
+        print(fichier_xlsm)
+        df = pandas.read_excel(fichier_xlsm)
     except:
         os.chdir(path + 'BD_Backup')
         files = os.listdir()
@@ -47,16 +47,16 @@ def backUp():
         files.reverse()
         print(files)
         for file in files:
-            path_file = path + "BD_Backup/" + file
+            path_file = path_back + "BD_Backup/" + file
             try:
-                df = pandas.read_excel(path_file)
+                pandas.read_excel(path_file)
             except:
                 None
             else:
-                print('rm "{0}"'.format(fichier))
-                print('cp "{0}" "{1}"'.format(path_file, fichier))
-                os.popen('rm "{0}"'.format(fichier))
-                os.popen('cp "{0}" "{1}"'.format(path_file, fichier))
+                print('rm "{0}"'.format(fichier_xlsm))
+                print('cp "{0}" "{1}"'.format(path_file, fichier_xlsm))
+                os.popen('rm "{0}"'.format(fichier_xlsm))
+                os.popen('cp "{0}" "{1}"'.format(path_file, fichier_xlsm))
                 time.sleep(1)
                 return True
         message = "La copie n'a pas pu être effectué, aucun fichier non corrompu n'est disponible dans les backups"
@@ -70,7 +70,7 @@ def backUp():
     
 def add_ligne(ISBN, infos):
     # Ouverture du fichier Excel
-    wb = openpyxl.load_workbook(fichier)
+    wb = openpyxl.load_workbook(fichier_xlsm)
 
     # Accéder à la feuille de calcul
     ws = wb['BD']
@@ -96,7 +96,7 @@ def add_ligne(ISBN, infos):
     ws.range(my_case).value = infos["Image"]
 
     # Enregistrer les modifications dans le fichier Excel
-    wb.save(fichier_x)
+    wb.save(fichier_xlsx)
 
 
 # Connexion
@@ -161,5 +161,5 @@ if __name__ == "__main__":
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
         f.write("\n" + dt_string + " : " +  ISBN)
     # os.popen('mkdir {}'.format(fichier2))
-    os.popen('cp "{0}" "{1}BD_{2}.xlsm"'.format(fichier, fichier2, ISBN))
+    os.popen('cp "{0}" "{1}BD_{2}.xlsm"'.format(fichier_xlsm, fichier2, ISBN))
     update(ISBN)
