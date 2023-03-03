@@ -104,11 +104,6 @@ def update(ISBN, loop = 0):
             update(ISBN, 1)
     else:
         #try:
-        # Créer l'objet JSON contenant le nom du fichier
-        json_obj = {'path': fichier}
-
-        # Ouvrir le fichier Excel en utilisant l'objet JSON
-        wb = xw.Book(json=json_obj)
         # Ouvrir le fichier Excel .xlsm
         wb = xw.Book(fichier)
 
