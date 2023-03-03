@@ -9,9 +9,8 @@ echo $value
 if [ $value -eq "1" ]
 then
     python3 "back/update_xlsm.py";
-    echo 0 >> "back/bash/changes.txt"
-else
-  echo "La valeur est différente de 1"
+    rm "back/bash/changes.txt"; touch "back/bash/changes.txt";
+    echo 0 >> "back/bash/changes.txt";
 fi
 
 open -a /Applications/Microsoft\ Excel.app BD.xlsm;
