@@ -36,6 +36,7 @@ def addLog(ISBN, message):
 
 def backUp():
     try:
+        print(fichier)
         df = pandas.read_excel(fichier)
     except:
         os.chdir(path + 'BD_Backup')
@@ -66,7 +67,7 @@ def backUp():
         return True  
 
 # Connexion
-def update(ISBN):
+def update(ISBN, loop = 0):
 
     try:
 
