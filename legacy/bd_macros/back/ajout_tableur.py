@@ -9,11 +9,12 @@ from datetime import datetime
 
 path = "/path/to/project/"
 path = "/path/to/project/"
-# path = "/path/to/bd/"
+path = "/path/to/bd/"
+path_back = + "back/"
 fichier = path + "BD.xlsm"
 fichier2 = path + "BD_Backup/"
-log = path + "logs.txt"
-ssh = path + "path.txt"
+log = path_back + "logs.txt"
+ssh = path_back + "path.txt"
 
 ISBN = 9782749301273 # Peter Pan
 
