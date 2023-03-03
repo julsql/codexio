@@ -64,7 +64,7 @@ def backUp():
         return False
     else:
         print("Le fichier BD.xlsx n'est pas corrompu")
-        return True  
+        return True
 
 # Connexion
 def update(ISBN, loop = 0):
@@ -103,81 +103,81 @@ def update(ISBN, loop = 0):
             print("On retente une fois")
             update(ISBN, 1)
     else:
-        try:
-            # Ouvrir le fichier Excel .xlsm
-            wb = xw.Book(fichier)
+        #try:
+        # Ouvrir le fichier Excel .xlsm
+        wb = xw.Book(fichier)
 
-            # Modifier la feuille de calcul
-            ws = wb.sheets['BD']
+        # Modifier la feuille de calcul
+        ws = wb.sheets['BD']
 
-            # Désactiver les mises à jour de l'écran
-            app = xw.apps.active
-            app.screen_updating = False
+        # Désactiver les mises à jour de l'écran
+        app = xw.apps.active
+        app.screen_updating = False
 
-            # Définir le zoom de la feuille à 75%
-            ws.api.Zoom = 175
+        # Définir le zoom de la feuille à 75%
+        ws.api.Zoom = 175
 
-            # Réactiver les mises à jour de l'écran
-            app.screen_updating = True
+        # Réactiver les mises à jour de l'écran
+        app.screen_updating = True
 
-            # Colors
-            plage = ws.range('A1:S1')
+        # Colors
+        plage = ws.range('A1:S1')
 
-            plage.api.Style = 'Normal'
-            plage.font.color = (216, 113, 227)
-            plage.horizontal_alignment = 'center'
-            plage.font.bold = True
+        plage.api.Style = 'Normal'
+        plage.font.color = (216, 113, 227)
+        plage.horizontal_alignment = 'center'
+        plage.font.bold = True
 
-            plage = ws.range('A2:S2').expand('down')
+        plage = ws.range('A2:S2').expand('down')
 
-            plage.api.Style = 'Normal'
-            plage.font.color = (0, 0, 0)
-            plage.horizontal_alignment = 'left'
-            plage.font.bold = False
+        plage.api.Style = 'Normal'
+        plage.font.color = (0, 0, 0)
+        plage.horizontal_alignment = 'left'
+        plage.font.bold = False
 
-            # Sélectionner la plage de cellules contenant les données
-            plage_data = ws.range('A1:S1').expand('down')
+        # Sélectionner la plage de cellules contenant les données
+        plage_data = ws.range('A1:S1').expand('down')
 
-            # Parcourir chaque ligne à partir de la fin pour trouver la dernière ligne non vide
-            row = plage_data.shape[0]+1
-            a = 65 # = A
+        # Parcourir chaque ligne à partir de la fin pour trouver la dernière ligne non vide
+        row = plage_data.shape[0]+1
+        a = 65 # = A
 
-            title = ["Album", "Numéro", "Série", "Scénario", "Dessin", "Couleurs", "Éditeur", "Date de publication", "Edition", "Pages"]
-            
-            my_case = chr(a) + str(row)
-            ws.range(my_case).value = ISBN
+        title = ["Album", "Numéro", "Série", "Scénario", "Dessin", "Couleurs", "Éditeur", "Date de publication", "Edition", "Pages"]
+        
+        my_case = chr(a) + str(row)
+        ws.range(my_case).value = ISBN
 
-            for i in range(len(title)):
-                my_case = chr(i + a + 1) + str(row)
-                ws.range(my_case).value = infos[title[i]]
+        for i in range(len(title)):
+            my_case = chr(i + a + 1) + str(row)
+            ws.range(my_case).value = infos[title[i]]
 
-            my_case = "M" + str(row)
-            ws.range(my_case).value = infos["Prix"]
+        my_case = "M" + str(row)
+        ws.range(my_case).value = infos["Prix"]
 
-            my_case = "R" + str(row)
-            ws.range(my_case).value = infos["Synopsis"]
-            my_case = "S" + str(row)
-            ws.range(my_case).value = infos["Image"]
+        my_case = "R" + str(row)
+        ws.range(my_case).value = infos["Synopsis"]
+        my_case = "S" + str(row)
+        ws.range(my_case).value = infos["Image"]
 
-            # Enregistrer les modifications
-            wb.save()
+        # Enregistrer les modifications
+        wb.save()
 
-            # Fermer le fichier Excel
-            wb.close()
-            print("\n________________________________ C'EST FINI !! ________________________________\n")
-        except:
+        # Fermer le fichier Excel
+        wb.close()
+        print("\n________________________________ C'EST FINI !! ________________________________\n")
+        #except:
             # Il y a eu une erreur : on restaure BackUp.
-            bool = backUp()
-            if not bool:
-                print("Aucun backup non corrompu disponible")
-                addLog(ISBN, "Aucun backup non corrompu disponible")
-                print("\n/!\\______________________________ PAS DE BACKUP DISPONIBLE !! ______________________________/!\\\n")
-                return None
-            
-            print('Erreur, on doit restaurer un backup')
-            addLog(ISBN, "Restauration backup")
-            print("\n/!\\_____________________________ BACKUP TROUVÉ !! _____________________________/!\\\n")
+        """bool = backUp()
+        if not bool:
+            print("Aucun backup non corrompu disponible")
+            addLog(ISBN, "Aucun backup non corrompu disponible")
+            print("\n/!\\______________________________ PAS DE BACKUP DISPONIBLE !! ______________________________/!\\\n")
             return None
+        
+        print('Erreur, on doit restaurer un backup')
+        addLog(ISBN, "Restauration backup")
+        print("\n/!\\_____________________________ BACKUP TROUVÉ !! _____________________________/!\\\n")
+        return None"""
 
 if __name__ == "__main__":
     ISBN = sys.argv[1]
