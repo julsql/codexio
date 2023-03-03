@@ -6,7 +6,7 @@ path = "/path/to/project/"
 path_back = path + "back/"
 fichier = path + "BD.xlsm"
 fichier_x = path_back + "BD.xlsx"
-
+print(fichier)
 # Ouvrir le fichier Excel .xlsm
 wb = xw.Book(fichier)
 wb_x = xw.Book(fichier_x)
