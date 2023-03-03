@@ -77,6 +77,8 @@ def add_ligne(ISBN, infos):
 
     title = ["Album", "Numéro", "Série", "Scénario", "Dessin", "Couleurs", "Éditeur", "Date de publication", "Edition", "Pages"]
 
+    a = 65
+
     row = ws.max_row + 1
     my_case = chr(a) + str(row)
     ws.range(my_case).value = ISBN
