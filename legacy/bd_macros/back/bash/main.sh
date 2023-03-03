@@ -1,6 +1,7 @@
 #! /bin/bash
 
 cd /path/to/bd/;
+cd "/path/to/project/";
 git pull;
 python3 /path/to/bd/back/ajout_tableur.py $1;
 rm "back/bash/changes.txt"; touch "back/bash/changes.txt";
