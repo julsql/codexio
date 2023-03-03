@@ -12,5 +12,3 @@ then
     rm "back/bash/changes.txt"; touch "back/bash/changes.txt";
     echo 0 >> "back/bash/changes.txt";
 fi
-
-open -a /Applications/Microsoft\ Excel.app BD.xlsm;
