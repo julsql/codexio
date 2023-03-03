@@ -12,5 +12,5 @@ python3 "back/update_xlsm.py";
     #rm "back/bash/changes.txt"; touch "back/bash/changes.txt";
     #echo 0 >> "back/bash/changes.txt";
     #sleep 1
-open -a "/Applications/Microsoft Excel.app" BD.xlsm;
+#open -a "/Applications/Microsoft Excel.app" BD.xlsm;
 #fi
