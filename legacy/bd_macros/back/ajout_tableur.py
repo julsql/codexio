@@ -9,7 +9,7 @@ from datetime import datetime
 
 path = "/path/to/project/"
 path = "/path/to/project/"
-# path = "/path/to/bd/"
+path = "/path/to/bd/"
 path_back = path + "back/"
 fichier = path + "BD.xlsm"
 fichier2 = path + "BD_Backup/"
