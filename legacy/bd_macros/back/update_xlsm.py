@@ -14,13 +14,13 @@ wb_x = xw.Book(fichier_x)
 ws = wb.sheets['BD']
 ws_x = wb_x.sheets['BD']
 # Désactiver les mises à jour de l'écran
-app = xw.apps.active
-app.screen_updating = False
-# Définir le zoom de la feuille à 75%
-ws.api.Zoom = 175
+#app = xw.apps.active
+#app.screen_updating = False
+# Définir le zoom de la feuille à 175%
+#ws.api.Zoom = 175
 
 # Réactiver les mises à jour de l'écran
-app.screen_updating = True
+
 ws_x.range('A1').expand('table').copy(destination=ws.range('A1'))
 # Colors
 plage = ws.range('A1:S1')
@@ -38,6 +38,7 @@ plage.horizontal_alignment = 'left'
 plage.font.bold = False
 
 # Enregistrer les modifications
+#app.screen_updating = True
 wb.save()
 
 # Fermer le fichier Excel
