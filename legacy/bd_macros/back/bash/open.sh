@@ -13,6 +13,5 @@ touch "back/dismiss_macros.txt";
 #echo 0 >> "back/bash/changes.txt";
 #sleep 1
 open -a "/Applications/Microsoft Excel.app" BD.xlsm;
-sleep 1;
 rm "back/dismiss_macros.txt";
 #fi
