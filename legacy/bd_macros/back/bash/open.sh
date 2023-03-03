@@ -3,7 +3,7 @@
 cd "/path/to/project";
 git pull;
 
-value=$(cat file.txt)
+value=$(cat back/bash/changes.txt)
 # Vérification de la valeur
 
 if [ $value -eq 1 ]
