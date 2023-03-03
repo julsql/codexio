@@ -5,8 +5,8 @@ git pull;
 
 value=$(cat back/bash/changes.txt)
 # Vérification de la valeur
-
-if [ $value -eq 1 ]
+echo $value
+if [ $value -eq "1" ]
 then
     python3 "back/update_xlsm.py";
     echo 0 >> "back/bash/changes.txt"
