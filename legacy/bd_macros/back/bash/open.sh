@@ -11,4 +11,5 @@ then
     python3 "back/update_xlsm.py";
     rm "back/bash/changes.txt"; touch "back/bash/changes.txt";
     echo 0 >> "back/bash/changes.txt";
+    open -a BD.xlsm;
 fi
