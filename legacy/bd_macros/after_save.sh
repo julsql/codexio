@@ -3,4 +3,4 @@
 cd "/path/to/project";
 git add *;
 git commit -m "Save excel";
-git push;
+git push origin;
