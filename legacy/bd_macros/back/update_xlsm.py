@@ -8,10 +8,12 @@ fichier = path + "BD.xlsm"
 fichier_x = path_back + "BD.xlsx"
 print(fichier)
 # Ouvrir le fichier Excel .xlsm
+app = xw.App(visible=False)
+
 wb = xw.Book(fichier)
 wb_x = xw.Book(fichier_x)
 # Modifier la feuille de calcul
-ws = wb.sheets['BD']
+ws = wb.sheets['BD'] 
 ws_x = wb_x.sheets['BD']
 # Désactiver les mises à jour de l'écran
 #app = xw.apps.active
@@ -43,5 +45,5 @@ wb.save()
 
 # Fermer le fichier Excel
 wb.close()
-
+app.quit()
 print("OKÉ")
