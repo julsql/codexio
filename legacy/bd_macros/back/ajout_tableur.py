@@ -78,22 +78,21 @@ def add_ligne(ISBN, infos):
     title = ["Album", "Numéro", "Série", "Scénario", "Dessin", "Couleurs", "Éditeur", "Date de publication", "Edition", "Pages"]
 
     a = 65
-
     row = ws.max_row + 1
     my_case = chr(a) + str(row)
-    ws.range(my_case).value = ISBN
+    ws[my_case].value = ISBN
 
     for i in range(len(title)):
         my_case = chr(i + a + 1) + str(row)
-        ws.range(my_case).value = infos[title[i]]
+        ws[my_case].value = infos[title[i]]
 
     my_case = "M" + str(row)
-    ws.range(my_case).value = infos["Prix"]
+    ws[my_case].value = infos["Prix"]
 
     my_case = "R" + str(row)
-    ws.range(my_case).value = infos["Synopsis"]
+    ws[my_case].value = infos["Synopsis"]
     my_case = "S" + str(row)
-    ws.range(my_case).value = infos["Image"]
+    ws[my_case].value = infos["Image"]
 
     # Enregistrer les modifications dans le fichier Excel
     wb.save(fichier_xlsx)
