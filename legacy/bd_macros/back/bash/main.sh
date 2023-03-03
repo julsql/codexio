@@ -1,10 +1,8 @@
 #! /bin/bash
 
-# cd /path/to/bd/;
-cd "/path/to/project/";
+cd /path/to/bd/;
 git pull;
-# python3 /path/to/bd/back/ajout_tableur.py $1;
-python3 "/path/to/project/back/ajout_tableur.py" $1;
+python3 /path/to/bd/back/ajout_tableur.py $1;
 rm "back/bash/changes.txt"; touch "back/bash/changes.txt";
 echo "1" > "back/bash/changes.txt";
 git add *;
