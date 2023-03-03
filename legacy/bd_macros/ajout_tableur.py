@@ -9,7 +9,7 @@ from datetime import datetime
 path = "/path/to/project/"
 path = "/path/to/project/"
 path = "/path/to/bd/"
-fichier = path + "BD.xlsx"
+fichier = path + "BD.xlsm"
 fichier2 = path + "BD_Backup/"
 log = path + "logs.txt"
 ssh = path + "path.txt"
@@ -164,5 +164,5 @@ if __name__ == "__main__":
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
         f.write("\n" + dt_string + " : " +  ISBN)
     # os.popen('mkdir {}'.format(fichier2))
-    os.popen('cp "{0}" "{1}BD_{2}.xlsx"'.format(fichier, fichier2, ISBN))
+    os.popen('cp "{0}" "{1}BD_{2}.xlsm"'.format(fichier, fichier2, ISBN))
     update(ISBN)
