@@ -8,7 +8,7 @@ git pull;
 #echo $value
 #if [ $value -eq "1" ]
 #then
-python3 "back/update_xlsm.py";
+/opt/homebrew/bin/python3 "back/update_xlsm.py";
 #rm "back/bash/changes.txt"; touch "back/bash/changes.txt";
 #echo 0 >> "back/bash/changes.txt";
 #sleep 1
