@@ -18,32 +18,28 @@ log = path_back + "logs.txt"
 ssh = path_back + "path.txt"
 
 # Ouvrir le fichier Excel .xlsm
+print("1")
+print(fichier)
 wb = xw.Book(fichier)
+print("2")
 wb_x = xw.Book(fichier_x)
-
+print("3")
 # Modifier la feuille de calcul
 ws = wb.sheets['BD']
 ws_x = wb_x.sheets['BD']
-
+print("4")
 # Désactiver les mises à jour de l'écran
 app = xw.apps.active
 app.screen_updating = False
-
+print("5")
 # Définir le zoom de la feuille à 75%
 ws.api.Zoom = 175
 
 # Réactiver les mises à jour de l'écran
 app.screen_updating = True
-
-plage_data = ws_x.range('A1:S1').expand('down')
-
-a = 65 # = A
-
-for row in range(plage_data.shape[0]):
-    for column in range(plage_data.shape[1]):
-        my_case = chr(column + a) + str(row)
-        ws.range(my_case).value = ws_x.range(my_case).value
-
+print("6")
+ws.range('A1').expand('table').copy(destination=ws_x.range('A1'))
+print("7")
 # Colors
 plage = ws.range('A1:S1')
 
