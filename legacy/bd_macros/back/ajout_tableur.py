@@ -7,7 +7,6 @@ import sys
 import time
 from datetime import datetime
 
-
 path = "/path/to/project/"
 path = "/path/to/project/"
 path = "/path/to/bd/"
@@ -135,23 +134,23 @@ def update(ISBN, loop = 0):
             print("On retente une fois")
             update(ISBN, 1)
     else:
-        #try:
-        add_ligne(ISBN, infos)
+        try:
+            add_ligne(ISBN, infos)
         
-        print("\n________________________________ C'EST FINI !! ________________________________\n")
-        #except:
+            print("\n________________________________ C'EST FINI !! ________________________________\n")
+        except:
             # Il y a eu une erreur : on restaure BackUp.
-        """bool = backUp()
-        if not bool:
-            print("Aucun backup non corrompu disponible")
-            addLog(ISBN, "Aucun backup non corrompu disponible")
-            print("\n/!\\______________________________ PAS DE BACKUP DISPONIBLE !! ______________________________/!\\\n")
+            bool = backUp()
+            if not bool:
+                print("Aucun backup non corrompu disponible")
+                addLog(ISBN, "Aucun backup non corrompu disponible")
+                print("\n/!\\______________________________ PAS DE BACKUP DISPONIBLE !! ______________________________/!\\\n")
+                return None
+            
+            print('Erreur, on doit restaurer un backup')
+            addLog(ISBN, "Restauration backup")
+            print("\n/!\\_____________________________ BACKUP TROUVÉ !! _____________________________/!\\\n")
             return None
-        
-        print('Erreur, on doit restaurer un backup')
-        addLog(ISBN, "Restauration backup")
-        print("\n/!\\_____________________________ BACKUP TROUVÉ !! _____________________________/!\\\n")
-        return None"""
 
 if __name__ == "__main__":
     ISBN = sys.argv[1]
