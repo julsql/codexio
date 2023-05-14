@@ -78,7 +78,6 @@ def stat():
 def dedicaces():
     req = "SELECT ISBN, Album, Numéro, Série, Dédicace FROM BD WHERE Dédicace > 0;"
     result_req = exec_req_all(req)
-    print(result_req)
     infos = []
     for result in result_req:
         infos.append({'ISBN': result[0], 'Album': result[1], 'Numero': result[2], 'Serie': result[3], 'DedicaceRange': range(1, result[4]+1), 'Dedicace': result[4]})
@@ -87,7 +86,6 @@ def dedicaces():
 def exlibris():
     req = "SELECT ISBN, Album, Numéro, Série, Ex_Libris FROM BD WHERE Ex_Libris > 0;"
     result_req = exec_req_all(req)
-    print(result_req)
     infos = []
     for result in result_req:
         infos.append(
