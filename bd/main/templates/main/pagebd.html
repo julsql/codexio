@@ -1,0 +1,90 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="col-3 col-12-medium">
+
+    <!-- Sidebar -->
+        <section>
+            <header>
+                <h2>Couverture</h2>
+            </header>
+            <a href="{{ Image }}"><img src="{{ Image }}" width="220" alt="Couverture"></a>
+        </section>
+
+</div>
+<div class="col-9 col-12-medium imp-medium">
+
+    <!-- Main Content -->
+
+        <section>
+            <header>
+                <h2>
+                {% if Album and Album != "" %}
+                    {{ Album }}
+                {% else %}
+                    Pas de titre
+                {% endif %}
+                </h2>
+
+                <h3>
+                {% if Numero and Numero != "" %}
+                    {% if Serie and Serie != "" %}
+                    Tome {{ Numero }} {{ Serie }}
+                    {% else %}
+                    Tome {{ Numero }}
+                    {% endif %}
+                {% else %}
+                    {% if Serie and Serie != "" %}
+                        {{ Serie }}
+                    {% else %}
+                    Pas de titre
+                    {% endif %}
+                {% endif %}
+                </h3>
+            </header>
+
+                <table>
+                    <tr>
+                        <td><strong>ISBN</strong> : {{ ISBN }}</td>
+                        <td><strong>Scénariste</strong> : {{ Scenariste }}</td>
+                        <td><strong>Dessinateur</strong> : {{ Dessinateur }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Couleur</strong> : {{ Couleur }}</td>
+                        <td><strong>Éditeur</strong> : {{ Editeur }}</td>
+                        <td><strong>Date de parution</strong> : {{ Date_de_parution }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Édition</strong> : {{ Edition }}</td>
+                        <td><strong>Nombre de pages</strong> : {{ Nombre_de_pages }}</td>
+                        <td><strong>Cote</strong> : {% if Cote and Cote != "" %}{{ Cote }}€{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Prix d'achat</strong> : {% if Prix_dachat and Prix_dachat != "" %}{{ Prix_dachat }}€{% endif %}</td>
+                        <td><strong>Année d'achat</strong> : {{ Annee_dachat }}</td>
+                        <td><strong>Lieu d'achat</strong> : {{ Lieu_dachat }}</td>
+                    </tr>
+                </table>
+
+
+        </section>
+
+</div>
+
+<div class="col-12">
+
+    <!-- Main Content -->
+        <section>
+            <header>
+                <h2>Synopsis</h2>
+            </header>
+
+                {% autoescape off %}
+                    {{ Synopsis }}
+                {% endautoescape %}
+
+        </section>
+</div>
+
+{% endblock %}

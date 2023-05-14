@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="col-12">
+
+<!-- Main Content -->
+    <section>
+        <header>
+            <h2>Statistiques</h2>
+            <h3>État de la collection de Bandes Dessinées</h3>
+        </header>
+            <p>
+                • {{ nombre }} bandes dessinées au total<br/>
+                • {{ pages }} pages<br/>
+                • {{ dedicaces }} dédicaces<br/>
+                • {{ exlibris }} ex libris<br/>
+                • {{ prix }} € de valeur actuelle<br/>
+            </p>
+
+        </form>
+    </section>
+
+</div>
+
+{% endblock %}
