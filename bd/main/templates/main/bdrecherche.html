@@ -1,0 +1,50 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="col-12">
+
+    <!-- Main Content -->
+    <section>
+        <header>
+            <h2>Rechercher</h2>
+            <h3>Rechercher une bande dessinée suivant des critères</h3>
+        </header>
+        <form method="post" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <input class="button-large" type="submit" value="Rechercher" title="Rechercher la BD"/>
+        </form>
+    </section>
+
+    <section>
+        <header>
+            <h2>Les Bandes Dessinées</h2>
+            <h3>Résultat de recherche</h3>
+        </header>
+        {% for album in infos %}
+
+            {% if not album.Album and album.Album == "" and not album.Numero and album.Numero == "" and not album.Serie and album.Serie == "" %}
+                <a href="{% url 'pagebd' album.ISBN %}" >Pas de titre</a>
+            {% else %}
+                <a href="{% url 'pagebd' album.ISBN %}" >
+                    {% if album.Album and album.Album != "" %}
+                        {{ album.Album }}
+                    {% endif %}
+                        {% if album.Numero and album.Numero != "" %}
+                        Tome {{ album.Numero }} :
+                    {% endif %}
+                    {% if album.Serie and album.Serie != "" %}
+                        {{ album.Serie }}
+                    {% endif %}
+                </a>
+            {% endif %}
+            <br/>
+        {% endfor %}
+
+    </section>
+
+</div>
+
+{% endblock %}

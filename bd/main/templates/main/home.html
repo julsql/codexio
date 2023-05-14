@@ -1,0 +1,70 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="col-9 col-12-medium">
+
+<!-- Main Content -->
+    <section>
+        <header>
+            <h2>Rechercher</h2>
+            <h3>Rechercher une bande dessinée suivant des critères</h3>
+        </header>
+        <form method="post" action="{% url 'bdrecherche' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <input class="button-large" type="submit" value="Rechercher" title="Rechercher la BD"/>
+        </form>
+    </section>
+
+</div>
+<div class="col-3 col-12-medium">
+
+<!-- Sidebar -->
+    <section>
+        <header>
+            <h2>{{ infos.Album }}</h2>
+            <h3>
+                {% if infos.Numero and infos.Numero != "" %}
+                Tome {{ infos.Numero }} :
+                {% endif %}
+                {% if infos.Serie and infos.Serie != "" %}
+                    {{ infos.Serie }}
+                {% endif %}
+            </h3>
+
+        </header>
+
+        <a href="{{ infos.Image }}"><img src="{{ infos.Image }}" width="220" alt="Couverture"></a>
+
+        <p>
+            Scénartiste : {{ infos.Scenariste }}<br />
+            Dessinateur : {{ infos.Dessinateur }}<br />
+            Date de parution : {{ infos.Date_de_parution }}<br />
+            {% if infos.Prix_dachat and infos.Nombre_de_pages and infos.Prix_dachat != "" and infos.Nombre_de_pages != "" %}
+                {{ infos.Prix_dachat }}€ | {{ infos.Nombre_de_pages }} pages<br />
+            {% else %}
+                {% if infos.Prix_dachat and infos.Prix_dachat != "" %}
+                    {{ infos.Prix_dachat }}€<br />
+                {% endif %}
+
+                {% if infos.Nombre_de_pages and infos.Nombre_de_pages != "" %}
+                    {{ infos.Nombre_de_pages }} pages<br />
+                {% endif %}
+            {% endif %}
+
+            {{ infos.Édition }}
+        </p>
+        <p>
+            {{ infos.Synopsis|truncatechars:200 }}
+        </p>
+        <p>
+            <a style="color:#FFFFFF;" href="pagebd.php?isbn={{ infos.ISBN }}" class="button-large" target="_blank">Voir plus</a>
+        </p>
+    </section>
+
+
+</div>
+
+{% endblock %}

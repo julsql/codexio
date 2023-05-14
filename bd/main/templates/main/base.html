@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <title>Bandes Dessinées</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="/static/main/assets/css/main.css" />
+
+        {% block head %}{% endblock %}
+
+    </head>
+
+    <body>
+        <div id="page-wrapper">
+
+            <!-- Header -->
+            <section id="header">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+
+                        <!-- Logo -->
+                        <h1><a href="{% url 'home' %}" id="logo">BD</a></h1>
+
+                        <!-- Nav -->
+                        <nav id="nav">
+                            <a href="{% url 'home' %}">Menu</a>
+                            <a href="{% url 'bdrecherche' %}">Les bandes dessinées</a>
+                            <a href="{% url 'dedicace' %}">Les dédicaces</a>
+                            <a href="{% url 'statistiques' %}">Statistiques</a>
+                        </nav>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div id="banner">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6 col-12-medium">
+
+                            <!-- Banner Copy -->
+                            <p>Découvrir toutes les dédicaces !</p>
+                            <a href="{% url 'dedicace' %}" class="button-large">Voir les dédicaces</a>
+
+                            </div>
+                            <div class="col-6 col-12-medium imp-medium">
+                                <!-- Banner Image -->
+                                <a href="{% url 'dedicace' %}" class="bordered-feature-image"><img src="/static/main/images/banner.jpg" alt="" /></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="content">
+                <div class="container">
+                    <div class="row">
+                        {% block body %}{% endblock %}
+                    </div>
+                </div>
+            </section>
+            <!-- Footer -->
+            <section id="footer">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-4 col-12-medium imp-medium">
+
+                        <!-- Blurb -->
+                            <section>
+                                <h2>Développeur</h2>
+                                <p>
+                                    Site web développé par Juliette Debono pour faciliter la recherche de bande dessinée.
+                                </p>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Copyright -->
+            <div id="copyright">
+                &copy; Juliette Debono 2023 | Design: <a href="http://html5up.net">HTML5 UP</a>
+            </div>
+        </div>
+
+        <!-- Scripts -->
+        {% block javascript %}
+        {% endblock %}
+        <script src="/static/main/assets/js/jquery.min.js"></script>
+        <script src="/static/main/assets/js/browser.min.js"></script>
+        <script src="/static/main/assets/js/breakpoints.min.js"></script>
+        <script src="/static/main/assets/js/util.js"></script>
+        <script src="/static/main/assets/js/main.js"></script>
+    </body>
+
+</html>

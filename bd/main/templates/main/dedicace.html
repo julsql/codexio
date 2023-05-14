@@ -1,0 +1,99 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="col-12">
+
+<!-- Main Content -->
+    <section>
+        <header>
+            <h2>Les dédicaces</h2>
+            <h3>Toutes les dédicaces</h3>
+        </header>
+
+    </section>
+    {% for bd in dedicaces %}
+
+        <!--a href="lien"><img src="lien" width="220" alt="Couverture"></a-->
+        <section id="dedicace_{{ bd.ISBN }}">
+            <header>
+                <h2>
+                    {% if bd.Album and db.Album != "" %}
+                        <a href="{% url 'pagebd' bd.ISBN %}">{{ bd.Album }}</a>
+                    {% else %}
+                        <a href="{% url 'pagebd' bd.ISBN %}">{{ bd.ISBN }}</a>
+                    {% endif %}
+                </h2>
+
+                {% if bd.Numero or bd.Serie %}
+                    {% if bd.Numero != "" or bd.Serie != "" %}
+                        <h3>
+                            {% if bd.Numero and bd.Numero != "" %}
+                                Tome {{ bd.Numero }}
+                            {% endif %}
+
+                            {% if bd.Serie and bd.Serie != "" %}
+                                {{ bd.Serie }}
+                            {% endif %}
+                        </h3>
+                    {% endif %}
+                {% endif %}
+                <p>{{ bd.Dedicace }} dédicace{% if bd.Dedicace > 1 %}s{% endif %}</p>
+            </header>
+
+            <p>
+                {% for i in bd.DedicaceRange %}
+                    Photo de la dédicace : /static/main/images/dedicace/{{ bd.ISBN }}_{{ i }}.jpg<br/>
+                {% endfor %}
+            </p>
+        </section>
+    {% endfor %}
+
+    <section>
+        <header>
+            <h2>Les Ex Libris</h2>
+            <h3>Toutes les ex libris</h3>
+        </header>
+
+    </section>
+
+    {% for bd in exlibris %}
+
+        <!--a href="lien"><img src="lien" width="220" alt="Couverture"></a-->
+        <section id="exlibris{{ bd.ISBN }}">
+            <header>
+                <h2>
+                    {% if bd.Album and db.Album != "" %}
+                        <a href="{% url 'pagebd' bd.ISBN %}">{{ bd.Album }}</a>
+                    {% else %}
+                        <a href="{% url 'pagebd' bd.ISBN %}">{{ bd.ISBN }}</a>
+                    {% endif %}
+                </h2>
+
+                {% if bd.Numero or bd.Serie %}
+                    {% if bd.Numero != "" or bd.Serie != "" %}
+                        <h3>
+                            {% if bd.Numero and bd.Numero != "" %}
+                                Tome {{ bd.Numero }}
+                            {% endif %}
+
+                            {% if bd.Serie and bd.Serie != "" %}
+                                {{ bd.Serie }}
+                            {% endif %}
+                        </h3>
+                    {% endif %}
+                {% endif %}
+                <p>{{bd.Exlibris}} ex libris</p>
+            </header>
+
+            <p>
+                {% for i in bd.ExlibrisRange %}
+                    Photo de l'ex libris : /static/main/images/exlibris/{{ bd.ISBN }}_{{ i }}.jpg<br/>
+                {% endfor %}
+            </p>
+        </section>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
