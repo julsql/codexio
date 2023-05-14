@@ -60,7 +60,7 @@
             {{ infos.Synopsis|truncatechars:200 }}
         </p>
         <p>
-            <a style="color:#FFFFFF;" href="pagebd.php?isbn={{ infos.ISBN }}" class="button-large" target="_blank">Voir plus</a>
+            <a style="color:#FFFFFF;" href="{% url 'pagebd' infos.ISBN %}" class="button-large" target="_blank">Voir plus</a>
         </p>
     </section>
 
