@@ -27,8 +27,8 @@ INSERT INTO 'BD' ('ISBN', 'Album', 'Numéro', 'Série', 'Scénariste', 'Dessinat
 
 #sql = sql.replace("'", "`")
 
-xlsFile = "/path/to/project/back/BD.xlsx"
-sqlFile = "/path/to/project/back/BD.sql"
+xlsFile = "/path/to/bd_database/back/BD.xlsx"
+sqlFile = "/path/to/bd_database/back/BD.sql"
 
 sheet = pandas.read_excel(xlsFile, na_values = [0])
 sheet = sheet.to_numpy()
