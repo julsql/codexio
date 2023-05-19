@@ -1,6 +1,7 @@
 # Conversion csv en sql
 
 import pandas
+from openpyxl import load_workbook
 
 sql = """CREATE TABLE IF NOT EXISTS BD (
 	ISBN	BIGINT,
@@ -27,10 +28,17 @@ INSERT INTO 'BD' ('ISBN', 'Album', 'Numéro', 'Série', 'Scénariste', 'Dessinat
 
 #sql = sql.replace("'", "`")
 
-xlsFile = "/path/to/bd_database/back/BD.xlsx"
+xlsmFile = "/path/to/bd_database/BD.xlsm"
+xlsxFile = "/path/to/bd_database/back/BD.xlsx"
 sqlFile = "/path/to/bd_database/back/BD.sql"
 
-sheet = pandas.read_excel(xlsFile, na_values = [0])
+# Charger le classeur .xlsm
+workbook = load_workbook(xlsmFile, keep_vba=False)
+
+# Enregistrer le classeur sous le format .xlsx sans les macros
+workbook.save(xlsxFile)
+
+sheet = pandas.read_excel(xlsxFile, na_values = [0])
 sheet = sheet.to_numpy()
 
 def toList(line):
