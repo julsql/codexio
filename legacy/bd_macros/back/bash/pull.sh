@@ -1,4 +1,4 @@
 #! /bin/bash
 
-cd "/path/to/project/Database/bd";
+cd "/path/to/project";
 git pull;
