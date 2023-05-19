@@ -1,4 +1,6 @@
 #! /bin/bash
 
-cd "/path/to/project";
+path="/path/to/project"
+
+cd "$path";
 git pull;
