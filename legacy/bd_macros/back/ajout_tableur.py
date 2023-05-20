@@ -19,6 +19,27 @@ ssh = path_back + "path.txt"
 
 ISBN = 9782749301273 # Peter Pan
 
+def xlsx_xlsm():
+    # Charger le classeur XLSM
+    workbook_xlsm = openpyxl.load_workbook(fichier_xlsm, keep_vba=True)
+
+    # Charger le classeur XLSX
+    workbook_xlsx = openpyxl.load_workbook(fichier_xlsx)
+    sheet_name = "BD"
+    # Copier les valeurs de chaque feuille XLSX vers le classeur XLSM
+    worksheet_xlsx = workbook_xlsx[sheet_name]
+    worksheet_xlsm = workbook_xlsm[sheet_name]
+        
+    # Supprimer toutes les lignes existantes dans la feuille worksheet_xlsm
+    worksheet_xlsm.delete_rows(1, worksheet_xlsm.max_row)
+
+    # Parcourir les cellules et copier les valeurs
+    for row in worksheet_xlsx.iter_rows(values_only=True):
+        worksheet_xlsm.append(row)
+
+    # Enregistrer les modifications dans le classeur XLSM
+    workbook_xlsm.save(fichier_xlsm)
+
 def deja(ISBN):
     df = pandas.read_excel(fichier_xlsx)
     liste_ISBN = []
@@ -136,7 +157,7 @@ def update(ISBN, loop = 0):
     else:
         try:
             add_ligne(ISBN, infos)
-        
+            xlsx_xlsm()
             print("\n________________________________ C'EST FINI !! ________________________________\n")
         except:
             # Il y a eu une erreur : on restaure BackUp.
