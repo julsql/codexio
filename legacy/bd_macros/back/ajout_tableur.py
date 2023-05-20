@@ -177,8 +177,7 @@ def update(ISBN, loop = 0):
             return None
 
 if __name__ == "__main__":
-    #ISBN = sys.argv[1]
-    ISBN = "9782864976165"
+    ISBN = sys.argv[1]
     with open(ssh, "a") as f:
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
