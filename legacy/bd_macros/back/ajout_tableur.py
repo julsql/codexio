@@ -14,10 +14,15 @@ path_back = path + "back/"
 fichier_xlsm = path + "BD.xlsm"
 fichier_xlsx = path_back + "BD.xlsx"
 fichier2 = path_back + "BD_Backup/"
+changes = path_back + "back/changes.txt"
 log = path_back + "logs.txt"
 ssh = path_back + "path.txt"
 
 ISBN = 9782749301273 # Peter Pan
+
+def write_change():
+    with open(changes, "w") as f:
+        f.write("1")
 
 def xlsm_xslx():
 
@@ -170,6 +175,7 @@ def update(ISBN, loop = 0):
         try:
             add_ligne(ISBN, infos)
             xlsx_xlsm()
+            write_change()
             print("\n________________________________ C'EST FINI !! ________________________________\n")
         except:
             # Il y a eu une erreur : on restaure BackUp.
