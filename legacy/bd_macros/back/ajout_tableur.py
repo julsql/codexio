@@ -19,6 +19,15 @@ ssh = path_back + "path.txt"
 
 ISBN = 9782749301273 # Peter Pan
 
+def xlsm_xslx():
+
+    # Charger le classeur .xlsm
+    workbook = openpyxl.load_workbook(fichier_xlsm, keep_vba=False)
+
+    # Enregistrer le classeur sous le format .xlsx sans les macros
+    workbook.save(fichier_xlsx)
+
+
 def xlsx_xlsm():
     # Charger le classeur XLSM
     workbook_xlsm = openpyxl.load_workbook(fichier_xlsm, keep_vba=True)
@@ -125,7 +134,7 @@ def add_ligne(ISBN, infos):
 # Connexion
 def update(ISBN, loop = 0):
     try:
-
+        xlsm_xslx()
         if deja(ISBN):
             message = ISBN + " est déjà dans la base de données"
             addLog(ISBN, message)
