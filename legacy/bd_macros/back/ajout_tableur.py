@@ -9,7 +9,7 @@ from datetime import datetime
 
 path = "/path/to/project/"
 path = "/path/to/project/"
-path = "/path/to/bd/"
+#path = "/path/to/bd/"
 path_back = path + "back/"
 fichier_xlsm = path + "BD.xlsm"
 fichier_xlsx = path_back + "BD.xlsx"
@@ -44,8 +44,12 @@ def deja(ISBN):
     df = pandas.read_excel(fichier_xlsx)
     liste_ISBN = []
     for row in df.itertuples():
-        value = str(int(float(str(row[1]))))
-        liste_ISBN.append(value)
+        try:
+            value = str(int(float(str(row[1]))))
+        except ValueError:
+            None
+        else:
+            liste_ISBN.append(value)
 
     return ISBN in liste_ISBN
     
@@ -120,7 +124,6 @@ def add_ligne(ISBN, infos):
 
 # Connexion
 def update(ISBN, loop = 0):
-
     try:
 
         if deja(ISBN):
@@ -174,7 +177,8 @@ def update(ISBN, loop = 0):
             return None
 
 if __name__ == "__main__":
-    ISBN = sys.argv[1]
+    #ISBN = sys.argv[1]
+    ISBN = "9782864976165"
     with open(ssh, "a") as f:
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
