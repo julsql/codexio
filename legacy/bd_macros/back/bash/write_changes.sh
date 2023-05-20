@@ -1,6 +1,6 @@
 #! /bin/bash
 
-path="/path/to/project"
+path="/path/to/projectd"
 
 cd "$path/back/bash";
 
