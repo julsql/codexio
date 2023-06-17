@@ -6,7 +6,6 @@ path = "/path/to/project/"
 path_back = path + "back/"
 fichier = path + "BD.xlsm"
 fichier_x = path_back + "BD.xlsx"
-print(fichier)
 # Ouvrir le fichier Excel .xlsm
 app = xw.App(visible=False)
 
@@ -46,4 +45,3 @@ wb.save()
 # Fermer le fichier Excel
 wb.close()
 app.quit()
-print("OKÉ")

@@ -76,14 +76,12 @@ def addLog(ISBN, message):
 
 def backUp():
     try:
-        print(fichier_xlsm)
         df = pandas.read_excel(fichier_xlsm)
     except:
         os.chdir(path + 'BD_Backup')
         files = os.listdir()
         files.sort(key=lambda x: os.path.getmtime(x))
         files.reverse()
-        print(files)
         for file in files:
             path_file = path_back + "BD_Backup/" + file
             try:
@@ -91,8 +89,6 @@ def backUp():
             except:
                 None
             else:
-                print('rm "{0}"'.format(fichier_xlsm))
-                print('cp "{0}" "{1}"'.format(path_file, fichier_xlsm))
                 os.popen('rm "{0}"'.format(fichier_xlsm))
                 os.popen('cp "{0}" "{1}"'.format(path_file, fichier_xlsm))
                 time.sleep(1)
@@ -100,7 +96,7 @@ def backUp():
         message = "La copie n'a pas pu être effectué, aucun fichier non corrompu n'est disponible dans les backups"
         addLog("", message)
         print(message)
-        print("\n/!\\_____________________________ PAS DE FICHIER NON CORROMPU DE TROUVÉ !! _____________________________/!\\\n")
+        print("\n/!\\___ PAS DE FICHIER NON CORROMPU DE TROUVÉ !! ___/!\\\n")
         return False
     else:
         print("Le fichier BD.xlsx n'est pas corrompu")
@@ -144,7 +140,7 @@ def update(ISBN, loop = 0):
             message = ISBN + " est déjà dans la base de données"
             addLog(ISBN, message)
             print("Doublon " + message)
-            print("\n________________________________ ERREUR !! ________________________________\n")
+            print("\___ ERREUR !! ___\n")
             return None
 
         infos = InfosBD.main(ISBN)
@@ -153,7 +149,7 @@ def update(ISBN, loop = 0):
             addLog(ISBN, infos)
             print('Erreur ', end="")
             print(infos)
-            print("\n/!\\_____________________________ ERREUR !! _____________________________/!\\\n")
+            print("\n/!\\___ ERREUR !! ___/!\\\n")
             return None
     except:
         addLog(ISBN, "On tente un backup")
@@ -161,11 +157,11 @@ def update(ISBN, loop = 0):
         if not bool:
             print("Aucun backup non corrompu disponible")
             addLog(ISBN, "Aucun backup non corrompu disponible")
-            print("\n/!\\______________________________ PAS DE BACKUP DISPONIBLE !! ______________________________/!\\\n")
+            print("\n/!\\___ PAS DE BACKUP DISPONIBLE !! ___/!\\\n")
         if loop > 0:
             print('Problème avec le livre, même en cherchant un backup')
             addLog(ISBN, "Problème avec le livre, même en cherchant un backup et en retantant.")
-            print("\n/!\\______________________________ PROBLÈME DE LIVRE !! ______________________________/!\\\n")
+            print("\n/!\\___ PROBLÈME DE LIVRE !! ___/!\\\n")
             return None
         else:
             addLog(ISBN, "On retente une fois")
@@ -176,19 +172,19 @@ def update(ISBN, loop = 0):
             add_ligne(ISBN, infos)
             xlsx_xlsm()
             write_change()
-            print("\n________________________________ C'EST FINI !! ________________________________\n")
+            print("\___ C'EST FINI !! ___\n")
         except:
             # Il y a eu une erreur : on restaure BackUp.
             bool = backUp()
             if not bool:
                 print("Aucun backup non corrompu disponible")
                 addLog(ISBN, "Aucun backup non corrompu disponible")
-                print("\n/!\\______________________________ PAS DE BACKUP DISPONIBLE !! ______________________________/!\\\n")
+                print("\n/!\\___ PAS DE BACKUP DISPONIBLE !! ____/!\\\n")
                 return None
             
             print('Erreur, on doit restaurer un backup')
             addLog(ISBN, "Restauration backup")
-            print("\n/!\\_____________________________ BACKUP TROUVÉ !! _____________________________/!\\\n")
+            print("\n/!\\___ BACKUP TROUVÉ !! ___/!\\\n")
             return None
 
 if __name__ == "__main__":
