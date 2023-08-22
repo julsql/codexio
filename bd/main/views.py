@@ -27,7 +27,7 @@ def home(request):
             infos = recherche.recherche_bd(isbn, titre, num, serie, scenariste, dessinateur, editeur, edition, annee,
                                            dedicace, exlibris, synopsis)
             return render(request, 'main/bdrecherche.html', {'form': form, 'infos': infos})
-        return render(request, 'main/bdrecherche.html', {'form': form, 'infos': infos})
+        return render(request, 'main/home.html', {'form': form, 'infos': infos})
     # si le formulaire n'est pas valide, nous laissons l'exécution continuer jusqu'au return
     # ci-dessous et afficher à nouveau le formulaire (avec des erreurs).
 
