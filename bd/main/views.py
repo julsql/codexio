@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from main.forms import RechercheForm
-import main.recherche as recherche
+from forms import RechercheForm
+import recherche
 
 
 # Create your views here.
