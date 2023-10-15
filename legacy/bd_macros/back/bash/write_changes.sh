@@ -1,6 +1,6 @@
 #! /bin/bash
 
-path="/path/to/project"
+path="$(dirname "$(dirname "$(dirname "$(realpath "$0")")")")"
 
 cd "$path/back/bash";
 
