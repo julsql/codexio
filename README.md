@@ -31,7 +31,7 @@ It's a Django project that displays my collection of comics.
     git clone git@github.com:juliette39/bd_website.git
     ```
 
-2. Don't forget to add the settings file in `./bd/bd`
+2. Don't forget to add the settings file in `./bd/bd` and the google sheet api keys file at `private/bd-sheet-91.json`
 
 3. Configure the python virtual environment
 
