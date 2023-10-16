@@ -26,8 +26,6 @@ def insert_data_into_sql_table(connection, title, data, table_name):
     cursor = connection.cursor()
 
     for row in data:
-        print(f"INSERT INTO {table_name} ({','.join(title)}) VALUES ({','.join(['?'] * len(title))})")
-        print(row)
         cursor.execute(f"INSERT INTO {table_name} ({','.join(title)}) VALUES ({','.join(['?'] * len(title))})", row)
 
     connection.commit()
@@ -62,7 +60,6 @@ def update():
 
     title = [f'"{titre}"' for titre in rows[0]]
     data = rows[1:]
-    print(title)
 
     table_name = "BD"
 
