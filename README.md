@@ -47,14 +47,20 @@ It's a Django project that displays my collection of comics.
     ```bash
     pip install -r requirements.txt
    ```
+   
+5. Create the database
 
-5. Launch the website
+   ```bash
+   python3 bd/main/update_database.py
+   ```
+
+6. Launch the website
 
     ```bash
     cd bd
     ./manage.py runserver 
     ```
-6. To leave the virtual environment
+7. To leave the virtual environment
     ```bash
     deactivate
     ```

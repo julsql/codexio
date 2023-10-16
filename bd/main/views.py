@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from main.forms import RechercheForm
 from main import recherche as recherche
+#from main import update_database as update_database
+
+#update_database.update()
 
 
 # Create your views here.
