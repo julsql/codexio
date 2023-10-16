@@ -10,11 +10,12 @@ __DATABASE__ = os.path.join(__FILEPATH__, "comics.sql")
 def create_sql_table(connection, gsheet, table_name):
     cursor = connection.cursor()
     cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
-    cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name} (isbn BIGINT PRIMARY KEY)")
+    cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name} (isbn BIGINT)")
 
     # Récupérer la première ligne de la feuille de calcul comme des colonnes de la table
     columns = gsheet.get_line(0)
     for column in columns[1:]:
+        print(column)
         cursor.execute(f"ALTER TABLE {table_name} ADD COLUMN \"{column}\" TEXT")
     connection.commit()
 
