@@ -1,7 +1,6 @@
 import InfosBD
 import pandas
 import openpyxl
-import numpy as np
 import os
 import sys
 import time

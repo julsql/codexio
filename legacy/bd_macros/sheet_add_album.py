@@ -1,4 +1,4 @@
-from back.old import InfosBD
+from old import InfosBD
 from error import Error
 from sheet_connection import Conn
 import sys
