@@ -17,8 +17,8 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route('/dedicace', methods=['POST'])
-def upload_file():
+@app.route('/dedicace/<isbn>', methods=['POST'])
+def upload_file(isbn):
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'})
 
@@ -28,7 +28,8 @@ def upload_file():
         return jsonify({'error': 'No selected file'})
 
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
+        #filename = secure_filename(file.filename)
+        filename = isbn + file.filename.rsplit('.', 1)[1]
         file.save(os.path.join(app.config['DEDICACE_FOLDER'], filename))
         return jsonify({'message': 'File uploaded successfully'})
 
