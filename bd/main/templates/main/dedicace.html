@@ -48,15 +48,9 @@
 
             <p>
                 {% for i in bd.DedicaceRange %}
-                    {% if i == 1 %}
-                        <a class="photo_link" href="/static/main/images/dedicaces/{{ bd.ISBN }}.jpg" data-lightbox="{{ bd.ISBN }}">
-                            <img src="/static/main/images/dedicaces/{{ bd.ISBN }}.jpg" alt="Image" class="photo_album">
-                        </a>
-                    {% else %}
-                        <a class="photo_link" href="/static/main/images/dedicaces/{{ bd.ISBN }}_{{ i }}.jpg" data-lightbox="{{ bd.ISBN }}">
-                            <img src="/static/main/images/dedicaces/{{ bd.ISBN }}_{{ i }}.jpg" alt="Image" class="photo_album">
-                        </a>
-                    {% endif %}
+                    <a class="photo_link" href="/static/main/images/dedicaces/{{ bd.ISBN }}/{{ i }}.jpg" data-lightbox="{{ bd.ISBN }}">
+                        <img src="/static/main/images/dedicaces/{{ bd.ISBN }}/{{ i }}.jpg" alt="Image" class="photo_album">
+                    </a>
                 {% endfor %}
             </p>
         </section>
@@ -100,16 +94,10 @@
             </header>
 
             <p>
-                {% for i in bd.DedicaceRange %}
-                    {% if i == 1 %}
-                        <a class="photo_link" href="/static/main/images/exlibris/{{ bd.ISBN }}.jpg" data-lightbox="{{ bd.ISBN }}">
-                            <img src="/static/main/images/exlibris/{{ bd.ISBN }}.jpg" alt="Image" class="photo_album">
-                        </a>
-                    {% else %}
-                        <a class="photo_link" href="/static/main/images/exlibris/{{ bd.ISBN }}_{{ i }}.jpg" data-lightbox="{{ bd.ISBN }}">
-                            <img src="/static/main/images/exlibris/{{ bd.ISBN }}_{{ i }}.jpg" alt="Image" class="photo_album">
-                        </a>
-                    {% endif %}
+                {% for i in bd.ExlibrisRange %}
+                    <a class="photo_link" href="/static/main/images/exlibris/{{ bd.ISBN }}/{{ i }}.jpg" data-lightbox="{{ bd.ISBN }}">
+                        <img src="/static/main/images/exlibris/{{ bd.ISBN }}/{{ i }}.jpg" alt="Image" class="photo_album">
+                    </a>
                 {% endfor %}
             </p>
         </section>

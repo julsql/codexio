@@ -104,32 +104,49 @@ def stat():
     return infos
 
 
+def count_files_in_directory(directory_path):
+    if not os.path.isdir(directory_path):
+        return 0
+    file_count = 0
+    for root, dirs, files in os.walk(directory_path):
+        file_count += len(files)
+
+    return file_count
+
+
 def dedicaces():
-    req = "SELECT ISBN, Album, Numéro, Série, Dédicace FROM BD WHERE Dédicace > 0;"
-    result_req = exec_req_all(req)
+    image_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/dedicaces")
+    print(image_dir)
     infos = []
-    for result in result_req:
-        try:
-            int(result[4])
-        except ValueError:
-            print(f"Error: album {result[0]} has not a valid dedicace field: {result[4]}")
-        else:
-            infos.append({'ISBN': result[0], 'Album': result[1], 'Numero': result[2], 'Serie': result[3],
-                          'DedicaceRange': range(1, int(result[4]) + 1), 'Dedicace': int(result[4])})
+    for item in os.listdir(image_dir):
+        item_path = os.path.join(image_dir, item)
+        print(item, item_path)
+
+        # Vérifiez si l'élément est un répertoire
+        if os.path.isdir(item_path):
+            isbn = item
+            nb_dedicace = count_files_in_directory(item_path)
+            req = f"SELECT Album, Numéro, Série FROM BD WHERE ISBN = {isbn};"
+            result_req = exec_req_all(req)
+            for result in result_req:
+                infos.append({'ISBN': isbn, 'Album': result[0], 'Numero': result[1], 'Serie': result[2],
+                              'DedicaceRange': range(1, nb_dedicace + 1), 'Dedicace': nb_dedicace})
     return infos
 
 
 def exlibris():
-    req = "SELECT ISBN, Album, Numéro, Série, \"Ex Libris\" FROM BD WHERE \"Ex Libris\" > 0;"
-    result_req = exec_req_all(req)
+    image_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/exlibris")
     infos = []
-    for result in result_req:
-        try:
-            int(result[4])
-        except ValueError:
-            print(f"Error: album {result[0]} has not a valid ex libris field: {result[4]}")
-        else:
-            infos.append(
-                {'ISBN': result[0], 'Album': result[1], 'Numero': result[2], 'Serie': result[3],
-                 'ExlibrisRange': range(1, int(result[4]) + 1), 'Exlibris': int(result[4])})
+    for item in os.listdir(image_dir):
+        item_path = os.path.join(image_dir, item)
+
+        # Vérifiez si l'élément est un répertoire
+        if os.path.isdir(item_path):
+            isbn = item
+            nb_exlibris = count_files_in_directory(item_path)
+            req = f"SELECT Album, Numéro, Série FROM BD WHERE ISBN = {isbn};"
+            result_req = exec_req_all(req)
+            for result in result_req:
+                infos.append({'ISBN': isbn, 'Album': result[0], 'Numero': result[1], 'Serie': result[2],
+                              'ExlibrisRange': range(1, nb_exlibris + 1), 'Exlibris': nb_exlibris})
     return infos

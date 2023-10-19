@@ -19,6 +19,15 @@ def allowed_file(filename):
 
 @app.route('/dedicace/<isbn>', methods=['POST'])
 def upload_file(isbn):
+    return upload(isbn, app.config['DEDICACE_FOLDER'])
+
+
+@app.route('/exlibris/<isbn>', methods=['POST'])
+def upload_file(isbn):
+    return upload(isbn, app.config['EXLIBRIS_FOLDER'])
+
+
+def upload(isbn, origin_folder):
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'})
 
@@ -28,12 +37,30 @@ def upload_file(isbn):
         return jsonify({'error': 'No selected file'})
 
     if file and allowed_file(file.filename):
-        #filename = secure_filename(file.filename)
-        filename = isbn + "." + file.filename.rsplit('.', 1)[1]
-        file.save(os.path.join(app.config['DEDICACE_FOLDER'], filename))
+        # filename = secure_filename(file.filename)
+        extension = file.filename.rsplit('.', 1)[1]
+        path_folder = os.path.join(origin_folder, isbn)
+        if not os.path.exists(origin_folder):
+            os.makedirs(origin_folder)
+            number = 1
+        else:
+            number = count_files_in_directory(path_folder) + 1
+
+        filename = f"{number}.{extension}"
+        file.save(os.path.join(path_folder, filename))
         return jsonify({'message': 'File uploaded successfully'})
 
     return jsonify({'error': 'File type not allowed'})
+
+
+def count_files_in_directory(directory_path):
+    if not os.path.isdir(directory_path):
+        return 0
+    file_count = 0
+    for root, dirs, files in os.walk(directory_path):
+        file_count += len(files)
+
+    return file_count
 
 
 if __name__ == '__main__':
