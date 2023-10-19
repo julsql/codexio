@@ -29,7 +29,7 @@ def upload_file(isbn):
 
     if file and allowed_file(file.filename):
         #filename = secure_filename(file.filename)
-        filename = isbn + file.filename.rsplit('.', 1)[1]
+        filename = isbn + "." + file.filename.rsplit('.', 1)[1]
         file.save(os.path.join(app.config['DEDICACE_FOLDER'], filename))
         return jsonify({'message': 'File uploaded successfully'})
 
