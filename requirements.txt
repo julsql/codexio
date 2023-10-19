@@ -1,4 +1,2 @@
 Django==4.2.1
 gspread==5.11.3
-flask~=3.0.0
-werkzeug~=3.0.0

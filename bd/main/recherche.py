@@ -27,12 +27,12 @@ def alea():
 
 
 def banner():
-    image_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/dedicace")
+    image_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/dedicaces")
     # Obtenez la liste de tous les fichiers d'images dans le dossier.
     image_files = [f for f in os.listdir(image_dir) if f.endswith('.jpg')]
     if image_files:
         random_image = random.choice(image_files)
-        random_image_path = os.path.join(settings.STATIC_URL, "main/images/dedicace/", random_image)
+        random_image_path = os.path.join(settings.STATIC_URL, "main/images/dedicaces/", random_image)
     else:
         random_image_path = os.path.join(settings.STATIC_URL, "main/images/banner.jpg")
     return random_image_path
