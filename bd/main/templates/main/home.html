@@ -1,5 +1,30 @@
 {% extends 'main/base.html' %}
 {% load static %}
+
+{% block banner %}
+<div id="banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-6 col-12-medium">
+
+            <!-- Banner Copy -->
+            <p>Découvrir toutes les dédicaces !</p>
+            <a href="{% url 'dedicace' %}" class="button-large">Voir les dédicaces</a>
+
+            </div>
+            <div class="col-6 col-12-medium imp-medium">
+                <!-- Banner Image -->
+                <a href="{% url 'dedicace' %}" class="bordered-feature-image">
+                    <div class="image-container">
+                        <img src="{{ banner }}" alt="Bannière" class="fixed-size-image"/>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
 {% block body %}
 
 <div class="col-9 col-12-medium">

@@ -1,5 +1,10 @@
 {% extends 'main/base.html' %}
 {% load static %}
+
+{% block head %}
+    <link href="{% static 'main/assets/lightbox/lightbox.css' %}" rel="stylesheet" />
+{% endblock %}
+
 {% block body %}
 
 <div class="col-3 col-12-medium">
@@ -9,7 +14,9 @@
             <header>
                 <h2>Couverture</h2>
             </header>
-            <a href="{{ Image }}"><img src="{{ Image }}" width="220" alt="Couverture"></a>
+            <a href="{{ Image }}" data-lightbox="{{ ISBN }}">
+                <img src="{{ Image }}" width="220" alt="Couverture">
+            </a>
         </section>
 
 </div>
@@ -87,4 +94,7 @@
         </section>
 </div>
 
+{% endblock %}
+{% block javascript %}
+    <script src="{% static 'main/assets/lightbox/lightbox-plus-jquery.js' %}"></script>
 {% endblock %}

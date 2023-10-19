@@ -9,6 +9,7 @@ from main import recherche as recherche
 # Create your views here.
 def home(request):
     infos = recherche.alea()
+    banner = recherche.banner()
     if request.method == 'POST':
         # créer une instance de notre formulaire et le remplir avec les données POST
         form = RechercheForm(request.POST)
@@ -30,7 +31,7 @@ def home(request):
             infos = recherche.recherche_bd(isbn, titre, num, serie, scenariste, dessinateur, editeur, edition, annee,
                                            dedicace, exlibris, synopsis)
             return render(request, 'main/bdrecherche.html', {'form': form, 'infos': infos})
-        return render(request, 'main/home.html', {'form': form, 'infos': infos})
+        return render(request, 'main/home.html', {'form': form, 'infos': infos, 'banner': banner})
     # si le formulaire n'est pas valide, nous laissons l'exécution continuer jusqu'au return
     # ci-dessous et afficher à nouveau le formulaire (avec des erreurs).
 
@@ -38,7 +39,7 @@ def home(request):
         # ceci doit être une requête GET, donc créer un formulaire vide
         form = RechercheForm()
 
-    return render(request, 'main/home.html', {'form': form, 'infos': infos})
+    return render(request, 'main/home.html', {'form': form, 'infos': infos, 'banner': banner})
 
 
 def bdrecherche(request):

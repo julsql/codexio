@@ -1,4 +1,7 @@
 from django.db import connections
+import random
+from django.conf import settings
+import os
 
 
 def exec_req_all(req):
@@ -21,6 +24,18 @@ def alea():
              'Scenartiste': result[5], 'Dessinateur': result[6], 'Date_de_parution': result[7],
              'Prix_dachat': result[8], 'Nombre_de_pages': result[9], 'Edition': result[10], 'Synopsis': result[11]}
     return infos
+
+
+def banner():
+    image_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/dedicace")
+    # Obtenez la liste de tous les fichiers d'images dans le dossier.
+    image_files = [f for f in os.listdir(image_dir) if f.endswith('.jpg')]
+    if image_files:
+        random_image = random.choice(image_files)
+        random_image_path = os.path.join(settings.STATIC_URL, "main/images/dedicace/", random_image)
+    else:
+        random_image_path = os.path.join(settings.STATIC_URL, "main/images/banner.jpg")
+    return random_image_path
 
 
 def recherche_bd(isbn=None, titre=None, num=None, serie=None, scenariste=None, dessinateur=None, editeur=None,
@@ -83,7 +98,9 @@ def stat():
     dedicaces = exec_req_one("SELECT sum(Dédicace) as dedicaces FROM BD;")[0]
     exlibris = exec_req_one("SELECT sum(\"Ex Libris\") as exlibris FROM BD;")[0]
     prix = exec_req_one("SELECT sum(Cote) as prix FROM BD;")[0]
-    infos = {'nombre': nombre, 'pages': pages, 'dedicaces': dedicaces, 'exlibris': exlibris, 'prix': prix}
+    infos = {'nombre': int(nombre), 'pages': int(pages),
+             'dedicaces': int(dedicaces), 'exlibris': int(exlibris),
+             'prix': int(prix)}
     return infos
 
 
@@ -98,7 +115,7 @@ def dedicaces():
             print(f"Error: album {result[0]} has not a valid dedicace field: {result[4]}")
         else:
             infos.append({'ISBN': result[0], 'Album': result[1], 'Numero': result[2], 'Serie': result[3],
-                      'DedicaceRange': range(1, int(result[4]) + 1), 'Dedicace': result[4]})
+                          'DedicaceRange': range(1, int(result[4]) + 1), 'Dedicace': int(result[4])})
     return infos
 
 
@@ -113,6 +130,6 @@ def exlibris():
             print(f"Error: album {result[0]} has not a valid ex libris field: {result[4]}")
         else:
             infos.append(
-            {'ISBN': result[0], 'Album': result[1], 'Numero': result[2], 'Serie': result[3],
-             'ExlibrisRange': range(1, int(result[4]) + 1), 'Exlibris': result[4]})
+                {'ISBN': result[0], 'Album': result[1], 'Numero': result[2], 'Serie': result[3],
+                 'ExlibrisRange': range(1, int(result[4]) + 1), 'Exlibris': int(result[4])})
     return infos
