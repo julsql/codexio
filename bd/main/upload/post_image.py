@@ -18,12 +18,12 @@ def allowed_file(filename):
 
 
 @app.route('/dedicace/<isbn>', methods=['POST'])
-def upload_file(isbn):
+def upload_dedicace(isbn):
     return upload(isbn, app.config['DEDICACE_FOLDER'])
 
 
 @app.route('/exlibris/<isbn>', methods=['POST'])
-def upload_file(isbn):
+def upload_exlibris(isbn):
     return upload(isbn, app.config['EXLIBRIS_FOLDER'])
 
 
@@ -40,8 +40,9 @@ def upload(isbn, origin_folder):
         # filename = secure_filename(file.filename)
         extension = file.filename.rsplit('.', 1)[1]
         path_folder = os.path.join(origin_folder, isbn)
-        if not os.path.exists(origin_folder):
-            os.makedirs(origin_folder)
+        if not os.path.exists(path_folder):
+            print(path_folder)
+            os.makedirs(path_folder)
             number = 1
         else:
             number = count_files_in_directory(path_folder) + 1
