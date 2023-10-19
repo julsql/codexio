@@ -35,24 +35,7 @@
                         </div>
                     </div>
                 </div>
-
-                <div id="banner">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-6 col-12-medium">
-
-                            <!-- Banner Copy -->
-                            <p>Découvrir toutes les dédicaces !</p>
-                            <a href="{% url 'dedicace' %}" class="button-large">Voir les dédicaces</a>
-
-                            </div>
-                            <div class="col-6 col-12-medium imp-medium">
-                                <!-- Banner Image -->
-                                <a href="{% url 'dedicace' %}" class="bordered-feature-image"><img src="/static/main/images/banner.jpg" alt="" /></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% block banner %}{% endblock %}
             </section>
             <section id="content">
                 <div class="container">

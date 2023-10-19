@@ -1,5 +1,10 @@
 {% extends 'main/base.html' %}
 {% load static %}
+
+{% block head %}
+    <link href="{% static 'main/assets/lightbox/lightbox.css' %}" rel="stylesheet" />
+{% endblock %}
+
 {% block body %}
 
 <div class="col-12">
@@ -43,7 +48,15 @@
 
             <p>
                 {% for i in bd.DedicaceRange %}
-                    Photo de la dédicace : /static/main/images/dedicace/{{ bd.ISBN }}_{{ i }}.jpg<br/>
+                    {% if i == 1 %}
+                        <a class="photo_link" href="/static/main/images/dedicace/{{ bd.ISBN }}.jpg" data-lightbox="{{ bd.ISBN }}">
+                            <img src="/static/main/images/dedicace/{{ bd.ISBN }}.jpg" alt="Image" class="photo_album">
+                        </a>
+                    {% else %}
+                        <a class="photo_link" href="/static/main/images/dedicace/{{ bd.ISBN }}_{{ i }}.jpg" data-lightbox="{{ bd.ISBN }}">
+                            <img src="/static/main/images/dedicace/{{ bd.ISBN }}_{{ i }}.jpg" alt="Image" class="photo_album">
+                        </a>
+                    {% endif %}
                 {% endfor %}
             </p>
         </section>
@@ -87,13 +100,23 @@
             </header>
 
             <p>
-                {% for i in bd.ExlibrisRange %}
-                    Photo de l'ex libris : /static/main/images/exlibris/{{ bd.ISBN }}_{{ i }}.jpg<br/>
+                {% for i in bd.DedicaceRange %}
+                    {% if i == 1 %}
+                        <a class="photo_link" href="/static/main/images/exlibris/{{ bd.ISBN }}.jpg" data-lightbox="{{ bd.ISBN }}">
+                            <img src="/static/main/images/exlibris/{{ bd.ISBN }}.jpg" alt="Image" class="photo_album">
+                        </a>
+                    {% else %}
+                        <a class="photo_link" href="/static/main/images/exlibris/{{ bd.ISBN }}_{{ i }}.jpg" data-lightbox="{{ bd.ISBN }}">
+                            <img src="/static/main/images/exlibris/{{ bd.ISBN }}_{{ i }}.jpg" alt="Image" class="photo_album">
+                        </a>
+                    {% endif %}
                 {% endfor %}
             </p>
         </section>
     {% endfor %}
 
 </div>
-
+{% endblock %}
+{% block javascript %}
+    <script src="{% static 'main/assets/lightbox/lightbox-plus-jquery.js' %}"></script>
 {% endblock %}
