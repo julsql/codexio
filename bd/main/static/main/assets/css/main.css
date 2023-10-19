@@ -37,7 +37,10 @@ td {
 
 .photo_link {
     text-decoration: none;
-	width: 40%;
+}
+
+.photo_dedicace {
+	width: 49%;
 }
 
 article, aside, details, figcaption, figure,

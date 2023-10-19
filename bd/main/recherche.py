@@ -26,13 +26,36 @@ def alea():
     return infos
 
 
+def list_files_in_subdirectories(directory_path):
+    # Assurez-vous que le chemin est un répertoire
+    if not os.path.isdir(directory_path):
+        return []  # Le chemin spécifié n'est pas un répertoire
+
+    files = []
+    image_extensions = ['.jpg', '.jpeg', '.png']
+
+    # Parcourez le contenu du répertoire, y compris les sous-répertoires
+    for root, dirs, files_in_root in os.walk(directory_path):
+        for file_name in files_in_root:
+
+            # Vérifiez si l'extension du fichier est dans la liste des extensions d'image
+            if any(file_name.lower().endswith(ext) for ext in image_extensions):
+                # Obtenez le nom du répertoire parent et le nom du fichier
+                parent_directory = os.path.basename(root)
+                grandparent_directory = os.path.basename(os.path.dirname(root))
+                # Ajoutez ces informations à la liste
+                files.append(os.path.join(grandparent_directory, parent_directory, file_name))
+
+    return files
+
+
 def banner():
-    image_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/dedicaces")
-    # Obtenez la liste de tous les fichiers d'images dans le dossier.
-    image_files = [f for f in os.listdir(image_dir) if f.endswith('.jpg')]
+    dedicace_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/dedicaces")
+    exlibris_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/exlibris")
+    image_files = list_files_in_subdirectories(dedicace_dir) + list_files_in_subdirectories(exlibris_dir)
     if image_files:
         random_image = random.choice(image_files)
-        random_image_path = os.path.join(settings.STATIC_URL, "main/images/dedicaces/", random_image)
+        random_image_path = os.path.join(settings.STATIC_URL, "main/images/", random_image)
     else:
         random_image_path = os.path.join(settings.STATIC_URL, "main/images/banner.jpg")
     return random_image_path
