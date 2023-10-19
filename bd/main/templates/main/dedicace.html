@@ -49,7 +49,7 @@
             <p>
                 {% for i in bd.DedicaceRange %}
                     <a class="photo_link" href="/static/main/images/dedicaces/{{ bd.ISBN }}/{{ i }}.jpeg" data-lightbox="{{ bd.ISBN }}">
-                        <img src="/static/main/images/dedicaces/{{ bd.ISBN }}/{{ i }}.jpeg" alt="Image" class="photo_album">
+                        <img src="/static/main/images/dedicaces/{{ bd.ISBN }}/{{ i }}.jpeg" alt="Image" class="photo_dedicace">
                     </a>
                 {% endfor %}
             </p>
@@ -96,7 +96,7 @@
             <p>
                 {% for i in bd.ExlibrisRange %}
                     <a class="photo_link" href="/static/main/images/exlibris/{{ bd.ISBN }}/{{ i }}.jpeg" data-lightbox="{{ bd.ISBN }}">
-                        <img src="/static/main/images/exlibris/{{ bd.ISBN }}/{{ i }}.jpeg" alt="Image" class="photo_album">
+                        <img src="/static/main/images/exlibris/{{ bd.ISBN }}/{{ i }}.jpeg" alt="Image" class="photo_dedicace">
                     </a>
                 {% endfor %}
             </p>
