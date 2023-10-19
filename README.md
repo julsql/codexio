@@ -20,6 +20,7 @@ It's a Django project that displays my collection of comics.
 - [views.py](bd/main/views.py): the code launch when loading a page
 - [bd/](bd/bd): the settings files (urls, wsgi, settings) used by Django
 - [manage.py](bd/manage.py): the main file that runs the website
+- [upload](bd/main/upload): the Flask server to upload photos of the ex libris or 'dedicace'
 
 ## Installation
 
@@ -64,6 +65,67 @@ It's a Django project that displays my collection of comics.
     ```bash
     deactivate
     ```
+
+## Upload
+
+You can configure the upload server to add photo into the website.
+
+1. Find the Flask server directory
+   ```bash
+   cd bd/main/upload
+   ```
+
+2. Create the virtual environment
+   ```bash
+   virtualenv env
+   source env/bin/activate
+   ```
+   
+3. Import the flask depedency
+   ```bash
+   pip install Flask
+   ```
+
+4. You now can run [post_image.py](bd/main/upload/post_image.py)
+or configure a server (ex: Apache)
+
+   To configure the Apache server write a new config `/etc/apache2/sites-available/bd_upload.conf`:
+   ```
+   <VirtualHost *:80>
+    ServerName bd_upload.h.minet.net
+    ServerAdmin juliette.debono@telecom-sudparis.eu
+   
+    AddDefaultCharset UTF-8
+   
+    WSGIDaemonProcess bd_post_process python-home=/home/juliettedebono/bd_website/bd/main/upload/env python-path=/home/juliettedebono/bd_website/bd/main/upload
+    WSGIProcessGroup bd_post_process
+    WSGIScriptAlias / /home/juliettedebono/bd_website/bd/main/upload/application.wsgi process-group=bd_post_process
+   
+    <Directory /home/juliettedebono/bd_website/bd/main/upload>
+        WSGIProcessGroup post_image
+        WSGIApplicationGroup %{GLOBAL}
+        Require all granted
+    </Directory>
+   
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+   </VirtualHost>
+   ```
+   
+   and active the configuration and restart the server:
+
+   ```bash
+   sudo a2ensite bd_upload
+   sudo systemctl restart apache2
+   ```
+
+5. You can upload image with a `POST` request.
+The body request a form sending a file with key `file`.
+
+   The urls are:
+      - http://bd_upload.h.minet.net/dedicace/isbn for the dedicace
+      - http://bd_upload.h.minet.net/exlibris/isbn for the ex libris
+
 
 ## Deploy
 
