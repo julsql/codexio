@@ -117,6 +117,6 @@ def add_album(request, isbn):
             else:
                 return JsonResponse({'message': 'Error in the adding of the album'})
         else:
-            return JsonResponse({'message': 'Please make a POST request'})
+            return JsonResponse({'message': 'Please make a GET request'})
     else:
         return JsonResponse({'error': "You don't have the authorization"})
