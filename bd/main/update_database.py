@@ -5,7 +5,7 @@ import os
 import sqlite3
 
 __FILEPATH__ = os.path.dirname(os.path.abspath(__file__))
-__DATABASE__ = os.path.join(os.path.dirname(__FILEPATH__), 'db.sqlite3')
+__DATABASE__ = os.path.join(os.path.dirname(__FILEPATH__), 'db', 'db.sqlite3')
 credentials_path = os.path.join(__FILEPATH__, 'private/bd-sheet-91.json')
 
 
