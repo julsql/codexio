@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render
 from main.forms import RechercheForm
 from main import recherche as recherche
@@ -63,15 +64,14 @@ def bdrecherche(request):
             synopsis = request.POST.get('synopsis')
 
             infos = recherche.recherche_bd(isbn, titre, num, serie, scenariste, dessinateur, editeur, edition, annee, dedicace, exlibris, synopsis)
-
-            return render(request, 'main/bdrecherche.html', {'form': form, 'infos': infos})
-    # si le formulaire n'est pas valide, nous laissons l'exécution continuer jusqu'au return
-    # ci-dessous et afficher à nouveau le formulaire (avec des erreurs).
-
+        else:
+            infos = recherche.recherche_bd()
     else:
         # ceci doit être une requête GET, donc créer un formulaire vide
         form = RechercheForm()
-    infos = recherche.recherche_bd()
+        infos = recherche.recherche_bd()
+
+
     return render(request, 'main/bdrecherche.html', {'form': form, 'infos': infos})
 
 
