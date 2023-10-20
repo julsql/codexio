@@ -5,6 +5,7 @@ from main import recherche as recherche
 from main import upload
 from django.views.decorators.csrf import csrf_exempt
 from main.add_album import sheet_add_album
+from main.add_album.error import Error
 from bd.settings import POST_TOKEN
 
 # update_database.update()
@@ -108,6 +109,9 @@ def upload_exlibris(request, isbn):
 
 
 def add_album(request, isbn):
+    print(request.META)
+    Error(request.META)
+    Error(request.META['HTTP_AUTHORIZATION'])
     if 'HTTP_AUTHORIZATION' in request.META and request.META['HTTP_AUTHORIZATION'] == f'Bearer {POST_TOKEN}':
         if request.method == 'GET':
 
