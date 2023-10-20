@@ -108,19 +108,19 @@ def upload_exlibris(request, isbn):
     return upload.upload_exlibris(request, isbn)
 
 
-def add_album(request, isbn):
-    print(request.META)
-    Error(str(request.META))
-    Error(request.META['HTTP_AUTHORIZATION'])
-    if 'HTTP_AUTHORIZATION' in request.META and request.META['HTTP_AUTHORIZATION'] == f'Bearer {POST_TOKEN}':
-        if request.method == 'GET':
-
-            infos = sheet_add_album.add_album(isbn)
-            if infos:
-                return JsonResponse({'message': 'Album added successfully', "infos": infos})
-            else:
-                return JsonResponse({'message': 'Error in the adding of the album'})
+def add_album(request):
+    if request.method == 'POST':
+        if 'token' not in request.POST:
+            return JsonResponse({'error': "You don't have the authorization"})
         else:
-            return JsonResponse({'message': 'Please make a GET request'})
+            if 'isbn' not in request.POST:
+                return JsonResponse({'error': "Please give an ISBN"})
+            else:
+                isbn = request.POST['isbn']
+                infos = sheet_add_album.add_album(isbn)
+                if infos:
+                    return JsonResponse({'message': 'Album added successfully', "infos": infos})
+                else:
+                    return JsonResponse({'message': 'Error in the adding of the album'})
     else:
-        return JsonResponse({'error': "You don't have the authorization"})
+        return JsonResponse({'message': 'Please make a POST request'})
