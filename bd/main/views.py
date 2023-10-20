@@ -107,7 +107,7 @@ def upload_dedicace(request, isbn):
 def upload_exlibris(request, isbn):
     return upload.upload_exlibris(request, isbn)
 
-
+@csrf_exempt
 def add_album(request):
     if request.method == 'POST':
         if 'token' not in request.POST:
