@@ -1,9 +1,11 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from main.forms import RechercheForm
 from main import recherche as recherche
 from main import upload
 from django.views.decorators.csrf import csrf_exempt
-
+from main.add_album import sheet_add_album
+from bd.settings import POST_TOKEN
 
 # update_database.update()
 
@@ -95,8 +97,6 @@ def statistiques(request):
     return render(request, 'main/statistiques.html', infos)
 
 
-
-
 @csrf_exempt
 def upload_dedicace(request, isbn):
     return upload.upload_dedicace(request, isbn)
@@ -105,3 +105,18 @@ def upload_dedicace(request, isbn):
 @csrf_exempt
 def upload_exlibris(request, isbn):
     return upload.upload_exlibris(request, isbn)
+
+
+def add_album(request, isbn):
+    if 'HTTP_AUTHORIZATION' in request.META and request.META['HTTP_AUTHORIZATION'] == f'Bearer {POST_TOKEN}':
+        if request.method == 'GET':
+
+            infos = sheet_add_album.add_album(isbn)
+            if infos:
+                return JsonResponse({'message': 'Album added successfully', "infos": infos})
+            else:
+                return JsonResponse({'message': 'Error in the adding of the album'})
+        else:
+            return JsonResponse({'message': 'Please make a POST request'})
+    else:
+        return JsonResponse({'error': "You don't have the authorization"})

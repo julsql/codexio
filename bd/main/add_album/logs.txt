@@ -1,0 +1,3 @@
+
+20/10/2023 15:51:46 1234 : Google Sheet non accessible.
+20/10/2023 18:41:09 1234 : 1234 est déjà dans la base de données
