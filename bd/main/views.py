@@ -110,7 +110,7 @@ def upload_exlibris(request, isbn):
 
 def add_album(request, isbn):
     print(request.META)
-    Error(request.META)
+    Error(str(request.META))
     Error(request.META['HTTP_AUTHORIZATION'])
     if 'HTTP_AUTHORIZATION' in request.META and request.META['HTTP_AUTHORIZATION'] == f'Bearer {POST_TOKEN}':
         if request.method == 'GET':
