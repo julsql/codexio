@@ -27,7 +27,7 @@ def upload_exlibris(request, isbn):
 
 def upload(request, isbn, origin_folder):
     if request.method == 'POST':
-        if 'token' not in request.POST:
+        if 'token' not in request.POST or request.POST['token'] != f"Bearer {POST_TOKEN}":
             return JsonResponse({'error': "You don't have the authorization"})
         else:
             if 'file' in request.FILES:
