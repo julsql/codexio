@@ -1,5 +1,6 @@
 import os
 import re
+import json
 
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
@@ -23,25 +24,31 @@ def upload_exlibris(request, isbn):
     EXLIBRIS_FOLDER = os.path.join(__FILEPATH__, 'static/main/images/exlibris')
     return upload(request, isbn, EXLIBRIS_FOLDER)
 
+
 def upload(request, isbn, origin_folder):
-    if 'HTTP_AUTHORIZATION' in request.META and request.META['HTTP_AUTHORIZATION'] == f'Bearer {POST_TOKEN}':
-        if request.method == 'POST' and 'file' in request.FILES:
-            uploaded_file = request.FILES['file']
-            if allowed_file(uploaded_file.name):
-                file_extension = os.path.splitext(uploaded_file.name)[1].lower()
-                path_folder = os.path.join(origin_folder, str(isbn))
-                number = get_next_number(path_folder)
-
-                fs = FileSystemStorage(location=path_folder)
-
-                fs.save(f"{number}{file_extension}", uploaded_file)
-                return JsonResponse({'message': 'File uploaded successfully'})
-            else:
-                return JsonResponse({'error': 'File type not allowed'})
+    if request.method == 'POST':
+        if 'token' not in request.POST:
+            return JsonResponse({'error': "You don't have the authorization"})
         else:
-            return JsonResponse({'error': 'No file part or no selected file'})
+            if 'file' in request.FILES:
+                uploaded_file = request.FILES['file']
+                if allowed_file(uploaded_file.name):
+                    file_extension = os.path.splitext(uploaded_file.name)[1].lower()
+                    path_folder = os.path.join(origin_folder, str(isbn))
+                    number = get_next_number(path_folder)
+
+                    fs = FileSystemStorage(location=path_folder)
+
+                    fs.save(f"{number}{file_extension}", uploaded_file)
+                    return JsonResponse({'message': 'File uploaded successfully'})
+                else:
+                    return JsonResponse({'error': 'File type not allowed'})
+            else:
+                return JsonResponse({'error': 'No file part or no selected file'})
     else:
-        return JsonResponse({'error': "You don't have the authorization"})
+        return JsonResponse({'message': 'Please make a POST request'})
+
+
 
 
 def get_next_number(directory_path):
