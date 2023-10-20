@@ -6,7 +6,7 @@ class Error(Exception):
 
     def __init__(self, message_log, isbn=None, log_file_name="logs.txt"):
         __FILEPATH__ = os.path.dirname(os.path.abspath(__file__))
-        logfile = os.path.join(__FILEPATH__, log_file_name)
+        logfile = os.path.join(__FILEPATH__, "logs", log_file_name)
         self.addLog(logfile, message_log, isbn)
         print("Erreur : " + message_log)
         super().__init__(message_log)
