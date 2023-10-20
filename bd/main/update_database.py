@@ -6,7 +6,7 @@ import sqlite3
 
 __FILEPATH__ = os.path.dirname(os.path.abspath(__file__))
 __DATABASE__ = os.path.join(os.path.dirname(__FILEPATH__), 'db.sqlite3')
-credentials_path = os.path.join(__FILEPATH__, 'static/main/private/bd-sheet-91.json')
+credentials_path = os.path.join(__FILEPATH__, 'private/bd-sheet-91.json')
 
 
 # Fonction pour créer la table dans la base de données SQL

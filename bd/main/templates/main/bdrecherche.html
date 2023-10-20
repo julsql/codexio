@@ -11,8 +11,9 @@
             <h3>Rechercher une bande dessinée suivant des critères</h3>
         </header>
         <form method="post" action="">
+            <input type="hidden" name="section" value="section-1">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ form.as_custom_table_3|safe }}
 
             <input class="button-large" type="submit" value="Rechercher" title="Rechercher la BD"/>
         </form>
@@ -23,12 +24,13 @@
             <h2>Les Bandes Dessinées</h2>
             <h3>Résultat de recherche</h3>
         </header>
+    <div id="data-container">
         {% for album in infos %}
 
             {% if not album.Album and album.Album == "" and not album.Numero and album.Numero == "" and not album.Serie and album.Serie == "" %}
-                <a href="{% url 'pagebd' album.ISBN %}" >Pas de titre</a>
+                <a class="pagination-item" href="{% url 'pagebd' album.ISBN %}" >Pas de titre</a>
             {% else %}
-                <a href="{% url 'pagebd' album.ISBN %}" >
+                <a class="pagination-item" href="{% url 'pagebd' album.ISBN %}" >
                     {% if album.Album and album.Album != "" %}
                         {{ album.Album }}
                     {% endif %}
@@ -40,11 +42,101 @@
                     {% endif %}
                 </a>
             {% endif %}
-            <br/>
         {% endfor %}
+    </div>
+
+    <div id="pagination">
+        <div id="first-page" class="pagination">Début</div>
+        <div id="prev-page" class="pagination">Précédent</div>
+        <span id="current-page"></span>
+        <div id="next-page" class="pagination">Suivant</div>
+        <div id="last-page" class="pagination">Fin</div>
+    </div>
 
     </section>
 
 </div>
 
+{% endblock %}
+{% block javascript %}
+    <script>
+        const firstPage = document.getElementById("first-page");
+        const prevPage = document.getElementById("prev-page");
+        const currentPage = document.getElementById("current-page");
+        const nextPage = document.getElementById("next-page");
+        const lastPage = document.getElementById("last-page");
+
+        firstPage.addEventListener("selectstart", function (e) {e.preventDefault();});
+        prevPage.addEventListener("selectstart", function (e) {e.preventDefault();});
+        currentPage.addEventListener("selectstart", function (e) {e.preventDefault();});
+        nextPage.addEventListener("selectstart", function (e) {e.preventDefault();});
+        lastPage.addEventListener("selectstart", function (e) {e.preventDefault();});
+
+        const paginationItems = document.querySelectorAll(".pagination-item");
+        const itemsPerPage = 20;
+        const nbPage = Math.ceil(paginationItems.length / itemsPerPage);
+        let currentPageInt = 1;
+
+        function displayPage(pageNumber) {
+            const startIndex = (pageNumber - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+
+            paginationItems.forEach((item, index) => {
+                if (index >= startIndex && index < endIndex) {
+                    item.style.visibility = "visible";
+                    item.style.display = "block";
+                } else {
+                    item.style.visibility = "hidden";
+                    item.style.display = "none";
+                }
+            });
+            currentPage.textContent = pageNumber + "/" + nbPage
+            if (currentPageInt === 1) {
+                firstPage.style.visibility = "hidden"
+            }
+            else {
+                firstPage.style.visibility = "visible"
+            }
+            if (currentPageInt === nbPage) {
+                lastPage.style.visibility = "hidden"
+            }
+            else {
+                lastPage.style.visibility = "visible"
+            }
+
+        }
+        document.getElementById("prev-page").addEventListener("click", function () {
+            if (currentPageInt > 1) {
+                currentPageInt--;
+                displayPage(currentPageInt);
+            }
+        });
+
+        document.getElementById("next-page").addEventListener("click", function () {
+
+            if (currentPageInt < nbPage) {
+                currentPageInt++;
+                displayPage(currentPageInt);
+            }
+        });
+
+        document.getElementById("first-page").addEventListener("click", function () {
+
+            if (currentPageInt > 1) {
+                currentPageInt = 1;
+                displayPage(currentPageInt);
+            }
+        });
+
+        lastPage.addEventListener("click", function () {
+
+            if (currentPageInt < nbPage) {
+                currentPageInt = nbPage;
+                displayPage(currentPageInt);
+            }
+        });
+
+        displayPage(currentPageInt);
+
+    </script>
 {% endblock %}

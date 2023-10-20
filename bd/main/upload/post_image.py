@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import os
+import re
 
 app = Flask(__name__)
 
@@ -40,11 +41,10 @@ def upload(isbn, origin_folder):
         extension = file.filename.rsplit('.', 1)[1]
         path_folder = os.path.join(origin_folder, isbn)
         if not os.path.exists(path_folder):
-            print(path_folder)
             os.makedirs(path_folder)
             number = 1
         else:
-            number = count_files_in_directory(path_folder) + 1
+            number = get_next_number(path_folder)
 
         filename = f"{number}.{extension}"
         file.save(os.path.join(path_folder, filename))
@@ -53,14 +53,31 @@ def upload(isbn, origin_folder):
     return jsonify({'error': 'File type not allowed'})
 
 
-def count_files_in_directory(directory_path):
+def get_next_number(directory_path):
     if not os.path.isdir(directory_path):
-        return 0
-    file_count = 0
-    for root, dirs, files in os.walk(directory_path):
-        file_count += len(files)
+        return []
 
-    return file_count
+    image_paths = []
+    allowed_image_extensions = ".jpeg"
+
+    for root, dirs, files in os.walk(directory_path):
+        for file in files:
+            file_extension = os.path.splitext(file)[1].lower()
+            if file_extension == allowed_image_extensions:
+                image_path = os.path.join(root, file)
+                image_paths.append(image_path)
+
+    integers = [int(re.search(r'\d+', s).group()) for s in image_paths if re.search(r'\d+', s)]
+    integers.sort()
+
+    missing_integer = 1
+    for num in integers:
+        if num == missing_integer:
+            missing_integer += 1
+        elif num > missing_integer:
+            break
+
+    return missing_integer
 
 
 if __name__ == '__main__':

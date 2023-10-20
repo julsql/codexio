@@ -1,6 +1,10 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
+{% block head %}
+    <link href="{% static 'main/assets/lightbox/lightbox.css' %}" rel="stylesheet" />
+{% endblock %}
+
 {% block banner %}
 <div id="banner">
     <div class="container">
@@ -27,7 +31,7 @@
 
 {% block body %}
 
-<div class="col-9 col-12-medium">
+<div class="col-8 col-12-medium">
 
 <!-- Main Content -->
     <section>
@@ -37,14 +41,14 @@
         </header>
         <form method="post" action="{% url 'bdrecherche' %}">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ form.as_custom_table_2|safe }}
 
             <input class="button-large" type="submit" value="Rechercher" title="Rechercher la BD"/>
         </form>
     </section>
 
 </div>
-<div class="col-3 col-12-medium">
+<div class="col-4 col-12-medium">
 
 <!-- Sidebar -->
     <section>
@@ -61,8 +65,9 @@
 
         </header>
 
-        <a href="{{ infos.Image }}"><img src="{{ infos.Image }}" width="220" alt="Couverture"></a>
-
+        <a href="{{ infos.Image }}" data-lightbox="{{ infos.Album }}">
+            <img src="{{ infos.Image }}" alt="Couverture" width="220">
+        </a>
         <p>
             Scénartiste : {{ infos.Scenariste }}<br />
             Dessinateur : {{ infos.Dessinateur }}<br />
@@ -82,7 +87,9 @@
             {{ infos.Édition }}
         </p>
         <p>
-            {{ infos.Synopsis|truncatechars:200 }}
+            {% autoescape off %}
+                {{ infos.Synopsis|truncatechars:200 }}
+            {% endautoescape %}
         </p>
         <p>
             <a style="color:#FFFFFF;" href="{% url 'pagebd' infos.ISBN %}" class="button-large">Voir plus</a>
@@ -92,4 +99,7 @@
 
 </div>
 
+{% endblock %}
+{% block javascript %}
+    <script src="{% static 'main/assets/lightbox/lightbox-plus-jquery.js' %}"></script>
 {% endblock %}

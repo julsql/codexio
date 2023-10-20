@@ -127,28 +127,32 @@ def stat():
     return infos
 
 
-def count_files_in_directory(directory_path):
+def count_images_in_directory(directory_path):
     if not os.path.isdir(directory_path):
         return 0
-    file_count = 0
-    for root, dirs, files in os.walk(directory_path):
-        file_count += len(files)
 
-    return file_count
+    image_count = 0
+    allowed_image_extensions = ".jpeg"  # Ajoutez d'autres extensions d'image au besoin
+
+    for root, dirs, files in os.walk(directory_path):
+        for file in files:
+            file_extension = os.path.splitext(file)[1].lower()
+            if file_extension == allowed_image_extensions:
+                image_count += 1
+
+    return image_count
 
 
 def dedicaces():
     image_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/dedicaces")
-    print(image_dir)
     infos = []
     for item in os.listdir(image_dir):
         item_path = os.path.join(image_dir, item)
-        print(item, item_path)
 
         # Vérifiez si l'élément est un répertoire
         if os.path.isdir(item_path):
             isbn = item
-            nb_dedicace = count_files_in_directory(item_path)
+            nb_dedicace = count_images_in_directory(item_path)
             req = f"SELECT Album, Numéro, Série FROM BD WHERE ISBN = {isbn};"
             result_req = exec_req_all(req)
             for result in result_req:
@@ -166,7 +170,7 @@ def exlibris():
         # Vérifiez si l'élément est un répertoire
         if os.path.isdir(item_path):
             isbn = item
-            nb_exlibris = count_files_in_directory(item_path)
+            nb_exlibris = count_images_in_directory(item_path)
             req = f"SELECT Album, Numéro, Série FROM BD WHERE ISBN = {isbn};"
             result_req = exec_req_all(req)
             for result in result_req:
