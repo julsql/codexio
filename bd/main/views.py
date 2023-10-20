@@ -1,10 +1,8 @@
-from django.core.files.storage import FileSystemStorage
-from django.http import JsonResponse
 from django.shortcuts import render
 from main.forms import RechercheForm
 from main import recherche as recherche
-import os
-import re
+from main import upload
+from django.views.decorators.csrf import csrf_exempt
 
 
 # update_database.update()
@@ -84,8 +82,12 @@ def dedicace(request):
 
 
 def pagebd(request, isbn):
-    infos = recherche.page(isbn)
-    return render(request, 'main/pagebd.html', infos)
+    try:
+        infos = recherche.page(isbn)
+        return render(request, 'main/pagebd.html', infos)
+    except:
+        # La bd n'existe pas
+        return render(request, 'main/bd_not_found.html', {"isbn": isbn})
 
 
 def statistiques(request):
@@ -93,60 +95,13 @@ def statistiques(request):
     return render(request, 'main/statistiques.html', infos)
 
 
-ALLOWED_EXTENSIONS = 'jpeg'
 
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() == ALLOWED_EXTENSIONS
-
-
+@csrf_exempt
 def upload_dedicace(request, isbn):
-    __FILEPATH__ = os.path.dirname((os.path.dirname(os.path.abspath(__file__))))
-    DEDICACE_FOLDER = os.path.join(__FILEPATH__, 'static/main/images/dedicaces')
-    return upload(request, isbn, DEDICACE_FOLDER)
+    return upload.upload_dedicace(request, isbn)
 
 
+@csrf_exempt
 def upload_exlibris(request, isbn):
-    __FILEPATH__ = os.path.dirname((os.path.dirname(os.path.abspath(__file__))))
-    EXLIBRIS_FOLDER = os.path.join(__FILEPATH__, 'static/main/images/exlibris')
-    return upload(request, isbn, EXLIBRIS_FOLDER)
-
-
-def upload(request, isbn, origin_folder):
-    if request.method == 'POST' and 'file' in request.FILES:
-        uploaded_file = request.FILES['file']
-        if allowed_file(uploaded_file.name):
-            fs = FileSystemStorage(location=origin_folder)
-            fs.save(f"{isbn}/{uploaded_file.name}", uploaded_file)
-            return JsonResponse({'message': 'File uploaded successfully'})
-        else:
-            return JsonResponse({'error': 'File type not allowed'})
-    else:
-        return JsonResponse({'error': 'No file part or no selected file'})
-
-
-def get_next_number(directory_path):
-    if not os.path.isdir(directory_path):
-        return []
-
-    image_paths = []
-    allowed_image_extensions = ".jpeg"
-
-    for root, dirs, files in os.walk(directory_path):
-        for file in files:
-            file_extension = os.path.splitext(file)[1].lower()
-            if file_extension == allowed_image_extensions:
-                image_path = os.path.join(root, file)
-                image_paths.append(image_path)
-
-    integers = [int(re.search(r'\d+', s).group()) for s in image_paths if re.search(r'\d+', s)]
-    integers.sort()
-
-    missing_integer = 1
-    for num in integers:
-        if num == missing_integer:
-            missing_integer += 1
-        elif num > missing_integer:
-            break
-
-    return missing_integer
+    return upload.upload_exlibris(request, isbn)

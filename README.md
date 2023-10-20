@@ -20,7 +20,7 @@ It's a Django project that displays my collection of comics.
 - [views.py](bd/main/views.py): the code launch when loading a page
 - [bd/](bd/bd): the settings files (urls, wsgi, settings) used by Django
 - [manage.py](bd/manage.py): the main file that runs the website
-- [upload](bd/main/upload): the Flask server to upload photos of the ex libris or 'dedicace'
+- [upload.py](bd/main/upload.py): the upload of photos of the ex libris or 'dedicace'
 
 ## Installation
 
@@ -65,67 +65,14 @@ It's a Django project that displays my collection of comics.
     ```bash
     deactivate
     ```
+### Upload photo
 
-## Upload
-
-You can configure the upload server to add photo into the website.
-
-1. Find the Flask server directory
-   ```bash
-   cd bd/main/upload
-   ```
-
-2. Create the virtual environment
-   ```bash
-   virtualenv env
-   source env/bin/activate
-   ```
-   
-3. Import the flask depedency
-   ```bash
-   pip install Flask
-   ```
-
-4. You now can run [post_image.py](bd/main/upload/post_image.py)
-or configure a server (ex: Apache)
-
-   To configure the Apache server write a new config `/etc/apache2/sites-available/bd_upload.conf`:
-   ```
-   <VirtualHost *:80>
-    ServerName upload.example.com
-    ServerAdmin user@telecom-sudparis.eu
-   
-    AddDefaultCharset UTF-8
-   
-    WSGIDaemonProcess bd_post_process python-home=/path/to/bd_website/bd/main/upload/env python-path=/path/to/bd_website/bd/main/upload
-    WSGIProcessGroup bd_post_process
-    WSGIScriptAlias / /path/to/bd_website/bd/main/upload/application.wsgi process-group=bd_post_process
-   
-    <Directory /path/to/bd_website/bd/main/upload>
-        WSGIProcessGroup post_image
-        WSGIApplicationGroup %{GLOBAL}
-        Require all granted
-    </Directory>
-   
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
-   </VirtualHost>
-   ```
-   
-   and active the configuration and restart the server:
-
-   ```bash
-   sudo a2ensite bd_upload
-   sudo systemctl restart apache2
-   ```
-
-5. You can upload image with a `POST` request.
+You can upload image with a `POST` request.
 The body request a form sending a file with key `file`.
 
    The urls are:
-      - http://upload.example.com/dedicace/isbn for the dedicace
-      - http://upload.example.com/exlibris/isbn for the ex libris
-
+      - http://example.com/upload/dedicace/isbn/ for the dedicace
+      - http://example.com/upload/exlibris/isbn/ for the ex libris
 
 ## Deploy
 
