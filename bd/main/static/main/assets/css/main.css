@@ -29,10 +29,7 @@ strong {
 }
 
 td {
-	padding-right:  50px;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	padding-left: 10px;
+	padding: 10px 50px 10px 10px;
 }
 
 .photo_link {
