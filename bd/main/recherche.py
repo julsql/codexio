@@ -154,10 +154,16 @@ def dedicaces():
             isbn = item
             nb_dedicace = count_images_in_directory(item_path)
             req = f"SELECT Album, Numéro, Série FROM BD WHERE ISBN = {isbn};"
-            result_req = exec_req_all(req)
-            for result in result_req:
+            result = exec_req_one(req)
+            print(result)
+            if result is None:
+                infos.append({'ISBN': isbn, 'Album': "", 'Numero': "", 'Serie': "",
+                              'DedicaceRange': range(1, nb_dedicace + 1), 'Dedicace': nb_dedicace})
+            else:
+
                 infos.append({'ISBN': isbn, 'Album': result[0], 'Numero': result[1], 'Serie': result[2],
                               'DedicaceRange': range(1, nb_dedicace + 1), 'Dedicace': nb_dedicace})
+    print(infos)
     return infos
 
 

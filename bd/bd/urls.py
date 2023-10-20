@@ -25,7 +25,6 @@ urlpatterns = [
     path('dedicace/', views.dedicace, name='dedicace'),
     path('pagebd/<int:isbn>/', views.pagebd, name='pagebd'),
     path('statistiques/', views.statistiques, name='statistiques'),
-    path('dedicace/<str:isbn>/', views.upload_dedicace, name='upload_dedicace'),
-    path('exlibris/<str:isbn>/', views.upload_exlibris, name='upload_exlibris'),
-
+    path('upload/dedicace/<int:isbn>/', views.upload_dedicace, name='upload_dedicace'),
+    path('upload/exlibris/<int:isbn>/', views.upload_exlibris, name='upload_exlibris'),
 ]
