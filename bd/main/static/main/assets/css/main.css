@@ -55,7 +55,18 @@ td {
     cursor: pointer;
     transition: background-color 0.3s;
     border-radius: 5px;
+	font-size: 16px;
 }
+
+
+@media screen and (max-width: 500px) {
+
+			.pagination {
+				width: 40px;
+				font-size: 12px;
+			}
+
+		}
 
 .pagination:hover {
     color: black;
