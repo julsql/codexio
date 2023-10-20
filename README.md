@@ -54,14 +54,25 @@ It's a Django project that displays my collection of comics.
    ```bash
    python3 bd/main/update_database.py
    ```
+   
+6. Create and give the permission to upload images folder
 
-6. Launch the website
+    ```bash
+    mkdir bd/main/static/main/images/exlibris
+    mkdir bd/main/static/main/images/dedicaces
+    chmod -R 755 bd/main/static/main/images/exlibris
+    sudo chown -R www-data:www-data bd/main/static/main/images/exlibris/
+    chmod -R 755 bd/main/static/main/images/dedicaces
+    sudo chown -R www-data:www-data bd/main/static/main/images/dedicaces/
+    ```
+
+7. Launch the website
 
     ```bash
     cd bd
     ./manage.py runserver 
     ```
-7. To leave the virtual environment
+8. To leave the virtual environment
     ```bash
     deactivate
     ```
