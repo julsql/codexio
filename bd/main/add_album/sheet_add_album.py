@@ -19,26 +19,22 @@ def liste_from_dict(infos):
     return liste
 
 
-def add_line(connection, infos, test=False):
+def add_line(connection, infos):
     liste = liste_from_dict(infos)
-    if not test:
-        connection.append(liste)
+    connection.append(liste)
 
 
-def add(isbn, doc_name, sheet=None, test=False, logs="logs.txt"):
-    connection = None
+def add(isbn, doc_name, sheet=None, logs="logs.txt"):
     try:
-        if not test:
-            connection = Conn(logs)
-            connection.open(doc_name, sheet)
+        connection = Conn(logs)
+        connection.open(doc_name, sheet)
     except:
         message_log = "Google Sheet non accessible."
         raise Error(message_log, isbn, logs)
     else:
-        if not test:
-            if connection.double(isbn):
-                message_log = f"{isbn} est déjà dans la base de données"
-                raise Error(message_log, isbn, logs)
+        if connection.double(isbn):
+            message_log = f"{isbn} est déjà dans la base de données"
+            raise Error(message_log, isbn, logs)
 
         try:
             infos = get_infos_bd.main(isbn, logs)
@@ -50,7 +46,7 @@ def add(isbn, doc_name, sheet=None, test=False, logs="logs.txt"):
             raise Error(message_log, isbn, logs)
 
         try:
-            add_line(connection, infos, test)
+            add_line(connection, infos)
         except:
             message_log = f"{infos} n'a pas été ajouté correctement"
             raise Error(message_log, isbn, logs)
@@ -58,8 +54,7 @@ def add(isbn, doc_name, sheet=None, test=False, logs="logs.txt"):
             title = infos["Album"]
             if title is None or title == "":
                 title = infos["ISBN"]
-            if not test:
-                print(f"{title} ajouté avec succès !")
+            print(f"{title} ajouté avec succès !")
             return infos
 
 

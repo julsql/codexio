@@ -12,7 +12,7 @@ class Error(Exception):
         super().__init__(message_log)
 
     def addLog(self, logfile, message, isbn=None):
-        f = open(logfile, "a")
+        f = open(logfile, "a", encoding="utf-8")
         now = datetime.now()
         dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
         if isbn is not None and isbn != "":
