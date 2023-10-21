@@ -181,7 +181,6 @@ def exlibris():
                 infos.append({'ISBN': isbn, 'Album': "", 'Numero': "", 'Serie': "",
                               'ExlibrisRange': range(1, nb_exlibris + 1), 'Exlibris': nb_exlibris})
             else:
-
                 infos.append({'ISBN': isbn, 'Album': result[0], 'Numero': result[1], 'Serie': result[2],
                               'ExlibrisRange': range(1, nb_exlibris + 1), 'Exlibris': nb_exlibris})
     return infos
