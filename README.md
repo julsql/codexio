@@ -68,7 +68,9 @@ It's a Django project that displays my collection of comics.
 6. Create the database
 
    ```bash
-   python3 main/update_database.py
+    python3 main/update_database.py
+    chmod -R 755 db/
+    sudo chown -R www-data:www-data db/
    ```
 
 7. Launch the website
