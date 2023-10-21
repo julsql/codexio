@@ -75,5 +75,5 @@ def add_album(isbn):
                 raise Error(f"ISBN vide ou nul", isbn)
         else:
             infos = add(isbn, doc_name, sheet_name)
-            update()
+            # update()
             return infos
