@@ -7,20 +7,18 @@ from django.http import JsonResponse
 from bd.settings import POST_TOKEN
 
 ALLOWED_EXTENSIONS = 'jpeg'
-
+__FILEPATH__ = os.path.dirname(os.path.abspath(__file__))
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() == ALLOWED_EXTENSIONS
 
 
 def upload_dedicace(request, isbn):
-    __FILEPATH__ = (os.path.dirname(os.path.abspath(__file__)))
     DEDICACE_FOLDER = os.path.join(__FILEPATH__, 'static/main/images/dedicaces')
     return upload(request, isbn, DEDICACE_FOLDER)
 
 
 def upload_exlibris(request, isbn):
-    __FILEPATH__ = os.path.dirname(os.path.abspath(__file__))
     EXLIBRIS_FOLDER = os.path.join(__FILEPATH__, 'static/main/images/exlibris')
     return upload(request, isbn, EXLIBRIS_FOLDER)
 
