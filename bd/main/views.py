@@ -5,8 +5,8 @@ from main import recherche as recherche
 from main import upload
 from django.views.decorators.csrf import csrf_exempt
 from main.add_album import sheet_add_album
-from main.add_album.error import Error
 from bd.settings import POST_TOKEN
+from main.update_database import update
 
 # update_database.update()
 
@@ -106,6 +106,17 @@ def upload_dedicace(request, isbn):
 @csrf_exempt
 def upload_exlibris(request, isbn):
     return upload.upload_exlibris(request, isbn)
+
+@csrf_exempt
+def update_database(request):
+    if request.method == 'POST':
+        if 'token' not in request.POST or request.POST['token'] != f"Bearer {POST_TOKEN}":
+            return JsonResponse({'error': "You don't have the authorization"})
+        else:
+            update()
+            return JsonResponse({'message': 'Website updated successfully'})
+    else:
+        return JsonResponse({'message': 'Please make a POST request'})
 
 @csrf_exempt
 def add_album(request):
