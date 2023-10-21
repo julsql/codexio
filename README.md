@@ -48,29 +48,33 @@ It's a Django project that displays my collection of comics.
     ```bash
     pip install -r requirements.txt
    ```
-   
-5. Create the database
 
-   ```bash
-   python3 bd/main/update_database.py
-   ```
-   
-6. Create and give the permission to upload images folder
+5. Creation of the privates files
 
     ```bash
-    mkdir bd/main/static/main/images/exlibris
-    mkdir bd/main/static/main/images/dedicaces
-    chmod -R 755 bd/main/static/main/images/exlibris
-    sudo chown -R www-data:www-data bd/main/static/main/images/exlibris/
-    chmod -R 755 bd/main/static/main/images/dedicaces
-    sudo chown -R www-data:www-data bd/main/static/main/images/dedicaces/
+    cd bd
+    mkdir db
+    nano bd/settings.py
+    mkdir main/private
+    nano main/private/bd-sheet-91.json
+    mkdir main/static/main/images/dedicaces
+    mkdir main/static/main/images/exlibris
+    chmod -R 755 main/static/main/images/exlibris
+    sudo chown -R www-data:www-data main/static/main/images/exlibris/
+    chmod -R 755 main/static/main/images/dedicaces
+    sudo chown -R www-data:www-data main/static/main/images/dedicaces/
     ```
+   
+6. Create the database
+
+   ```bash
+   python3 main/update_database.py
+   ```
 
 7. Launch the website
 
     ```bash
-    cd bd
-    ./manage.py runserver 
+    ./manage.py runserver
     ```
 8. To leave the virtual environment
     ```bash

@@ -1,5 +1,5 @@
 *private
-*db.sqlite3
+*db*
 *.idea
 *logs*
 # Byte-compiled / optimized / DLL files
