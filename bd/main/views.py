@@ -111,27 +111,27 @@ def upload_exlibris(request, isbn):
 def update_database(request):
     if request.method == 'POST':
         if 'token' not in request.POST or request.POST['token'] != f"Bearer {POST_TOKEN}":
-            return JsonResponse({'error': "You don't have the authorization"})
+            return JsonResponse({'error': "Vous n'avez pas l'autorisation"})
         else:
             update()
-            return JsonResponse({'message': 'Website updated successfully'})
+            return JsonResponse({'message': 'Site web mis à jour correctement'})
     else:
-        return JsonResponse({'message': 'Please make a POST request'})
+        return JsonResponse({'message': 'Il faut une requête POST'})
 
 @csrf_exempt
 def add_album(request):
     if request.method == 'POST':
         if 'token' not in request.POST or request.POST['token'] != f"Bearer {POST_TOKEN}":
-            return JsonResponse({'error': "You don't have the authorization"})
+            return JsonResponse({'error': "Vous n'avez pas l'autorisation"})
         else:
             if 'isbn' not in request.POST:
-                return JsonResponse({'error': "Please give an ISBN"})
+                return JsonResponse({'error': "Veuillez entrezr un ISBN"})
             else:
                 isbn = request.POST['isbn']
                 infos = sheet_add_album.add_album(isbn)
                 if infos:
-                    return JsonResponse({'message': 'Album added successfully', "infos": infos})
+                    return JsonResponse({'message': f'Album {isbn} ajouté avec succès'})
                 else:
-                    return JsonResponse({'message': 'Error in the adding of the album'})
+                    return JsonResponse({'message': f"Erreur d'ajout de l'album {isbn}"})
     else:
-        return JsonResponse({'message': 'Please make a POST request'})
+        return JsonResponse({'message': 'Il faut une requête POST'})

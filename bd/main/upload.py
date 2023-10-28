@@ -26,7 +26,7 @@ def upload_exlibris(request, isbn):
 def upload(request, isbn, origin_folder):
     if request.method == 'POST':
         if 'token' not in request.POST or request.POST['token'] != f"Bearer {POST_TOKEN}":
-            return JsonResponse({'error': "You don't have the authorization"})
+            return JsonResponse({'error': "Vous n'avez pas l'autorisation"})
         else:
             if 'file' in request.FILES:
                 uploaded_file = request.FILES['file']
@@ -38,13 +38,13 @@ def upload(request, isbn, origin_folder):
                     fs = FileSystemStorage(location=path_folder)
 
                     fs.save(f"{number}{file_extension}", uploaded_file)
-                    return JsonResponse({'message': 'File uploaded successfully'})
+                    return JsonResponse({'message': f'Album {isbn} ajouté avec succès'})
                 else:
-                    return JsonResponse({'error': 'File type not allowed'})
+                    return JsonResponse({'error': "Le type du fichier est incorrect"})
             else:
-                return JsonResponse({'error': 'No file part or no selected file'})
+                return JsonResponse({'error': "Aucun fichier n'a été envoyé"})
     else:
-        return JsonResponse({'message': 'Please make a POST request'})
+        return JsonResponse({'message': 'Il faut une requête POST'})
 
 
 
