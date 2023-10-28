@@ -56,7 +56,7 @@ class Conn:
         if type(valeur) is type(""):
             self.worksheet.update_cell(i, j, valeur)
         else:
-            raise TypeError(f"{valeur} is not str type")
+            raise TypeError(f"{valeur} n'est pas un type texte")
 
     def set_line(self, valeur, i):
         i += self.__OFFSET__

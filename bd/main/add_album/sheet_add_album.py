@@ -1,7 +1,6 @@
 from main.add_album import get_infos_bd
 from main.add_album.error import Error
 from main.add_album.sheet_connection import Conn
-from main.update_database import update
 
 def liste_from_dict(infos):
     titles = ["ISBN", "Album", "Numéro", "Série", "Scénario", "Dessin", "Couleurs",
@@ -15,7 +14,7 @@ def liste_from_dict(infos):
         elif title is None:
             liste.append("")
         else:
-            raise IndexError(f"{title} is missing")
+            raise IndexError(f"{title} manque")
     return liste
 
 
