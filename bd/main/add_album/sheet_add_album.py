@@ -4,7 +4,7 @@ from main.add_album.sheet_connection import Conn
 
 def liste_from_dict(infos):
     titles = ["ISBN", "Album", "Numéro", "Série", "Scénario", "Dessin", "Couleurs",
-              "Éditeur", "Date de publication", "Edition", "Pages", None, "Prix", None, None, None, None, "Synopsis",
+              "Éditeur", "Date de publication", "Édition", "Pages", None, "Prix", None, None, None, None, "Synopsis",
               "Image"]
 
     liste = []
@@ -14,13 +14,17 @@ def liste_from_dict(infos):
         elif title is None:
             liste.append("")
         else:
+            print(title)
             raise IndexError(f"{title} manque")
     return liste
 
 
 def add_line(connection, infos):
+    print("try add")
     liste = liste_from_dict(infos)
+    print("try add 2")
     connection.append(liste)
+    print("try add 3")
 
 
 def add(isbn, doc_name, sheet=None, logs="logs.txt"):
@@ -63,7 +67,7 @@ def add_album(isbn):
 
     if isbn == 0:
         message_log = f"Aucun ISBN n'a été renseigné"
-        Error(message_log, "")
+        raise Error(message_log, "")
     else:
         try:
             isbn = int(isbn)

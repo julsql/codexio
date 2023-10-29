@@ -86,7 +86,7 @@ def get_infos(url, isbn, logs):
     try:
         parsed_date = parser.parse(translate(informations["Date de publication"]),
                                    dayfirst=True, fuzzy=True, default=datetime.datetime(1900, 1, 1))
-        informations["Date de publication"] = parsed_date
+        informations["Date de publication"] = parsed_date.date().isoformat()
     except:
         Error("Problème de date de parution", isbn, logs)
     finally:
