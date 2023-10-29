@@ -29,4 +29,5 @@ urlpatterns = [
     path('upload/exlibris/<int:isbn>/', views.upload_exlibris, name='upload_exlibris'),
     path('add/', views.add_album, name='add_album'),
     path('update/', views.update_database, name='update'),
+    path('possede/<int:isbn>/', views.possede, name='possede'),
 ]

@@ -5,10 +5,9 @@ from main import recherche as recherche
 from main import upload
 from django.views.decorators.csrf import csrf_exempt
 from main.add_album import sheet_add_album
+from main.add_album import sheet_connection
 from bd.settings import POST_TOKEN
 from main.update_database import update
-
-# update_database.update()
 
 
 # Create your views here.
@@ -135,3 +134,16 @@ def add_album(request):
                     return JsonResponse({'message': f"Erreur d'ajout de l'album {isbn}"})
     else:
         return JsonResponse({'message': 'Il faut une requête POST'})
+
+
+def possede(request, isbn):
+    if request.method == 'GET':
+        doc_name = "bd"
+        sheet_name = "BD"
+        connection = sheet_connection.Conn("logs.txt")
+        connection.open(doc_name, sheet_name)
+        if connection.double(isbn):
+            message = f"Album {isbn} déjà enregistré"
+        else:
+            message = f"Album {isbn} jamais enregistré"
+        return JsonResponse({'message': message}, charset='utf-8')
