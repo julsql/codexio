@@ -106,6 +106,7 @@ def upload_dedicace(request, isbn):
 def upload_exlibris(request, isbn):
     return upload.upload_exlibris(request, isbn)
 
+
 @csrf_exempt
 def update_database(request):
     if request.method == 'POST':
@@ -117,6 +118,7 @@ def update_database(request):
     else:
         return JsonResponse({'message': 'Il faut une requête POST'})
 
+
 @csrf_exempt
 def add_album(request):
     if request.method == 'POST':
@@ -124,13 +126,13 @@ def add_album(request):
             return JsonResponse({'error': "Vous n'avez pas l'autorisation"})
         else:
             if 'isbn' not in request.POST:
-                return JsonResponse({'error': "Veuillez entrezr un ISBN"})
+                return JsonResponse({'error': "Veuillez entrer un ISBN"})
             else:
                 isbn = request.POST['isbn']
                 infos = sheet_add_album.add_album(isbn)
-                if type(infos) != type({}):
-                    return JsonResponse({'error': infos})
-                if infos:
+                if type(infos) is not type({}):
+                    return JsonResponse({'error': str(infos)})
+                elif infos:
                     return JsonResponse({'message': f'Album {isbn} ajouté avec succès'})
                 else:
                     return JsonResponse({'error': f"Erreur d'ajout de l'album {isbn}"})
