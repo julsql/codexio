@@ -1,159 +1,129 @@
 import re
 import urllib.parse
 import urllib.request
-from main.add_album.error import Error
+
+import dateutil
+from bs4 import BeautifulSoup
+try:
+    from main.add_album.error import Error
+    from main.add_album.sheet_connection import Conn
+except ModuleNotFoundError:
+    from error import Error
+    from sheet_connection import Conn
 import datetime
 from dateutil import parser
-from main.add_album.sheet_connection import Conn
-import webbrowser
 
+import webbrowser
+import requests
 
 # Get the data of a comic from its ISBN. Return a dictionary.
+
+
+def get_html(url):
+    response = requests.get(url)
+
+    # Vérifiez si la requête a réussi
+    if response.status_code == 200:
+        return response.text
+    else:
+        print("La requête a échoué. Statut de la réponse :", response.status_code)
+
 
 def get_link(isbn):
     """Trouver lien BD bdphile.info à partir de son ISBN"""
 
     search_link = "https://www.bdphile.info/search/album/?q={}".format(isbn)
-    web = urllib.request.urlopen(search_link).read().decode('utf-8')
+    html = get_html(search_link)
+    soup = BeautifulSoup(html, 'html.parser')
+    a_tag = soup.find('a', href=lambda href: href and href.startswith("https://www.bdphile.info/album/view/"))
+    if a_tag:
+        return a_tag.get('href')
+    else:
+        return 0
 
-    liste = web.split("\n")
-    for ligne in liste:
-        if '"https://www.bdphile.info/album/view/' in ligne:
-            comic_link = (ligne.split('"')[1])
-            return comic_link
-    return 0
 
-
-def get_infos(link, isbn, logs):
+def get_infos(url, isbn, logs):
     """Trouver infos sur BD à partir lien bdphile.info"""
-    web = urllib.request.urlopen(link).read().decode('utf-8')
-    liste = web.split("\n")
-    info = {}
 
-    n = len(liste)
+    informations = {}
+    html = get_html(url)
+    soup = BeautifulSoup(html, 'html.parser')
 
-    i = 0
-    i_debut, i_fin = 0, n
-    while i < n:
-        ligne = liste[i]
-        if "https://static.bdphile.info/images/media/cover" in ligne:
-            for texte in ligne.split('"'):
-                if "Image" not in info and "https://static.bdphile.info/images/media/cover" in texte:
-                    info["Image"] = texte
-        if "<title>" in ligne:
-            titre = re.sub('<[^<>]*>', '', ligne).replace("\t", "").replace(" | Bdphile", "")
+    title_tag = soup.find('title')
 
-        if 'details-section p-lg-b-40 p-lg-t-40' in ligne:
-            i_debut = i
+    if title_tag:
+        title_text = title_tag.get_text()
+        elements = title_text.split("|")[0].strip()
 
-        if i_debut > 0 and '</div>' in ligne:
-            i_fin = i
+        elements = elements.split(" - ")
+        informations["Album"] = elements[0].strip()
+        if len(elements) > 1:
+            serie = elements[1].split(".")
+            if serie[0] == "One-shot":
+                informations["Numéro"] = 1
+                informations["Série"] = informations["Album"]
+            elif len(serie) > 1:
+                informations["Numéro"] = serie[0].strip()
+                informations["Série"] = serie[1].strip()
+            else:
+                informations["Série"] = serie[0].strip()
 
-        if "Synopsis" in ligne:
-            j = 2
-            synopsis = ""
-            ligne = liste[i + j].strip("</p>").strip("\t")
-            while j < 10 and "</div" not in ligne:
-                nb = ligne.count("br />")
-                synopsis += re.sub('<[^<>]*>', '', ligne) + nb * "<br />"
-                j += 1
-                ligne = liste[i + j].strip("</p>").strip("\t")
+    keys = ['Scénario', 'Dessin', 'Couleurs', 'Éditeur', 'Date de publication', 'Édition', 'Format']
+    current_key = ""
+    for tag in soup.find_all(['dt', 'dd']):
+        if tag.name == 'dt':
+            current_key = tag.get_text(strip=True)
+            if current_key in informations.keys():
+                current_key = None
+        elif tag.name == 'dd':
+            if current_key in keys:
+                dd_text = " ".join(tag.stripped_strings)
+                if current_key in informations.keys():
+                    informations[current_key] += "," + dd_text
+                else:
+                    informations[current_key] = dd_text
 
-            info["Synopsis"] = synopsis.replace("\'", "'").replace("\r", "").replace(">br />", ">")
-
-        if '<h3 class="p-b-20 p-xs-20 p-xs-b-0">Toutes les <strong>éditions</strong></h3>' in ligne:
-            j = 1
-            while j < 30:
-                ligne = liste[i + j].strip("\t")
-                if "Édition " in ligne and "Date de publication" not in info:
-                    ligne = re.sub('<[^<>]*>', '', ligne).strip("\t")
-                    info["Date de publication"] = " ".join(ligne.split(" ")[-2:])
-                j += 1
-            i = n
-
-        i += 1
-
-    for i in range(i_debut, i_fin):
-        ligne = liste[i].strip("\t")
-        if "<h1>" in ligne:
-            ligne = liste[i + 1].strip("\t")
-
-            info["Série"] = re.sub('<[^<>]*>', '', ligne).replace("Scénario", "").replace("\t", "")
-        if "<h2>" in ligne:
-            ligne = re.sub('<[^<>]*>', '', ligne).replace("Scénario", "").replace("\t", "").split(" : ")
-            if len(ligne) > 1:
-                numero = ligne[0].replace("Tome ", "")
+    try:
+        parsed_date = parser.parse(translate(informations["Date de publication"]),
+                                   dayfirst=True, fuzzy=True, default=datetime.datetime(1900, 1, 1))
+        informations["Date de publication"] = parsed_date
+    except:
+        Error("Problème de date de parution", isbn, logs)
+    finally:
+        format = informations["Format"]
+        del informations["Format"]
+        format_list = format.split("-")
+        for value in format_list:
+            if "pages" in value:
                 try:
-                    numero = int(numero)
-                except ValueError:
-                    None
-                finally:
-                    info["Numéro"] = numero
-                info["Album"] = ligne[1]
-            else:
-                info["Album"] = ligne[0]
+                    informations["Pages"] = int(value.replace("pages", "").strip())
+                except:
+                    Error(f"{value} est un nombre de pages incorrect", isbn, logs)
 
-        if "Scénario" in ligne:
-            info["Scénario"] = re.sub('<[^<>]*>', '', ligne).replace("Scénario", "").replace("\t", "")
-        if "Dessin" in ligne:
-            info["Dessin"] = re.sub('<[^<>]*>', '', ligne).replace("Dessin", "").replace("\t", "")
-        if "Couleurs" in ligne:
-            info["Couleurs"] = re.sub('<[^<>]*>', '', ligne).replace("Couleurs", "").replace("\t", "")
-        if "Éditeur" in ligne:
-            ligne = liste[i + 2].strip("\t")
-            info["Éditeur"] = re.sub('<[^<>]*>', '', ligne)
-        if "Date de publication" in ligne:
-            ligne = liste[i + 1].strip("\t")
-            if 'Date de publication' in info:
-                if info['Date de publication'] == re.sub('<[^<>]*>', '', ligne):
-                    info['Edition'] = "Édition originale"
-            else:
-                date = re.sub('<[^<>]*>', '', ligne)
-                info['Date de publication'] = parse_date(date)
+            if "€" in value:
+                try:
+                    informations["Prix"] = float(value.replace("€", "").strip())
+                except:
+                    Error(f"{value} est un prix incorrect", isbn, logs)
 
-        if "Édition" in ligne:
-            if 'Edition' not in info:
-                for j in range(1, 4):
-                    ligne = liste[i + j].strip("\t")
-                    if "Reedition" in ligne:
-                        ligne2 = liste[i + j + 1].strip("\t")
-                        if "dition" in ligne2:
-                            info["Edition"] = re.sub('<[^<>]*>', '', ligne2).split(" - ")[0]
-                        else:
-                            info["Edition"] = re.sub('<[^<>]*>', '', ligne).split(" - ")[0]
-                    else:
-                        if "dition" in ligne:
-                            info["Edition"] = re.sub('<[^<>]*>', '', ligne).split(" - ")[0]
+        meta_tag = soup.find('meta', attrs={'property': 'og:image'})
+        if meta_tag:
+            informations['Image'] = meta_tag['content']
 
-        if "Format" in ligne:
-            ligne = liste[i + 1].strip("\t")
-            ligne = re.sub('<[^<>]*>', '', ligne).split(" - ")
+        synopsis_tag = soup.find('p', class_='synopsis')
+        if synopsis_tag:
+            cleaned_synopsis = ''.join(str(tag) for tag in synopsis_tag.decode_contents()).strip().replace('\r', '').replace('\n', '').replace('\t', '')
+            informations["Synopsis"] = cleaned_synopsis
 
-            for truc in ligne:
-                if "pages" in truc:
-                    nb_page = truc.replace(" pages", "")
-                    try:
-                        info["Pages"] = int(nb_page)
-                    except:
-                        Error(f"{nb_page} n'est pas un nombre de page correct", isbn, logs)
-                        info["Pages"] = nb_page
-
-                if "€" in truc:
-                    prix = truc.replace("€", "")
-                    try:
-                        info["Prix"] = float(prix)
-                    except:
-                        Error(f"{prix} n'est pas un prix correct", isbn, logs)
-                        info["Prix"] = prix
-
-    return info
+        # Imprimer les informations extraites
+        return informations
 
 
 def corriger_info(info, isbn):
     """Corriger info s'il manque des clefs"""
 
     keys = ['Série', 'Numéro', 'Album', 'Scénario', 'Dessin', 'Couleurs', 'Éditeur', 'Date de publication', 'Image',
-            'Prix', 'Edition', 'Pages', 'Synopsis']
+            'Prix', 'Édition', 'Pages', 'Synopsis']
 
     for key in keys:
         if key not in info.keys():
@@ -257,7 +227,7 @@ def parse_date(date_str):
 
 def condition(value):
     try:
-        int(value)
+        parser.parse(value, dayfirst=True, fuzzy=True, default=datetime.datetime(1900, 1, 1))
     except:
         return False
     else:
@@ -270,7 +240,7 @@ def corrige_colonne(col_num):
     value = connection.get_column(col_num)
     for i in range(1, len(value)):
         my_value = value[i]
-        if condition(my_value):
+        if not condition(my_value):
             isbn = connection.get(i, 0)
             print(f"line: {i + 1}, isbn: {isbn}, value: {my_value}")
             link = get_link("https://www.bdphile.info/search/album/?q={}".format(isbn))

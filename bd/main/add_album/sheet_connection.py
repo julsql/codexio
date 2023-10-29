@@ -2,8 +2,10 @@ import gspread
 from google.auth import exceptions
 from google.oauth2 import service_account
 import os
-from main.add_album.error import Error
-
+try:
+    from main.add_album.error import Error
+except ModuleNotFoundError:
+    from error import Error
 
 class Conn:
 
