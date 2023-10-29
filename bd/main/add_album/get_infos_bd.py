@@ -151,7 +151,7 @@ def main(isbn, logs):
             raise Error(f"ISBN vide ou nul", isbn, logs)
 
     if link == 0:
-        message_log = f"Page inexistante dans la base de données"
+        message_log = f"Album inexistant dans la base de données"
         raise Error(message_log, isbn, logs)
 
     try:
