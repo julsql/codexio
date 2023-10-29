@@ -128,10 +128,12 @@ def add_album(request):
             else:
                 isbn = request.POST['isbn']
                 infos = sheet_add_album.add_album(isbn)
+                if type(infos) != type({}):
+                    return JsonResponse({'error': infos})
                 if infos:
                     return JsonResponse({'message': f'Album {isbn} ajouté avec succès'})
                 else:
-                    return JsonResponse({'message': f"Erreur d'ajout de l'album {isbn}"})
+                    return JsonResponse({'error': f"Erreur d'ajout de l'album {isbn}"})
     else:
         return JsonResponse({'message': 'Il faut une requête POST'})
 
