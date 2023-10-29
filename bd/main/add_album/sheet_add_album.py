@@ -41,8 +41,8 @@ def add(isbn, doc_name, sheet=None, logs="logs.txt"):
 
         try:
             infos = get_infos_bd.main(isbn, logs)
-        except:
-            raise Error("Erreur dans la recherche de données", isbn, logs)
+        except Error as e:
+            raise Error(str(e), isbn, logs)
 
         if type(infos) is not type(dict()):
             message_log = f"{infos} pas du bon type"
