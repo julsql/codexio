@@ -156,7 +156,7 @@ def dedicaces():
             nb_dedicace = count_images_in_directory(item_path)
             req = f"SELECT Album, Numéro, Série FROM BD WHERE ISBN = {isbn};"
             result = exec_req_one(req)
-            dedicaces_sum += 1
+            dedicaces_sum += nb_dedicace
             if result is None:
                 infos.append({'ISBN': isbn, 'Album': "", 'Numero': "", 'Serie': "",
                               'DedicaceRange': range(1, nb_dedicace + 1), 'Dedicace': nb_dedicace})
@@ -181,7 +181,7 @@ def exlibris():
             nb_exlibris = count_images_in_directory(item_path)
             req = f"SELECT Album, Numéro, Série FROM BD WHERE ISBN = {isbn};"
             result = exec_req_one(req)
-            exlibris_sum += 1
+            exlibris_sum += nb_exlibris
             if result is None:
                 infos.append({'ISBN': isbn, 'Album': "", 'Numero': "", 'Serie': "",
                               'ExlibrisRange': range(1, nb_exlibris + 1), 'Exlibris': nb_exlibris})
