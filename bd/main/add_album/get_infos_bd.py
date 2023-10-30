@@ -119,6 +119,96 @@ def get_infos(url, isbn, logs):
         return informations
 
 
+
+legende = {"Titre album": "Album", "Tome": "Numéro",
+           "Série": "Série", "Scénario": "Scénario",
+           "Dessin": "Dessin", "Couleurs": "Couleurs", "Éditeur": "Éditeur",
+           "date de parution :": "Date de publication", "": "Édition",
+           "Nombre de pages": "Pages"}
+
+
+def get_infos_2(url, isbn, logs):
+    """Get infos in BD Fugue"""
+    print(url)
+    html = get_html(url)
+    soup = BeautifulSoup(html, 'html.parser')
+
+    error_div = soup.find("div", text="Votre recherche n’a donné aucun résultat.")
+
+    if error_div:
+        raise Error(f"{isbn} n'est pas dans BD Phile", isbn, logs)
+
+    infos = {}
+
+    divs = soup.find_all("div", {"class": ["col label w-1/3 product-attribute-label truncate",
+                                           "col data w-2/3 product-attribute-value font-semibold"]})
+    for i in range(0, len(divs), 2):
+        label = divs[i].text.strip().split(":")[0].strip()
+        value = divs[i + 1].text.strip()
+        if label == "Auteur(s)":
+            personnes = value.split(" , ")
+            for personne in personnes:
+                match = re.search(r'^([A-Za-z\s]+)\s+\(([^)]+)\)', personne.strip())
+
+                if match:
+                    nom = match.group(1)
+                    attributs = [attr.strip() for attr in match.group(2).split(',')]
+                    for fonction in attributs:
+                        if fonction in legende.keys():
+                            if fonction in infos:
+                                infos[fonction] += "," + nom
+                            else:
+                                infos[fonction] = nom
+
+        elif label in legende.keys():
+            if legende[label] == "Pages":
+                try:
+                    infos[legende[label]] = int(value)
+                except:
+                    Error("Pas de nombre de page correct trouvé", isbn, logs)
+            else:
+                infos[legende[label]] = value
+
+    meta_tag = soup.find("meta", {"property": "product:price:amount"})
+    if meta_tag:
+        try:
+            infos["Prix"] = float(meta_tag.get("content"))
+        except:
+            meta_tag = soup.find("meta", {"itemprop": "price"})
+            if meta_tag:
+                try:
+                    infos["Prix"] = float(meta_tag.get("content"))
+                except:
+                    Error("Pas de prix correct trouvé", isbn, logs)
+            else:
+                Error("Pas de prix correct trouvé", isbn, logs)
+    else:
+        meta_tag = soup.find("meta", {"itemprop": "price"})
+        if meta_tag:
+            try:
+                infos["Prix"] = float(meta_tag.get("content"))
+            except:
+                Error("Pas de prix correct trouvé", isbn, logs)
+        else:
+            Error("Pas de prix correct trouvé", isbn, logs)
+
+    source_tag = soup.find("source", {"type": "image/jpg"})
+
+    if source_tag:
+        infos["Image"] = source_tag.get("srcset")
+    else:
+        Error("Pas d'image trouvée", isbn, logs)
+
+    div_tag = soup.find("div", {"itemprop": "description"})
+
+    if div_tag:
+        infos["Synopsis"] = div_tag.get_text(strip=True)
+    else:
+        Error("Pas de synopsis trouvé", isbn, logs)
+
+    return infos
+
+
 def corriger_info(info, isbn):
     """Corriger info s'il manque des clefs"""
 
@@ -151,13 +241,14 @@ def main(isbn, logs):
             raise Error(f"ISBN vide ou nul", isbn, logs)
 
     if link == 0:
-        message_log = f"Album inexistant dans la base de données"
-        raise Error(message_log, isbn, logs)
-
-    try:
-        info = get_infos(link, isbn, logs)
-    except (UnicodeDecodeError, ValueError) as e:
-        raise Error(str(e), isbn, logs)
+        message_log = f"Album inexistant dans BD Phile"
+        Error(message_log, isbn, logs)
+        info = get_infos_2(f"https://www.bdfugue.com/catalogsearch/result/?q={isbn}", isbn, logs)
+    else:
+        try:
+            info = get_infos(link, isbn, logs)
+        except (UnicodeDecodeError, ValueError) as e:
+            raise Error(str(e), isbn, logs)
 
     info = corriger_info(info, isbn)
 
