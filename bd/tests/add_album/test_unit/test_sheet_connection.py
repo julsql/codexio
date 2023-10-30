@@ -13,7 +13,7 @@ class TestIntegration(unittest.TestCase):
         self.conn_real.open("bd")
 
         self.first_line = [
-            "ISBN", "Album", "Numéro", "Série", "Dessinateur", "Scénariste", "Couleur", "Éditeur", "Date de parution",
+            "ISBN", "Album", "Numéro", "Série", "Scénariste", "Dessinateur", "Couleur", "Éditeur", "Date de parution",
             "Édition", "Nombre de pages", "Cote", "Prix d'achat", "Année d'achat", "Lieu d'achat", "Dédicace",
             "Ex Libris", "Synopsis", "Image"]
 

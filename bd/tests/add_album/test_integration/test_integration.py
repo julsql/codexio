@@ -13,7 +13,7 @@ class TestIntegration(unittest.TestCase):
         self.sheet = "Test"
         self.isbn = 9782864976165
         self.asterix = {
-            'Album': 'Astérix (Albums des films)',
+            'Album': "L'empire du milieu",
             'Couleurs': 'Thierry Mébarki',
             'Date de publication': '2023-02-08',
             'Dessin': 'Fabrice Tarrin',
@@ -30,7 +30,7 @@ class TestIntegration(unittest.TestCase):
                         'aidée par sa fidèle guerrière Tat Han et Graindemaïs, le neveu '
                         "du marchand phénicien Epidemaïs, s'enfuit pour demander de "
                         "l'aide aux Irréductibles Gaulois.",
-            'Série': "L'empire du milieu",
+            'Série': 'Astérix (Albums des films)',
             'Éditeur': 'Albert René',
             'Édition': 'Édition originale Noté : Impression en décembre 2022 - n° '
                        '616-5-01 Impression et reliure par Pollina - n°13651'}
@@ -66,9 +66,9 @@ class TestIntegration(unittest.TestCase):
         sheet_line = connection.get_line(0)
         self.assertEqual(sheet_line, [
             '9782864976165',
-            'Astérix (Albums des films)',
-            '10',
             "L'empire du milieu",
+            '10',
+            'Astérix (Albums des films)',
             'Olivier Gay',
             'Fabrice Tarrin',
             'Thierry Mébarki',
