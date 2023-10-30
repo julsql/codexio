@@ -5,8 +5,17 @@
 
 <div class="col-12">
 
-<!-- Main Content -->
     <section>
+        <header>
+            <h2>Sommaire</h2>
+            <h3><a href="#dedicaces">Dédicaces ({{ dedicaces_sum }})</a></h3>
+            <h3><a href="#exlibris">Ex Libris ({{ exlibris_sum }})</a></h3>
+        </header>
+
+    </section>
+
+<!-- Main Content -->
+    <section id="dedicaces">
         <header>
             <h2>Les dédicaces</h2>
             <h3>Toutes les dédicaces</h3>
@@ -51,7 +60,7 @@
         </section>
     {% endfor %}
 
-    <section>
+    <section id="exlibris">
         <header>
             <h2>Les Ex Libris</h2>
             <h3>Tous les ex libris</h3>

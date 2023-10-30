@@ -78,9 +78,11 @@ def bdrecherche(request):
 
 
 def dedicace(request):
-    dedicaces = recherche.dedicaces()
-    exlibris = recherche.exlibris()
-    return render(request, 'main/dedicace.html', {'dedicaces': dedicaces, 'exlibris': exlibris})
+    dedicaces, dedicaces_sum = recherche.dedicaces()
+    exlibris, exlibris_sum = recherche.exlibris()
+    return render(request, 'main/dedicace.html',
+                  {'dedicaces': dedicaces, 'dedicaces_sum': dedicaces_sum,
+                   'exlibris': exlibris, 'exlibris_sum': exlibris_sum})
 
 
 def pagebd(request, isbn):
