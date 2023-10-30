@@ -53,12 +53,17 @@ def banner():
     dedicace_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/dedicaces")
     exlibris_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/exlibris")
     image_files = list_files_in_subdirectories(dedicace_dir) + list_files_in_subdirectories(exlibris_dir)
+    random_isbn = 0
+    random_type = "dedicace"
     if image_files:
         random_image = random.choice(image_files)
         random_image_path = os.path.join(settings.STATIC_URL, "main/images/", random_image)
+        random_isbn = os.path.basename(os.path.dirname(random_image_path))
+        if os.path.basename(os.path.dirname(os.path.dirname(random_image_path))) == "exlibris":
+            random_type = "exlibris"
     else:
         random_image_path = os.path.join(settings.STATIC_URL, "main/images/banner.jpg")
-    return random_image_path
+    return random_image_path, random_isbn, random_type
 
 
 def recherche_bd(isbn=None, titre=None, num=None, serie=None, scenariste=None, dessinateur=None, editeur=None,
