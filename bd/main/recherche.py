@@ -146,6 +146,7 @@ def count_images_in_directory(directory_path):
 def dedicaces():
     image_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/dedicaces")
     infos = []
+    dedicaces_sum = 0
     for item in os.listdir(image_dir):
         item_path = os.path.join(image_dir, item)
 
@@ -155,6 +156,7 @@ def dedicaces():
             nb_dedicace = count_images_in_directory(item_path)
             req = f"SELECT Album, Numéro, Série FROM BD WHERE ISBN = {isbn};"
             result = exec_req_one(req)
+            dedicaces_sum += 1
             if result is None:
                 infos.append({'ISBN': isbn, 'Album': "", 'Numero': "", 'Serie': "",
                               'DedicaceRange': range(1, nb_dedicace + 1), 'Dedicace': nb_dedicace})
@@ -162,12 +164,14 @@ def dedicaces():
 
                 infos.append({'ISBN': isbn, 'Album': result[0], 'Numero': result[1], 'Serie': result[2],
                               'DedicaceRange': range(1, nb_dedicace + 1), 'Dedicace': nb_dedicace})
-    return infos
+
+    return infos, dedicaces_sum
 
 
 def exlibris():
     image_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/exlibris")
     infos = []
+    exlibris_sum = 0
     for item in os.listdir(image_dir):
         item_path = os.path.join(image_dir, item)
 
@@ -177,13 +181,14 @@ def exlibris():
             nb_exlibris = count_images_in_directory(item_path)
             req = f"SELECT Album, Numéro, Série FROM BD WHERE ISBN = {isbn};"
             result = exec_req_one(req)
+            exlibris_sum += 1
             if result is None:
                 infos.append({'ISBN': isbn, 'Album': "", 'Numero': "", 'Serie': "",
                               'ExlibrisRange': range(1, nb_exlibris + 1), 'Exlibris': nb_exlibris})
             else:
                 infos.append({'ISBN': isbn, 'Album': result[0], 'Numero': result[1], 'Serie': result[2],
                               'ExlibrisRange': range(1, nb_exlibris + 1), 'Exlibris': nb_exlibris})
-    return infos
+    return infos, exlibris_sum
 
 
 def get_photo_dossier(path):
