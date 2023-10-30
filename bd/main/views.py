@@ -86,10 +86,13 @@ def dedicace(request):
 def pagebd(request, isbn):
     try:
         infos = recherche.page(isbn)
-        return render(request, 'main/pagebd.html', infos)
     except:
-        # La bd n'existe pas
         return render(request, 'main/bd_not_found.html', {"isbn": isbn})
+    else:
+        infos["dedicaces"] = recherche.dedicaces_album(isbn)
+        infos["exlibris"] = recherche.exlibris_album(isbn)
+        print(infos)
+        return render(request, 'main/pagebd.html', infos)
 
 
 def statistiques(request):
