@@ -10,7 +10,7 @@ class TestGetInfosBd(unittest.TestCase):
     def setUp(self):
         self.logs = "logs-test-unit.txt"
         self.asterix = {
-             'Album': 'Astérix (Albums des films)',
+             'Album': "L'empire du milieu",
              'Couleurs': 'Thierry Mébarki',
              'Date de publication': '2023-02-08',
              'Dessin': 'Fabrice Tarrin',
@@ -27,7 +27,7 @@ class TestGetInfosBd(unittest.TestCase):
                          'aidée par sa fidèle guerrière Tat Han et Graindemaïs, le neveu '
                          "du marchand phénicien Epidemaïs, s'enfuit pour demander de "
                          "l'aide aux Irréductibles Gaulois.",
-             'Série': "L'empire du milieu",
+             'Série': 'Astérix (Albums des films)',
              'Éditeur': 'Albert René',
              'Édition': 'Édition originale Noté : Impression en décembre 2022 - n° '
                         '616-5-01 Impression et reliure par Pollina - n°13651'}

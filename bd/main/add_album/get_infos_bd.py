@@ -56,17 +56,17 @@ def get_infos(url, isbn, logs):
         elements = title_text.split("|")[0].strip()
 
         elements = elements.split(" - ")
-        informations["Album"] = elements[0].strip()
+        informations["Série"] = elements[0].strip()
         if len(elements) > 1:
             serie = elements[1].split(".")
             if serie[0] == "One-shot":
                 informations["Numéro"] = 1
-                informations["Série"] = informations["Album"]
+                informations["Album"] = informations["Série"]
             elif len(serie) > 1:
                 informations["Numéro"] = serie[0].strip()
-                informations["Série"] = serie[1].strip()
+                informations["Album"] = serie[1].strip()
             else:
-                informations["Série"] = serie[0].strip()
+                informations["Album"] = serie[0].strip()
 
     keys = ['Scénario', 'Dessin', 'Couleurs', 'Éditeur', 'Date de publication', 'Édition', 'Format']
     current_key = ""
