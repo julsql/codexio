@@ -184,3 +184,26 @@ def exlibris():
                 infos.append({'ISBN': isbn, 'Album': result[0], 'Numero': result[1], 'Serie': result[2],
                               'ExlibrisRange': range(1, nb_exlibris + 1), 'Exlibris': nb_exlibris})
     return infos
+
+
+def get_photo_dossier(path):
+    if os.path.exists(path) and os.path.isdir(path):
+        liste_fichiers = os.listdir(path)
+
+        name = []
+        for fichier in liste_fichiers:
+            if fichier.endswith(".jpeg"):
+                name.append(os.path.basename(fichier))
+        return name
+    else:
+        return []
+
+
+def exlibris_album(isbn):
+    image_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/exlibris", str(isbn))
+    return get_photo_dossier(image_dir)
+
+
+def dedicaces_album(isbn):
+    image_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/dedicaces", str(isbn))
+    return get_photo_dossier(image_dir)
