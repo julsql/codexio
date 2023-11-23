@@ -18,7 +18,7 @@ class TestIntegration(unittest.TestCase):
             'Date de publication': '2023-02-08',
             'Dessin': 'Fabrice Tarrin',
             'ISBN': 9782864976165,
-            'Image': 'https://static.bdphile.info/images/media/cover/160391.jpg',
+            'Image':  'https://static.bdphile.fr/images/media/cover/0160/160391.jpg',
             'Numéro': '10',
             'Pages': 48,
             'Prix': 10.5,
@@ -89,7 +89,7 @@ class TestIntegration(unittest.TestCase):
             "unique de l'Impératrice, aidée par sa fidèle guerrière Tat Han et "
             "Graindemaïs, le neveu du marchand phénicien Epidemaïs, s'enfuit pour "
             "demander de l'aide aux Irréductibles Gaulois.",
-            'https://static.bdphile.info/images/media/cover/160391.jpg'])
+            'https://static.bdphile.fr/images/media/cover/0160/160391.jpg'])
 
         connection.set_line([""] * 19, 0)
 
