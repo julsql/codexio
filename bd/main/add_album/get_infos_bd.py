@@ -32,7 +32,7 @@ def get_html(url):
 
 
 def get_link(isbn):
-    """Trouver lien BD bdphile.info à partir de son ISBN"""
+    """Trouver lien BD bdphile.fr à partir de son ISBN"""
 
     search_link = "https://www.bdphile.fr/search/album/?q={}".format(isbn)
     html = get_html(search_link)
@@ -137,10 +137,9 @@ def get_infos_2(url, isbn, logs):
     html = get_html(url)
     soup = BeautifulSoup(html, 'html.parser')
 
-    error_div = soup.find("div", string="Votre recherche n’a donné aucun résultat.")
-
+    error_div = soup.find('title', text=re.compile(r'^Résultats de recherche pour :'))
     if error_div:
-        raise Error(f"{isbn} n'est pas dans BD Phile", isbn, logs)
+        raise Error(f"{isbn} n'est pas dans BD Fugue ou il y a ambiguïté", isbn, logs)
 
     infos = {}
 
@@ -175,7 +174,7 @@ def get_infos_2(url, isbn, logs):
             else:
                 infos[legende[label]] = value
 
-    if "Album" not in infos:
+    if "Album" not in infos and "Série" in infos:
         infos["Album"] = infos["Série"]
 
     meta_tag = soup.find("meta", {"property": "product:price:amount"})
@@ -252,7 +251,10 @@ def main(isbn, logs):
     if link == 0:
         message_log = f"Album inexistant dans BD Phile"
         Error(message_log, isbn, logs)
-        info = get_infos_2(f"https://www.bdfugue.com/catalogsearch/result/?q={isbn}", isbn, logs)
+        try:
+            info = get_infos_2(f"https://www.bdfugue.com/catalogsearch/result/?q={isbn}", isbn, logs)
+        except Exception as e:
+            raise Error(str(e), isbn, logs)
     else:
         try:
             info = get_infos(link, isbn, logs)

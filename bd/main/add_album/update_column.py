@@ -16,7 +16,7 @@ def get_html(url):
 
 
 def get_link(isbn):
-    """Trouver lien BD bdphile.info à partir de son ISBN"""
+    """Trouver lien BD bdphile.fr à partir de son ISBN"""
 
     search_link = "https://www.bdphile.fr/search/album/?q={}".format(isbn)
     html = get_html(search_link)

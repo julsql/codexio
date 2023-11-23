@@ -15,7 +15,7 @@ class TestGetInfosBd(unittest.TestCase):
              'Date de publication': '2023-02-08',
              'Dessin': 'Fabrice Tarrin',
              'ISBN': 9782864976165,
-             'Image': 'https://static.bdphile.info/images/media/cover/160391.jpg',
+             'Image':  'https://static.bdphile.fr/images/media/cover/0160/160391.jpg',
              'Numéro': '10',
              'Pages': 48,
              'Prix': 10.5,
@@ -76,7 +76,7 @@ class TestGetInfosBd(unittest.TestCase):
 
     def test_main_fail_3(self):
         with self.assertRaises(error.Error):
-            get_infos_bd.main(10001, self.logs)
+            print(get_infos_bd.main(9791038203907, self.logs))
 
     def test_parse_date_pass_1(self):
         date = get_infos_bd.parse_date("2021")
