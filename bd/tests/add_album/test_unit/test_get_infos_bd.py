@@ -37,7 +37,7 @@ class TestGetInfosBd(unittest.TestCase):
 
     def test_get_link_pass(self):
         link = get_infos_bd.get_link(9782840555698)
-        self.assertEqual(link, "https://www.bdphile.info/album/view/27231/")
+        self.assertEqual(link, "https://www.bdphile.fr/album/view/27231/")
 
     def test_get_link_fail(self):
         link = get_infos_bd.get_link("")
