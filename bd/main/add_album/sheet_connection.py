@@ -12,6 +12,7 @@ class Conn:
     def __init__(self, logs="logs.txt"):
         self.__OFFSET__ = 1
         self.worksheet = None
+        self.logs = logs
         __FILEPATH__ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         credentials_path = os.path.join(__FILEPATH__, 'private/bd-sheet-91.json')
         try:
@@ -23,9 +24,8 @@ class Conn:
             self.client.login()
         except exceptions.DefaultCredentialsError:
             message_log = "Google Sheet non accessible."
-            Error(message_log, None, logs)
             self.client = None
-            raise
+            raise Error(message_log, None, self.logs)
 
     def open(self, doc_name, sheet_name=None):
         if sheet_name is not None:
@@ -66,6 +66,15 @@ class Conn:
             self.worksheet.update(f"A{i}", [valeur])
         else:
             self.worksheet.update(f"A{i}", [[valeur]])
+
+    def set_column(self, valeur, j):
+        j += self.__OFFSET__
+        plage_de_cellules = self.worksheet.range(2, j, len(valeur), j)
+
+        for i in range(len(plage_de_cellules)):
+            plage_de_cellules[i].value = valeur[i]
+
+        self.worksheet.update_cells(plage_de_cellules)
 
     def double(self, isbn):
         row_values = self.get_column(0)

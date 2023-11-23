@@ -38,7 +38,7 @@ def upload(request, isbn, origin_folder):
                     fs = FileSystemStorage(location=path_folder)
 
                     fs.save(f"{number}{file_extension}", uploaded_file)
-                    return JsonResponse({'message': f'Album {isbn} ajouté avec succès'})
+                    return JsonResponse({'message': f'Fichier {isbn} ajouté avec succès'})
                 else:
                     return JsonResponse({'error': "Le type du fichier est incorrect"})
             else:

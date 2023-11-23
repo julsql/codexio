@@ -4,6 +4,7 @@ import urllib.request
 
 import dateutil
 from bs4 import BeautifulSoup
+
 try:
     from main.add_album.error import Error
     from main.add_album.sheet_connection import Conn
@@ -15,6 +16,7 @@ from dateutil import parser
 
 import webbrowser
 import requests
+
 
 # Get the data of a comic from its ISBN. Return a dictionary.
 
@@ -32,10 +34,10 @@ def get_html(url):
 def get_link(isbn):
     """Trouver lien BD bdphile.info à partir de son ISBN"""
 
-    search_link = "https://www.bdphile.info/search/album/?q={}".format(isbn)
+    search_link = "https://www.bdphile.fr/search/album/?q={}".format(isbn)
     html = get_html(search_link)
     soup = BeautifulSoup(html, 'html.parser')
-    a_tag = soup.find('a', href=lambda href: href and href.startswith("https://www.bdphile.info/album/view/"))
+    a_tag = soup.find('a', href=lambda href: href and href.startswith("https://www.bdphile.fr/album/view/"))
     if a_tag:
         return a_tag.get('href')
     else:
@@ -43,7 +45,7 @@ def get_link(isbn):
 
 
 def get_infos(url, isbn, logs):
-    """Trouver infos sur BD à partir lien bdphile.info"""
+    """Trouver infos sur BD à partir lien bdphile.fr"""
 
     informations = {}
     html = get_html(url)
@@ -90,21 +92,22 @@ def get_infos(url, isbn, logs):
     except:
         Error("Problème de date de parution", isbn, logs)
     finally:
-        format = informations["Format"]
-        del informations["Format"]
-        format_list = format.split("-")
-        for value in format_list:
-            if "pages" in value:
-                try:
-                    informations["Pages"] = int(value.replace("pages", "").strip())
-                except:
-                    Error(f"{value} est un nombre de pages incorrect", isbn, logs)
+        if "Format" in informations:
+            format = informations["Format"]
+            del informations["Format"]
+            format_list = format.split("-")
+            for value in format_list:
+                if "pages" in value:
+                    try:
+                        informations["Pages"] = int(value.replace("pages", "").strip())
+                    except:
+                        Error(f"{value} est un nombre de pages incorrect", isbn, logs)
 
-            if "€" in value:
-                try:
-                    informations["Prix"] = float(value.replace("€", "").strip())
-                except:
-                    Error(f"{value} est un prix incorrect", isbn, logs)
+                if "€" in value:
+                    try:
+                        informations["Prix"] = float(value.replace("€", "").strip())
+                    except:
+                        Error(f"{value} est un prix incorrect", isbn, logs)
 
         meta_tag = soup.find('meta', attrs={'property': 'og:image'})
         if meta_tag:
@@ -112,18 +115,19 @@ def get_infos(url, isbn, logs):
 
         synopsis_tag = soup.find('p', class_='synopsis')
         if synopsis_tag:
-            cleaned_synopsis = ''.join(str(tag) for tag in synopsis_tag.decode_contents()).strip().replace('\r', '').replace('\n', '').replace('\t', '')
+            cleaned_synopsis = ''.join(str(tag) for tag in synopsis_tag.decode_contents()).strip().replace('\r',
+                                                                                                           '').replace(
+                '\n', '').replace('\t', '')
             informations["Synopsis"] = cleaned_synopsis
 
         # Imprimer les informations extraites
         return informations
 
 
-
 legende = {"Titre album": "Album", "Tome": "Numéro",
            "Série": "Série", "Scénario": "Scénario",
            "Dessin": "Dessin", "Couleurs": "Couleurs", "Éditeur": "Éditeur",
-           "date de parution :": "Date de publication", "": "Édition",
+           "date de parution": "Date de publication", "": "Édition",
            "Nombre de pages": "Pages"}
 
 
@@ -133,7 +137,7 @@ def get_infos_2(url, isbn, logs):
     html = get_html(url)
     soup = BeautifulSoup(html, 'html.parser')
 
-    error_div = soup.find("div", text="Votre recherche n’a donné aucun résultat.")
+    error_div = soup.find("div", string="Votre recherche n’a donné aucun résultat.")
 
     if error_div:
         raise Error(f"{isbn} n'est pas dans BD Phile", isbn, logs)
@@ -148,8 +152,7 @@ def get_infos_2(url, isbn, logs):
         if label == "Auteur(s)":
             personnes = value.split(" , ")
             for personne in personnes:
-                match = re.search(r'^([A-Za-z\s]+)\s+\(([^)]+)\)', personne.strip())
-
+                match = re.search(r'^([\w\s-]+)\s+\(([^)]+)\)', personne.strip())
                 if match:
                     nom = match.group(1)
                     attributs = [attr.strip() for attr in match.group(2).split(',')]
@@ -159,6 +162,9 @@ def get_infos_2(url, isbn, logs):
                                 infos[fonction] += "," + nom
                             else:
                                 infos[fonction] = nom
+        elif label == "Format narratif":
+            if value == "Intégrale" or value == "Histoire complète":
+                infos["Numéro"] = 1
 
         elif label in legende.keys():
             if legende[label] == "Pages":
@@ -168,6 +174,9 @@ def get_infos_2(url, isbn, logs):
                     Error("Pas de nombre de page correct trouvé", isbn, logs)
             else:
                 infos[legende[label]] = value
+
+    if "Album" not in infos:
+        infos["Album"] = infos["Série"]
 
     meta_tag = soup.find("meta", {"property": "product:price:amount"})
     if meta_tag:
@@ -192,10 +201,11 @@ def get_infos_2(url, isbn, logs):
         else:
             Error("Pas de prix correct trouvé", isbn, logs)
 
-    source_tag = soup.find("source", {"type": "image/jpg"})
+    pattern = re.compile(r'https://www\.bdfugue\.com/media/catalog/product/cache/.*')
+    image_element = soup.find('img', {'src': pattern})
 
-    if source_tag:
-        infos["Image"] = source_tag.get("srcset")
+    if image_element:
+        infos["Image"] = image_element.get('src')
     else:
         Error("Pas d'image trouvée", isbn, logs)
 
@@ -227,11 +237,10 @@ def main(isbn, logs):
     try:
         isbn = int(isbn)
     except ValueError:
-        if isbn is not None and isbn != "":
-            raise Error(f"ISBN {isbn} invalide", isbn, logs)
-        else:
+        if isbn is None or isbn == "":
             raise Error(f"ISBN vide ou nul", isbn, logs)
-
+        else:
+            raise Error(f"ISBN {isbn} invalide", isbn, logs)
     try:
         link = get_link(isbn)
     except ValueError:
@@ -239,7 +248,7 @@ def main(isbn, logs):
             raise Error(f"ISBN {isbn} invalide", isbn, logs)
         else:
             raise Error(f"ISBN vide ou nul", isbn, logs)
-
+    
     if link == 0:
         message_log = f"Album inexistant dans BD Phile"
         Error(message_log, isbn, logs)
@@ -334,7 +343,7 @@ def corrige_colonne(col_num):
         if not condition(my_value):
             isbn = connection.get(i, 0)
             print(f"line: {i + 1}, isbn: {isbn}, value: {my_value}")
-            link = get_link("https://www.bdphile.info/search/album/?q={}".format(isbn))
+            link = get_link("https://www.bdphile.fr/search/album/?q={}".format(isbn))
             print(link)
             webbrowser.open(link)
             new_value = input("Nouvelle valeur ")
