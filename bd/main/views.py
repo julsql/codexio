@@ -122,7 +122,7 @@ def delete_dedicace(request, isbn, photo_number):
             if upload.delete_dedicace(isbn, photo_number) == 0:
                 return JsonResponse({'message': "La photo n'a pas été trouvée"})
             else:
-                return JsonResponse({'message': 'Ex libris supprimé correctement'})
+                return JsonResponse({'message': 'Dédicace supprimée correctement'})
     else:
         return JsonResponse({'message': 'Il faut une requête POST'})
 
