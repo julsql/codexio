@@ -3,6 +3,7 @@ from django.shortcuts import render
 from main.forms import RechercheForm
 from main import recherche as recherche
 from main import upload
+from django.views.decorators.csrf import csrf_exempt
 from main.add_album import sheet_add_album
 from main.add_album import sheet_connection
 from bd.settings import POST_TOKEN
@@ -101,10 +102,12 @@ def statistiques(request):
     return render(request, 'main/statistiques.html', infos)
 
 
+@csrf_exempt
 def upload_dedicace(request, isbn):
     return upload.upload_dedicace(request, isbn)
 
 
+@csrf_exempt
 def upload_exlibris(request, isbn):
     return upload.upload_exlibris(request, isbn)
 
