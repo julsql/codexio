@@ -3,7 +3,6 @@ from django.shortcuts import render
 from main.forms import RechercheForm
 from main import recherche as recherche
 from main import upload
-from django.views.decorators.csrf import csrf_exempt
 from main.add_album import sheet_add_album
 from main.add_album import sheet_connection
 from bd.settings import POST_TOKEN
@@ -102,21 +101,19 @@ def statistiques(request):
     return render(request, 'main/statistiques.html', infos)
 
 
-@csrf_exempt
 def upload_dedicace(request, isbn):
     return upload.upload_dedicace(request, isbn)
 
 
-@csrf_exempt
 def upload_exlibris(request, isbn):
     return upload.upload_exlibris(request, isbn)
 
 
-@csrf_exempt
 def update_database(request):
-    if request.method == 'POST':
-        if 'token' not in request.POST or request.POST['token'] != f"Bearer {POST_TOKEN}":
-            return JsonResponse({'error': "Vous n'avez pas l'autorisation"})
+    if request.method == 'GET':
+        auth_header = request.headers.get('Authorization')
+        if auth_header is None or auth_header != f"Bearer {POST_TOKEN}":
+            return JsonResponse({'error': f"Vous n'avez pas l'autorisation"})
         else:
             update()
             return JsonResponse({'message': 'Site web mis à jour correctement'})
@@ -124,23 +121,19 @@ def update_database(request):
         return JsonResponse({'message': 'Il faut une requête POST'})
 
 
-@csrf_exempt
-def add_album(request):
-    if request.method == 'POST':
-        if 'token' not in request.POST or request.POST['token'] != f"Bearer {POST_TOKEN}":
-            return JsonResponse({'error': "Vous n'avez pas l'autorisation"})
+def add_album(request, isbn):
+    if request.method == 'GET':
+        auth_header = request.headers.get('Authorization')
+        if auth_header is None or auth_header != f"Bearer {POST_TOKEN}":
+            return JsonResponse({'error': f"Vous n'avez pas l'autorisation"})
         else:
-            if 'isbn' not in request.POST:
-                return JsonResponse({'error': "Veuillez entrer un ISBN"})
+            infos = sheet_add_album.add_album(isbn)
+            if type(infos) is not type({}):
+                return JsonResponse({'error': str(infos)})
+            elif infos:
+                return JsonResponse({'message': f'Album {isbn} ajouté avec succès'})
             else:
-                isbn = request.POST['isbn']
-                infos = sheet_add_album.add_album(isbn)
-                if type(infos) is not type({}):
-                    return JsonResponse({'error': str(infos)})
-                elif infos:
-                    return JsonResponse({'message': f'Album {isbn} ajouté avec succès'})
-                else:
-                    return JsonResponse({'error': f"Erreur d'ajout de l'album {isbn}"})
+                return JsonResponse({'error': f"Erreur d'ajout de l'album {isbn}"})
     else:
         return JsonResponse({'message': 'Il faut une requête POST'})
 
