@@ -125,6 +125,12 @@ input, select, textarea {
 	appearance: none;
 }
 
+/* Style pour le label de la case à cocher */
+label[for="id_tri_croissant"] {
+  cursor: pointer; /* Curseur pointer pour indiquer que c'est interactif */
+}
+
+
 /* Basic */
 
 	html {

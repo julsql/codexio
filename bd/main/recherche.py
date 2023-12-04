@@ -66,48 +66,6 @@ def banner():
     return random_image_path, random_isbn, random_type
 
 
-def recherche_bd(isbn=None, titre=None, num=None, serie=None, scenariste=None, dessinateur=None, editeur=None,
-                 edition=None, annee=None, dedicace=None, exlibris=None, synopsis=None):
-    if isbn is None and titre is None and num is None and serie is None and scenariste is None and dessinateur is None and editeur is None and edition is None and annee is None and dedicace is None and exlibris is None and synopsis is None:
-        req = "SELECT ISBN, Album, Numéro, Série FROM BD"
-    else:
-        req = "SELECT ISBN, Album, Numéro, Série FROM BD WHERE"
-        if isbn != "":
-            req += f" ISBN={isbn} AND"
-        if titre != "":
-            req += f" Album LIKE '%{titre}%' AND"
-        if num != "":
-            req += f" Numéro={num} AND"
-        if serie != "":
-            req += f" Série LIKE '%{serie}%' AND"
-        if scenariste != "":
-            req += f" Scénariste LIKE '%{scenariste}%' AND"
-        if dessinateur != "":
-            req += f" Dessinateur LIKE '%{dessinateur}%' AND"
-        if editeur != "":
-            req += f" Éditeur LIKE '%{editeur}%' AND"
-        if edition != "":
-            req += f" Édition LIKE '%{edition}%' AND"
-        if annee != "":
-            req += f" Annee={annee} AND"
-        if dedicace != "":
-            req += f" Dédicace={dedicace} AND"
-        if exlibris != "":
-            req += f" \"Ex Libris\"={exlibris} AND"
-        if synopsis != "":
-            synarray = synopsis.split(" ")
-            for i in range(len(synarray)):
-                req += f" Synopsis LIKE '%{synarray[i]}%' AND"
-        req = req[:-4] + ";"
-
-    result_req = exec_req_all(req)
-    infos = []
-
-    for result in result_req:
-        infos.append({'ISBN': result[0], 'Album': result[1], 'Numero': result[2], 'Serie': result[3]})
-    return infos
-
-
 def page(isbn):
     req = "SELECT * FROM BD WHERE ISBN={};".format(isbn)
     result = exec_req_one(req)

@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import CheckboxInput
 from django.utils.safestring import mark_safe
 
 
@@ -22,6 +23,29 @@ class RechercheForm(forms.Form):
                                widget=forms.TextInput(attrs={'placeholder': 'Ex Libris'}))
     synopsis = forms.CharField(required=False, label='Synopsis',
                                widget=forms.TextInput(attrs={'placeholder': 'Synopsis'}))
+    TRI_CHOICES = [
+        ('Album', 'Album'),
+        ('Numéro', 'Numéro'),
+        ('Série', 'Série'),
+        ('Date_de_parution', 'Date de parution'),
+        ("Année_d_achat", "Année d'achat"),
+        ('Nombre_de-page', 'Nombre de pages'),
+        ("Lieu_d_achat", "Lieu d'achat"),
+        ('Dessinateur', 'Dessinateur'),
+        ('Scénariste', 'Scénariste'),
+    ]
+
+    tri_par = forms.ChoiceField(
+        label='Trier par',
+        choices=[('', '--- Sélectionner ---')] + TRI_CHOICES,
+        required=False,  # Rend le champ facultatif
+    )
+
+    tri_croissant = forms.BooleanField(
+        required=False,
+        label='↓',
+        widget=CheckboxInput(attrs={'class': 'custom-checkbox'}),
+    )
 
     def as_custom_table_2(self):
         html = '\t<table>\n'
@@ -32,8 +56,14 @@ class RechercheForm(forms.Form):
                 html += '\t\t\t\t\t</tr>\n'
                 html += '\t\t\t\t\t<tr>\n'
 
-            html += f'\t\t\t\t\t\t<td><label for="{field.id_for_label}">{field.label}&nbsp;:</label></td>\n'
-            html += f'\t\t\t\t\t\t<td>{field}</td>\n'
+            if field.id_for_label == "id_tri_par":
+                html += f'\t\t\t\t\t\t<td><label for="{field.id_for_label}">{field.label}&nbsp;:</label></td>\n'
+                html += f'\t\t\t\t\t\t<td>{field}\n'
+            elif field.id_for_label == "id_tri_croissant":
+                html += f'\t\t\t\t\t\t<label for="{field.id_for_label}">{field.label}</label>{field}</td>\n'
+            else:
+                html += f'\t\t\t\t\t\t<td><label for="{field.id_for_label}">{field.label}&nbsp;:</label></td>\n'
+                html += f'\t\t\t\t\t\t<td>{field}</td>\n'
 
             i += 1
 
@@ -51,12 +81,17 @@ class RechercheForm(forms.Form):
                 html += '\t\t\t\t\t</tr>\n'
                 html += '\t\t\t\t\t<tr>\n'
 
-            html += f'\t\t\t\t\t\t<td><label for="{field.id_for_label}">{field.label}&nbsp;:</label></td>\n'
-            html += f'\t\t\t\t\t\t<td>{field}</td>\n'
+            if field.id_for_label == "id_tri_par":
+                html += f'\t\t\t\t\t\t<td><label for="{field.id_for_label}">{field.label}&nbsp;:</label></td>\n'
+                html += f'\t\t\t\t\t\t<td>{field}\n'
+            elif field.id_for_label == "id_tri_croissant":
+                html += f'\t\t\t\t\t\t<label for="{field.id_for_label}">{field.label}</label>{field}</td>\n'
+            else:
+                html += f'\t\t\t\t\t\t<td><label for="{field.id_for_label}">{field.label}&nbsp;:</label></td>\n'
+                html += f'\t\t\t\t\t\t<td>{field}</td>\n'
 
             i += 1
 
-        html += '\t\t\t\t\t</tr>\n'
         html += '\t\t\t\t</table>\n'
 
         return mark_safe(html)
