@@ -2,13 +2,52 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from main.forms import RechercheForm
 from main import recherche as recherche
-from main import upload
+from main import upload_photo
 from django.views.decorators.csrf import csrf_exempt
 from main.add_album import sheet_add_album
 from main.add_album import sheet_connection
 from bd.settings import POST_TOKEN
 from main.update_database import update
-import os
+from main.models import BD
+
+
+def form_search(form=None):
+    queryset = BD.objects.all()
+
+    if form and form.is_valid():
+        data = form.cleaned_data
+
+        filters = {
+            'isbn__icontains': 'isbn',
+            'Album__icontains': 'titre',
+            'Numéro__icontains': 'numero',
+            'Série__icontains': 'serie',
+            'Scénariste__icontains': 'scenariste',
+            'Dessinateur__icontains': 'dessinateur',
+            'Éditeur__icontains': 'editeur',
+            'Édition__icontains': 'edition',
+            'Année_d_achat': 'annee',
+            'Dédicace': 'dedicace',
+            'Ex_Libris': 'exlibris',
+        }
+
+        for field_name, form_field_name in filters.items():
+            value = data.get(form_field_name)
+            if value:
+                queryset = queryset.filter(**{field_name: value})
+
+        synopsis = data.get('synopsis').split(" ")
+        for mot in synopsis:
+            queryset = queryset.filter(Synopsis__icontains=mot)
+
+        tri_par = data.get('tri_par')
+        tri_croissant = data.get('tri_croissant')
+
+        if tri_par:
+            tri_par = tri_par if tri_croissant else f"-{tri_par}"
+            queryset = queryset.order_by(tri_par)
+
+    return queryset
 
 
 # Create your views here.
@@ -19,26 +58,11 @@ def home(request):
         # créer une instance de notre formulaire et le remplir avec les données POST
         form = RechercheForm(request.POST)
 
-        if form.is_valid():
-            isbn = request.POST.get('isbn')
-            titre = request.POST.get('titre')
-            num = request.POST.get('id_numero')
-            serie = request.POST.get('id_serie')
-            scenariste = request.POST.get('id_scenariste')
-            dessinateur = request.POST.get('id_dessinateur')
-            editeur = request.POST.get('id_editeur')
-            edition = request.POST.get('id_edition')
-            annee = request.POST.get('id_annee')
-            dedicace = request.POST.get('id_dedicace')
-            exlibris = request.POST.get('id_exlibris')
-            synopsis = request.POST.get('id_synopsis')
-
-            infos = recherche.recherche_bd(isbn, titre, num, serie, scenariste, dessinateur, editeur, edition, annee,
-                                           dedicace, exlibris, synopsis)
+        queryset = form_search(form)
+        if queryset:
+            infos = [{'ISBN': bd.isbn, 'Album': bd.Album, 'Numero': bd.Numéro, 'Serie': bd.Série} for bd in queryset]
             return render(request, 'main/bdrecherche.html', {'form': form, 'infos': infos})
         return render(request, 'main/home.html', {'form': form, 'infos': infos, 'banner': banner, 'isbn_banner': isbn_banner, "random_type": random_type})
-    # si le formulaire n'est pas valide, nous laissons l'exécution continuer jusqu'au return
-    # ci-dessous et afficher à nouveau le formulaire (avec des erreurs).
 
     else:
         # ceci doit être une requête GET, donc créer un formulaire vide
@@ -51,30 +75,13 @@ def bdrecherche(request):
     if request.method == 'POST':
         # créer une instance de notre formulaire et le remplir avec les données POST
         form = RechercheForm(request.POST)
-
-        if form.is_valid():
-            isbn = request.POST.get('isbn')
-            titre = request.POST.get('titre')
-            num = request.POST.get('numero')
-            serie = request.POST.get('serie')
-            scenariste = request.POST.get('scenariste')
-            dessinateur = request.POST.get('dessinateur')
-            editeur = request.POST.get('editeur')
-            edition = request.POST.get('edition')
-            annee = request.POST.get('annee')
-            dedicace = request.POST.get('dedicace')
-            exlibris = request.POST.get('exlibris')
-            synopsis = request.POST.get('synopsis')
-
-            infos = recherche.recherche_bd(isbn, titre, num, serie, scenariste, dessinateur, editeur, edition, annee,
-                                           dedicace, exlibris, synopsis)
-        else:
-            infos = recherche.recherche_bd()
+        queryset = form_search(form)
     else:
         # ceci doit être une requête GET, donc créer un formulaire vide
         form = RechercheForm()
-        infos = recherche.recherche_bd()
+        queryset = form_search()
 
+    infos = [{'ISBN': bd.isbn, 'Album': bd.Album, 'Numero': bd.Numéro, 'Serie': bd.Série} for bd in queryset]
     return render(request, 'main/bdrecherche.html', {'form': form, 'infos': infos})
 
 
@@ -94,7 +101,6 @@ def pagebd(request, isbn):
     else:
         infos["dedicaces"] = recherche.dedicaces_album(isbn)
         infos["exlibris"] = recherche.exlibris_album(isbn)
-        print(infos)
         return render(request, 'main/pagebd.html', infos)
 
 
@@ -105,12 +111,12 @@ def statistiques(request):
 
 @csrf_exempt
 def upload_dedicace(request, isbn):
-    return upload.upload_dedicace(request, isbn)
+    return upload_photo.upload_dedicace(request, isbn)
 
 
 @csrf_exempt
 def upload_exlibris(request, isbn):
-    return upload.upload_exlibris(request, isbn)
+    return upload_photo.upload_exlibris(request, isbn)
 
 
 def delete_dedicace(request, isbn, photo_number):
@@ -119,7 +125,7 @@ def delete_dedicace(request, isbn, photo_number):
         if auth_header is None or auth_header != f"Bearer {POST_TOKEN}":
             return JsonResponse({'error': f"Vous n'avez pas l'autorisation"})
         else:
-            if upload.delete_dedicace(isbn, photo_number) == 0:
+            if upload_photo.delete_dedicace(isbn, photo_number) == 0:
                 return JsonResponse({'message': "La photo n'a pas été trouvée"})
             else:
                 return JsonResponse({'message': 'Dédicace supprimée correctement'})
@@ -133,7 +139,7 @@ def delete_exlibris(request, isbn, photo_number):
         if auth_header is None or auth_header != f"Bearer {POST_TOKEN}":
             return JsonResponse({'error': f"Vous n'avez pas l'autorisation"})
         else:
-            if upload.delete_exlibris(isbn, photo_number) == 0:
+            if upload_photo.delete_exlibris(isbn, photo_number) == 0:
                 return JsonResponse({'message': "La photo n'a pas été trouvée"})
             else:
                 return JsonResponse({'message': 'Ex libris supprimé correctement'})

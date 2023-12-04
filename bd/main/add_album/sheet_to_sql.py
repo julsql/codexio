@@ -15,7 +15,6 @@ def create_sql_table(connection, gsheet, table_name):
     # Récupérer la première ligne de la feuille de calcul comme des colonnes de la table
     columns = gsheet.get_line(0)
     for column in columns[1:]:
-        print(column)
         cursor.execute(f"ALTER TABLE {table_name} ADD COLUMN \"{column}\" TEXT")
     connection.commit()
 

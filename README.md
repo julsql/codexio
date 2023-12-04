@@ -20,7 +20,7 @@ It's a Django project that displays my collection of comics.
 - [views.py](bd/main/views.py): the code launch when loading a page
 - [bd/](bd/bd): the settings files (urls, wsgi, settings) used by Django
 - [manage.py](bd/manage.py): the main file that runs the website
-- [upload.py](bd/main/upload.py): the upload of photos of the ex libris or 'dedicace'
+- [upload.py](bd/main/upload_photo.py): the upload of photos of the ex libris or 'dedicace'
 
 ## Installation
 
