@@ -1,6 +1,5 @@
 import os
 import re
-import json
 
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
