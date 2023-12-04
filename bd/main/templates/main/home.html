@@ -92,7 +92,19 @@
         </p>
     </section>
 
-
 </div>
 
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        var checkbox = document.getElementById("id_tri_croissant");
+        var label = document.querySelector("label[for='id_tri_croissant']");
+        document.getElementById("id_tri_croissant").addEventListener("change", function() {
+            label.innerHTML = checkbox.checked ? "↓" : "↑";
+            console.log(checkbox.checked);
+        });
+
+        label.innerHTML = checkbox.checked ? "↓" : "↑";
+    </script>
 {% endblock %}
