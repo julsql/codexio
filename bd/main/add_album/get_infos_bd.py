@@ -254,7 +254,8 @@ def main(isbn, logs):
         try:
             info = get_infos_2(f"https://www.bdfugue.com/catalogsearch/result/?q={isbn}", isbn, logs)
         except Exception as e:
-            raise Error(str(e), isbn, logs)
+            message_log = f"Album inexistant dans BD Phile et dans BD Fugue"
+            raise Error(message_log, isbn, logs)
     else:
         try:
             info = get_infos(link, isbn, logs)
@@ -264,7 +265,6 @@ def main(isbn, logs):
     info = corriger_info(info, isbn)
 
     return info
-
 
 TRANSLATED_MONTHS = {
     "janvier": "January",
