@@ -42,13 +42,17 @@ def add(isbn, doc_name, sheet=None, logs="logs.txt"):
             raise Error(message_log, isbn, logs)
 
         try:
-            infos = get_infos_bd.main(isbn, logs)
+            infos, error = get_infos_bd.main(isbn, logs)
         except Error as e:
             raise Error(str(e), isbn, logs)
 
+
         if type(infos) is not type(dict()):
-            message_log = f"{infos} pas du bon type"
-            raise Error(message_log, isbn, logs)
+            if error is not None:
+                raise error
+            else:
+                message_log = f"{infos} pas du bon type"
+                raise Error(message_log, isbn, logs)
 
         try:
             add_line(connection, infos)
@@ -56,6 +60,8 @@ def add(isbn, doc_name, sheet=None, logs="logs.txt"):
             message_log = f"{infos} n'a pas été ajouté correctement"
             raise Error(message_log, isbn, logs)
         else:
+            if error is not None:
+                raise error
             title = infos["Album"]
             if title is None or title == "":
                 title = infos["ISBN"]
