@@ -9,7 +9,7 @@ except ModuleNotFoundError:
 
 def liste_from_dict(infos):
     titles = ["ISBN", "Album", "Numéro", "Série", "Scénario", "Dessin", "Couleurs",
-              "Éditeur", "Date de publication", "Édition", "Pages", None, "Prix", None, None, None, None, "Synopsis",
+              "Éditeur", "Date de publication", "Édition", "Pages", None, "Prix", None, None, None, None, None, "Synopsis",
               "Image"]
 
     liste = []
