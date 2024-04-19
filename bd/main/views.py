@@ -123,7 +123,7 @@ def delete_dedicace(request, isbn, photo_number):
     if request.method == 'GET':
         auth_header = request.headers.get('Authorization')
         if auth_header is None or auth_header != f"Bearer {POST_TOKEN}":
-            return JsonResponse({'error': f"Vous n'avez pas l'autorisation"})
+            return JsonResponse({'error': "Vous n'avez pas l'autorisation"})
         else:
             if upload_photo.delete_dedicace(isbn, photo_number) == 0:
                 return JsonResponse({'message': "La photo n'a pas été trouvée"})
@@ -137,7 +137,7 @@ def delete_exlibris(request, isbn, photo_number):
     if request.method == 'GET':
         auth_header = request.headers.get('Authorization')
         if auth_header is None or auth_header != f"Bearer {POST_TOKEN}":
-            return JsonResponse({'error': f"Vous n'avez pas l'autorisation"})
+            return JsonResponse({'error': "Vous n'avez pas l'autorisation"})
         else:
             if upload_photo.delete_exlibris(isbn, photo_number) == 0:
                 return JsonResponse({'message': "La photo n'a pas été trouvée"})
@@ -151,7 +151,7 @@ def update_database(request):
     if request.method == 'GET':
         auth_header = request.headers.get('Authorization')
         if auth_header is None or auth_header != f"Bearer {POST_TOKEN}":
-            return JsonResponse({'error': f"Vous n'avez pas l'autorisation"})
+            return JsonResponse({'error': "Vous n'avez pas l'autorisation"})
         else:
             update()
             return JsonResponse({'message': 'Site web mis à jour correctement'})
@@ -163,10 +163,10 @@ def add_album(request, isbn):
     if request.method == 'GET':
         auth_header = request.headers.get('Authorization')
         if auth_header is None or auth_header != f"Bearer {POST_TOKEN}":
-            return JsonResponse({'error': f"Vous n'avez pas l'autorisation"})
+            return JsonResponse({'error': "Vous n'avez pas l'autorisation"})
         else:
             infos = sheet_add_album.add_album(isbn)
-            if type(infos) is not type({}):
+            if isinstance(infos, dict):
                 return JsonResponse({'error': str(infos)})
             elif infos:
                 return JsonResponse({'message': f'Album {isbn} ajouté avec succès'})

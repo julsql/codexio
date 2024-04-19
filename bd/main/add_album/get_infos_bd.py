@@ -1,8 +1,5 @@
 import re
-import urllib.parse
-import urllib.request
 
-import dateutil
 from bs4 import BeautifulSoup
 
 try:
@@ -237,7 +234,7 @@ def main(isbn, logs):
         isbn = int(isbn)
     except ValueError:
         if isbn is None or isbn == "":
-            raise Error(f"ISBN vide ou nul", isbn, logs)
+            raise Error("ISBN vide ou nul", isbn, logs)
         else:
             raise Error(f"ISBN {isbn} invalide", isbn, logs)
     try:
@@ -246,16 +243,16 @@ def main(isbn, logs):
         if isbn is not None and isbn != "":
             raise Error(f"ISBN {isbn} invalide", isbn, logs)
         else:
-            raise Error(f"ISBN vide ou nul", isbn, logs)
+            raise Error("ISBN vide ou nul", isbn, logs)
     
     if link == 0:
-        message_log = f"Album inexistant dans BD Phile"
+        message_log = "Album inexistant dans BD Phile"
         Error(message_log, isbn, logs)
         try:
             info = get_infos_2(f"https://www.bdfugue.com/catalogsearch/result/?q={isbn}", isbn, logs)
         except Exception:
             info = corriger_info({}, isbn)
-            message_log = f"Album inexistant dans BD Phile et dans BD Fugue. ISBN ajouté"
+            message_log = "Album inexistant dans BD Phile et dans BD Fugue. ISBN ajouté"
             return info, Error(message_log, isbn, logs)
 
     else:

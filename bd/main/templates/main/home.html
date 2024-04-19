@@ -49,15 +49,24 @@
 <!-- Sidebar -->
     <section>
         <header>
-            <h2>{{ infos.Album }}</h2>
-            <h3>
-                {% if infos.Numero and infos.Numero != "" %}
-                Tome {{ infos.Numero }} :
-                {% endif %}
-                {% if infos.Serie and infos.Serie != "" %}
-                    {{ infos.Serie }}
-                {% endif %}
-            </h3>
+            {% if infos.Serie and infos.Serie != "" %}
+                <h2>    
+                    {{ infos.Serie }}   
+                </h2>
+            {% endif %}
+            {% if infos.Numero and infos.Numero != "" or infos.Album and infos.Album != "" %}
+                <h3>
+                    {% if infos.Numero and infos.Numero != "" %}
+                    Tome {{ infos.Numero }}
+                        {% if infos.Album and infos.Album != "" %}
+                        : 
+                        {% endif %}
+                    {% endif %}
+                    {% if infos.Album and infos.Album != "" %}
+                        {{ infos.Album }}
+                    {% endif %}
+                </h3>
+            {% endif %}
 
         </header>
 
