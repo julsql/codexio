@@ -26,26 +26,26 @@
         <section id="dedicace_{{ bd.ISBN }}">
             <header>
                 <h2>
-                    {% if bd.Album and db.Album != "" %}
-                        <a href="{% url 'pagebd' bd.ISBN %}">{{ bd.Album }}</a>
-                    {% else %}
-                        <a href="{% url 'pagebd' bd.ISBN %}">{{ bd.ISBN }}</a>
-                    {% endif %}
+                    <a href="{% url 'pagebd' bd.ISBN %}">{{ 
+                        {% if bd.Numero and bd.Numero != "" %}
+                            Tome {{ bd.Numero }}
+                            {% if bd.Album and bd.Album != "" %}
+                                : 
+                            {% endif %}
+                        {% endif %}
+
+                        {% if bd.Album and bd.Album != "" %}
+                            {{ bd.Album }}
+                        {{ else }}
+                            bd.ISBN
+                        {% endif %}
+                        }}
+                    </a>
                 </h2>
-
-                {% if bd.Numero or bd.Serie %}
-                    {% if bd.Numero != "" or bd.Serie != "" %}
-                        <h3>
-                            {% if bd.Numero and bd.Numero != "" %}
-                                Tome {{ bd.Numero }}
-                            {% endif %}
-
-                            {% if bd.Serie and bd.Serie != "" %}
-                                {{ bd.Serie }}
-                            {% endif %}
-                        </h3>
-                    {% endif %}
+                {% if bd.Serie and db.Serie != "" %}
+                    <h2>{{ bd.Serie }}</h2>
                 {% endif %}
+
                 <p>{{ bd.Dedicace }} dédicace{% if bd.Dedicace > 1 %}s{% endif %}</p>
             </header>
 

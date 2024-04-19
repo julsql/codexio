@@ -156,6 +156,10 @@ sudo service apache2 restart
 
 > To unload a configuration: `sudo a2dissite myconfig.conf`
 
+### Save or send images to the server
+
+`scp -r juliettedebono@157.159.195.11:/home/juliettedebono/bd_website/bd/main/static/main/images/dedicaces ~/images/dedicaces`
+
 ## Authors
 
 - Juliette Debono
