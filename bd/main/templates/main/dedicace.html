@@ -26,7 +26,7 @@
         <section id="dedicace_{{ bd.ISBN }}">
             <header>
                 <h2>
-                    <a href="{% url 'pagebd' bd.ISBN %}">{{ 
+                    <a href="{% url 'pagebd' bd.ISBN %}"> 
                         {% if bd.Numero and bd.Numero != "" %}
                             Tome {{ bd.Numero }}
                             {% if bd.Album and bd.Album != "" %}
@@ -39,7 +39,6 @@
                         {{ else }}
                             bd.ISBN
                         {% endif %}
-                        }}
                     </a>
                 </h2>
                 {% if bd.Serie and db.Serie != "" %}
