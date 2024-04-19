@@ -67,7 +67,8 @@ def banner():
 
 
 def page(isbn):
-    req = "SELECT * FROM BD WHERE ISBN={};".format(isbn)
+    req = "SELECT ISBN, Album, Numéro, Série, Scénariste, Dessinateur, Couleur, Éditeur, \"Date de parution\", Édition, \"Nombre de page\", Cote, \"Prix d'achat\", \"Année d'achat\", \"Lieu d'achat\", Dédicace, \"Ex Libris\",Synopsis, Image FROM BD WHERE ISBN={};""".format(isbn)
+    print(req)
     result = exec_req_one(req)
     infos = {}
     titles = ['ISBN', 'Album', 'Numero', 'Serie', 'Scenariste', 'Dessinateur', 'Couleur', 'Editeur', 'Date_de_parution',
@@ -84,9 +85,10 @@ def stat():
     dedicaces = exec_req_one("SELECT sum(Dédicace) as dedicaces FROM BD;")[0]
     exlibris = exec_req_one("SELECT sum(\"Ex Libris\") as exlibris FROM BD;")[0]
     prix = exec_req_one("SELECT sum(Cote) as prix FROM BD;")[0]
+    tirage = exec_req_one("SELECT count(*) as nombre FROM BD WHERE LOWER(\"Tirage de tête\") = 'oui';")[0]
     infos = {'nombre': int(nombre), 'pages': int(pages),
              'dedicaces': int(dedicaces), 'exlibris': int(exlibris),
-             'prix': int(prix)}
+             'prix': int(prix), 'tirage': int(tirage)}
     return infos
 
 
