@@ -26,7 +26,7 @@ def upload(request, isbn, origin_folder):
     if request.method == 'POST':
         auth_header = request.headers.get('Authorization')
         if auth_header is None or auth_header != f"Bearer {POST_TOKEN}":
-            return JsonResponse({'error': f"Vous n'avez pas l'autorisation"})
+            return JsonResponse({'error': "Vous n'avez pas l'autorisation"})
         else:
             if 'file' in request.FILES:
                 uploaded_file = request.FILES['file']

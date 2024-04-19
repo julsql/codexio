@@ -47,7 +47,7 @@ def add(isbn, doc_name, sheet=None, logs="logs.txt"):
             raise Error(str(e), isbn, logs)
 
 
-        if type(infos) is not type(dict()):
+        if isinstance(infos, dict):
             if error is not None:
                 raise error
             else:
@@ -74,7 +74,7 @@ def add_album(isbn):
     sheet_name = "BD"
 
     if isbn == 0:
-        message_log = f"Aucun ISBN n'a été renseigné"
+        message_log = "Aucun ISBN n'a été renseigné"
         raise Error(message_log, "")
     else:
         try:
@@ -83,7 +83,7 @@ def add_album(isbn):
             if isbn is not None and isbn != "":
                 raise Error(f"ISBN {isbn} invalide (doit être un grand entier)", isbn)
             else:
-                raise Error(f"ISBN vide ou nul", isbn)
+                raise Error("ISBN vide ou nul", isbn)
         else:
             try:
                 infos = add(isbn, doc_name, sheet_name)

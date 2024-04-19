@@ -55,14 +55,14 @@ class Conn:
     def set(self, valeur, i, j):
         i += self.__OFFSET__
         j += self.__OFFSET__
-        if type(valeur) is type(""):
+        if isinstance(valeur, str):
             self.worksheet.update_cell(i, j, valeur)
         else:
             raise TypeError(f"{valeur} n'est pas un type texte")
 
     def set_line(self, valeur, i):
         i += self.__OFFSET__
-        if type(valeur) is type(list()):
+        if isinstance(valeur, list):
             self.worksheet.update(f"A{i}", [valeur])
         else:
             self.worksheet.update(f"A{i}", [[valeur]])

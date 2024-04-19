@@ -22,6 +22,12 @@ It's a Django project that displays my collection of comics.
 - [manage.py](bd/manage.py): the main file that runs the website
 - [upload.py](bd/main/upload_photo.py): the upload of photos of the ex libris or 'dedicace'
 
+## Test
+
+Run tests
+
+`bd/manage.py test tests`
+
 ## Installation
 
 > You need to have python3 and pip installed on your machine

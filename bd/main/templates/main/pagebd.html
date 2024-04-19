@@ -23,8 +23,8 @@
         <section>
             <header>
                 <h2>
-                {% if Album and Album != "" %}
-                    {{ Album }}
+                {% if Serie and Serie != "" %}
+                    {{ Serie }}
                 {% else %}
                     Pas de titre
                 {% endif %}
@@ -32,16 +32,16 @@
 
                 <h3>
                 {% if Numero and Numero != "" %}
-                    {% if Serie and Serie != "" %}
-                    Tome {{ Numero }} {{ Serie }}
+                    {% if Album and Album != "" %}
+                        Tome {{ Numero }} : {{ Album }}
                     {% else %}
-                    Tome {{ Numero }}
+                        Tome {{ Numero }}
                     {% endif %}
                 {% else %}
-                    {% if Serie and Serie != "" %}
-                        {{ Serie }}
+                    {% if Album and Album != "" %}
+                        {{ Album }}
                     {% else %}
-                    Pas de titre
+                        Pas de titre
                     {% endif %}
                 {% endif %}
                 </h3>
