@@ -36,8 +36,8 @@
 
                         {% if bd.Album and bd.Album != "" %}
                             {{ bd.Album }}
-                        {{ else }}
-                            bd.ISBN
+                        {% else %}
+                            {{ bd.ISBN }}
                         {% endif %}
                     </a>
                 </h2>
