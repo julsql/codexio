@@ -47,7 +47,7 @@ def add(isbn, doc_name, sheet=None, logs="logs.txt"):
             raise Error(str(e), isbn, logs)
 
 
-        if isinstance(infos, dict):
+        if not isinstance(infos, dict):
             if error is not None:
                 raise error
             else:

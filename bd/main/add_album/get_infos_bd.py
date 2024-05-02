@@ -118,6 +118,7 @@ def get_infos(url, isbn, logs):
             informations["Synopsis"] = cleaned_synopsis
 
         # Imprimer les informations extraites
+        print(informations)
         return informations
 
 

@@ -166,7 +166,7 @@ def add_album(request, isbn):
             return JsonResponse({'error': "Vous n'avez pas l'autorisation"})
         else:
             infos = sheet_add_album.add_album(isbn)
-            if isinstance(infos, dict):
+            if not isinstance(infos, dict):
                 return JsonResponse({'error': str(infos)})
             elif infos:
                 return JsonResponse({'message': f'Album {isbn} ajouté avec succès'})
