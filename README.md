@@ -124,24 +124,24 @@ sudo nano /etc/apache2/sites-available/myconfig.conf
 ```
 <VirtualHost *:80>
     ServerName example.com
-    ServerAdmin user@telecom-sudparis.eu
+    ServerAdmin admin@email.fr
 
     AddDefaultCharset UTF-8
 
-    Alias /static /path/to/bd_website/bd/main/static/
-    <Directory /path/to/bd_website/bd/main/static/>
+    Alias /static /home/username/bd_website/bd/main/static/
+    <Directory /home/username/bd_website/bd/main/static/>
         Require all granted
     </Directory>
 
-    <Directory /path/to/bd_website/bd/bd/>
+    <Directory /home/username/bd_website/bd/bd/>
         <Files wsgi.py>
             Require all granted
         </Files>
     </Directory>
 
-    WSGIDaemonProcess bd_process python-home=/path/to/bd_website/env python-path=/path/to/bd_website/bd
+    WSGIDaemonProcess bd_process python-home=/home/username/bd_website/env python-path=/home/username/bd_website/bd
     WSGIProcessGroup bd_process
-    WSGIScriptAlias / /path/to/bd_website/bd/bd/wsgi.py process-group=bd_process
+    WSGIScriptAlias / /home/username/bd_website/bd/bd/wsgi.py process-group=bd_process
 
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
@@ -156,10 +156,6 @@ sudo service apache2 restart
 
 > To unload a configuration: `sudo a2dissite myconfig.conf`
 
-### Save or send images to the server
-
-`scp -r user@<server-ip>:/path/to/bd_website/bd/main/static/main/images/dedicaces ~/images/dedicaces`
-
 ## Authors
 
-- user
+- Jul SQL
