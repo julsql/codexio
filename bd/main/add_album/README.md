@@ -81,7 +81,7 @@ pip install virtualenv
 ### Cloner git sur la VM
 
 ```bash
-git clone git@github.com:juliette39/bd.git
+git clone git@github.com:julsql/bd.git
 cd bd
 python3 -m venv env
 source env/bin/activate
@@ -135,4 +135,4 @@ cat ~/key >> ~/.ssh/authorized_keys
 
 ## Auteur
 
-Juliette Debono
+Jul SQL

@@ -35,7 +35,7 @@ Run tests
 1. Clone git repository
 
     ```bash
-    git clone git@github.com:juliette39/bd_website.git
+    git clone git@github.com:julsql/bd_website.git
     ```
 
 2. Don't forget to add the settings file in `./bd/bd` and the google sheet api keys file at `private/bd-sheet-91.json`
@@ -124,24 +124,24 @@ sudo nano /etc/apache2/sites-available/myconfig.conf
 ```
 <VirtualHost *:80>
     ServerName bd.h.minet.net
-    ServerAdmin juliette.debono@telecom-sudparis.eu
+    ServerAdmin admin@email.fr
 
     AddDefaultCharset UTF-8
 
-    Alias /static /home/juliettedebono/bd_website/bd/main/static/
-    <Directory /home/juliettedebono/bd_website/bd/main/static/>
+    Alias /static /home/username/bd_website/bd/main/static/
+    <Directory /home/username/bd_website/bd/main/static/>
         Require all granted
     </Directory>
 
-    <Directory /home/juliettedebono/bd_website/bd/bd/>
+    <Directory /home/username/bd_website/bd/bd/>
         <Files wsgi.py>
             Require all granted
         </Files>
     </Directory>
 
-    WSGIDaemonProcess bd_process python-home=/home/juliettedebono/bd_website/env python-path=/home/juliettedebono/bd_website/bd
+    WSGIDaemonProcess bd_process python-home=/home/username/bd_website/env python-path=/home/username/bd_website/bd
     WSGIProcessGroup bd_process
-    WSGIScriptAlias / /home/juliettedebono/bd_website/bd/bd/wsgi.py process-group=bd_process
+    WSGIScriptAlias / /home/username/bd_website/bd/bd/wsgi.py process-group=bd_process
 
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
@@ -156,10 +156,6 @@ sudo service apache2 restart
 
 > To unload a configuration: `sudo a2dissite myconfig.conf`
 
-### Save or send images to the server
-
-`scp -r juliettedebono@157.159.195.11:/home/juliettedebono/bd_website/bd/main/static/main/images/dedicaces ~/images/dedicaces`
-
 ## Authors
 
-- Juliette Debono
+- Jul SQL
