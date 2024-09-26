@@ -4,7 +4,7 @@ This is the repo of my comics' collection website!
 
 It's a Django project that displays my collection of comics.
 
-> Website available at address: [bd.h.minet.net](http://bd.h.minet.net)
+> Website available at address: [bd.julsql.fr](http://bd.julsql.fr)
 
 ## Table of Contents
 
@@ -94,8 +94,8 @@ You can upload image with a `POST` request.
 The body request a form sending a file with key `file`.
 
    The urls are:
-      - http://bd.h.minet.net/upload/dedicace/isbn/ for the dedicace
-      - http://bd.h.minet.net/upload/exlibris/isbn/ for the ex libris
+      - http://bd.julsql.fr/upload/dedicace/isbn/ for the dedicace
+      - http://bd.julsql.fr/upload/exlibris/isbn/ for the ex libris
 
 ## Deploy
 
@@ -123,7 +123,7 @@ sudo nano /etc/apache2/sites-available/myconfig.conf
 
 ```
 <VirtualHost *:80>
-    ServerName bd.h.minet.net
+    ServerName url.domain.com
     ServerAdmin admin@email.fr
 
     AddDefaultCharset UTF-8

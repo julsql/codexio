@@ -6,7 +6,7 @@ Ce projet permet d'ajouter depuis son téléphone une bande dessinée à un gshe
 S'il y a une erreur d'ajout dans le tableur, l'erreur est ajoutée dans le fichier [logs.txt](logs/logs.txt).
 Une fois l'ISBN ajouté, toutes les infos disponibles sur internet sont automatiquement ajoutées à un gsheet intitulé BD.
 
-- Pour accéder au site web pour rechercher une bande dessinées : [bd.h.minet.net](http://157.159.195.11)
+- Pour accéder au site web pour rechercher une bande dessinées : [bd.julsql.fr](http://bd.julsql.fr)
 - Pour accéder au gsheet des bandes dessinées (si vous y avez l'accès) : [lien du gsheet](https://docs.google.com/spreadsheets/d/1z4iFF1ROr_sXZkkFJS12kKk7ndUaA9fNconarZIAIxo/edit?usp=sharing)
 
 ## Table des matières
