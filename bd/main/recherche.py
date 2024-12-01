@@ -2,7 +2,13 @@ from django.db import connections
 import random
 from django.conf import settings
 import os
+import logging
 
+logging.basicConfig(
+    level=logging.DEBUG,  # Niveau minimal des messages enregistrés
+    format='%(asctime)s - %(levelname)s - %(message)s',  # Format des messages
+    datefmt='%Y-%m-%d %H:%M:%S'  # Format de la date
+)
 
 def exec_req_all(req):
     with connections['default'].cursor() as cur:
@@ -68,7 +74,7 @@ def banner():
 
 def page(isbn):
     req = "SELECT ISBN, Album, Numéro, Série, Scénariste, Dessinateur, Couleur, Éditeur, \"Date de parution\", Édition, \"Nombre de page\", Cote, \"Prix d'achat\", \"Année d'achat\", \"Lieu d'achat\", Dédicace, \"Ex Libris\",Synopsis, Image FROM BD WHERE ISBN={};""".format(isbn)
-    print(req)
+    logging.info(req)
     result = exec_req_one(req)
     infos = {}
     titles = ['ISBN', 'Album', 'Numero', 'Serie', 'Scenariste', 'Dessinateur', 'Couleur', 'Editeur', 'Date_de_parution',

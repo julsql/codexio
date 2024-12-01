@@ -90,7 +90,7 @@ Run tests
     ```
 ### Upload photo
 
-You can upload image with a `POST` request.
+You can upload image with a `POST` request
 The body request a form sending a file with key `file`.
 
    The urls are:

@@ -1,4 +1,5 @@
 import re
+import logging
 
 from bs4 import BeautifulSoup
 
@@ -17,6 +18,11 @@ import requests
 
 # Get the data of a comic from its ISBN. Return a dictionary.
 
+logging.basicConfig(
+    level=logging.DEBUG,  # Niveau minimal des messages enregistrés
+    format='%(asctime)s - %(levelname)s - %(message)s',  # Format des messages
+    datefmt='%Y-%m-%d %H:%M:%S'  # Format de la date
+)
 
 def get_html(url):
     response = requests.get(url)
@@ -25,7 +31,7 @@ def get_html(url):
     if response.status_code == 200:
         return response.text
     else:
-        print("La requête a échoué. Statut de la réponse :", response.status_code)
+        logging.error(f"La requête a échoué. Statut de la réponse : {response.status_code}")
 
 
 def get_link(isbn):
@@ -117,8 +123,7 @@ def get_infos(url, isbn, logs):
                 '\n', '').replace('\t', '')
             informations["Synopsis"] = cleaned_synopsis
 
-        # Imprimer les informations extraites
-        print(informations)
+        logging.info(informations)
         return informations
 
 
@@ -131,7 +136,7 @@ legende = {"Titre album": "Album", "Tome": "Numéro",
 
 def get_infos_2(url, isbn, logs):
     """Get infos in BD Fugue"""
-    print(url)
+    logging.info(url)
     html = get_html(url)
     soup = BeautifulSoup(html, 'html.parser')
 
@@ -315,7 +320,7 @@ def parse_date(date_str):
             "%B %Y %H:%M:%S",
             "%b %Y %H:%M:%S",
         ]
-        for date_format in formats:
+        for _ in formats:
             try:
                 parsed_date = parser.parse(formatted_date, dayfirst=True, fuzzy=True,
                                            default=datetime.datetime(1900, 1, 1))
@@ -323,7 +328,6 @@ def parse_date(date_str):
             except ValueError:
                 pass
 
-    # Si aucun format de date n'a pu être analysé, renvoyez None ou une valeur par défaut
     return date_str
 
 
@@ -344,9 +348,9 @@ def corrige_colonne(col_num):
         my_value = value[i]
         if not condition(my_value):
             isbn = connection.get(i, 0)
-            print(f"line: {i + 1}, isbn: {isbn}, value: {my_value}")
+            logging.info(f"line: {i + 1}, isbn: {isbn}, value: {my_value}")
             link = get_link("https://www.bdphile.fr/search/album/?q={}".format(isbn))
-            print(link)
+            logging.info(link)
             webbrowser.open(link)
             new_value = input("Nouvelle valeur ")
             connection.set(new_value, i, col_num)

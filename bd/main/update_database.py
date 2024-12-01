@@ -3,6 +3,13 @@ from google.auth import exceptions
 from google.oauth2 import service_account
 import os
 import sqlite3
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,  # Niveau minimal des messages enregistrés
+    format='%(asctime)s - %(levelname)s - %(message)s',  # Format des messages
+    datefmt='%Y-%m-%d %H:%M:%S'  # Format de la date
+)
 
 __FILEPATH__ = os.path.dirname(os.path.abspath(__file__))
 __DATABASE__ = os.path.join(os.path.dirname(__FILEPATH__), 'db', 'db.sqlite3')
@@ -49,7 +56,7 @@ def update():
         client.login()
     except exceptions.DefaultCredentialsError:
         message_log = "Google Sheet non accessible."
-        print(message_log)
+        logging.error(message_log)
         return None
 
     worksheet = client.open("bd").sheet1

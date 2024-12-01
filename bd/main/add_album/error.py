@@ -1,6 +1,12 @@
 from datetime import datetime
 import os
+import logging
 
+logging.basicConfig(
+    level=logging.DEBUG,  # Niveau minimal des messages enregistrés
+    format='%(asctime)s - %(levelname)s - %(message)s',  # Format des messages
+    datefmt='%Y-%m-%d %H:%M:%S'  # Format de la date
+)
 
 class Error(Exception):
 
@@ -8,7 +14,7 @@ class Error(Exception):
         __FILEPATH__ = os.path.dirname(os.path.abspath(__file__))
         logfile = os.path.join(__FILEPATH__, "logs", log_file_name)
         self.addLog(logfile, message_log, isbn)
-        print("Erreur : " + message_log)
+        logging.info("Erreur : " + message_log)
         super().__init__(message_log)
 
     def addLog(self, logfile, message, isbn=None):

@@ -9,7 +9,7 @@ class TestGetInfosBd(unittest.TestCase):
 
     def setUp(self):
         self.logs = "logs-test-unit.txt"
-        self.asterix = {
+        self.asterix = ({
              'Album': "L'empire du milieu",
              'Couleurs': 'Thierry Mébarki',
              'Date de publication': '2023-02-08',
@@ -30,26 +30,28 @@ class TestGetInfosBd(unittest.TestCase):
              'Série': 'Astérix (Albums des films)',
              'Éditeur': 'Albert René',
              'Édition': 'Édition originale Noté : Impression en décembre 2022 - n° '
-                        '616-5-01 Impression et reliure par Pollina - n°13651'}
+                        '616-5-01 Impression et reliure par Pollina - n°13651'},
+        None)
 
     def tearDown(self):
         pass
 
     def test_get_link_pass(self):
         link = get_infos_bd.get_link(9782840555698)
-        self.assertEqual(link, "https://www.bdphile.fr/album/view/27231/")
+        self.assertEqual("https://www.bdphile.fr/album/view/27231/", link)
 
     def test_get_link_fail(self):
         link = get_infos_bd.get_link("")
-        self.assertEqual(link, 0)
+        self.assertEqual(0, link)
 
     def test_corriger_info_pass(self):
         info = get_infos_bd.corriger_info({}, "")
-        self.assertEqual(info, {
+        self.assertEqual({
             'Album': '', 'Couleurs': '', 'Date de publication': '',
             'Dessin': '', 'Édition': '', 'ISBN': '', 'Image': '',
             'Numéro': '', 'Pages': '', 'Prix': '', 'Scénario': '',
-            'Synopsis': '', 'Série': '', 'Éditeur': ''})
+            'Synopsis': '', 'Série': '', 'Éditeur': ''},
+            info)
 
     def test_corriger_info_fail(self):
         with self.assertRaises(AttributeError):
@@ -57,11 +59,11 @@ class TestGetInfosBd(unittest.TestCase):
 
     def test_main_pass_1(self):
         info = get_infos_bd.main("9782864976165", self.logs)
-        self.assertEqual(info, self.asterix)
+        self.assertEqual(self.asterix, info)
 
     def test_main_pass_2(self):
         info = get_infos_bd.main(9782864976165, self.logs)
-        self.assertEqual(info, self.asterix)
+        self.assertEqual(self.asterix, info)
 
     def test_main_pass_3(self):
         get_infos_bd.main(9782756082332, self.logs)
@@ -75,67 +77,78 @@ class TestGetInfosBd(unittest.TestCase):
             get_infos_bd.main("", self.logs)
 
     def test_main_fail_3(self):
-        with self.assertRaises(error.Error):
-            print(get_infos_bd.main(9791038203907, self.logs))
+        result, result_error= get_infos_bd.main(9791038203907, self.logs)
+        self.assertIsInstance(result_error, error.Error)
 
     def test_parse_date_pass_1(self):
         date = get_infos_bd.parse_date("2021")
-        self.assertEqual(date, datetime.date(2021, 1, 1).strftime("%Y-%m-%d"))
+        self.assertEqual(datetime.date(2021, 1, 1).strftime("%Y-%m-%d"),
+                         date)
 
     def test_parse_date_pass_2(self):
         date = get_infos_bd.parse_date("3 FEVRIER 2021")
-        self.assertEqual(date, datetime.date(2021, 2, 3).strftime("%Y-%m-%d"))
+        self.assertEqual(datetime.date(2021, 2, 3).strftime("%Y-%m-%d"),
+                         date)
 
     def test_parse_date_pass_3(self):
         date = get_infos_bd.parse_date("3 FÉVRIER 2021")
-        self.assertEqual(date, datetime.date(2021, 2, 3).strftime("%Y-%m-%d"))
+        self.assertEqual(datetime.date(2021, 2, 3).strftime("%Y-%m-%d"),
+                         date)
 
     def test_parse_date_pass_4(self):
         date = get_infos_bd.parse_date("aout 2021")
-        self.assertEqual(date, datetime.date(2021, 8, 1).strftime("%Y-%m-%d"))
+        self.assertEqual(datetime.date(2021, 8, 1).strftime("%Y-%m-%d"),
+                         date)
 
     def test_parse_date_pass_5(self):
         date = get_infos_bd.parse_date("4th March 2021")
-        self.assertEqual(date, datetime.date(2021, 3, 4).strftime("%Y-%m-%d"))
+        self.assertEqual(datetime.date(2021, 3, 4).strftime("%Y-%m-%d"),
+                         date)
 
     def test_parse_date_pass_6(self):
         date = get_infos_bd.parse_date("April, 2nd 2021")
-        self.assertEqual(date, datetime.date(2021, 4, 2).strftime("%Y-%m-%d"))
+        self.assertEqual(datetime.date(2021, 4, 2).strftime("%Y-%m-%d"),
+                         date)
 
     def test_parse_date_pass_7(self):
         date = get_infos_bd.parse_date("février 2021")
-        self.assertEqual(date, datetime.date(2021, 2, 1).strftime("%Y-%m-%d"))
+        self.assertEqual(datetime.date(2021, 2, 1).strftime("%Y-%m-%d"),
+                         date)
 
     def test_parse_date_pass_8(self):
         date = get_infos_bd.parse_date("2021 Septembre 4e")
-        self.assertEqual(date, datetime.date(2021, 9, 4).strftime("%Y-%m-%d"))
+        self.assertEqual(datetime.date(2021, 9, 4).strftime("%Y-%m-%d"),
+                         date)
 
     def test_parse_date_pass_9(self):
         date = get_infos_bd.parse_date("13/11/2021")
-        self.assertEqual(date, datetime.date(2021, 11, 13).strftime("%Y-%m-%d"))
+        self.assertEqual(datetime.date(2021, 11, 13).strftime("%Y-%m-%d"),
+                         date)
 
     def test_parse_date_pass_10(self):
         date = get_infos_bd.parse_date("2021/04/30")
-        self.assertEqual(date, datetime.date(2021, 4, 30).strftime("%Y-%m-%d"))
+        self.assertEqual(datetime.date(2021, 4, 30).strftime("%Y-%m-%d"),
+                         date)
 
     def test_parse_date_pass_11(self):
         date = get_infos_bd.parse_date("10 02 2021")
-        self.assertEqual(date, datetime.date(2021, 2, 10).strftime("%Y-%m-%d"))
+        self.assertEqual(datetime.date(2021, 2, 10).strftime("%Y-%m-%d"),
+                         date)
 
     def test_parse_date_fail_1(self):
         date_str = "BRUH"
         date = get_infos_bd.parse_date(date_str)
-        self.assertEqual(date, date_str)
+        self.assertEqual(date_str, date)
 
     def test_parse_date_fail_2(self):
         date_str = ""
         date = get_infos_bd.parse_date(date_str)
-        self.assertEqual(date, date_str)
+        self.assertEqual(date_str, date)
 
     def test_parse_date_fail_3(self):
         date_str = "----"
         date = get_infos_bd.parse_date(date_str)
-        self.assertEqual(date, date_str)
+        self.assertEqual(date_str, date)
 
 
 if __name__ == '__main__':
