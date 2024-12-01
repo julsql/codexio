@@ -6,6 +6,7 @@ from main.add_album.sheet_connection import Conn
 
 
 class TestIntegration(unittest.TestCase):
+    NB_COLUMN = 20
 
     def setUp(self):
         self.logs = "logs-test-unit.txt"
@@ -44,7 +45,7 @@ class TestIntegration(unittest.TestCase):
             'Dessin': '', 'Édition': '', 'ISBN': '', 'Image': '',
             'Numéro': '', 'Pages': '', 'Prix': '', 'Scénario': '',
             'Synopsis': '', 'Série': '', 'Éditeur': ''})
-        self.assertEqual(liste, [""] * 19)
+        self.assertEqual([""] * self.NB_COLUMN, liste)
 
     def test_liste_from_dict_pass_2(self):
         liste = sheet_add_album.liste_from_dict({
@@ -52,19 +53,19 @@ class TestIntegration(unittest.TestCase):
             'Dessin': 'a', 'Édition': 'a', 'ISBN': 'a', 'Image': 'a',
             'Numéro': 'a', 'Pages': 'a', 'Prix': 'a', 'Scénario': 'a',
             'Synopsis': 'a', 'Série': 'a', 'Éditeur': 'a'})
-        self.assertEqual(liste,
-                         ["a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "", "a", "", "", "", "", "a", "a"])
+        self.assertEqual(["a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "", "a", "", "", "", "", "", "a", "a"],
+                         liste)
 
     def test_liste_from_dict_fail(self):
         with self.assertRaises(IndexError):
             sheet_add_album.liste_from_dict({})
 
     def test_add_pass(self):
-        self.assertEqual(sheet_add_album.add(self.isbn, self.doc_name, self.sheet, self.logs), self.asterix)
+        self.assertEqual(self.asterix, sheet_add_album.add(self.isbn, self.doc_name, self.sheet, self.logs))
         connection = Conn()
         connection.open(self.doc_name, self.sheet)
         sheet_line = connection.get_line(0)
-        self.assertEqual(sheet_line, [
+        self.assertEqual([
             '9782864976165',
             "L'empire du milieu",
             '10',
@@ -83,18 +84,19 @@ class TestIntegration(unittest.TestCase):
             '',
             '',
             '',
+            '',
             "Nous sommes en 50 av J.-C. Loin, très loin du petit village d'Armorique que "
             "nous connaissons bien, l'Impératrice de Chine est emprisonnée suite à coup "
             "d'état fomenté par l'infâme Deng Tsin Qin.<br/>La princesse Fu Yi, fille "
             "unique de l'Impératrice, aidée par sa fidèle guerrière Tat Han et "
             "Graindemaïs, le neveu du marchand phénicien Epidemaïs, s'enfuit pour "
             "demander de l'aide aux Irréductibles Gaulois.",
-            'https://static.bdphile.fr/images/media/cover/0160/160391.jpg'])
+            'https://static.bdphile.fr/images/media/cover/0160/160391.jpg'], sheet_line)
 
-        connection.set_line([""] * 19, 0)
+        connection.set_line([""] * self.NB_COLUMN, 0)
 
         sheet_content = connection.get_all()
-        self.assertEqual(sheet_content, [])
+        self.assertEqual([], sheet_content)
 
     def test_add_fail_1(self):
         with self.assertRaises(error.Error):
@@ -112,10 +114,10 @@ class TestIntegration(unittest.TestCase):
 
         connection = Conn()
         connection.open(self.doc_name, self.sheet)
-        connection.set_line([""] * 19, 0)
+        connection.set_line([""] * self.NB_COLUMN, 0)
 
         sheet_content = connection.get_all()
-        self.assertEqual(sheet_content, [])
+        self.assertEqual([], sheet_content)
 
 
 if __name__ == '__main__':

@@ -7,6 +7,14 @@ except ModuleNotFoundError:
     from error import Error
     from sheet_connection import Conn
 
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,  # Niveau minimal des messages enregistrés
+    format='%(asctime)s - %(levelname)s - %(message)s',  # Format des messages
+    datefmt='%Y-%m-%d %H:%M:%S'  # Format de la date
+)
+
 def liste_from_dict(infos):
     titles = ["ISBN", "Album", "Numéro", "Série", "Scénario", "Dessin", "Couleurs",
               "Éditeur", "Date de publication", "Édition", "Pages", None, "Prix", None, None, None, None, None, "Synopsis",
@@ -19,7 +27,7 @@ def liste_from_dict(infos):
         elif title is None:
             liste.append("")
         else:
-            print(title)
+            logging.error(f"{title} manque")
             raise IndexError(f"{title} manque")
     return liste
 
@@ -65,7 +73,7 @@ def add(isbn, doc_name, sheet=None, logs="logs.txt"):
             title = infos["Album"]
             if title is None or title == "":
                 title = infos["ISBN"]
-            print(f"{title} ajouté avec succès !")
+            logging.info(f"{title} ajouté avec succès !")
             return infos
 
 
