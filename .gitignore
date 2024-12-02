@@ -1,15 +1,24 @@
-**/private/
-bd/db/
+# ide
 .idea/
 .vscode/
+
+# Config files
+bd/config/bd-sheet-91.json
+bd/config/settings.py
+bd/comics.sqlite3
+
+# photos
+**/static/main/images/dedicaces/
+**/static/main/images/exlibris/
+
+# log
 **/*.log
-**/.DS_Store
-bd/bd/settings.py
+
+# cache
 **/__pycache__/
 *.py[cod]
 *$py.class
-**/static/main/images/dedicaces/
-**/static/main/images/exlibris/
+**/.DS_Store
 
 # C extensions
 *.so

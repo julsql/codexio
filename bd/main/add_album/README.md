@@ -81,8 +81,8 @@ pip install virtualenv
 ### Cloner git sur la VM
 
 ```bash
-git clone git@github.com:julsql/bd.git
-cd bd
+git clone git@github.com:julsql/config.git
+cd config
 python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt 

@@ -3,7 +3,7 @@ import requests
 
 from error import Error
 from sheet_connection import Conn
-from main.add_album.logger import logger
+from main.core.common.logger import logger
 
 def get_html(url):
     response = requests.get(url)
@@ -44,7 +44,7 @@ def get_image(url):
 def update_column(column):
     try:
         connection = Conn()
-        connection.open("bd", "BD")
+        connection.open("config", "BD")
     except:
         message_log = "Google Sheet non accessible."
         raise Error(message_log, 0)

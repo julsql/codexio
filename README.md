@@ -18,7 +18,7 @@ It's a Django project that displays my collection of comics.
 - [static/](bd/main/static): The files used by the website (images, documents, css & javascript…)
 - [templates/](bd/main/templates): The html templates of the pages
 - [views.py](bd/main/views.py): the code launch when loading a page
-- [bd/](bd/bd): the settings files (urls, wsgi, settings) used by Django
+- [bd/](bd/config): the settings files (urls, wsgi, settings) used by Django
 - [manage.py](bd/manage.py): the main file that runs the website
 - [upload.py](bd/main/upload_photo.py): the upload of photos of the ex libris or 'dedicace'
 
@@ -58,11 +58,11 @@ Run tests
 5. Creation of the privates files
 
     ```bash
-    cd bd
+    cd config
     mkdir db
-    nano bd/settings.py
+    nano config/settings.py
     mkdir main/private
-    nano main/private/bd-sheet-91.json
+    nano main/private/config-sheet-91.json
     mkdir main/static/main/images/dedicaces
     mkdir main/static/main/images/exlibris
     chmod -R 755 main/static/main/images/exlibris

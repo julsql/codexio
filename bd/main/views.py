@@ -1,12 +1,13 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpRequest
 from django.shortcuts import render
+
+from main.core.add_album.internal.add_album_view import add_album
 from main.forms import RechercheForm
 from main import recherche as recherche
 from main import upload_photo
 from django.views.decorators.csrf import csrf_exempt
-from main.add_album import sheet_add_album
 from main.add_album import sheet_connection
-from bd.settings import POST_TOKEN
+from config.settings import POST_TOKEN
 from main.update_database import update
 from main.models import BD
 
@@ -159,28 +160,14 @@ def update_database(request):
         return JsonResponse({'message': 'Il faut une requête POST'})
 
 
-def add_album(request, isbn):
-    if request.method == 'GET':
-        auth_header = request.headers.get('Authorization')
-        if auth_header is None or auth_header != f"Bearer {POST_TOKEN}":
-            return JsonResponse({'error': "Vous n'avez pas l'autorisation"})
-        else:
-            infos = sheet_add_album.add_album(isbn)
-            if not isinstance(infos, dict):
-                return JsonResponse({'error': str(infos)})
-            elif infos:
-                return JsonResponse({'message': f'Album {isbn} ajouté avec succès'})
-            else:
-                return JsonResponse({'error': f"Erreur d'ajout de l'album {isbn}"})
-    else:
-        return JsonResponse({'message': 'Il faut une requête POST'})
-
+def ajoute_album(request: HttpRequest, isbn: int):
+    return add_album(request, isbn)
 
 def possede(request, isbn):
     if request.method == 'GET':
-        doc_name = "bd"
+        doc_name = "config"
         sheet_name = "BD"
-        connection = sheet_connection.Conn("logs.txt")
+        connection = sheet_connection.Conn()
         connection.open(doc_name, sheet_name)
         if connection.double(isbn):
             message = f"Album {isbn} déjà enregistré"

@@ -2,10 +2,11 @@ import gspread
 from google.auth import exceptions
 from google.oauth2 import service_account
 import os
-from main.add_album.error import Error
+from main.core.add_album.add_album_error import AddAlbumError
+from main.core.common.gsheet_repository import GsheetRepository
 
-class Conn:
 
+class GsheetConnexion(GsheetRepository):
     def __init__(self):
         self.__OFFSET__ = 1
         self.worksheet = None
@@ -20,34 +21,34 @@ class Conn:
         except exceptions.DefaultCredentialsError:
             message_log = "Google Sheet non accessible."
             self.client = None
-            raise Error(message_log, None)
+            raise AddAlbumError(message_log, None)
 
-    def open(self, doc_name, sheet_name=None):
+    def open(self, doc_name: str, sheet_name: str = None):
         if sheet_name is not None:
             self.worksheet = self.client.open(doc_name).worksheet(sheet_name)
         else:
             self.worksheet = self.client.open(doc_name).sheet1
 
-    def append(self, liste):
+    def append(self, liste: list):
         self.worksheet.append_row(liste)
 
-    def get(self, i, j):
+    def get(self, i: int, j: int) -> str:
         i += self.__OFFSET__
         j += self.__OFFSET__
         return self.worksheet.cell(i, j).value
 
-    def get_line(self, i):
+    def get_line(self, i: int) -> list:
         i += self.__OFFSET__
         return self.worksheet.row_values(i)
 
-    def get_column(self, j):
+    def get_column(self, j: int) -> list:
         j += self.__OFFSET__
         return self.worksheet.col_values(j)
 
-    def get_all(self):
+    def get_all(self) -> list:
         return self.worksheet.get_all_values()
 
-    def set(self, valeur, i, j):
+    def set(self, valeur: str, i: int, j: int):
         i += self.__OFFSET__
         j += self.__OFFSET__
         if isinstance(valeur, str):
@@ -55,14 +56,14 @@ class Conn:
         else:
             raise TypeError(f"{valeur} n'est pas un type texte")
 
-    def set_line(self, valeur, i):
+    def set_line(self, valeur: list, i: int):
         i += self.__OFFSET__
         if isinstance(valeur, list):
             self.worksheet.update([valeur], f"A{i}")
         else:
             self.worksheet.update([[valeur]], f"A{i}")
 
-    def set_column(self, valeur, j):
+    def set_column(self, valeur: str, j: int):
         j += self.__OFFSET__
         plage_de_cellules = self.worksheet.range(2, j, len(valeur), j)
 
@@ -71,10 +72,10 @@ class Conn:
 
         self.worksheet.update_cells(plage_de_cellules)
 
-    def delete_row(self, i):
+    def delete_row(self, i: int):
         self.set_line([""] * 26, i)
 
-    def double(self, isbn):
+    def double(self, isbn: int) -> bool:
         row_values = self.get_column(0)
 
         for cell_value in row_values:
