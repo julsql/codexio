@@ -5,7 +5,7 @@ from main.core.add_album.add_album_service import AddAlbumService
 from main.core.add_album.internal.bdfugue_connexion import BdFugueRepository
 from main.core.add_album.internal.bdphile_connexion import BdPhileRepository
 from main.core.common.api import POST_TOKEN
-from main.core.common.gsheet_connexion import GsheetConnexion
+from main.core.common.sheet_connexion import SheetConnexion
 
 
 def add_album(request: HttpRequest, isbn: int):
@@ -15,10 +15,10 @@ def add_album(request: HttpRequest, isbn: int):
             return HttpResponse("Incorrection token", status=401)
         else:
             try:
-                gsheet_repository = GsheetConnexion()
+                sheet_repository = SheetConnexion()
                 bdfugue_repository = BdFugueRepository()
                 bdphile_repository = BdPhileRepository()
-                service = AddAlbumService(isbn, [bdfugue_repository, bdphile_repository], gsheet_repository)
+                service = AddAlbumService(isbn, [bdfugue_repository, bdphile_repository], sheet_repository)
                 service.main()
             except AddAlbumError as e:
                 return HttpResponse(str(e), status=404)

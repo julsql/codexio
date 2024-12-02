@@ -4,7 +4,7 @@ from main.add_album import error
 from main.add_album import sheet_add_album
 from tests.test_add_album.data.album_data_set import ASTERIX, ASTERIX_ISBN, ASTERIX_LIST
 from tests.test_add_album.internal import add_album_in_memory
-from tests.test_add_album.internal.gsheet_in_memory import ConnInMemory
+from tests.test_add_album.internal.sheet_in_memory import ConnInMemory
 
 
 class TestIntegration(unittest.TestCase):

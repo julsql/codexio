@@ -28,5 +28,5 @@ class GetInfosService:
         for key in keys:
             if key not in info.keys():
                 info[key] = ""
-        info["ISBN"] = self.isbn
+        info["ISBN"] = str(self.isbn) if self.isbn > 0 else ""
         return info

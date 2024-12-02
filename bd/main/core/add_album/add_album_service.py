@@ -1,15 +1,15 @@
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.get_infos_service import GetInfosService
-from main.core.common.gsheet_repository import GsheetRepository
+from main.core.common.sheet_repository import SheetRepository
 from main.core.common.logger import logger
 
 
 class AddAlbumService:
-    def __init__(self, isbn: int, bd_repositories: list, gsheet_repository: GsheetRepository):
+    def __init__(self, isbn: int, bd_repositories: list, sheet_repository: SheetRepository):
         doc_name = "bd"
         sheet_name = "BD"
         self.isbn = isbn
-        self.connexion = gsheet_repository
+        self.connexion = sheet_repository
         self.connexion.open(doc_name, sheet_name)
         self.get_infos_service = GetInfosService(self.isbn, bd_repositories)
 
