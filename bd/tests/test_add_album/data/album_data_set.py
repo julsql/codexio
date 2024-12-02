@@ -18,6 +18,10 @@ serie = "Astérix (Albums des films)"
 editeur = "Albert René"
 edition = "Édition originale Noté : Impression en décembre 2022 - n° 616-5-01 Impression et reliure par Pollina - n°13651"
 
+FIRST_LINE = [
+    "ISBN", "Album", "Numéro", "Série", "Scénariste", "Dessinateur", "Couleur", "Éditeur", "Date de parution",
+    "Édition", "Nombre de pages", "Cote", "Prix d'achat", "Année d'achat", "Lieu d'achat", "Tirage de tête",
+    "Dédicace", "Ex Libris", "Synopsis", "Image"]
 
 ASTERIX = {
     'Album': album,

@@ -1,7 +1,9 @@
-from main.core.common.gsheet_repository import GsheetRepository
+from tkinter import Scale
+
+from main.core.common.sheet_repository import SheetRepository
 
 
-class GsheetInMemory(GsheetRepository):
+class SheetInMemory(SheetRepository):
     worksheet = []
     client = {"bd": {"BD": [], "Test": []}}
     __OFFSET__ = 0

@@ -4,21 +4,22 @@ from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.add_album_service import AddAlbumService
 from tests.test_add_album.data.album_data_set import ASTERIX_ISBN, ASTERIX
 from tests.test_add_album.internal.bd_in_memory import BdInMemory
-from tests.test_add_album.internal.gsheet_in_memory import GsheetInMemory
+from tests.test_add_album.internal.sheet_in_memory import SheetInMemory
 
 
 class TestAddAlbumService(unittest.TestCase):
     NB_COLUMN = 20
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         isbn = ASTERIX_ISBN
-        self.gsheet_repository = GsheetInMemory()
+        cls.sheet_repository = SheetInMemory()
         bd_repository = BdInMemory()
-        self.service = AddAlbumService(isbn, [bd_repository], self.gsheet_repository)
+        cls.service = AddAlbumService(isbn, [bd_repository], cls.sheet_repository)
 
     def tearDown(self):
         # After each
-        self.gsheet_repository.delete_row(0)
+        self.sheet_repository.delete_row(0)
 
     def test_convert_list_from_dict_empty_value_successfully(self):
         liste = self.service.map_to_list({

@@ -3,15 +3,15 @@ from google.auth import exceptions
 from google.oauth2 import service_account
 import os
 from main.core.add_album.add_album_error import AddAlbumError
-from main.core.common.gsheet_repository import GsheetRepository
+from main.core.common.sheet_repository import SheetRepository
+from config.settings import GSHEET_CREDENTIALS
 
-
-class GsheetConnexion(GsheetRepository):
+class SheetConnexion(SheetRepository):
     def __init__(self):
         self.__OFFSET__ = 1
         self.worksheet = None
         __FILEPATH__ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        credentials_path = os.path.join(__FILEPATH__, 'private/config-sheet-91.json')
+        credentials_path = GSHEET_CREDENTIALS[0]
         try:
             creds = service_account.Credentials.from_service_account_file(
                 credentials_path,
