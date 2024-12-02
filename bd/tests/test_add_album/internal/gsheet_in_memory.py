@@ -3,7 +3,7 @@ from main.core.common.gsheet_repository import GsheetRepository
 
 class GsheetInMemory(GsheetRepository):
     worksheet = []
-    client = {"config": {"BD": [], "Test": []}}
+    client = {"bd": {"BD": [], "Test": []}}
     __OFFSET__ = 0
 
     def open(self, doc_name, sheet_name=None):

@@ -8,8 +8,11 @@ class GetInfosService:
     
     def main(self):
         for repository in self.repositories:
-            infos = self.get_infos(repository)
-            if infos:
+            try:
+                infos = self.get_infos(repository)
+            except Exception as _:
+                return None
+            else:
                 return self.corriger_info(infos)
         raise ValueError(f"Aucun album trouvé avec l'isbn {self.isbn}")
 

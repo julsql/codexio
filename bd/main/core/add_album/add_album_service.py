@@ -23,6 +23,7 @@ class AddAlbumService:
 
         infos = self.get_infos()
         self.add_line(infos)
+        return infos
 
     def get_infos(self) -> dict:
         return self.get_infos_service.main()
