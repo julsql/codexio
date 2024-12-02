@@ -3,7 +3,7 @@ import re
 
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
-from bd.settings import POST_TOKEN
+from config.settings import POST_TOKEN
 
 ALLOWED_EXTENSIONS = '.jpeg'
 __FILEPATH__ = os.path.dirname(os.path.abspath(__file__))

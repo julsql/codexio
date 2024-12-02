@@ -10,7 +10,7 @@ class Conn:
         self.__OFFSET__ = 1
         self.worksheet = None
         __FILEPATH__ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        credentials_path = os.path.join(__FILEPATH__, 'private/bd-sheet-91.json')
+        credentials_path = os.path.join(__FILEPATH__, 'private/config-sheet-91.json')
         try:
             creds = service_account.Credentials.from_service_account_file(
                 credentials_path,

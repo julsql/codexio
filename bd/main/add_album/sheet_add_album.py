@@ -2,7 +2,7 @@ from main.add_album import get_infos_bd
 from main.add_album.error import Error
 from main.add_album.sheet_connection import Conn
 
-from main.add_album.logger import logger
+from main.core.common.logger import logger
 
 def liste_from_dict(infos):
     titles = ["ISBN", "Album", "Numéro", "Série", "Scénario", "Dessin", "Couleurs",
@@ -87,5 +87,4 @@ def add_album(isbn):
             except Error as e:
                 return e
             else:
-                # update()
                 return infos

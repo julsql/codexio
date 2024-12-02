@@ -1,6 +1,9 @@
-class ConnInMemory:
+from main.core.common.gsheet_repository import GsheetRepository
+
+
+class GsheetInMemory(GsheetRepository):
     worksheet = []
-    client = {"bd": {"BD": [], "Test": []}}
+    client = {"config": {"BD": [], "Test": []}}
     __OFFSET__ = 0
 
     def open(self, doc_name, sheet_name=None):

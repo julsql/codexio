@@ -1,5 +1,5 @@
 """
-URL configuration for bd project.
+URL configuration for config project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from main import views
+from main.core.add_album.internal import add_album_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,7 +30,7 @@ urlpatterns = [
     path('upload/exlibris/<int:isbn>/', views.upload_exlibris, name='upload_exlibris'),
     path('delete/dedicace/<int:isbn>/<int:photo_number>', views.delete_dedicace, name='delete_dedicace'),
     path('delete/exlibris/<int:isbn>/<int:photo_number>', views.delete_exlibris, name='delete_exlibris'),
-    path('add/<int:isbn>/', views.add_album, name='add_album'),
+    path('add/<int:isbn>/', add_album_view, name='add_album'),
     path('update/', views.update_database, name='update'),
     path('possede/<int:isbn>/', views.possede, name='possede'),
 ]

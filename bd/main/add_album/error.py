@@ -1,5 +1,5 @@
 import os
-from main.add_album.logger import logger
+from main.core.common.logger import logger
 
 
 class Error(Exception):

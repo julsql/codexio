@@ -1,5 +1,5 @@
 """
-WSGI config for bd project.
+WSGI config for config project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -13,8 +13,8 @@ import sys
 from django.core.wsgi import get_wsgi_application
 
 # Add the project base directory to the Python path
-sys.path.append('/home/debian/websites/bd_website/bd')
+sys.path.append('/home/debian/websites/bd_website/config')
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bd.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
 application = get_wsgi_application()

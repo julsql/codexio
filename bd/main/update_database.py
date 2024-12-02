@@ -3,11 +3,11 @@ from google.auth import exceptions
 from google.oauth2 import service_account
 import os
 import sqlite3
-from main.add_album.logger import logger
+from main.core.common.logger import logger
 
 __FILEPATH__ = os.path.dirname(os.path.abspath(__file__))
 __DATABASE__ = os.path.join(os.path.dirname(__FILEPATH__), 'db', 'db.sqlite3')
-credentials_path = os.path.join(__FILEPATH__, 'private/bd-sheet-91.json')
+credentials_path = os.path.join(__FILEPATH__, 'private/config-sheet-91.json')
 
 
 # Fonction pour créer la table dans la base de données SQL
@@ -53,7 +53,7 @@ def update():
         logger.error(message_log)
         return None
 
-    worksheet = client.open("bd").sheet1
+    worksheet = client.open("config").sheet1
 
     database = sqlite3.connect(__DATABASE__)
 

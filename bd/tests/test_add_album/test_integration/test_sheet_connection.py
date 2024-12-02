@@ -10,10 +10,10 @@ class TestIntegration(unittest.TestCase):
 
     def setUp(self):
         self.conn_test = Conn()
-        self.conn_test.open("bd", "Test")
+        self.conn_test.open("config", "Test")
 
         self.conn_real = Conn()
-        self.conn_real.open("bd")
+        self.conn_real.open("config")
 
     def tearDown(self):
         self.conn_test.delete_row(0)

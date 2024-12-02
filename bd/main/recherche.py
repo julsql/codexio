@@ -2,7 +2,7 @@ from django.db import connections
 import random
 from django.conf import settings
 import os
-from main.add_album.logger import logger
+from main.core.common.logger import logger
 
 def exec_req_all(req):
     with connections['default'].cursor() as cur:

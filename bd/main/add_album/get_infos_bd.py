@@ -1,5 +1,5 @@
 import re
-from main.add_album.logger import logger
+from main.core.common.logger import logger
 
 from bs4 import BeautifulSoup
 
@@ -332,7 +332,7 @@ def condition(value):
 
 def corrige_colonne(col_num):
     connection = Conn()
-    connection.open("bd")
+    connection.open("config")
     value = connection.get_column(col_num)
     for i in range(1, len(value)):
         my_value = value[i]
