@@ -1,12 +1,16 @@
+from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.bd_repository import BdRepository
+from tests.test_add_album.data.album_data_set import ASTERIX, ASTERIX_ISBN
 
 
 class BdInMemory(BdRepository):
+    values = {ASTERIX_ISBN: ASTERIX}
 
     def get_infos(self, isbn: int) -> dict:
-        url = self.get_url(isbn)
-        html = self.get_html(url)
-        return {}
+        if isbn in self.values:
+            return self.values[isbn]
+        else:
+            raise AddAlbumError(f"Aucun album trouvé avec l'isbn {isbn}")
 
     def get_url(self, isbn: int):
-        return f"https://www.bdfugue.com/catalogsearch/result/?q={isbn}"
+        return ""

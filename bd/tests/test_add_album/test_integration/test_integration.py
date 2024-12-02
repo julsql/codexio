@@ -9,7 +9,7 @@ from tests.test_add_album.internal.gsheet_in_memory import ConnInMemory
 
 class TestIntegration(unittest.TestCase):
     NB_COLUMN = 20
-    DOC_NAME = "config"
+    DOC_NAME = "bd"
     SHEET = "Test"
 
     def setUp(self):
