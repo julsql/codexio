@@ -2,7 +2,7 @@
 bd/db/
 .idea/
 .vscode/
-*logs*
+**/*.log
 **/.DS_Store
 bd/bd/settings.py
 **/__pycache__/

@@ -3,13 +3,7 @@ import requests
 
 from error import Error
 from sheet_connection import Conn
-import logging
-
-logging.basicConfig(
-    level=logging.DEBUG,  # Niveau minimal des messages enregistrés
-    format='%(asctime)s - %(levelname)s - %(message)s',  # Format des messages
-    datefmt='%Y-%m-%d %H:%M:%S'  # Format de la date
-)
+from main.add_album.logger import logger
 
 def get_html(url):
     response = requests.get(url)
@@ -18,7 +12,7 @@ def get_html(url):
     if response.status_code == 200:
         return response.text
     else:
-        logging.warning("La requête a échoué. Statut de la réponse :", response.status_code)
+        logger.warning("La requête a échoué. Statut de la réponse :", response.status_code)
 
 
 def get_link(isbn):
@@ -47,29 +41,29 @@ def get_image(url):
     return 0
 
 
-def update_column(column, logs="logs.txt"):
+def update_column(column):
     try:
-        connection = Conn(logs)
+        connection = Conn()
         connection.open("bd", "BD")
     except:
         message_log = "Google Sheet non accessible."
-        raise Error(message_log, 0, logs)
+        raise Error(message_log, 0)
     else:
         sheet = connection.get_all()
         images = []
         i = 0
         for ligne in sheet[1:]:
             if i % 10 == 0:
-                logging.info(f"{i + 1}e album")
+                logger.info(f"{i + 1}e album")
             isbn = ligne[0]
             url = get_link(isbn)
             image = ligne[column]
             if url == 0:
-                logging.warning("Album non trouvé")
+                logger.warning("Album non trouvé")
             else:
                 new_image = get_image(url)
                 if new_image == 0:
-                    logging.warning(f"L'image pour {isbn} n'a pas été trouvée")
+                    logger.warning(f"L'image pour {isbn} n'a pas été trouvée")
                 else:
                     image = new_image
             images.append(image)

@@ -2,44 +2,26 @@ import unittest
 
 from main.add_album import error
 from main.add_album import sheet_add_album
-from main.add_album.sheet_connection import Conn
+from tests.test_add_album.data.album_data_set import ASTERIX, ASTERIX_ISBN, ASTERIX_LIST
+from tests.test_add_album.internal import add_album_in_memory
+from tests.test_add_album.internal.connection_in_memory import ConnInMemory
 
 
 class TestIntegration(unittest.TestCase):
     NB_COLUMN = 20
+    DOC_NAME = "bd"
+    SHEET = "Test"
 
     def setUp(self):
-        self.logs = "logs-test-unit.txt"
-        self.doc_name = "bd"
-        self.sheet = "Test"
-        self.isbn = 9782864976165
-        self.asterix = {
-            'Album': "L'empire du milieu",
-            'Couleurs': 'Thierry Mébarki',
-            'Date de publication': '2023-02-08',
-            'Dessin': 'Fabrice Tarrin',
-            'ISBN': 9782864976165,
-            'Image':  'https://static.bdphile.fr/images/media/cover/0160/160391.jpg',
-            'Numéro': '10',
-            'Pages': 48,
-            'Prix': 10.5,
-            'Scénario': 'Olivier Gay',
-            'Synopsis': 'Nous sommes en 50 av J.-C. Loin, très loin du petit village '
-                        "d'Armorique que nous connaissons bien, l'Impératrice de Chine "
-                        "est emprisonnée suite à coup d'état fomenté par l'infâme Deng "
-                        "Tsin Qin.<br/>La princesse Fu Yi, fille unique de l'Impératrice, "
-                        'aidée par sa fidèle guerrière Tat Han et Graindemaïs, le neveu '
-                        "du marchand phénicien Epidemaïs, s'enfuit pour demander de "
-                        "l'aide aux Irréductibles Gaulois.",
-            'Série': 'Astérix (Albums des films)',
-            'Éditeur': 'Albert René',
-            'Édition': 'Édition originale Noté : Impression en décembre 2022 - n° '
-                       '616-5-01 Impression et reliure par Pollina - n°13651'}
+        # Before each
+        self.connection = ConnInMemory()
+        self.connection.open(self.DOC_NAME, self.SHEET)
 
     def tearDown(self):
-        pass
+        # After each
+        self.connection.delete_row(0)
 
-    def test_liste_from_dict_pass_1(self):
+    def test_convert_list_from_dict_empty_value_successfully(self):
         liste = sheet_add_album.liste_from_dict({
             'Album': '', 'Couleurs': '', 'Date de publication': '',
             'Dessin': '', 'Édition': '', 'ISBN': '', 'Image': '',
@@ -47,7 +29,7 @@ class TestIntegration(unittest.TestCase):
             'Synopsis': '', 'Série': '', 'Éditeur': ''})
         self.assertEqual([""] * self.NB_COLUMN, liste)
 
-    def test_liste_from_dict_pass_2(self):
+    def test_convert_list_from_dict_successfully(self):
         liste = sheet_add_album.liste_from_dict({
             'Album': 'a', 'Couleurs': 'a', 'Date de publication': 'a',
             'Dessin': 'a', 'Édition': 'a', 'ISBN': 'a', 'Image': 'a',
@@ -56,68 +38,27 @@ class TestIntegration(unittest.TestCase):
         self.assertEqual(["a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "", "a", "", "", "", "", "", "a", "a"],
                          liste)
 
-    def test_liste_from_dict_fail(self):
+    def test_raise_error_convert_list_from_empty_dict(self):
         with self.assertRaises(IndexError):
             sheet_add_album.liste_from_dict({})
 
-    def test_add_pass(self):
-        self.assertEqual(self.asterix, sheet_add_album.add(self.isbn, self.doc_name, self.sheet, self.logs))
-        connection = Conn()
-        connection.open(self.doc_name, self.sheet)
-        sheet_line = connection.get_line(0)
-        self.assertEqual([
-            '9782864976165',
-            "L'empire du milieu",
-            '10',
-            'Astérix (Albums des films)',
-            'Olivier Gay',
-            'Fabrice Tarrin',
-            'Thierry Mébarki',
-            'Albert René',
-            '2023-02-08',
-            'Édition originale Noté : Impression en décembre 2022 - n° 616-5-01 '
-            'Impression et reliure par Pollina - n°13651',
-            '48',
-            '',
-            '10,5',
-            '',
-            '',
-            '',
-            '',
-            '',
-            "Nous sommes en 50 av J.-C. Loin, très loin du petit village d'Armorique que "
-            "nous connaissons bien, l'Impératrice de Chine est emprisonnée suite à coup "
-            "d'état fomenté par l'infâme Deng Tsin Qin.<br/>La princesse Fu Yi, fille "
-            "unique de l'Impératrice, aidée par sa fidèle guerrière Tat Han et "
-            "Graindemaïs, le neveu du marchand phénicien Epidemaïs, s'enfuit pour "
-            "demander de l'aide aux Irréductibles Gaulois.",
-            'https://static.bdphile.fr/images/media/cover/0160/160391.jpg'], sheet_line)
+    def test_add_album_successfully(self):
+        self.assertEqual(ASTERIX, add_album_in_memory.add_album(ASTERIX_ISBN, self.DOC_NAME, self.SHEET))
+        sheet_line = self.connection.get_line(0)
+        self.assertEqual(ASTERIX_LIST, sheet_line)
 
-        connection.set_line([""] * self.NB_COLUMN, 0)
-
-        sheet_content = connection.get_all()
-        self.assertEqual([], sheet_content)
-
-    def test_add_fail_1(self):
+    def test_raise_error_on_incorrect_docname(self):
         with self.assertRaises(error.Error):
-            sheet_add_album.add(self.isbn, "youhou", None, self.logs)
+            add_album_in_memory.add_album(ASTERIX_ISBN, "youhou", None)
 
-    def test_add_fail_2(self):
+    def test_raise_error_on_incorrect_sheetname(self):
         with self.assertRaises(error.Error):
-            sheet_add_album.add(self.isbn, self.doc_name, "sheet", self.logs)
+            add_album_in_memory.add_album(ASTERIX_ISBN, self.DOC_NAME, "sheet")
 
-    def test_add_fail_3(self):
-        sheet_add_album.add(self.isbn, self.doc_name, self.sheet, self.logs)
-
+    def test_raise_error_on_duplicate_isbn(self):
+        add_album_in_memory.add_album(ASTERIX_ISBN, self.DOC_NAME, self.SHEET)
         with self.assertRaises(error.Error):
-            sheet_add_album.add(self.isbn, self.doc_name, self.sheet, self.logs)
-
-        connection = Conn()
-        connection.open(self.doc_name, self.sheet)
-        connection.set_line([""] * self.NB_COLUMN, 0)
-
-        sheet_content = connection.get_all()
-        self.assertEqual([], sheet_content)
+            add_album_in_memory.add_album(ASTERIX_ISBN, self.DOC_NAME, self.SHEET)
 
 
 if __name__ == '__main__':
