@@ -1,14 +1,10 @@
 import re
-import logging
+from main.add_album.logger import logger
 
 from bs4 import BeautifulSoup
 
-try:
-    from main.add_album.error import Error
-    from main.add_album.sheet_connection import Conn
-except ModuleNotFoundError:
-    from error import Error
-    from sheet_connection import Conn
+from main.add_album.error import Error
+from main.add_album.sheet_connection import Conn
 import datetime
 from dateutil import parser
 
@@ -18,12 +14,6 @@ import requests
 
 # Get the data of a comic from its ISBN. Return a dictionary.
 
-logging.basicConfig(
-    level=logging.DEBUG,  # Niveau minimal des messages enregistrés
-    format='%(asctime)s - %(levelname)s - %(message)s',  # Format des messages
-    datefmt='%Y-%m-%d %H:%M:%S'  # Format de la date
-)
-
 def get_html(url):
     response = requests.get(url)
 
@@ -31,7 +21,7 @@ def get_html(url):
     if response.status_code == 200:
         return response.text
     else:
-        logging.error(f"La requête a échoué. Statut de la réponse : {response.status_code}")
+        logger.error(f"La requête a échoué. Statut de la réponse : {response.status_code}")
 
 
 def get_link(isbn):
@@ -47,7 +37,7 @@ def get_link(isbn):
         return 0
 
 
-def get_infos(url, isbn, logs):
+def get_infos(url, isbn):
     """Trouver infos sur BD à partir lien bdphile.fr"""
 
     informations = {}
@@ -93,7 +83,7 @@ def get_infos(url, isbn, logs):
                                    dayfirst=True, fuzzy=True, default=datetime.datetime(1900, 1, 1))
         informations["Date de publication"] = parsed_date.date().isoformat()
     except:
-        Error("Problème de date de parution", isbn, logs)
+        Error("Problème de date de parution", isbn)
     finally:
         if "Format" in informations:
             format = informations["Format"]
@@ -104,13 +94,13 @@ def get_infos(url, isbn, logs):
                     try:
                         informations["Pages"] = int(value.replace("pages", "").strip())
                     except:
-                        Error(f"{value} est un nombre de pages incorrect", isbn, logs)
+                        Error(f"{value} est un nombre de pages incorrect", isbn)
 
                 if "€" in value:
                     try:
                         informations["Prix"] = float(value.replace("€", "").strip())
                     except:
-                        Error(f"{value} est un prix incorrect", isbn, logs)
+                        Error(f"{value} est un prix incorrect", isbn)
 
         meta_tag = soup.find('meta', attrs={'property': 'og:image'})
         if meta_tag:
@@ -123,7 +113,7 @@ def get_infos(url, isbn, logs):
                 '\n', '').replace('\t', '')
             informations["Synopsis"] = cleaned_synopsis
 
-        logging.info(informations)
+        logger.info(informations, extra={"isbn": isbn})
         return informations
 
 
@@ -134,15 +124,15 @@ legende = {"Titre album": "Album", "Tome": "Numéro",
            "Nombre de pages": "Pages"}
 
 
-def get_infos_2(url, isbn, logs):
+def get_infos_2(url, isbn):
     """Get infos in BD Fugue"""
-    logging.info(url)
+    logger.info(url, extra={"isbn": isbn})
     html = get_html(url)
     soup = BeautifulSoup(html, 'html.parser')
 
     error_div = soup.find('title', text=re.compile(r'^Résultats de recherche pour :'))
     if error_div:
-        raise Error(f"{isbn} n'est pas dans BD Fugue ou il y a ambiguïté", isbn, logs)
+        raise Error(f"{isbn} n'est pas dans BD Fugue ou il y a ambiguïté", isbn)
 
     infos = {}
 
@@ -173,7 +163,7 @@ def get_infos_2(url, isbn, logs):
                 try:
                     infos[legende[label]] = int(value)
                 except:
-                    Error("Pas de nombre de page correct trouvé", isbn, logs)
+                    Error("Pas de nombre de page correct trouvé", isbn)
             else:
                 infos[legende[label]] = value
 
@@ -190,18 +180,18 @@ def get_infos_2(url, isbn, logs):
                 try:
                     infos["Prix"] = float(meta_tag.get("content"))
                 except:
-                    Error("Pas de prix correct trouvé", isbn, logs)
+                    Error("Pas de prix correct trouvé", isbn)
             else:
-                Error("Pas de prix correct trouvé", isbn, logs)
+                Error("Pas de prix correct trouvé", isbn)
     else:
         meta_tag = soup.find("meta", {"itemprop": "price"})
         if meta_tag:
             try:
                 infos["Prix"] = float(meta_tag.get("content"))
             except:
-                Error("Pas de prix correct trouvé", isbn, logs)
+                Error("Pas de prix correct trouvé", isbn)
         else:
-            Error("Pas de prix correct trouvé", isbn, logs)
+            Error("Pas de prix correct trouvé", isbn)
 
     pattern = re.compile(r'https://www\.bdfugue\.com/media/catalog/product/cache/.*')
     image_element = soup.find('img', {'src': pattern})
@@ -209,14 +199,14 @@ def get_infos_2(url, isbn, logs):
     if image_element:
         infos["Image"] = image_element.get('src')
     else:
-        Error("Pas d'image trouvée", isbn, logs)
+        Error("Pas d'image trouvée", isbn)
 
     div_tag = soup.find("div", {"itemprop": "description"})
 
     if div_tag:
         infos["Synopsis"] = div_tag.get_text(strip=True)
     else:
-        Error("Pas de synopsis trouvé", isbn, logs)
+        Error("Pas de synopsis trouvé", isbn)
 
     return infos
 
@@ -234,38 +224,38 @@ def corriger_info(info, isbn):
     return info
 
 
-def main(isbn, logs):
+def main(isbn):
     """Trouver infos à partir de l'ISBN"""
     try:
         isbn = int(isbn)
     except ValueError:
         if isbn is None or isbn == "":
-            raise Error("ISBN vide ou nul", isbn, logs)
+            raise Error("ISBN vide ou nul", isbn)
         else:
-            raise Error(f"ISBN {isbn} invalide", isbn, logs)
+            raise Error(f"ISBN {isbn} invalide", isbn)
     try:
         link = get_link(isbn)
     except ValueError:
         if isbn is not None and isbn != "":
-            raise Error(f"ISBN {isbn} invalide", isbn, logs)
+            raise Error(f"ISBN {isbn} invalide", isbn)
         else:
-            raise Error("ISBN vide ou nul", isbn, logs)
+            raise Error("ISBN vide ou nul", isbn)
     
     if link == 0:
         message_log = "Album inexistant dans BD Phile"
-        Error(message_log, isbn, logs)
+        Error(message_log, isbn)
         try:
-            info = get_infos_2(f"https://www.bdfugue.com/catalogsearch/result/?q={isbn}", isbn, logs)
+            info = get_infos_2(f"https://www.bdfugue.com/catalogsearch/result/?q={isbn}", isbn)
         except Exception:
             info = corriger_info({}, isbn)
             message_log = "Album inexistant dans BD Phile et dans BD Fugue. ISBN ajouté"
-            return info, Error(message_log, isbn, logs)
+            return info, Error(message_log, isbn)
 
     else:
         try:
-            info = get_infos(link, isbn, logs)
+            info = get_infos(link, isbn)
         except (UnicodeDecodeError, ValueError) as e:
-            raise Error(str(e), isbn, logs)
+            raise Error(str(e), isbn)
 
     info = corriger_info(info, isbn)
 
@@ -348,9 +338,9 @@ def corrige_colonne(col_num):
         my_value = value[i]
         if not condition(my_value):
             isbn = connection.get(i, 0)
-            logging.info(f"line: {i + 1}, isbn: {isbn}, value: {my_value}")
+            logger.info(f"line: {i + 1}, isbn: {isbn}, value: {my_value}", extra={"isbn": isbn})
             link = get_link("https://www.bdphile.fr/search/album/?q={}".format(isbn))
-            logging.info(link)
+            logger.info(link, extra={"isbn": isbn})
             webbrowser.open(link)
             new_value = input("Nouvelle valeur ")
             connection.set(new_value, i, col_num)

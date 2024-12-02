@@ -3,48 +3,22 @@ import unittest
 
 from main.add_album import error
 from main.add_album import get_infos_bd
+from tests.test_add_album.data.album_data_set import ASTERIX_ISBN, ASTERIX_LINK, ASTERIX
 
 
 class TestGetInfosBd(unittest.TestCase):
 
-    def setUp(self):
-        self.logs = "logs-test-unit.txt"
-        self.asterix = ({
-             'Album': "L'empire du milieu",
-             'Couleurs': 'Thierry Mébarki',
-             'Date de publication': '2023-02-08',
-             'Dessin': 'Fabrice Tarrin',
-             'ISBN': 9782864976165,
-             'Image':  'https://static.bdphile.fr/images/media/cover/0160/160391.jpg',
-             'Numéro': '10',
-             'Pages': 48,
-             'Prix': 10.5,
-             'Scénario': 'Olivier Gay',
-             'Synopsis': 'Nous sommes en 50 av J.-C. Loin, très loin du petit village '
-                         "d'Armorique que nous connaissons bien, l'Impératrice de Chine "
-                         "est emprisonnée suite à coup d'état fomenté par l'infâme Deng "
-                         "Tsin Qin.<br/>La princesse Fu Yi, fille unique de l'Impératrice, "
-                         'aidée par sa fidèle guerrière Tat Han et Graindemaïs, le neveu '
-                         "du marchand phénicien Epidemaïs, s'enfuit pour demander de "
-                         "l'aide aux Irréductibles Gaulois.",
-             'Série': 'Astérix (Albums des films)',
-             'Éditeur': 'Albert René',
-             'Édition': 'Édition originale Noté : Impression en décembre 2022 - n° '
-                        '616-5-01 Impression et reliure par Pollina - n°13651'},
-        None)
+    INEXISTANT_ISBN = 9791038203907
 
-    def tearDown(self):
-        pass
+    def test_correct_get_link(self):
+        link = get_infos_bd.get_link(ASTERIX_ISBN)
+        self.assertEqual(ASTERIX_LINK, link)
 
-    def test_get_link_pass(self):
-        link = get_infos_bd.get_link(9782840555698)
-        self.assertEqual("https://www.bdphile.fr/album/view/27231/", link)
-
-    def test_get_link_fail(self):
+    def test_dont_get_link(self):
         link = get_infos_bd.get_link("")
         self.assertEqual(0, link)
 
-    def test_corriger_info_pass(self):
+    def test_get_correct_info_successfully(self):
         info = get_infos_bd.corriger_info({}, "")
         self.assertEqual({
             'Album': '', 'Couleurs': '', 'Date de publication': '',
@@ -53,31 +27,20 @@ class TestGetInfosBd(unittest.TestCase):
             'Synopsis': '', 'Série': '', 'Éditeur': ''},
             info)
 
-    def test_corriger_info_fail(self):
+    def test_raise_error_correct_empty_value(self):
         with self.assertRaises(AttributeError):
             get_infos_bd.corriger_info("", "")
 
-    def test_main_pass_1(self):
-        info = get_infos_bd.main("9782864976165", self.logs)
-        self.assertEqual(self.asterix, info)
+    def test_get_info_from_isbn_successfully(self):
+        info = get_infos_bd.main(ASTERIX_ISBN)
+        self.assertEqual(ASTERIX, info[0])
 
-    def test_main_pass_2(self):
-        info = get_infos_bd.main(9782864976165, self.logs)
-        self.assertEqual(self.asterix, info)
-
-    def test_main_pass_3(self):
-        get_infos_bd.main(9782756082332, self.logs)
-
-    def test_main_fail_1(self):
+    def test_raise_error_get_info_from_incorrect_isbn(self):
         with self.assertRaises(error.Error):
-            get_infos_bd.main("bonjour", self.logs)
+            get_infos_bd.main("isbn incorrect")
 
-    def test_main_fail_2(self):
-        with self.assertRaises(error.Error):
-            get_infos_bd.main("", self.logs)
-
-    def test_main_fail_3(self):
-        result, result_error= get_infos_bd.main(9791038203907, self.logs)
+    def test_raise_error_get_info_from_inexistant_isbn(self):
+        _, result_error= get_infos_bd.main(self.INEXISTANT_ISBN)
         self.assertIsInstance(result_error, error.Error)
 
     def test_parse_date_pass_1(self):

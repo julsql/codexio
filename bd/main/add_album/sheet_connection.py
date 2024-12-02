@@ -2,17 +2,13 @@ import gspread
 from google.auth import exceptions
 from google.oauth2 import service_account
 import os
-try:
-    from main.add_album.error import Error
-except ModuleNotFoundError:
-    from error import Error
+from main.add_album.error import Error
 
 class Conn:
 
-    def __init__(self, logs="logs.txt"):
+    def __init__(self):
         self.__OFFSET__ = 1
         self.worksheet = None
-        self.logs = logs
         __FILEPATH__ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         credentials_path = os.path.join(__FILEPATH__, 'private/bd-sheet-91.json')
         try:
@@ -21,11 +17,10 @@ class Conn:
                 scopes=["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
             )
             self.client = gspread.Client(auth=creds)
-            self.client.login()
         except exceptions.DefaultCredentialsError:
             message_log = "Google Sheet non accessible."
             self.client = None
-            raise Error(message_log, None, self.logs)
+            raise Error(message_log, None)
 
     def open(self, doc_name, sheet_name=None):
         if sheet_name is not None:
@@ -63,9 +58,9 @@ class Conn:
     def set_line(self, valeur, i):
         i += self.__OFFSET__
         if isinstance(valeur, list):
-            self.worksheet.update(f"A{i}", [valeur])
+            self.worksheet.update([valeur], f"A{i}")
         else:
-            self.worksheet.update(f"A{i}", [[valeur]])
+            self.worksheet.update([[valeur]], f"A{i}")
 
     def set_column(self, valeur, j):
         j += self.__OFFSET__
@@ -75,6 +70,9 @@ class Conn:
             plage_de_cellules[i].value = valeur[i]
 
         self.worksheet.update_cells(plage_de_cellules)
+
+    def delete_row(self, i):
+        self.set_line([""] * 26, i)
 
     def double(self, isbn):
         row_values = self.get_column(0)

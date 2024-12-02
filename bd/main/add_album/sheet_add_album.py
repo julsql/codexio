@@ -1,19 +1,8 @@
-try:
-    from main.add_album import get_infos_bd
-    from main.add_album.error import Error
-    from main.add_album.sheet_connection import Conn
-except ModuleNotFoundError:
-    import get_infos_bd
-    from error import Error
-    from sheet_connection import Conn
+from main.add_album import get_infos_bd
+from main.add_album.error import Error
+from main.add_album.sheet_connection import Conn
 
-import logging
-
-logging.basicConfig(
-    level=logging.DEBUG,  # Niveau minimal des messages enregistrés
-    format='%(asctime)s - %(levelname)s - %(message)s',  # Format des messages
-    datefmt='%Y-%m-%d %H:%M:%S'  # Format de la date
-)
+from main.add_album.logger import logger
 
 def liste_from_dict(infos):
     titles = ["ISBN", "Album", "Numéro", "Série", "Scénario", "Dessin", "Couleurs",
@@ -27,7 +16,7 @@ def liste_from_dict(infos):
         elif title is None:
             liste.append("")
         else:
-            logging.error(f"{title} manque")
+            logger.error(f"{title} manque")
             raise IndexError(f"{title} manque")
     return liste
 
@@ -37,44 +26,38 @@ def add_line(connection, infos):
     connection.append(liste)
 
 
-def add(isbn, doc_name, sheet=None, logs="logs.txt"):
+def add(isbn, connection):
+
+    if connection.double(isbn):
+        message_log = f"{isbn} est déjà dans la base de données"
+        raise Error(message_log, isbn)
+
     try:
-        connection = Conn(logs)
-        connection.open(doc_name, sheet)
-    except:
-        message_log = "Google Sheet non accessible."
-        raise Error(message_log, isbn, logs)
-    else:
-        if connection.double(isbn):
-            message_log = f"{isbn} est déjà dans la base de données"
-            raise Error(message_log, isbn, logs)
-
-        try:
-            infos, error = get_infos_bd.main(isbn, logs)
-        except Error as e:
-            raise Error(str(e), isbn, logs)
+        infos, error = get_infos_bd.main(isbn)
+    except Error as e:
+        raise Error(str(e), isbn)
 
 
-        if not isinstance(infos, dict):
-            if error is not None:
-                raise error
-            else:
-                message_log = f"{infos} pas du bon type"
-                raise Error(message_log, isbn, logs)
-
-        try:
-            add_line(connection, infos)
-        except:
-            message_log = f"{infos} n'a pas été ajouté correctement"
-            raise Error(message_log, isbn, logs)
+    if not isinstance(infos, dict):
+        if error is not None:
+            raise error
         else:
-            if error is not None:
-                raise error
-            title = infos["Album"]
-            if title is None or title == "":
-                title = infos["ISBN"]
-            logging.info(f"{title} ajouté avec succès !")
-            return infos
+            message_log = f"{infos} pas du bon type"
+            raise Error(message_log, isbn)
+
+    try:
+        add_line(connection, infos)
+    except:
+        message_log = f"{infos} n'a pas été ajouté correctement"
+        raise Error(message_log, isbn)
+    else:
+        if error is not None:
+            raise error
+        title = infos["Album"]
+        if title is None or title == "":
+            title = infos["ISBN"]
+        logger.info(f"{title} ajouté avec succès !")
+        return infos
 
 
 def add_album(isbn):
@@ -94,7 +77,13 @@ def add_album(isbn):
                 raise Error("ISBN vide ou nul", isbn)
         else:
             try:
-                infos = add(isbn, doc_name, sheet_name)
+                try:
+                    connection = Conn()
+                    connection.open(doc_name, sheet_name)
+                except:
+                    message_log = "Google Sheet non accessible."
+                    raise Error(message_log, isbn)
+                infos = add(isbn, connection)
             except Error as e:
                 return e
             else:
