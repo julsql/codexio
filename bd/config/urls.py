@@ -19,6 +19,7 @@ from django.urls import path
 from main import views
 from main.core.add_album.internal.add_album_view import add_album
 from main.core.existing_album.internal.existing_album_view import existing_album
+from main.core.update_database.internal.update_database_view import update_database
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,6 +33,6 @@ urlpatterns = [
     path('delete/dedicace/<int:isbn>/<int:photo_number>', views.delete_dedicace, name='delete_dedicace'),
     path('delete/exlibris/<int:isbn>/<int:photo_number>', views.delete_exlibris, name='delete_exlibris'),
     path('add/<int:isbn>/', add_album, name='add_album'),
-    path('update/', views.update_database, name='update'),
+    path('update/', update_database, name='update'),
     path('possede/<int:isbn>/', existing_album, name='possede'),
 ]

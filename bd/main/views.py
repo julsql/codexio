@@ -1,14 +1,11 @@
-from django.http import JsonResponse, HttpRequest
+from django.http import JsonResponse
 from django.shortcuts import render
 
-from main.core.add_album.internal.add_album_view import add_album
 from main.forms import RechercheForm
 from main import recherche as recherche
 from main import upload_photo
 from django.views.decorators.csrf import csrf_exempt
-from main.add_album import sheet_connection
 from config.settings import POST_TOKEN
-from main.update_database import update
 from main.models import BD
 
 
@@ -146,31 +143,3 @@ def delete_exlibris(request, isbn, photo_number):
                 return JsonResponse({'message': 'Ex libris supprimé correctement'})
     else:
         return JsonResponse({'message': 'Il faut une requête POST'})
-
-
-def update_database(request):
-    if request.method == 'GET':
-        auth_header = request.headers.get('Authorization')
-        if auth_header is None or auth_header != f"Bearer {POST_TOKEN}":
-            return JsonResponse({'error': "Vous n'avez pas l'autorisation"})
-        else:
-            update()
-            return JsonResponse({'message': 'Site web mis à jour correctement'})
-    else:
-        return JsonResponse({'message': 'Il faut une requête POST'})
-
-
-def ajoute_album(request: HttpRequest, isbn: int):
-    return add_album(request, isbn)
-
-def possede(request, isbn):
-    if request.method == 'GET':
-        doc_name = "config"
-        sheet_name = "BD"
-        connection = sheet_connection.Conn()
-        connection.open(doc_name, sheet_name)
-        if connection.double(isbn):
-            message = f"Album {isbn} déjà enregistré"
-        else:
-            message = f"Album {isbn} jamais enregistré"
-        return JsonResponse({'message': message}, charset='utf-8')
