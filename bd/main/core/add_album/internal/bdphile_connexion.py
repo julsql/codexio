@@ -4,6 +4,7 @@ import datetime
 from bs4 import BeautifulSoup
 from dateutil import parser
 
+from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.bd_repository import BdRepository
 from main.core.common.logger import logger
 
@@ -97,7 +98,7 @@ class BdPhileRepository(BdRepository):
         if a_tag:
             return a_tag.get('href')
         else:
-            return 0
+            raise AddAlbumError(f"ISBN {isbn} introuvable dans BD Phile")
 
     def get_html(self, url):
         response = requests.get(url)
@@ -107,6 +108,7 @@ class BdPhileRepository(BdRepository):
             return response.text
         else:
             logger.error(f"La requête a échoué. Statut de la réponse : {response.status_code}")
+            raise AddAlbumError(f"Impossible d'affiche le code html de la page {url}")
 
     TRANSLATED_MONTHS = {
         "janvier": "January",

@@ -22,6 +22,8 @@ class AddAlbumService:
             raise AddAlbumError(message_log, self.isbn)
 
         infos = self.get_infos()
+        if infos is None:
+            raise AddAlbumError(f"{self.isbn} n'a pas été trouvé", self.isbn)
         self.add_line(infos)
         return infos
 

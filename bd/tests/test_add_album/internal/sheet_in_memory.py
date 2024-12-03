@@ -1,5 +1,3 @@
-from tkinter import Scale
-
 from main.core.common.sheet_repository import SheetRepository
 
 
@@ -44,14 +42,16 @@ class SheetInMemory(SheetRepository):
 
     def set_line(self, valeur, i):
         i += self.__OFFSET__
-        if isinstance(valeur, list):
-            self.worksheet[i] = valeur
-        else:
-            self.worksheet[i] = [valeur]
+        if i < len(self.worksheet) and len(valeur) == len(self.worksheet):
+            if isinstance(valeur, list):
+                self.worksheet[i] = valeur
+            else:
+                self.worksheet[i] = [valeur]
 
     def set_column(self, valeur, j):
         for i in range(len(self.worksheet)):
-            self.worksheet[i][j] = valeur[i]
+            if len(self.worksheet[i]) < j:
+                self.worksheet[i][j] = valeur[i]
 
     def delete_row(self, i):
         self.set_line([""] * 26, i)
