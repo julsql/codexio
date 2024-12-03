@@ -1,11 +1,7 @@
-from django.http import JsonResponse
 from django.shortcuts import render
 
 from main.forms import RechercheForm
 from main import recherche as recherche
-from main import upload_photo
-from django.views.decorators.csrf import csrf_exempt
-from config.settings import POST_TOKEN
 from main.models import BD
 
 
@@ -105,41 +101,3 @@ def pagebd(request, isbn):
 def statistiques(request):
     infos = recherche.stat()
     return render(request, 'main/statistiques.html', infos)
-
-
-@csrf_exempt
-def upload_dedicace(request, isbn):
-    return upload_photo.upload_dedicace(request, isbn)
-
-
-@csrf_exempt
-def upload_exlibris(request, isbn):
-    return upload_photo.upload_exlibris(request, isbn)
-
-
-def delete_dedicace(request, isbn, photo_number):
-    if request.method == 'GET':
-        auth_header = request.headers.get('Authorization')
-        if auth_header is None or auth_header != f"Bearer {POST_TOKEN}":
-            return JsonResponse({'error': "Vous n'avez pas l'autorisation"})
-        else:
-            if upload_photo.delete_dedicace(isbn, photo_number) == 0:
-                return JsonResponse({'message': "La photo n'a pas été trouvée"})
-            else:
-                return JsonResponse({'message': 'Dédicace supprimée correctement'})
-    else:
-        return JsonResponse({'message': 'Il faut une requête POST'})
-
-
-def delete_exlibris(request, isbn, photo_number):
-    if request.method == 'GET':
-        auth_header = request.headers.get('Authorization')
-        if auth_header is None or auth_header != f"Bearer {POST_TOKEN}":
-            return JsonResponse({'error': "Vous n'avez pas l'autorisation"})
-        else:
-            if upload_photo.delete_exlibris(isbn, photo_number) == 0:
-                return JsonResponse({'message': "La photo n'a pas été trouvée"})
-            else:
-                return JsonResponse({'message': 'Ex libris supprimé correctement'})
-    else:
-        return JsonResponse({'message': 'Il faut une requête POST'})
