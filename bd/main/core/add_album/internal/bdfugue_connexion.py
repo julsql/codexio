@@ -108,9 +108,10 @@ class BdFugueRepository(BdRepository):
 
     def get_html(self, url):
         response = requests.get(url)
-
         # Vérifiez si la requête a réussi
+        print(response)
         if response.status_code == 200:
             return response.text
         else:
             logger.error(f"La requête a échoué. Statut de la réponse : {response.status_code}")
+            raise AddAlbumError(f"Impossible d'affiche le code html de la page {url}")

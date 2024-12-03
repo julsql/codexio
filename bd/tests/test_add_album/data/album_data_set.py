@@ -1,5 +1,6 @@
 ASTERIX_ISBN = 9782864976165
-ASTERIX_LINK = "https://www.bdphile.fr/album/view/160391/"
+ASTERIX_BDPHILE_LINK = "https://www.bdphile.fr/album/view/160391/"
+ASTERIX_BDFUGUE_LINK = "https://www.bdfugue.com/catalogsearch/result/?q=9782864976165"
 album = "L'empire du milieu"
 couleurs = "Thierry Mébarki"
 date_de_publication = "2023-02-08"
@@ -23,12 +24,11 @@ FIRST_LINE = [
     "Édition", "Nombre de pages", "Cote", "Prix d'achat", "Année d'achat", "Lieu d'achat", "Tirage de tête",
     "Dédicace", "Ex Libris", "Synopsis", "Image"]
 
-ASTERIX = {
+ASTERIX_WEB = {
     'Album': album,
     'Couleurs': couleurs,
     'Date de publication': date_de_publication,
     'Dessin': dessin,
-    'ISBN': ASTERIX_ISBN,
     'Image':  image,
     'Numéro': numero,
     'Pages': pages,
@@ -39,6 +39,10 @@ ASTERIX = {
     'Éditeur': editeur,
     'Édition': edition,
 }
+
+ASTERIX = ASTERIX_WEB.copy()
+ASTERIX['ISBN'] = ASTERIX_ISBN
+
 
 ASTERIX_LIST = [
     ASTERIX_ISBN,

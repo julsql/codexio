@@ -1,3 +1,4 @@
+from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.bd_repository import BdRepository
 
 
@@ -14,7 +15,7 @@ class GetInfosService:
                 return None
             else:
                 return self.corriger_info(infos)
-        raise ValueError(f"Aucun album trouvé avec l'isbn {self.isbn}")
+        raise AddAlbumError(f"Aucun album trouvé avec l'isbn {self.isbn}")
 
     def get_infos(self, repository: BdRepository):
         return repository.get_infos(self.isbn)
