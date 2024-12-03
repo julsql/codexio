@@ -4,7 +4,7 @@ from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.add_album_service import AddAlbumService
 from main.core.add_album.internal.bdfugue_connexion import BdFugueRepository
 from main.core.add_album.internal.bdphile_connexion import BdPhileRepository
-from main.core.common.api import POST_TOKEN
+from config.settings import POST_TOKEN
 from main.core.common.sheet_connexion import SheetConnexion
 
 

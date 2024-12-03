@@ -1,8 +1,0 @@
-- diviser en classes
-- microservices : 
-  - connexion database
-  - connexion gsheet
-  - ajout album
-  - ajout photo
-  - mise à jour database
-  - album existe ?
