@@ -1,5 +1,5 @@
 import re
-import requests
+from typing import Dict, Any
 
 from bs4 import BeautifulSoup
 
@@ -16,7 +16,7 @@ class BdFugueRepository(BdRepository):
                "date de parution": "Date de publication", "": "Édition",
                "Nombre de pages": "Pages"}
 
-    def get_infos(self, isbn: int) -> dict:
+    def get_infos(self, isbn: int) -> Dict[str, Any]:
         url = self.get_url(isbn)
         logger.info(url, extra={"isbn": isbn})
         html = self.get_html(url)
@@ -103,15 +103,5 @@ class BdFugueRepository(BdRepository):
 
         return infos
 
-    def get_url(self, isbn: int):
+    def get_url(self, isbn: int) -> str:
         return f"https://www.bdfugue.com/catalogsearch/result/?q={isbn}"
-
-    def get_html(self, url):
-        response = requests.get(url)
-        # Vérifiez si la requête a réussi
-        print(response)
-        if response.status_code == 200:
-            return response.text
-        else:
-            logger.error(f"La requête a échoué. Statut de la réponse : {response.status_code}")
-            raise AddAlbumError(f"Impossible d'affiche le code html de la page {url}")

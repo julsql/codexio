@@ -2,7 +2,7 @@ import unittest
 
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.internal.bdfugue_connexion import BdFugueRepository
-from tests.test_add_album.data.album_data_set import ASTERIX_ISBN, ASTERIX_WEB, ASTERIX_BDFUGUE_LINK
+from tests.test_add_album.data.album_data_set import ASTERIX_ISBN, ASTERIX_BDFUGUE_LINK
 
 
 class TestBdFugueRepository(unittest.TestCase):

@@ -8,7 +8,7 @@ from config.settings import POST_TOKEN
 from main.core.common.sheet_connexion import SheetConnexion
 
 
-def add_album(request: HttpRequest, isbn: int):
+def add_album(request: HttpRequest, isbn: int) -> HttpResponse | JsonResponse:
     if request.method == 'GET':
         auth_header = request.headers.get('Authorization')
         if auth_header is None or auth_header != f"Bearer {POST_TOKEN}":
@@ -18,8 +18,8 @@ def add_album(request: HttpRequest, isbn: int):
                 sheet_repository = SheetConnexion()
                 bdfugue_repository = BdFugueRepository()
                 bdphile_repository = BdPhileRepository()
-                service = AddAlbumService(isbn, [bdfugue_repository, bdphile_repository], sheet_repository)
-                service.main()
+                service = AddAlbumService([bdfugue_repository, bdphile_repository], sheet_repository)
+                service.main(isbn)
             except AddAlbumError as e:
                 return HttpResponse(str(e), status=404)
             except Exception as e:

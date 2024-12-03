@@ -1,4 +1,5 @@
-import requests
+from typing import Dict
+
 import datetime
 
 from bs4 import BeautifulSoup
@@ -11,7 +12,7 @@ from main.core.common.logger import logger
 
 class BdPhileRepository(BdRepository):
 
-    def get_infos(self, isbn: int) -> dict:
+    def get_infos(self, isbn: int) -> Dict:
         informations = {}
         url = self.get_url(isbn)
         html = self.get_html(url)
@@ -88,7 +89,7 @@ class BdPhileRepository(BdRepository):
         logger.info(informations, extra={"isbn": isbn})
         return informations
 
-    def get_url(self, isbn: int):
+    def get_url(self, isbn: int) -> str:
         """Trouver lien BD bdphile.fr à partir de son ISBN"""
 
         search_link = "https://www.bdphile.fr/search/album/?q={}".format(isbn)
@@ -99,16 +100,6 @@ class BdPhileRepository(BdRepository):
             return a_tag.get('href')
         else:
             raise AddAlbumError(f"ISBN {isbn} introuvable dans BD Phile")
-
-    def get_html(self, url):
-        response = requests.get(url)
-
-        # Vérifiez si la requête a réussi
-        if response.status_code == 200:
-            return response.text
-        else:
-            logger.error(f"La requête a échoué. Statut de la réponse : {response.status_code}")
-            raise AddAlbumError(f"Impossible d'affiche le code html de la page {url}")
 
     TRANSLATED_MONTHS = {
         "janvier": "January",
@@ -129,7 +120,7 @@ class BdPhileRepository(BdRepository):
     }
 
 
-    def translate(self, date: str):
+    def translate(self, date: str) -> str:
         for mois, month in self.TRANSLATED_MONTHS.items():
             if mois in date.lower():
                 date = date.lower().replace(mois, month)
