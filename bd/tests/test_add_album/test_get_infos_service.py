@@ -16,7 +16,8 @@ class TestCorrectInfos(unittest.TestCase):
 
 
     def test_get_correct_info_successfully(self):
-        self.service = GetInfosService(0, [])
+        self.service = GetInfosService([])
+        self.service.isbn = 0
         info = self.service.corriger_info({})
         self.assertEqual({
             'Album': '', 'Couleurs': '', 'Date de publication': '',
@@ -26,19 +27,20 @@ class TestCorrectInfos(unittest.TestCase):
             info)
 
     def test_raise_error_correct_empty_value(self):
-        self.service = GetInfosService(0, [])
+        self.service = GetInfosService([])
+        self.service.isbn = 0
         with self.assertRaises(AttributeError):
             self.service.corriger_info("")
 
     def test_get_info_from_isbn_successfully(self):
-        self.service = GetInfosService(ASTERIX_ISBN, [self.repository])
-        info = self.service.main()
+        self.service = GetInfosService([self.repository])
+        info = self.service.main(ASTERIX_ISBN)
         self.assertEqual(ASTERIX, info)
 
     def test_raise_error_get_info_from_inexistant_isbn(self):
-        self.service = GetInfosService(self.INEXISTANT_ISBN, [])
+        self.service = GetInfosService([])
         with self.assertRaises(AddAlbumError):
-            self.service.main()
+            self.service.main(self.INEXISTANT_ISBN)
 
 
 

@@ -1,3 +1,5 @@
+from typing import List
+
 import gspread
 from google.auth import exceptions
 from google.oauth2 import service_account
@@ -29,7 +31,7 @@ class SheetConnexion(SheetRepository):
         else:
             self.worksheet = self.client.open(doc_name).sheet1
 
-    def append(self, liste: list):
+    def append(self, liste: List):
         self.worksheet.append_row(liste)
 
     def get(self, i: int, j: int) -> str:
@@ -37,15 +39,15 @@ class SheetConnexion(SheetRepository):
         j += self.__OFFSET__
         return self.worksheet.cell(i, j).value
 
-    def get_line(self, i: int) -> list:
+    def get_line(self, i: int) -> List:
         i += self.__OFFSET__
         return self.worksheet.row_values(i)
 
-    def get_column(self, j: int) -> list:
+    def get_column(self, j: int) -> List:
         j += self.__OFFSET__
         return self.worksheet.col_values(j)
 
-    def get_all(self) -> list:
+    def get_all(self) -> List:
         return self.worksheet.get_all_values()
 
     def set(self, valeur: str, i: int, j: int):
@@ -56,14 +58,14 @@ class SheetConnexion(SheetRepository):
         else:
             raise TypeError(f"{valeur} n'est pas un type texte")
 
-    def set_line(self, valeur: list, i: int):
+    def set_line(self, valeur: List, i: int):
         i += self.__OFFSET__
         if isinstance(valeur, list):
             self.worksheet.update([valeur], f"A{i}")
         else:
             self.worksheet.update([[valeur]], f"A{i}")
 
-    def set_column(self, valeur: str, j: int):
+    def set_column(self, valeur: List, j: int):
         j += self.__OFFSET__
         plage_de_cellules = self.worksheet.range(2, j, len(valeur), j)
 

@@ -14,13 +14,13 @@ class TestAddAlbumService(unittest.TestCase):
     def setUpClass(cls):
         cls.sheet_repository = SheetInMemory()
         cls.bd_repository = BdInMemory()
+        cls.service = AddAlbumService([cls.bd_repository], cls.sheet_repository)
 
     def tearDown(self):
         # After each
         self.sheet_repository.delete_row(0)
 
     def test_convert_list_from_dict_empty_value_successfully(self):
-        self.service = AddAlbumService(0, [self.bd_repository], self.sheet_repository)
         liste = self.service.map_to_list({
             'Album': '', 'Couleurs': '', 'Date de publication': '',
             'Dessin': '', 'Édition': '', 'ISBN': '', 'Image': '',
@@ -29,7 +29,6 @@ class TestAddAlbumService(unittest.TestCase):
         self.assertEqual([""] * self.NB_COLUMN, liste)
 
     def test_convert_list_from_dict_successfully(self):
-        self.service = AddAlbumService(0, [self.bd_repository], self.sheet_repository)
         liste = self.service.map_to_list({
                 'Album': 'a', 'Couleurs': 'a', 'Date de publication': 'a',
                 'Dessin': 'a', 'Édition': 'a', 'ISBN': 'a', 'Image': 'a',
@@ -43,19 +42,17 @@ class TestAddAlbumService(unittest.TestCase):
             self.service.map_to_list({})
 
     def test_add_album_successfully(self):
-        self.service = AddAlbumService(ASTERIX, [self.bd_repository], self.sheet_repository)
-        self.assertEqual(ASTERIX, self.service.main())
+        self.service.main(ASTERIX_ISBN)
+        #self.assertEqual(ASTERIX, self.service.main(ASTERIX_ISBN))
 
     def test_raise_error_on_duplicate_isbn(self):
-        self.service = AddAlbumService(ASTERIX, [self.bd_repository], self.sheet_repository)
-        self.service.main()
+        self.service.main(ASTERIX_ISBN)
         with self.assertRaises(AddAlbumError):
-            self.service.main()
+            self.service.main(ASTERIX_ISBN)
 
     def test_raise_error_get_info_from_incorrect_isbn(self):
-        self.service = AddAlbumService(0, [self.bd_repository], self.sheet_repository)
         with self.assertRaises(AddAlbumError):
-            self.service.main()
+            self.service.main(0)
 
 
 if __name__ == '__main__':

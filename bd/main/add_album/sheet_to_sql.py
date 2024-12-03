@@ -34,7 +34,7 @@ def insert_data_into_sql_table(connection, gsheet, table_name):
 
 
 gsheet = Conn()
-gsheet.open("config")
+gsheet.open("bd")
 
 database = sqlite3.connect(__DATABASE__)
 
