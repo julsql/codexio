@@ -14,9 +14,11 @@ def upload_dedicace(request, isbn: int):
 def upload_exlibris(request, isbn: int):
     return upload_photo(request, isbn, "exlibris")
 
+@csrf_exempt
 def delete_dedicace(request, isbn: int, photo_id: int):
     return delete_photo(request, isbn, photo_id, "dedicaces")
 
+@csrf_exempt
 def delete_exlibris(request, isbn: int, photo_id: int):
     return delete_photo(request, isbn, photo_id, "exlibris")
 
@@ -30,7 +32,7 @@ def upload_photo(request, isbn: int, photo_type: str):
                 uploaded_file = request.FILES['file']
                 service = UploadPhotoService()
                 if service.main(isbn, uploaded_file, photo_type):
-                    return JsonResponse({'message': f'Fichier {isbn} ajouté avec succès'})
+                    return JsonResponse({'message': f'Photo {isbn} ajoutée avec succès'})
                 else:
                     return JsonResponse({'error': "Le type du fichier est incorrect"})
             else:
@@ -39,7 +41,7 @@ def upload_photo(request, isbn: int, photo_type: str):
         return JsonResponse({'message': 'Il faut une requête POST'})
 
 def delete_photo(request, isbn: int, photo_id: int, photo_type: str):
-    if request.method == 'GET':
+    if request.method == 'DELETE':
         auth_header = request.headers.get('Authorization')
         if auth_header is None or auth_header != f"Bearer {POST_TOKEN}":
             return JsonResponse({'error': "Vous n'avez pas l'autorisation"})
@@ -50,4 +52,4 @@ def delete_photo(request, isbn: int, photo_id: int, photo_type: str):
             else:
                 return JsonResponse({'message': "La photo n'a pas été trouvée"})
     else:
-        return JsonResponse({'message': 'Il faut une requête POST'})
+        return JsonResponse({'message': 'Il faut une requête DELETE'})

@@ -1,6 +1,9 @@
 import logging
 
-class CustomLogger(logging.Logger):
+from config.settings import LOGS_FILE
+
+
+class AppLogger(logging.Logger):
     def __init__(self, name):
         super().__init__(name)
 
@@ -25,12 +28,12 @@ class CustomLogger(logging.Logger):
     def critical(self, msg, *args, **kwargs):
         self._log_with_isbn(logging.CRITICAL, msg, args, **kwargs)
 
-logging.setLoggerClass(CustomLogger)
-logger = logging.getLogger("custom_logger")
+logging.setLoggerClass(AppLogger)
+logger = logging.getLogger("app_logger")
 
 logging.basicConfig(
     level=logging.DEBUG,
     format='%(asctime)s - %(levelname)s - %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S',
-    filename='app.log'
+    filename=LOGS_FILE
 )
