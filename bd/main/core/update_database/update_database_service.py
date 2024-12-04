@@ -1,4 +1,3 @@
-from config.settings import DATABASES
 from main.core.common.database.database_repository import DatabaseRepository
 from main.core.common.sheet.sheet_repository import SheetRepository
 
@@ -8,9 +7,8 @@ class UpdateDatabaseService:
         sheet_name = "BD"
         self.sheet = sheet_repository
         self.sheet.open(doc_name, sheet_name)
-        database_file = DATABASES['default']['NAME']
         self.database = database_repository
-        self.database.open(database_file)
+        self.database.open()
 
     def main(self) -> None:
         rows = self.sheet.get_all()

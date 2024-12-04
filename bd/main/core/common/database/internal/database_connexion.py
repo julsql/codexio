@@ -5,11 +5,12 @@ from main.core.common.database.database_repository import DatabaseRepository
 
 
 class DatabaseConnexion(DatabaseRepository):
-    def __init__(self):
+    def __init__(self, filename: str):
+        self.filename = filename
         self.database = None
 
-    def open(self, file: str):
-        self.database = sqlite3.connect(file)
+    def open(self):
+        self.database = sqlite3.connect(self.filename)
 
     def close(self):
         self.database.close()
