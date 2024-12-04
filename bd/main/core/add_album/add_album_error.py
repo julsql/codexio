@@ -1,4 +1,4 @@
-from main.core.common.logger import logger
+from main.core.common.logger.logger import logger
 
 class AddAlbumError(Exception):
 

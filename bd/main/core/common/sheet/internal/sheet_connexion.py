@@ -5,7 +5,7 @@ from google.auth import exceptions
 from google.oauth2 import service_account
 import os
 from main.core.add_album.add_album_error import AddAlbumError
-from main.core.common.sheet_repository import SheetRepository
+from main.core.common.sheet.sheet_repository import SheetRepository
 from config.settings import GSHEET_CREDENTIALS
 
 class SheetConnexion(SheetRepository):
@@ -21,7 +21,7 @@ class SheetConnexion(SheetRepository):
             )
             self.client = gspread.Client(auth=creds)
         except exceptions.DefaultCredentialsError:
-            message_log = "Google Sheet non accessible."
+            message_log = "Google sheet non accessible."
             self.client = None
             raise AddAlbumError(message_log, None)
 

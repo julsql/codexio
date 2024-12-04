@@ -1,5 +1,5 @@
 import unittest
-from main.core.common.sheet_connexion import SheetConnexion
+from main.core.common.sheet.internal.sheet_connexion import SheetConnexion
 from tests.test_add_album.data.album_data_set import FIRST_LINE
 
 

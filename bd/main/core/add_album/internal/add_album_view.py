@@ -5,7 +5,7 @@ from main.core.add_album.add_album_service import AddAlbumService
 from main.core.add_album.internal.bdfugue_connexion import BdFugueRepository
 from main.core.add_album.internal.bdphile_connexion import BdPhileRepository
 from config.settings import POST_TOKEN
-from main.core.common.sheet_connexion import SheetConnexion
+from main.core.common.sheet.internal.sheet_connexion import SheetConnexion
 
 
 def add_album(request: HttpRequest, isbn: int) -> HttpResponse | JsonResponse:
