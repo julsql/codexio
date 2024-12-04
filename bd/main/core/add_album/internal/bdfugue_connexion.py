@@ -17,6 +17,9 @@ class BdFugueRepository(BdRepository):
                "date de parution": "Date de publication", "": "Édition",
                "Nombre de pages": "Pages"}
 
+    def __str__(self) -> str:
+        return "BdFugueRepository"
+
     def get_infos(self, isbn: int) -> Dict[str, Any]:
         url = self.get_url(isbn)
         logger.info(url, extra={"isbn": isbn})

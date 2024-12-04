@@ -4,8 +4,7 @@ import datetime
 
 import requests
 from bs4 import BeautifulSoup
-from dateutil import parser
-from dateutil.parser._parser import ParserError
+from dateutil.parser import parse, ParserError
 
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.bd_repository import BdRepository
@@ -13,6 +12,9 @@ from main.core.common.logger.logger import logger
 
 
 class BdPhileRepository(BdRepository):
+
+    def __str__(self) -> str:
+        return "BdPhileRepository"
 
     def get_infos(self, isbn: int) -> Dict:
         informations = {}
@@ -54,7 +56,7 @@ class BdPhileRepository(BdRepository):
                         informations[current_key] = dd_text
 
         try:
-            parsed_date = parser.parse(self.translate(informations["Date de publication"]),
+            parsed_date = parse(self.translate(informations["Date de publication"]),
                                        dayfirst=True, fuzzy=True, default=datetime.datetime(1900, 1, 1))
             informations["Date de publication"] = parsed_date.date().isoformat()
         except ParserError:
