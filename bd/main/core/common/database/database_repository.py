@@ -1,5 +1,5 @@
 from abc import abstractmethod, ABC
-from typing import List
+from typing import List, Dict, Any
 
 
 class DatabaseRepository(ABC):
@@ -17,4 +17,8 @@ class DatabaseRepository(ABC):
 
     @abstractmethod
     def insert(self, table_name: str, column_names: List[str], value: List[List[str]]) -> None:
+        pass
+
+    @abstractmethod
+    def get_all(self, table_name: str) -> List[Dict[str, Any]]:
         pass

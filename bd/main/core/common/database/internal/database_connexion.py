@@ -1,5 +1,5 @@
 import sqlite3
-from typing import List
+from typing import List, Dict, Any
 
 from main.core.common.database.database_repository import DatabaseRepository
 
@@ -16,18 +16,42 @@ class DatabaseConnexion(DatabaseRepository):
         self.database.close()
 
     def create_table(self, table_name: str, column_names: List[str]) -> None:
-        cursor = self.database.cursor()
-        cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
-        cursor.execute(f"CREATE TABLE {table_name} (isbn BIGINT)")
+        if not self._is_valid_table_name(table_name):
+            raise ValueError(f"Nom de table invalide : {table_name}")
 
-        for column_name in column_names[1:]:
-            cursor.execute(f"ALTER TABLE {table_name} ADD COLUMN {column_name} TEXT")
+        cursor = self.database.cursor()
+
+        columns = [f'"{name}" TEXT' if i != 0 else f'"{name}" BIGINT' for i, name in enumerate(column_names)]
+        columns_definition = ", ".join(columns)
+
+        cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
+        cursor.execute(f"CREATE TABLE {table_name} ({columns_definition})")
         self.database.commit()
 
     def insert(self, table_name: str, column_names: List[str], value: List[List[str]]) -> None:
+        column_names = [f'\"{column_name}\"' for column_name in column_names]
+        if not self._is_valid_table_name(table_name):
+            raise ValueError(f"Nom de table invalide : {table_name}")
+
         cursor = self.database.cursor()
 
         for row in value:
             cursor.execute(f"INSERT INTO {table_name} ({','.join(column_names)}) VALUES ({','.join(['?'] * len(column_names))})", row)
 
         self.database.commit()
+
+    def get_all(self, table_name: str) -> List[Dict[str, Any]]:
+        if not self._is_valid_table_name(table_name):
+            raise ValueError(f"Nom de table invalide : {table_name}")
+
+        cursor = self.database.cursor()
+        query = f"SELECT * FROM {table_name}"
+        cursor.execute(query)
+
+        columns = [description[0] for description in cursor.description]
+
+        rows = cursor.fetchall()
+        return [dict(zip(columns, row)) for row in rows]
+
+    def _is_valid_table_name(self, table_name: str) -> bool:
+        return table_name.isidentifier() and " " not in table_name
