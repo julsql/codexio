@@ -15,7 +15,7 @@ class UploadPhotoService:
         else:
             origin_folder = self.EXLIBRIS_FOLDER
 
-        allowed_file = self.is_allowed_file(uploaded_file)
+        allowed_file = self.is_allowed_file(uploaded_file.name)
         if allowed_file:
             file_extension = os.path.splitext(uploaded_file.name)[1].lower()
             path_folder = os.path.join(origin_folder, str(isbn))

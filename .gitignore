@@ -12,7 +12,7 @@ bd/comics.sqlite3
 **/static/main/images/exlibris/
 
 # log
-**/*.log
+**/logs/
 
 # cache
 **/__pycache__/
