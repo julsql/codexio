@@ -2,6 +2,7 @@ from typing import List, Dict
 
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.bd_repository import BdRepository
+from main.core.common.logger.logger import logger
 
 
 class GetInfosService:
@@ -15,7 +16,8 @@ class GetInfosService:
             try:
                 infos = self.get_infos(repository)
             except Exception as _:
-                pass
+                repository_name = lambda repo: 'BD Phile' if str(repo) == "BdPhileRepository" else 'BD Fugue'
+                logger.warning(f"{isbn} non trouvé dans {repository_name(repository)}", exc_info=True)
             else:
                 return self.corriger_info(infos)
         raise AddAlbumError(f"Aucun album trouvé avec l'isbn {self.isbn}")

@@ -2,7 +2,7 @@ import unittest
 
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.add_album_service import AddAlbumService
-from tests.test_add_album.data.album_data_set import ASTERIX_ISBN, ASTERIX
+from tests.test_add_album.data.album_data_set import ASTERIX_ISBN
 from tests.test_add_album.internal.bd_in_memory import BdInMemory
 from tests.test_add_album.internal.sheet_in_memory import SheetInMemory
 
