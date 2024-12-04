@@ -3,7 +3,7 @@ from typing import List
 import requests
 
 from main.core.add_album.add_album_error import AddAlbumError
-from main.core.common.logger import logger
+from main.core.common.logger.logger import logger
 
 
 class BdRepository(ABC):

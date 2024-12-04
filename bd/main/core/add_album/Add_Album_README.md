@@ -56,7 +56,7 @@ python3 sheet_to_sql.py
 ## Tests
 
 Il existe des tests [unitaires](../../tests/add_album/test_unit) et d'[intégration](../../tests/add_album/test_integration).
-Vous les trouverez dans le package [tests](../../tests).
+Vous les trouverez dans le package [tests](../../../tests).
 
 Pour tous les run :
 ```bash

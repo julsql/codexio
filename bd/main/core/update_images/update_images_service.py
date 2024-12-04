@@ -1,5 +1,5 @@
-from main.core.common.logger import logger
-from main.core.common.sheet_repository import SheetRepository
+from main.core.common.logger.logger import logger
+from main.core.common.sheet.sheet_repository import SheetRepository
 from main.core.update_images.bd_repository import BdRepository
 
 

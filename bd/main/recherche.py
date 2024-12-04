@@ -2,7 +2,9 @@ from django.db import connections
 import random
 from django.conf import settings
 import os
-from main.core.common.logger import logger
+
+from config.settings import STATIC_ROOT
+from main.core.common.logger.logger import logger
 
 def exec_req_all(req):
     with connections['default'].cursor() as cur:
@@ -170,10 +172,10 @@ def get_photo_dossier(path):
 
 
 def exlibris_album(isbn):
-    image_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/exlibris", str(isbn))
+    image_dir = os.path.join(STATIC_ROOT, "main/images/exlibris", str(isbn))
     return get_photo_dossier(image_dir)
 
 
 def dedicaces_album(isbn):
-    image_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/dedicaces", str(isbn))
+    image_dir = os.path.join(STATIC_ROOT, "main/images/dedicaces", str(isbn))
     return get_photo_dossier(image_dir)

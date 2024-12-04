@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpRequest, JsonResponse
 from config.settings import POST_TOKEN
-from main.core.common.sheet_connexion import SheetConnexion
+from main.core.common.sheet.internal.sheet_connexion import SheetConnexion
 from main.core.existing_album.existing_album_service import ExistingAlbumService
 
 

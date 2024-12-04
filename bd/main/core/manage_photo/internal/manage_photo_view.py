@@ -8,17 +8,17 @@ from main.core.manage_photo.upload_photo_service import UploadPhotoService
 
 @csrf_exempt
 def upload_dedicace(request, isbn: int):
-    upload_photo(request, isbn, "dedicace")
+    return upload_photo(request, isbn, "dedicaces")
 
 @csrf_exempt
 def upload_exlibris(request, isbn: int):
-    upload_photo(request, isbn, "exlibris")
-
-def delete_exlibris(request, isbn: int, photo_id: int):
-    delete_photo(request, isbn, photo_id, "exlibris")
+    return upload_photo(request, isbn, "exlibris")
 
 def delete_dedicace(request, isbn: int, photo_id: int):
-    delete_photo(request, isbn, photo_id, "dedicace")
+    return delete_photo(request, isbn, photo_id, "dedicaces")
+
+def delete_exlibris(request, isbn: int, photo_id: int):
+    return delete_photo(request, isbn, photo_id, "exlibris")
 
 def upload_photo(request, isbn: int, photo_type: str):
     if request.method == 'POST':
@@ -45,10 +45,9 @@ def delete_photo(request, isbn: int, photo_id: int, photo_type: str):
             return JsonResponse({'error': "Vous n'avez pas l'autorisation"})
         else:
             service = DeletePhotoService()
-            if service.main(isbn, photo_id, photo_type) == 0:
-                return JsonResponse({'message': "La photo n'a pas été trouvée"})
+            if service.main(isbn, photo_id, photo_type):
+                return JsonResponse({'message': 'Photo supprimée correctement'})
             else:
-                return JsonResponse({'message': 'Dédicace supprimée correctement'})
+                return JsonResponse({'message': "La photo n'a pas été trouvée"})
     else:
         return JsonResponse({'message': 'Il faut une requête POST'})
-

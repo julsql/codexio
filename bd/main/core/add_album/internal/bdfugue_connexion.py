@@ -1,11 +1,12 @@
 import re
 from typing import Dict, Any
 
+import requests
 from bs4 import BeautifulSoup
 
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.bd_repository import BdRepository
-from main.core.common.logger import logger
+from main.core.common.logger.logger import logger
 
 
 class BdFugueRepository(BdRepository):
@@ -105,3 +106,12 @@ class BdFugueRepository(BdRepository):
 
     def get_url(self, isbn: int) -> str:
         return f"https://www.bdfugue.com/catalogsearch/result/?q={isbn}"
+
+    def get_html(self, url: str) -> str:
+        response = requests.get(url)
+        # Vérifiez si la requête a réussi
+        if response.status_code == 200:
+            return response.text
+        else:
+            logger.error(f"La requête a échoué. Statut de la réponse : {response.status_code}")
+            raise AddAlbumError(f"Impossible d'affiche le code html de la page {url}")

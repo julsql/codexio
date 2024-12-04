@@ -1,6 +1,6 @@
 from typing import List
 
-from main.core.common.sheet_repository import SheetRepository
+from main.core.common.sheet.sheet_repository import SheetRepository
 
 
 class SheetInMemory(SheetRepository):

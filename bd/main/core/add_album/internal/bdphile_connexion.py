@@ -2,12 +2,14 @@ from typing import Dict
 
 import datetime
 
+import requests
 from bs4 import BeautifulSoup
 from dateutil import parser
+from dateutil.parser._parser import ParserError
 
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.bd_repository import BdRepository
-from main.core.common.logger import logger
+from main.core.common.logger.logger import logger
 
 
 class BdPhileRepository(BdRepository):
@@ -55,7 +57,7 @@ class BdPhileRepository(BdRepository):
             parsed_date = parser.parse(self.translate(informations["Date de publication"]),
                                        dayfirst=True, fuzzy=True, default=datetime.datetime(1900, 1, 1))
             informations["Date de publication"] = parsed_date.date().isoformat()
-        except:
+        except ParserError:
             logger.warning("Problème de date de parution", extra={"isbn": isbn})
 
         if "Format" in informations:
@@ -125,3 +127,11 @@ class BdPhileRepository(BdRepository):
             if mois in date.lower():
                 date = date.lower().replace(mois, month)
         return date
+
+    def get_html(self, url: str) -> str:
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.text
+        else:
+            logger.error(f"La requête a échoué. Statut de la réponse : {response.status_code}")
+            raise AddAlbumError(f"Impossible d'affiche le code html de la page {url}")

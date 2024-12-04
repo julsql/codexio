@@ -1,4 +1,4 @@
-from main.core.common.sheet_repository import SheetRepository
+from main.core.common.sheet.sheet_repository import SheetRepository
 
 class ExistingAlbumService:
     def __init__(self, sheet_repository: SheetRepository) -> None:

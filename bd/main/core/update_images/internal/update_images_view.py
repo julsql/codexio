@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpRequest, JsonResponse
 from config.settings import POST_TOKEN
 from main.core.add_album.add_album_error import AddAlbumError
-from main.core.common.sheet_connexion import SheetConnexion
+from main.core.common.sheet.internal.sheet_connexion import SheetConnexion
 from main.core.update_images.internal.bdphile_connexion import BdPhileRepository
 from main.core.update_images.update_images_service import UpdateColumnService
 
