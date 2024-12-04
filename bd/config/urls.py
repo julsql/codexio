@@ -20,7 +20,8 @@ from main import views
 from main.core.add_album.internal.add_album_view import add_album
 from main.core.existing_album.internal.existing_album_view import existing_album
 from main.core.update_database.internal.update_database_view import update_database
-from main.core.manage_photo.internal.manage_photo_view import upload_dedicace, upload_exlibris, delete_dedicace, delete_exlibris
+from main.core.upload_photo.internal.upload_photo_view import upload_dedicace, upload_exlibris
+from main.core.delete_photo.internal.delete_photo_view import delete_dedicace, delete_exlibris
 
 urlpatterns = [
     path('admin/', admin.site.urls),
