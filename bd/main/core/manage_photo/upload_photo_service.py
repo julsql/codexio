@@ -5,15 +5,16 @@ from config.settings import STATIC_ROOT
 from django.core.files.storage import FileSystemStorage
 
 class UploadPhotoService:
-    ALLOWED_EXTENSIONS = '.jpeg'
-    DEDICACE_FOLDER = os.path.join(STATIC_ROOT, 'main/images/dedicaces')
-    EXLIBRIS_FOLDER = os.path.join(STATIC_ROOT, 'main/images/exlibris')
+    def __init__(self):
+        self.allowed_extensions = '.jpeg'
+        self.dedicace_folder = os.path.join(STATIC_ROOT, 'main/images/dedicaces')
+        self.exlibris_folder = os.path.join(STATIC_ROOT, 'main/images/exlibris')
 
     def main(self, isbn: int, uploaded_file, photo_type: str) -> bool:
         if photo_type == 'dedicaces':
-            origin_folder = self.DEDICACE_FOLDER
+            origin_folder = self.dedicace_folder
         else:
-            origin_folder = self.EXLIBRIS_FOLDER
+            origin_folder = self.exlibris_folder
 
         allowed_file = self.is_allowed_file(uploaded_file.name)
         if allowed_file:
@@ -26,7 +27,7 @@ class UploadPhotoService:
         return allowed_file
 
     def is_allowed_file(self, filename: str) -> bool:
-        return '.' in filename and "." + filename.rsplit('.', 1)[1].lower() == self.ALLOWED_EXTENSIONS
+        return '.' in filename and "." + filename.rsplit('.', 1)[1].lower() == self.allowed_extensions
 
     def get_next_number(self, directory_path):
         if not os.path.isdir(directory_path):
@@ -36,7 +37,7 @@ class UploadPhotoService:
         for root, dirs, files in os.walk(directory_path):
             for file in files:
                 file_extension = os.path.splitext(file)[1].lower()
-                if file_extension == self.ALLOWED_EXTENSIONS:
+                if file_extension == self.allowed_extensions:
                     image_paths.append(file)
 
         integers = [int(re.search(r'\d+', s).group()) for s in image_paths if re.search(r'\d+', s)]

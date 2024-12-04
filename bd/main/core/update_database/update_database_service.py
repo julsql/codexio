@@ -18,6 +18,5 @@ class UpdateDatabaseService:
         table_name = "BD"
 
         self.database.create_table(table_name, title)
-        print(title)
         self.database.insert(table_name, title, data)
         self.database.close()

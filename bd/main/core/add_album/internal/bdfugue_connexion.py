@@ -11,11 +11,12 @@ from main.core.common.logger.logger import logger
 
 class BdFugueRepository(BdRepository):
 
-    header = {"Titre album": "Album", "Tome": "Numéro",
-               "Série": "Série", "Scénario": "Scénario",
-               "Dessin": "Dessin", "Couleurs": "Couleurs", "Éditeur": "Éditeur",
-               "date de parution": "Date de publication", "": "Édition",
-               "Nombre de pages": "Pages"}
+    def __init__(self):
+        self.header = {"Titre album": "Album", "Tome": "Numéro",
+                   "Série": "Série", "Scénario": "Scénario",
+                   "Dessin": "Dessin", "Couleurs": "Couleurs", "Éditeur": "Éditeur",
+                   "date de parution": "Date de publication", "": "Édition",
+                   "Nombre de pages": "Pages"}
 
     def __str__(self) -> str:
         return "BdFugueRepository"

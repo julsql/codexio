@@ -4,11 +4,11 @@ from typing import List
 
 class SheetRepository(ABC):
     @abstractmethod
-    def open(self, doc_name: str, sheet_name: str = None):
+    def open(self, doc_name: str, sheet_name: str = None) -> None:
         pass
 
     @abstractmethod
-    def append(self, liste: List):
+    def append(self, liste: List) -> None:
         pass
 
     @abstractmethod
@@ -24,23 +24,31 @@ class SheetRepository(ABC):
         pass
 
     @abstractmethod
+    def get_size(self) -> (int, int):
+        pass
+
+    @abstractmethod
     def get_all(self) -> List:
         pass
 
     @abstractmethod
-    def set(self, valeur: str, i: int, j: int):
+    def set(self, valeur: str, i: int, j: int) -> None:
         pass
 
     @abstractmethod
-    def set_line(self, valeur: List, i: int):
+    def set_line(self, valeur: List, i: int) -> None:
         pass
 
     @abstractmethod
-    def set_column(self, valeur: List, j: int):
+    def set_column(self, valeur: List, j: int, offset: int) -> None:
         pass
 
     @abstractmethod
-    def delete_row(self, i: int):
+    def delete_row(self, i: int) -> None:
+        pass
+
+    @abstractmethod
+    def clear(self) -> None:
         pass
 
     @abstractmethod

@@ -4,17 +4,19 @@ from main.core.common.sheet.sheet_repository import SheetRepository
 
 
 class SheetInMemory(SheetRepository):
-    worksheet = []
-    client = {"bd": {"BD": [], "Test": []}}
-    __OFFSET__ = 0
 
-    def open(self, doc_name: str, sheet_name: str = None):
+    def __init__(self):
+        self.worksheet = []
+        self.client = {"bd": {"BD": [], "Test": []}}
+        self.__OFFSET__ = 0
+
+    def open(self, doc_name: str, sheet_name: str = None) -> None:
         if sheet_name is None:
             return self.client[doc_name]
         else:
             return self.client[doc_name][sheet_name]
 
-    def append(self, liste: List):
+    def append(self, liste: List) -> None:
         self.worksheet.append(liste)
 
     def get(self, i: int, j: int) -> str:
@@ -31,10 +33,13 @@ class SheetInMemory(SheetRepository):
 
         return [row[j] for row in self.worksheet]
 
+    def get_size(self) -> (int, int):
+        return len(self.worksheet), len(self.worksheet[0])
+
     def get_all(self) -> List:
         return self.worksheet
 
-    def set(self, valeur: str, i: int, j: int):
+    def set(self, valeur: str, i: int, j: int) -> None:
         i += self.__OFFSET__
         j += self.__OFFSET__
         if isinstance(valeur, str):
@@ -42,7 +47,7 @@ class SheetInMemory(SheetRepository):
         else:
             raise TypeError(f"{valeur} n'est pas un type texte")
 
-    def set_line(self, valeur: List, i: int):
+    def set_line(self, valeur: List, i: int) -> None:
         i += self.__OFFSET__
         if i < len(self.worksheet):
             if isinstance(valeur, list):
@@ -50,13 +55,16 @@ class SheetInMemory(SheetRepository):
             else:
                 self.worksheet[i] = [valeur]
 
-    def set_column(self, valeur: List, j: int):
+    def set_column(self, valeur: List, j: int) -> None:
         for i in range(len(self.worksheet)):
             if len(self.worksheet[i]) < j:
                 self.worksheet[i][j] = valeur[i]
 
-    def delete_row(self, i: int):
-        self.set_line(["" for _ in range(26)], i)
+    def delete_row(self, i: int) -> None:
+        self.set_line([''] * self.get_size()[1], i)
+
+    def clear(self) -> None:
+        self.worksheet = []
 
     def double(self, isbn: int) -> bool:
         row_values = self.get_column(0)

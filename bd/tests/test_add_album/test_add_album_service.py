@@ -2,9 +2,9 @@ import unittest
 
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.add_album_service import AddAlbumService
-from tests.test_add_album.data.album_data_set import ASTERIX_ISBN
+from tests.album_data_set import ASTERIX_ISBN, ASTERIX
 from tests.test_add_album.internal.bd_in_memory import BdInMemory
-from tests.test_add_album.internal.sheet_in_memory import SheetInMemory
+from main.core.common.sheet.internal.sheet_in_memory import SheetInMemory
 
 
 class TestAddAlbumService(unittest.TestCase):
@@ -12,6 +12,7 @@ class TestAddAlbumService(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        # Before all
         cls.sheet_repository = SheetInMemory()
         cls.bd_repository = BdInMemory()
         cls.service = AddAlbumService([cls.bd_repository], cls.sheet_repository)
@@ -42,8 +43,7 @@ class TestAddAlbumService(unittest.TestCase):
             self.service.map_to_list({})
 
     def test_add_album_successfully(self):
-        self.service.main(ASTERIX_ISBN)
-        #self.assertEqual(ASTERIX, self.service.main(ASTERIX_ISBN))
+        self.assertEqual(ASTERIX, self.service.main(ASTERIX_ISBN))
 
     def test_raise_error_on_duplicate_isbn(self):
         self.service.main(ASTERIX_ISBN)

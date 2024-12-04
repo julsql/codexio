@@ -19,6 +19,30 @@ serie = "Astérix (Albums des films)"
 editeur = "Albert René"
 edition = "Édition originale Noté : Impression en décembre 2022 - n° 616-5-01 Impression et reliure par Pollina - n°13651"
 
+FIRST_LINE = [
+    "ISBN", "Album", "Numéro", "Série", "Scénariste", "Dessinateur", "Couleur", "Éditeur", "Date de parution",
+    "Édition", "Nombre de pages", "Cote", "Prix d'achat", "Année d'achat", "Lieu d'achat", "Tirage de tête",
+    "Dédicace", "Ex Libris", "Synopsis", "Image"]
+
+ASTERIX_WEB = {
+    'Album': album,
+    'Couleurs': couleurs,
+    'Date de publication': date_de_publication,
+    'Dessin': dessin,
+    'Image':  image,
+    'Numéro': numero,
+    'Pages': pages,
+    'Prix': prix,
+    'Scénario': scenario,
+    'Synopsis': synopsis,
+    'Série': serie,
+    'Éditeur': editeur,
+    'Édition': edition,
+}
+
+ASTERIX = ASTERIX_WEB.copy()
+ASTERIX['ISBN'] = ASTERIX_ISBN
+
 ASTERIX_LIST = [
     ASTERIX_ISBN,
     album,
@@ -33,6 +57,29 @@ ASTERIX_LIST = [
     pages,
     '',
     prix,
+    '',
+    '',
+    '',
+    '',
+    '',
+    synopsis,
+    image
+]
+
+ASTERIX_LIST_STR = [
+    str(ASTERIX_ISBN),
+    album,
+    numero,
+    serie,
+    scenario,
+    dessin,
+    couleurs,
+    editeur,
+    date_de_publication,
+    edition,
+    str(pages),
+    '',
+    str(prix).replace('.', ','),
     '',
     '',
     '',
