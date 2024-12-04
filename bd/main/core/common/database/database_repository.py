@@ -1,10 +1,10 @@
 from abc import abstractmethod, ABC
-from typing import List, Dict
+from typing import List
 
 
 class DatabaseRepository(ABC):
     @abstractmethod
-    def open(self, file: str):
+    def open(self):
         pass
 
     @abstractmethod
