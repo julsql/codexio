@@ -4,18 +4,19 @@ from config.settings import STATIC_ROOT
 
 
 class DeletePhotoService:
-    ALLOWED_EXTENSIONS = '.jpeg'
-    DEDICACE_FOLDER = os.path.join(STATIC_ROOT, 'main/images/dedicaces')
-    EXLIBRIS_FOLDER = os.path.join(STATIC_ROOT, 'main/images/exlibris')
+    def __init__(self):
+        self.allowed_extensions = '.jpeg'
+        self.dedicace_folder = os.path.join(STATIC_ROOT, 'main/images/dedicaces')
+        self.exlibris_folder = os.path.join(STATIC_ROOT, 'main/images/exlibris')
 
     def main(self, isbn: int, photo_id: int, photo_type: str) -> int:
         if photo_type == 'dedicaces':
-            origin_folder = self.DEDICACE_FOLDER
+            origin_folder = self.dedicace_folder
         else:
-            origin_folder = self.EXLIBRIS_FOLDER
+            origin_folder = self.exlibris_folder
 
         album_path = os.path.join(origin_folder, str(isbn))
-        image_path = os.path.join(album_path, f"{photo_id}{self.ALLOWED_EXTENSIONS}")
+        image_path = os.path.join(album_path, f"{photo_id}{self.allowed_extensions}")
         image_exists = os.path.exists(image_path)
         if image_exists:
             os.remove(image_path)
@@ -28,12 +29,12 @@ class DeletePhotoService:
     def renommer_photos(self, chemin_dossier):
         fichiers = os.listdir(chemin_dossier)
 
-        fichiers_photos = [f for f in fichiers if f.endswith(self.ALLOWED_EXTENSIONS)]
+        fichiers_photos = [f for f in fichiers if f.endswith(self.allowed_extensions)]
         fichiers_photos.sort(key=lambda x: int(x.split('.')[0]))
 
         for i, fichier in enumerate(fichiers_photos, start=1):
             ancien_chemin = os.path.join(chemin_dossier, fichier)
-            nouveau_nom = f"{i}{self.ALLOWED_EXTENSIONS}"
+            nouveau_nom = f"{i}{self.allowed_extensions}"
             nouveau_chemin = os.path.join(chemin_dossier, nouveau_nom)
 
             os.rename(ancien_chemin, nouveau_chemin)

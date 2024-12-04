@@ -13,16 +13,18 @@ class DatabaseInMemory(DatabaseRepository):
         self.database = {}
         self.column_names = {}
 
+    def close(self):
+        pass
+
     def create_table(self, table_name: str, column_names: List[str]) -> None:
         self.database[table_name] = []
 
     def insert(self, table_name: str, column_names: List[str], value: List[List[str]]) -> None:
+        print(len(value[0]), len(column_names))
         if len(value[0]) != len(column_names):
             raise IndexError
-        print(column_names)
         for row in value:
             self.database[table_name].append({column_names[i]: row[i] for i in range(len(row))})
 
     def get_all(self, table_name: str) -> List[Dict[str, Any]]:
-        print(self.database[table_name])
         return self.database[table_name]

@@ -4,9 +4,9 @@ from main.core.update_images.bd_repository import BdRepository
 
 
 class UpdateColumnService:
-    IMAGES_COLUMN = 18
 
     def __init__(self, bd_repository: BdRepository, sheet_repository: SheetRepository) -> None:
+        self.images_column = 20
         doc_name = "bd"
         sheet_name = "BD"
         self.repository = bd_repository
@@ -21,7 +21,7 @@ class UpdateColumnService:
             if i % 10 == 0:
                 logger.info(f"{i + 1}e album")
             isbn = ligne[0]
-            image = ligne[self.IMAGES_COLUMN]
+            image = ligne[self.images_column]
             new_image = self.repository.get_images(isbn)
             if new_image == 0:
                 logger.warning(f"L'image pour {isbn} n'a pas été trouvée")
@@ -30,4 +30,4 @@ class UpdateColumnService:
             images.append(image)
             i += 1
 
-        self.connexion.set_column(images, self.IMAGES_COLUMN)
+        self.connexion.set_column(images, self.images_column, 1)

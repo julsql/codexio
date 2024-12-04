@@ -2,7 +2,7 @@ import unittest
 
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.internal.bdphile_connexion import BdPhileRepository
-from tests.test_add_album.data.album_data_set import ASTERIX_ISBN, ASTERIX_WEB, ASTERIX_BDPHILE_LINK
+from tests.album_data_set import ASTERIX_ISBN, ASTERIX_WEB, ASTERIX_BDPHILE_LINK
 
 
 class TestBdPhileRepository(unittest.TestCase):

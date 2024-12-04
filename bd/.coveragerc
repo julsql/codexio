@@ -1,0 +1,12 @@
+[run]
+source = bd
+omit =
+    */migrations/*
+    */tests/*
+    */config/*
+    */venv/*
+    */manage.py
+
+[report]
+show_missing = True
+skip_covered = True
