@@ -11,9 +11,9 @@ class TestExistingAlbumService(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.sheet_repository = SheetInMemory()
-        cls.service = ExistingAlbumService(cls.sheet_repository)
-        cls.sheet_repository.append(ASTERIX_LIST)
+        sheet_repository = SheetInMemory()
+        sheet_repository.append(ASTERIX_LIST)
+        cls.service = ExistingAlbumService(sheet_repository)
 
     def test_already_exists(self):
         self.assertTrue(self.service.main(ASTERIX_ISBN))
