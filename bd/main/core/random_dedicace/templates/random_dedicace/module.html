@@ -1,0 +1,19 @@
+<div id="banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-6 col-12-medium">
+
+                <p>Découvrir toutes les dédicaces !</p>
+                <a href="{% url 'dedicace' %}" class="button-large">Voir les dédicaces</a>
+
+            </div>
+            <div class="col-6 col-12-medium imp-medium">
+                <a href="{% url 'dedicace' %}#{{ banner_type }}_{{ banner_isbn }}" class="bordered-feature-image">
+                    <div class="image-container">
+                        <img src="{{ banner_path }}" alt="Bannière" class="fixed-size-image"/>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

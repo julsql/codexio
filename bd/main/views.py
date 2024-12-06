@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+from main.core.advanced_search.internal.advanced_search_view import advanced_search
+from main.core.random_dedicace.internal.random_dedicace_view import random_dedicace
 from main.forms import RechercheForm
 from main import recherche as recherche
 from main.models import BD
@@ -47,22 +49,13 @@ def form_search(form=None):
 # Create your views here.
 def home(request):
     infos = recherche.alea()
-    banner, isbn_banner, random_type = recherche.banner()
-    if request.method == 'POST':
-        # créer une instance de notre formulaire et le remplir avec les données POST
-        form = RechercheForm(request.POST)
-
-        queryset = form_search(form)
-        if queryset:
-            infos = [{'ISBN': bd.isbn, 'Album': bd.Album, 'Numero': bd.Numéro, 'Serie': bd.Série} for bd in queryset]
-            return render(request, 'main/bdrecherche.html', {'form': form, 'infos': infos})
-        return render(request, 'main/home.html', {'form': form, 'infos': infos, 'banner': banner, 'isbn_banner': isbn_banner, "random_type": random_type})
-
-    else:
-        # ceci doit être une requête GET, donc créer un formulaire vide
-        form = RechercheForm()
-
-    return render(request, 'main/home.html', {'form': form, 'infos': infos, 'banner': banner, 'isbn_banner': isbn_banner, "random_type": random_type})
+    banner = random_dedicace()
+    form, form_send = advanced_search(request)
+    value = banner.copy()
+    if form_send:
+        return render(request, 'main/bdrecherche.html', value)
+    value.update({'form': form, 'infos': infos})
+    return render(request, 'main/home.html', value)
 
 
 def bdrecherche(request):
