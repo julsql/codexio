@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 from main.core.advanced_search.internal.advanced_search_view import advanced_search
+from main.core.random_album.internal.random_album_view import random_album
 from main.core.random_dedicace.internal.random_dedicace_view import random_dedicace
 from main.forms import RechercheForm
 from main import recherche as recherche
@@ -46,9 +47,8 @@ def form_search(form=None):
     return queryset
 
 
-# Create your views here.
 def home(request):
-    infos = recherche.alea()
+    infos = random_album()
     banner = random_dedicace()
     form, form_send = advanced_search(request)
     value = banner.copy()

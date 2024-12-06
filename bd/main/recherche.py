@@ -6,66 +6,11 @@ import os
 from config.settings import STATIC_ROOT
 from main.core.common.logger.logger import logger
 
-def exec_req_all(req):
-    with connections['default'].cursor() as cur:
-        cur.execute(req)
-        return cur.fetchall()
-
 
 def exec_req_one(req):
     with connections['default'].cursor() as cur:
         cur.execute(req)
         return cur.fetchone()
-
-
-def alea():
-    req = "SELECT ISBN, Album, Numéro, Série, Image, Scénariste, Dessinateur, \"Date de parution\", \"Prix d'achat\", " \
-          "\"Nombre de pages\", Édition, Synopsis FROM BD ORDER BY RAND() LIMIT 1;"
-    result = exec_req_one(req)
-    infos = {'ISBN': result[0], 'Album': result[1], 'Numero': result[2], 'Serie': result[3], 'Image': result[4],
-             'Scenartiste': result[5], 'Dessinateur': result[6], 'Date_de_parution': result[7],
-             'Prix_dachat': result[8], 'Nombre_de_pages': result[9], 'Edition': result[10], 'Synopsis': result[11]}
-    return infos
-
-
-def list_files_in_subdirectories(directory_path):
-    # Assurez-vous que le chemin est un répertoire
-    if not os.path.isdir(directory_path):
-        return []  # Le chemin spécifié n'est pas un répertoire
-
-    files = []
-    image_extensions = ['.jpg', '.jpeg', '.png']
-
-    # Parcourez le contenu du répertoire, y compris les sous-répertoires
-    for root, dirs, files_in_root in os.walk(directory_path):
-        for file_name in files_in_root:
-
-            # Vérifiez si l'extension du fichier est dans la liste des extensions d'image
-            if any(file_name.lower().endswith(ext) for ext in image_extensions):
-                # Obtenez le nom du répertoire parent et le nom du fichier
-                parent_directory = os.path.basename(root)
-                grandparent_directory = os.path.basename(os.path.dirname(root))
-                # Ajoutez ces informations à la liste
-                files.append(os.path.join(grandparent_directory, parent_directory, file_name))
-
-    return files
-
-
-def banner():
-    dedicace_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/dedicaces")
-    exlibris_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/exlibris")
-    image_files = list_files_in_subdirectories(dedicace_dir) + list_files_in_subdirectories(exlibris_dir)
-    random_isbn = 0
-    random_type = "dedicace"
-    if image_files:
-        random_image = random.choice(image_files)
-        random_image_path = os.path.join(settings.STATIC_URL, "main/images/", random_image)
-        random_isbn = os.path.basename(os.path.dirname(random_image_path))
-        if os.path.basename(os.path.dirname(os.path.dirname(random_image_path))) == "exlibris":
-            random_type = "exlibris"
-    else:
-        random_image_path = os.path.join(settings.STATIC_URL, "main/images/banner.jpg")
-    return random_image_path, random_isbn, random_type
 
 
 def page(isbn):
