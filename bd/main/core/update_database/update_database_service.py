@@ -8,9 +8,9 @@ class UpdateDatabaseService:
         self.sheet = sheet_repository
         self.sheet.open(doc_name, sheet_name)
         self.database = database_repository
-        self.database.open()
 
     def main(self) -> None:
+        self.database.open()
         rows = self.sheet.get_all()
         title = [f"{titre}" for titre in rows[0]]
         data = rows[1:]

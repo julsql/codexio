@@ -53,5 +53,23 @@ class DatabaseConnexion(DatabaseRepository):
         rows = cursor.fetchall()
         return [dict(zip(columns, row)) for row in rows]
 
+    def get(self, query: str) -> List[Dict[str, Any]]:
+        cursor = self.database.cursor()
+        cursor.execute(query)
+
+        columns = [description[0] for description in cursor.description]
+
+        rows = cursor.fetchall()
+        return [dict(zip(columns, row)) for row in rows]
+
+    def get_one(self, query: str) -> Dict[str, Any]:
+        cursor = self.database.cursor()
+        cursor.execute(query)
+
+        columns = [description[0] for description in cursor.description]
+
+        row = cursor.fetchone()
+        return dict(zip(columns, row))
+
     def _is_valid_table_name(self, table_name: str) -> bool:
         return table_name.isidentifier() and " " not in table_name
