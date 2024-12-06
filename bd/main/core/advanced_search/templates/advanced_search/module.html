@@ -1,0 +1,12 @@
+<section>
+    <header>
+        <h2>Rechercher</h2>
+        <h3>Rechercher une bande dessinée suivant des critères</h3>
+    </header>
+    <form method="post" action="{% url 'bdrecherche' %}">
+        {% csrf_token %}
+        {{ form.as_custom_table_2|safe }}
+
+        <input class="button-large" type="submit" value="Rechercher" title="Rechercher la BD"/>
+    </form>
+</section>
