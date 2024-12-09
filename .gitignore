@@ -2,16 +2,6 @@
 .idea/
 .vscode/
 
-# Config files
-bd/config/bd-sheet-91.json
-bd/config/settings.py
-bd/comics.sqlite3
-bd/comics_test.sqlite3
-
-# photos
-**/static/main/images/dedicaces/
-**/static/main/images/exlibris/
-
 # log
 **/logs/
 
