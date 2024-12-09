@@ -55,7 +55,7 @@ class SheetInMemory(SheetRepository):
             else:
                 self.worksheet[i] = [valeur]
 
-    def set_column(self, valeur: List, j: int) -> None:
+    def set_column(self, valeur: List, j: int, offset: int) -> None:
         for i in range(len(self.worksheet)):
             if len(self.worksheet[i]) < j:
                 self.worksheet[i][j] = valeur[i]

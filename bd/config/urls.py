@@ -16,20 +16,29 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from main import views
+
 from main.core.add_album.internal.add_album_view import add_album
 from main.core.existing_album.internal.existing_album_view import existing_album
 from main.core.update_database.internal.update_database_view import update_database
 from main.core.upload_photo.internal.upload_photo_view import upload_dedicace, upload_exlibris
 from main.core.delete_photo.internal.delete_photo_view import delete_dedicace, delete_exlibris
+from main.core.statistics.internal.statistics_view import statistiques
+from main.core.home.internal.home_view import home
+from main.core.attachments.internal.attachments_view import attachments
+from main.core.bd_search.internal.bd_search_view import bd_search
+from main.core.page_bd.internal.page_bd_view import page_bd
+from main.core.errors.internal.errors_view import error_500_view, error_404_view
+
+handler500 = error_500_view
+handler404 = error_404_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='home'),
-    path('bdrecherche/', views.bdrecherche, name='bdrecherche'),
-    path('dedicace/', views.dedicace, name='dedicace'),
-    path('pagebd/<int:isbn>/', views.pagebd, name='pagebd'),
-    path('statistiques/', views.statistiques, name='statistiques'),
+    path('', home, name='home'),
+    path('bdrecherche/', bd_search, name='bdrecherche'),
+    path('dedicace/', attachments, name='dedicace'),
+    path('pagebd/<int:isbn>/', page_bd, name='pagebd'),
+    path('statistiques/', statistiques, name='statistiques'),
     path('upload/dedicace/<int:isbn>/', upload_dedicace, name='upload_dedicace'),
     path('upload/exlibris/<int:isbn>/', upload_exlibris, name='upload_exlibris'),
     path('delete/dedicace/<int:isbn>/<int:photo_id>', delete_dedicace, name='delete_dedicace'),

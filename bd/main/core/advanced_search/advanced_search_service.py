@@ -1,13 +1,22 @@
-from typing import Dict
+from typing import Dict, Tuple, List
 
+from main.forms import RechercheForm
 from main.models import BD
 
 
 class AdvancedSearchService:
-    def main(self, form) -> Dict[str, str]:
-        return self.form_search(form)
+    def main(self, request) -> Tuple[RechercheForm, List[Dict[str, str]], bool]:
+        if request.method == 'POST':
+            form = RechercheForm(request.POST)
+            infos = self.form_search(form)
+            if infos:
+                return form, infos, True
+        else:
+            form = RechercheForm()
+            infos = self.form_search()
+        return form, infos, False
 
-    def form_search(self, form=None) -> Dict[str, str]:
+    def form_search(self, form=None) -> List[Dict[str, str]]:
         queryset = BD.objects.all()
 
         if form and form.is_valid():
@@ -43,6 +52,4 @@ class AdvancedSearchService:
                 tri_par = tri_par if tri_croissant else f"-{tri_par}"
                 queryset = queryset.order_by(tri_par)
 
-        infos = [{'ISBN': bd.isbn, 'Album': bd.Album, 'Numero': bd.Numéro, 'Serie': bd.Série} for bd in queryset]
-
-        return infos
+        return [{'ISBN': bd.isbn, 'Album': bd.Album, 'Numero': bd.Numéro, 'Serie': bd.Série} for bd in queryset]
