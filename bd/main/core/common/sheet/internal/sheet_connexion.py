@@ -13,7 +13,7 @@ class SheetConnexion(SheetRepository):
         self.__OFFSET__ = 1
         self.worksheet = None
         __FILEPATH__ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        credentials_path = GSHEET_CREDENTIALS[0]
+        credentials_path = GSHEET_CREDENTIALS
         try:
             creds = service_account.Credentials.from_service_account_file(
                 credentials_path,

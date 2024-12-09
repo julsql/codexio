@@ -1,0 +1,9 @@
+# Config files
+config/bd-sheet-91.json
+config/.env
+comics.sqlite3
+comics_test.sqlite3
+
+# photos
+main/static/main/images/dedicaces/
+main/static/main/images/exlibris/
