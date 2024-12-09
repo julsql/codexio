@@ -69,6 +69,8 @@ class DatabaseConnexion(DatabaseRepository):
         columns = [description[0] for description in cursor.description]
 
         row = cursor.fetchone()
+        if row is None:
+            return None
         return dict(zip(columns, row))
 
     def _is_valid_table_name(self, table_name: str) -> bool:

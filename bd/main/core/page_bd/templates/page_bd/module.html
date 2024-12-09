@@ -47,7 +47,7 @@
                 </h3>
             </header>
 
-                <table>
+                <table aria-hidden="true">
                     <tr>
                         <td><strong>ISBN</strong> : {{ ISBN }}</td>
                         <td><strong>Scénariste</strong> : {{ Scenariste }}</td>
@@ -101,7 +101,7 @@
 
                     {% for image in dedicaces %}
                         <a class="photo_link" href="/static/main/images/dedicaces/{{ ISBN }}/{{ image }}" data-lightbox="{{ ISBN }}">
-                            <img src="/static/main/images/dedicaces/{{ ISBN }}/{{ image }}" alt="Image" class="photo_dedicace">
+                            <img src="/static/main/images/dedicaces/{{ ISBN }}/{{ image }}" alt="couverture de l'album {{ ISBN }}" class="photo_dedicace">
                         </a>
                     {% endfor %}
 
@@ -120,7 +120,7 @@
 
                     {% for image in exlibris %}
                         <a class="photo_link" href="/static/main/images/exlibris/{{ ISBN }}/{{ image }}" data-lightbox="{{ ISBN }}">
-                            <img src="/static/main/images/exlibris/{{ ISBN }}/{{ image }}" alt="Image" class="photo_dedicace">
+                            <img src="/static/main/images/exlibris/{{ ISBN }}/{{ image }}" alt="couverture de l'album {{ ISBN }}" class="photo_dedicace">
                         </a>
                     {% endfor %}
 

@@ -22,3 +22,11 @@ class DatabaseRepository(ABC):
     @abstractmethod
     def get_all(self, table_name: str) -> List[Dict[str, Any]]:
         pass
+
+    @abstractmethod
+    def get(self, query: str) -> List[Dict[str, Any]]:
+        pass
+
+    @abstractmethod
+    def get_one(self, query: str) -> Dict[str, Any]:
+        pass

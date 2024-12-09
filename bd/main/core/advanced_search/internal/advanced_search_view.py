@@ -1,16 +1,9 @@
-from typing import Dict, Tuple
+from typing import Dict, Tuple, List
 
 from main.core.advanced_search.advanced_search_service import AdvancedSearchService
 from main.forms import RechercheForm
 
 
-def advanced_search(request) -> Tuple[Dict[str, str] | RechercheForm, bool]:
-    if request.method == 'POST':
-        form = RechercheForm(request.POST)
+def advanced_search(request) -> Tuple[RechercheForm, List[Dict[str, str]], bool]:
         service = AdvancedSearchService()
-        infos = service.main(form)
-        if infos:
-            return infos, True
-    else:
-        form = RechercheForm()
-    return form, False
+        return service.main(request)
