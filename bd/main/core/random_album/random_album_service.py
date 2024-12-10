@@ -14,7 +14,6 @@ class RandomAlbumService:
               "\"Nombre de pages\", Édition, Synopsis FROM BD ORDER BY RANDOM() LIMIT 1;"
         result = self.database.get_one(req)
         self.database.close()
-        print(result)
         infos = {'ISBN': result["isbn"], 'Album': result["Album"], 'Numero': result["Numéro"], 'Serie': result["Série"], 'Image': result["Image"],
                  'Scenartiste': result["Scénariste"], 'Dessinateur': result["Dessinateur"], 'Date_de_parution': result["Date de parution"],
                  'Prix_dachat': result["Prix d'achat"], 'Nombre_de_pages': result["Nombre de pages"], 'Edition': result["Édition"], 'Synopsis': result["Synopsis"]}

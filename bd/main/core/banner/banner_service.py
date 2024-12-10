@@ -14,11 +14,11 @@ class RandomDedicaceService:
         random_type = ""
         if image_files:
             random_image = random.choice(image_files)
-            random_image_path = os.path.join(settings.STATIC_URL, "main/images/", random_image)
+            random_image_path = os.path.join("main/images/", random_image)
             random_isbn = os.path.basename(os.path.dirname(random_image_path))
             random_type = os.path.basename(os.path.dirname(os.path.dirname(random_image_path)))
         else:
-            random_image_path = os.path.join(settings.STATIC_URL, "main/images/banner.jpg")
+            random_image_path = os.path.join("main/images/banner.jpg")
 
         return {'banner_path': str(random_image_path), 'banner_isbn': random_isbn, "banner_type": random_type}
 

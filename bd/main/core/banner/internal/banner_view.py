@@ -1,6 +1,6 @@
 from typing import Dict
 
-from main.core.random_dedicace.random_dedicace_service import RandomDedicaceService
+from main.core.banner.banner_service import RandomDedicaceService
 
 
 def random_dedicace() -> Dict[str, str]:

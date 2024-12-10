@@ -1,7 +1,7 @@
 # Config files
 config/bd-sheet-91.json
 config/.env
-comics.sqlite3
+database/
 comics_test.sqlite3
 
 # photos

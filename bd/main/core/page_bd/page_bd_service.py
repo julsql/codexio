@@ -1,6 +1,5 @@
-from typing import Dict, Tuple, List
+from typing import Dict
 import os
-from django.shortcuts import render
 
 from main.core.common.database.database_repository import DatabaseRepository
 from main.core.common.logger.logger import logger
