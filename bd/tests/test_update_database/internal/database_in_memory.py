@@ -20,7 +20,6 @@ class DatabaseInMemory(DatabaseRepository):
         self.database[table_name] = []
 
     def insert(self, table_name: str, column_names: List[str], value: List[List[str]]) -> None:
-        print(len(value[0]), len(column_names))
         if len(value[0]) != len(column_names):
             raise IndexError
         for row in value:
@@ -28,3 +27,9 @@ class DatabaseInMemory(DatabaseRepository):
 
     def get_all(self, table_name: str) -> List[Dict[str, Any]]:
         return self.database[table_name]
+
+    def get(self, query: str) -> List[Dict[str, Any]]:
+        pass
+
+    def get_one(self, query: str) -> Dict[str, Any]:
+        pass

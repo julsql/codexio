@@ -55,7 +55,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-           BASE_DIR / 'main/core/random_dedicace/templates',
+           BASE_DIR / 'main/core/banner/templates',
            BASE_DIR / 'main/core/advanced_search/templates',
            BASE_DIR / 'main/core/random_album/templates',
            BASE_DIR / 'main/core/statistics/templates',
@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'comics.sqlite3',
+        'NAME': BASE_DIR / 'database/comics.sqlite3',
     },
     'test': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -132,9 +132,8 @@ GSHEET_CREDENTIALS = config('GSHEET_CREDENTIALS')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'main' / STATIC_URL
-print(STATIC_ROOT)
 LOGS_FILE = BASE_DIR / 'logs' / 'app.logs'
 
 # Default primary key field type

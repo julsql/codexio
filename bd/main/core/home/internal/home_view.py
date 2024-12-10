@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from main.core.advanced_search.internal.advanced_search_view import advanced_search
 from main.core.random_album.internal.random_album_view import random_album
-from main.core.random_dedicace.internal.random_dedicace_view import random_dedicace
+from main.core.banner.internal.banner_view import random_dedicace
 
 
 def home(request):

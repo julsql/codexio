@@ -1,7 +1,7 @@
 from typing import Dict, Tuple, List
 
-from main.forms import RechercheForm
-from main.models import BD
+from main.core.advanced_search.internal.forms import RechercheForm
+from main.core.advanced_search.internal.models import BD
 
 
 class AdvancedSearchService:

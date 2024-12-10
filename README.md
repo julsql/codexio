@@ -16,17 +16,20 @@ It's a Django project that displays my collection of comics.
 ## App Structure
 
 - [static/](bd/main/static): The files used by the website (images, documents, css & javascript…)
-- [templates/](bd/main/templates): The html templates of the pages
-- [views.py](bd/main/views.py): the code launch when loading a page
+- [templates/](bd/main/templates): The main html templates
+- [core/](bd/main/core): The core of the project, divide by service with
+    - internal/view: the endpoint
+    - internal/connexion: the implementation of the repository
+    - service: the service
+    - repository: the interface of the connexion the remote service
 - [bd/](bd/config): the settings files (urls, wsgi, settings) used by Django
 - [manage.py](bd/manage.py): the main file that runs the website
-- [upload.py](bd/main/upload_photo.py): the upload of photos of the ex libris or 'dedicace'
 
 ## Test
 
-Run tests
+Run tests in `bd/`
 
-`bd/manage.py test tests`
+`./bd/manage.py test ./bd/tests`
 
 ## Installation
 
@@ -38,7 +41,14 @@ Run tests
     git clone git@github.com:julsql/bd_website.git
     ```
 
-2. Don't forget to add the settings file in `./bd/bd` and the google sheet api keys file at `private/bd-sheet-91.json`
+2. Don't forget to add the .env file in `./bd/config/.env` and the google sheet api keys file at `./bd/config/bd-sheet-91.json`
+
+```bash
+SECRET_KEY='django-key'
+DEBUG=False
+POST_TOKEN="TOKEN"
+GSHEET_CREDENTIALS='config/bd-sheet-91.json'
+```
 
 3. Configure the python virtual environment
 
@@ -58,11 +68,10 @@ Run tests
 5. Creation of the privates files
 
     ```bash
-    cd config
-    mkdir db
-    nano config/settings.py
-    mkdir main/private
-    nano main/private/config-sheet-91.json
+    cd bd
+    mkdir database
+    nano config/.env
+    nano config/bd-sheet-91.json
     mkdir main/static/main/images/dedicaces
     mkdir main/static/main/images/exlibris
     chmod -R 755 main/static/main/images/exlibris
@@ -73,10 +82,11 @@ Run tests
    
 6. Create the database
 
+appel update_database
+
    ```bash
-    python3 main/update_database.py
-    chmod -R 755 db/
-    sudo chown -R www-data:www-data db/
+    chmod -R 755 database/
+    sudo chown -R www-data:www-data database/
    ```
 
 7. Launch the website
@@ -84,10 +94,12 @@ Run tests
     ```bash
     ./manage.py runserver
     ```
+   
 8. To leave the virtual environment
     ```bash
     deactivate
     ```
+   
 ### Upload photo
 
 You can upload image with a `POST` request
@@ -133,7 +145,7 @@ sudo nano /etc/apache2/sites-available/myconfig.conf
         Require all granted
     </Directory>
 
-    <Directory /home/username/bd_website/bd/bd/>
+    <Directory /home/username/bd_website/bd/config/>
         <Files wsgi.py>
             Require all granted
         </Files>
@@ -141,7 +153,7 @@ sudo nano /etc/apache2/sites-available/myconfig.conf
 
     WSGIDaemonProcess bd_process python-home=/home/username/bd_website/env python-path=/home/username/bd_website/bd
     WSGIProcessGroup bd_process
-    WSGIScriptAlias / /home/username/bd_website/bd/bd/wsgi.py process-group=bd_process
+    WSGIScriptAlias / /home/username/bd_website/bd/config/wsgi.py process-group=bd_process
 
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
