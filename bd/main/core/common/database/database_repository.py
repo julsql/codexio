@@ -3,30 +3,15 @@ from typing import List, Dict, Any
 
 
 class DatabaseRepository(ABC):
+
     @abstractmethod
-    def open(self):
+    def create_table(self) -> None:
         pass
 
     @abstractmethod
-    def close(self):
+    def insert(self,value: List[Dict[str, str]]) -> None:
         pass
 
     @abstractmethod
-    def create_table(self, table_name: str, column_names: List[str]) -> None:
-        pass
-
-    @abstractmethod
-    def insert(self, table_name: str, column_names: List[str], value: List[List[str]]) -> None:
-        pass
-
-    @abstractmethod
-    def get_all(self, table_name: str) -> List[Dict[str, Any]]:
-        pass
-
-    @abstractmethod
-    def get(self, query: str) -> List[Dict[str, Any]]:
-        pass
-
-    @abstractmethod
-    def get_one(self, query: str) -> Dict[str, Any]:
+    def get_all(self) -> List[Dict[str, str]]:
         pass

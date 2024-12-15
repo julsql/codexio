@@ -87,10 +87,6 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'database/comics.sqlite3',
-    },
-    'test': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'comics_test.sqlite3',
     }
 }
 
@@ -127,7 +123,7 @@ USE_TZ = True
 APPEND_SLASH = True
 
 POST_TOKEN = config('POST_TOKEN')
-GSHEET_CREDENTIALS = config('GSHEET_CREDENTIALS')
+GSHEET_CREDENTIALS = BASE_DIR / config('GSHEET_CREDENTIALS')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

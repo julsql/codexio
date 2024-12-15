@@ -13,8 +13,7 @@ def update_database(request: HttpRequest) -> HttpResponse | JsonResponse:
             return JsonResponse({'error': "Vous n'avez pas l'autorisation"})
         else:
             sheet_repository = SheetConnexion()
-            database_file = DATABASES['default']['NAME']
-            database_repository = DatabaseConnexion(database_file)
+            database_repository = DatabaseConnexion()
             service = UpdateDatabaseService(sheet_repository, database_repository)
             service.main()
             return JsonResponse({'message': 'Site web mis à jour correctement'})

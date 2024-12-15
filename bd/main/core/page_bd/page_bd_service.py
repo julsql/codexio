@@ -1,13 +1,10 @@
 from typing import Dict
 import os
 
-from main.core.common.database.database_repository import DatabaseRepository
-from main.core.common.logger.logger import logger
+from main.core.common.database.internal.bd_model import BD
 from config.settings import STATIC_ROOT
 
 class PageBdService:
-    def __init__(self, database_repository: DatabaseRepository) -> None:
-        self.database = database_repository
 
     def main(self, isbn) -> Dict[str, str]:
         try:
@@ -42,22 +39,10 @@ class PageBdService:
         return self.get_photo_dossier(image_dir)
 
     def page(self, isbn):
-        self.database.open()
-        titles = ['ISBN', 'Album', 'Numero', 'Serie', 'Scenariste', 'Dessinateur', 'Couleur', 'Editeur', 'Date_de_parution',
-                  'Edition', 'Nombre_de_pages', 'Cote', 'Prix_dachat', 'Annee_dachat', 'Lieu_dachat', 'Dedicace',
-                  'Ex_Libris', 'Synopsis', 'Image']
-        req = ("SELECT ISBN as {}, Album as {}, Numéro as {}, Série as {}, "
-               "Scénariste as {}, Dessinateur as {}, Couleur as {}, "
-               "Éditeur as {}, \"Date de parution\" as {}, Édition as {}, "
-               "\"Nombre de page\" as {}, Cote as {}, \"Prix d'achat\" as {}, "
-               "\"Année d'achat\" as {}, \"Lieu d'achat\" as {}, "
-               "Dédicace as {}, \"Ex Libris\" as {}, Synopsis as {}, Image as {} "
-               "FROM BD WHERE ISBN={};").format(*titles, isbn)
-        logger.info(req, extra={"isbn": isbn})
-        result = self.database.get_one(req)
-        self.database.close()
-
-        infos = {}
-        for title in titles:
-            infos[title] = result[title]
-        return infos
+        fields = [
+            'isbn', 'album', 'number', 'series', 'writer', 'illustrator', 'colorist',
+            'publisher', 'publication_date', 'edition', 'number_of_pages', 'rating',
+            'purchase_price', 'year_of_purchase', 'place_of_purchase', 'signed_copy',
+            'ex_libris', 'synopsis', 'image'
+        ]
+        return BD.objects.filter(isbn=isbn).values(*fields).first()

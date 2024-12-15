@@ -6,8 +6,6 @@ from main.core.common.database.internal.database_connexion import DatabaseConnex
 
 
 def attachments(request: HttpRequest) -> HttpResponse:
-    database_file = DATABASES['default']['NAME']
-    database = DatabaseConnexion(database_file)
-    service = AttachmentsService(database)
+    service = AttachmentsService()
     infos = service.main()
     return render(request, 'attachments/module.html', infos)

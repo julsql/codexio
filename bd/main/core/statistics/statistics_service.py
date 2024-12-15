@@ -1,19 +1,20 @@
 from typing import Dict
 
-from main.core.common.database.database_repository import DatabaseRepository
+from django.db.models import Count, Sum, IntegerField, Case, When
+from django.db.models.functions import Cast
+from main.core.common.database.internal.bd_model import BD
 
 class StatisticsService:
-    def __init__(self, database_repository: DatabaseRepository) -> None:
-        self.database = database_repository
-
     def main(self) -> Dict[str, int]:
-        self.database.open()
-        infos = self.database.get_one("SELECT COUNT(*) AS nombre, "
-                                  "CAST(SUM(\"Nombre de pages\") AS INTEGER) AS pages, "
-                                  "CAST(SUM(Dédicace) AS INTEGER) AS dedicaces, "
-                                  "CAST(SUM(\"Ex Libris\") AS INTEGER) AS exlibris, "
-                                  "CAST(SUM(Cote) AS INTEGER) AS prix "
-                                  "FROM BD;")
-        infos.update(self.database.get_one("SELECT COUNT(*) AS tirage FROM BD WHERE LOWER(\"Tirage de tête\") = 'oui';"))
-        self.database.close()
-        return infos
+        return BD.objects.aggregate(
+            nombre=Count('id'),
+            pages=Cast(Sum('number_of_pages'), output_field=IntegerField()),
+            dedicaces=Cast(Sum('signed_copy'), output_field=IntegerField()),
+            exlibris=Cast(Sum('ex_libris'), output_field=IntegerField()),
+            prix=Cast(Sum('rating'), output_field=IntegerField()),
+            tirage=Count(
+                Case(
+                    When(deluxe_edition__iexact='oui', then=1)  # Compte uniquement les "Tirage de tête" = 'oui'
+                )
+            )
+        )

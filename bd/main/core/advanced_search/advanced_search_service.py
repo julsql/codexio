@@ -1,7 +1,7 @@
 from typing import Dict, Tuple, List
 
 from main.core.advanced_search.internal.forms import RechercheForm
-from main.core.advanced_search.internal.models import BD
+from main.core.common.database.internal.bd_model import BD
 
 
 class AdvancedSearchService:
@@ -24,16 +24,16 @@ class AdvancedSearchService:
 
             filters = {
                 'isbn__icontains': 'isbn',
-                'Album__icontains': 'titre',
-                'Numéro__icontains': 'numero',
-                'Série__icontains': 'serie',
-                'Scénariste__icontains': 'scenariste',
-                'Dessinateur__icontains': 'dessinateur',
-                'Éditeur__icontains': 'editeur',
-                'Édition__icontains': 'edition',
-                'Année_d_achat': 'annee',
-                'Dédicace': 'dedicace',
-                'Ex_Libris': 'exlibris',
+                'album__icontains': 'album',
+                'number__icontains': 'number',
+                'series__icontains': 'series',
+                'writer__icontains': 'writer',
+                'illustrator__icontains': 'illustrator',
+                'publisher__icontains': 'publisher',
+                'edition__icontains': 'edition',
+                'year_of_purchase': 'year_of_purchase',
+                'signed_copy': 'signed_copy',
+                'ex_libris': 'ex_libris',
             }
 
             for field_name, form_field_name in filters.items():
@@ -41,9 +41,11 @@ class AdvancedSearchService:
                 if value:
                     queryset = queryset.filter(**{field_name: value})
 
-            synopsis = data.get('synopsis').split(" ")
-            for mot in synopsis:
-                queryset = queryset.filter(Synopsis__icontains=mot)
+            synopsis = data.get('synopsis')
+            if synopsis:
+                keywords = synopsis.split(" ")
+                for keyword in keywords:
+                    queryset = queryset.filter(synopsis__icontains=keyword)
 
             tri_par = data.get('tri_par')
             tri_croissant = data.get('tri_croissant')
@@ -52,4 +54,14 @@ class AdvancedSearchService:
                 tri_par = tri_par if tri_croissant else f"-{tri_par}"
                 queryset = queryset.order_by(tri_par)
 
-        return [{'ISBN': bd.isbn, 'Album': bd.Album, 'Numero': bd.Numéro, 'Serie': bd.Série} for bd in queryset]
+        return [
+            {
+                'ISBN': bd.isbn,
+                'Album': bd.album,
+                'Numero': bd.number,
+                'Serie': bd.series,
+                'Scenariste': bd.writer,
+                'Dessinateur': bd.illustrator,
+            }
+            for bd in queryset
+        ]

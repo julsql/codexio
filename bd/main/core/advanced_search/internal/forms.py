@@ -2,37 +2,31 @@ from django import forms
 from django.forms import CheckboxInput
 from django.utils.safestring import mark_safe
 
-
 class RechercheForm(forms.Form):
     isbn = forms.CharField(required=False, label='ISBN', widget=forms.TextInput(attrs={'placeholder': 'ISBN'}))
-    titre = forms.CharField(required=False, label='Titre', widget=forms.TextInput(attrs={'placeholder': 'Titre'}))
-    numero = forms.CharField(required=False, label='Numéro',
-                             widget=forms.TextInput(attrs={'placeholder': 'Numéro du tome'}))
-    serie = forms.CharField(required=False, label='Série', widget=forms.TextInput(attrs={'placeholder': 'Série'}))
-    scenariste = forms.CharField(required=False, label='Scénariste',
-                                 widget=forms.TextInput(attrs={'placeholder': 'Scénariste'}))
-    dessinateur = forms.CharField(required=False, label='Dessinateur',
-                                  widget=forms.TextInput(attrs={'placeholder': 'Dessinateur'}))
-    editeur = forms.CharField(required=False, label='Éditeur', widget=forms.TextInput(attrs={'placeholder': 'Éditeur'}))
+    album = forms.CharField(required=False, label='Album', widget=forms.TextInput(attrs={'placeholder': 'Album'}))
+    number = forms.CharField(required=False, label='Numéro', widget=forms.TextInput(attrs={'placeholder': 'Numéro'}))
+    series = forms.CharField(required=False, label='Série', widget=forms.TextInput(attrs={'placeholder': 'Série'}))
+    writer = forms.CharField(required=False, label='Scénariste', widget=forms.TextInput(attrs={'placeholder': 'Scénariste'}))
+    illustrator = forms.CharField(required=False, label='Dessinateur', widget=forms.TextInput(attrs={'placeholder': 'Dessinateur'}))
+    publisher = forms.CharField(required=False, label='Éditeur', widget=forms.TextInput(attrs={'placeholder': 'Éditeur'}))
     edition = forms.CharField(required=False, label='Édition', widget=forms.TextInput(attrs={'placeholder': 'Édition'}))
-    annee = forms.CharField(required=False, label="Année d'achat",
-                            widget=forms.TextInput(attrs={'placeholder': "Année d'achat"}))
-    dedicace = forms.CharField(required=False, label='Dédicace',
-                               widget=forms.TextInput(attrs={'placeholder': 'Dédicace'}))
-    exlibris = forms.CharField(required=False, label='Ex Libris',
-                               widget=forms.TextInput(attrs={'placeholder': 'Ex Libris'}))
-    synopsis = forms.CharField(required=False, label='Synopsis',
-                               widget=forms.TextInput(attrs={'placeholder': 'Synopsis'}))
+    year_of_purchase = forms.CharField(required=False, label="Année d'achat", widget=forms.TextInput(attrs={'placeholder': "Année d'achat"}))
+    signed_copy = forms.CharField(required=False, label='Dédicace', widget=forms.TextInput(attrs={'placeholder': 'Dédicace'}))
+    ex_libris = forms.CharField(required=False, label='Ex Libris', widget=forms.TextInput(attrs={'placeholder': 'Ex Libris'}))
+    synopsis = forms.CharField(required=False, label='Synopsis', widget=forms.TextInput(attrs={'placeholder': 'Synopsis'}))
+
+    # Options de tri mises à jour avec les nouveaux champs du modèle
     TRI_CHOICES = [
-        ('Album', 'Album'),
-        ('Numéro', 'Numéro'),
-        ('Série', 'Série'),
-        ('Date_de_parution', 'Date de parution'),
-        ("Année_d_achat", "Année d'achat"),
-        ('Nombre_de-page', 'Nombre de pages'),
-        ("Lieu_d_achat", "Lieu d'achat"),
-        ('Dessinateur', 'Dessinateur'),
-        ('Scénariste', 'Scénariste'),
+        ('album', 'Album'),
+        ('number', 'Numéro'),
+        ('series', 'Série'),
+        ('publication_date', 'Date de parution'),
+        ("year_of_purchase", "Année d'achat"),
+        ('number_of_pages', 'Nombre de pages'),
+        ("place_of_purchase", "Lieu d'achat"),
+        ('illustrator', 'Dessinateur'),
+        ('writer', 'Scénariste'),
     ]
 
     tri_par = forms.ChoiceField(
@@ -47,6 +41,7 @@ class RechercheForm(forms.Form):
         widget=CheckboxInput(attrs={'class': 'custom-checkbox'}),
     )
 
+    # Méthode pour afficher le formulaire sous forme de tableau (optionnel)
     def as_custom_table_2(self):
         html = '\t<table>\n'
         html += '\t\t\t\t\t<tr>\n'
