@@ -12,5 +12,5 @@ def home(request):
     value = banner.copy()
     if form_send:
         return render(request, 'bd_search/module.html', value)
-    value.update({'form': form, 'infos': infos_album})
+    value.update({'form': form, 'random_album': infos_album})
     return render(request, 'home/module.html', value)

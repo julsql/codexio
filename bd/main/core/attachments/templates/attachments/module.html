@@ -8,7 +8,7 @@
     <section>
         <header>
             <h2>Sommaire</h2>
-            <h3><a href="#dedicaces">Dédicaces ({{ dedicaces_sum }})</a></h3>
+            <h3><a href="#dedicaces">Dédicaces ({{ signed_copy_sum }})</a></h3>
             <h3><a href="#exlibris">Ex Libris ({{ exlibris_sum }})</a></h3>
         </header>
     </section>
@@ -21,37 +21,37 @@
         </header>
 
     </section>
-    {% for bd in dedicaces %}
+    {% for bd in signed_copies %}
 
-        <section id="dedicaces_{{ bd.ISBN }}">
+        <section id="dedicaces_{{ bd.isbn }}">
             <header>
                 <h2>
-                    <a href="{% url 'pagebd' bd.ISBN %}"> 
-                        {% if bd.Numero and bd.Numero != "" %}
-                            Tome {{ bd.Numero }}
-                            {% if bd.Album and bd.Album != "" %}
+                    <a href="{% url 'pagebd' bd.isbn %}">
+                        {% if bd.number and bd.number != "" %}
+                            Tome {{ bd.number }}
+                            {% if bd.album and bd.album != "" %}
                                 : 
                             {% endif %}
                         {% endif %}
 
-                        {% if bd.Album and bd.Album != "" %}
-                            {{ bd.Album }}
+                        {% if bd.album and bd.album != "" %}
+                            {{ bd.album }}
                         {% else %}
-                            {{ bd.ISBN }}
+                            {{ bd.isbn }}
                         {% endif %}
                     </a>
                 </h2>
-                {% if bd.Serie and db.Serie != "" %}
-                    <h2>{{ bd.Serie }}</h2>
+                {% if bd.series and db.series != "" %}
+                    <h2>{{ bd.series }}</h2>
                 {% endif %}
 
-                <p>{{ bd.Dedicace }} dédicace{% if bd.Dedicace > 1 %}s{% endif %}</p>
+                <p>{{ bd.signed_copy }} dédicace{% if bd.signed_copy > 1 %}s{% endif %}</p>
             </header>
 
             <p>
-                {% for i in bd.DedicaceRange %}
-                    <a class="photo_link" href="/static/main/images/dedicaces/{{ bd.ISBN }}/{{ i }}.jpeg" data-lightbox="{{ bd.ISBN }}">
-                        <img src="{% static 'main/images/dedicaces/' %}{{ bd.ISBN }}/{{ i }}.jpeg" alt="Dédicace de l'album {{ bd.ISBN }}" class="photo_dedicace">
+                {% for i in bd.signes_copy_range %}
+                    <a class="photo_link" href="/static/main/images/dedicaces/{{ bd.isbn }}/{{ i }}.jpeg" data-lightbox="{{ bd.isbn }}">
+                        <img src="{% static 'main/images/dedicaces/' %}{{ bd.isbn }}/{{ i }}.jpeg" alt="Dédicace de l'album {{ bd.isbn }}" class="photo_dedicace">
                     </a>
                 {% endfor %}
             </p>
@@ -68,36 +68,36 @@
 
     {% for bd in exlibris %}
 
-        <section id="exlibris_{{ bd.ISBN }}">
+        <section id="exlibris_{{ bd.isbn }}">
             <header>
                 <h2>
-                    {% if bd.Album and db.Album != "" %}
-                        <a href="{% url 'pagebd' bd.ISBN %}">{{ bd.Album }}</a>
+                    {% if bd.album and db.album != "" %}
+                        <a href="{% url 'pagebd' bd.isbn %}">{{ bd.album }}</a>
                     {% else %}
-                        <a href="{% url 'pagebd' bd.ISBN %}">{{ bd.ISBN }}</a>
+                        <a href="{% url 'pagebd' bd.isbn %}">{{ bd.isbn }}</a>
                     {% endif %}
                 </h2>
 
-                {% if bd.Numero or bd.Serie %}
-                    {% if bd.Numero != "" or bd.Serie != "" %}
+                {% if bd.number or bd.series %}
+                    {% if bd.number != "" or bd.series != "" %}
                         <h3>
-                            {% if bd.Numero and bd.Numero != "" %}
-                                Tome {{ bd.Numero }}
+                            {% if bd.number and bd.number != "" %}
+                                Tome {{ bd.number }}
                             {% endif %}
 
-                            {% if bd.Serie and bd.Serie != "" %}
-                                {{ bd.Serie }}
+                            {% if bd.series and bd.series != "" %}
+                                {{ bd.series }}
                             {% endif %}
                         </h3>
                     {% endif %}
                 {% endif %}
-                <p>{{bd.Exlibris}} ex libris</p>
+                <p>{{bd.ex_libris}} ex libris</p>
             </header>
 
             <p>
-                {% for i in bd.ExlibrisRange %}
-                    <a class="photo_link" href="/static/main/images/exlibris/{{ bd.ISBN }}/{{ i }}.jpeg" data-lightbox="{{ bd.ISBN }}">
-                        <img src="{% static 'main/images/exlibris/' %}{{ bd.ISBN }}/{{ i }}.jpeg" alt="Ex libris de l'album {{ bd.ISBN }}" class="photo_dedicace">
+                {% for i in bd.ex_libris_range %}
+                    <a class="photo_link" href="/static/main/images/exlibris/{{ bd.isbn }}/{{ i }}.jpeg" data-lightbox="{{ bd.isbn }}">
+                        <img src="{% static 'main/images/exlibris/' %}{{ bd.isbn }}/{{ i }}.jpeg" alt="Ex libris de l'album {{ bd.isbn }}" class="photo_dedicace">
                     </a>
                 {% endfor %}
             </p>

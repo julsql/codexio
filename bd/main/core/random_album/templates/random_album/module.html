@@ -1,53 +1,53 @@
 <section>
     <header>
-        {% if infos.Serie and infos.Serie != "" %}
+        {% if random_album.series and random_album.series != "" %}
             <h2>
-                {{ infos.Serie }}
+                {{ random_album.series }}
             </h2>
         {% endif %}
-        {% if infos.Numero and infos.Numero != "" or infos.Album and infos.Album != "" %}
+        {% if random_album.number and random_album.number != "" or random_album.album and random_album.album != "" %}
             <h3>
-                {% if infos.Numero and infos.Numero != "" %}
-                    Tome {{ infos.Numero }}
-                    {% if infos.Album and infos.Album != "" %}
+                {% if random_album.number and random_album.number != "" %}
+                    Tome {{ random_album.number }}
+                    {% if random_album.album and random_album.album != "" %}
                         :
                     {% endif %}
                 {% endif %}
-                {% if infos.Album and infos.Album != "" %}
-                    {{ infos.Album }}
+                {% if random_album.album and random_album.album != "" %}
+                    {{ random_album.album }}
                 {% endif %}
             </h3>
         {% endif %}
 
     </header>
 
-    <a href="{{ infos.Image }}" data-lightbox="{{ infos.Album }}">
-        <img src="{{ infos.Image }}" alt="Couverture" width="220">
+    <a href="{{ random_album.image }}" data-lightbox="{{ random_album.album }}">
+        <img src="{{ random_album.image }}" alt="Couverture" width="220">
     </a>
     <p>
-        Scénartiste : {{ infos.Scenariste }}<br />
-        Dessinateur : {{ infos.Dessinateur }}<br />
-        Date de parution : {{ infos.Date_de_parution }}<br />
-        {% if infos.Prix_dachat and infos.Nombre_de_pages and infos.Prix_dachat != "" and infos.Nombre_de_pages != "" %}
-            {{ infos.Prix_dachat }}€ | {{ infos.Nombre_de_pages }} pages<br />
+        Scénartiste : {{ random_album.writer }}<br />
+        Dessinateur : {{ random_album.illustrator }}<br />
+        Date de parution : {{ random_album.publication_date }}<br />
+        {% if random_album.purchase_price and random_album.number_of_pages and random_album.purchase_price != "" and random_album.number_of_pages != "" %}
+            {{ random_album.purchase_price }}€ | {{ random_album.number_of_pages }} pages<br />
         {% else %}
-            {% if infos.Prix_dachat and infos.Prix_dachat != "" %}
-                {{ infos.Prix_dachat }}€<br />
+            {% if random_album.purchase_price and random_album.purchase_price != "" %}
+                {{ random_album.purchase_price }}€<br />
             {% endif %}
 
-            {% if infos.Nombre_de_pages and infos.Nombre_de_pages != "" %}
-                {{ infos.Nombre_de_pages }} pages<br />
+            {% if random_album.number_of_pages and random_album.number_of_pages != "" %}
+                {{ random_album.number_of_pages }} pages<br />
             {% endif %}
         {% endif %}
 
-        {{ infos.Édition }}
+        {{ random_album.edition }}
     </p>
     <p>
         {% autoescape off %}
-            {{ infos.Synopsis|truncatechars:200 }}
+            {{ random_album.synopsis|truncatechars:200 }}
         {% endautoescape %}
     </p>
     <p>
-        <a style="color:#FFFFFF;" href="{% url 'pagebd' infos.ISBN %}" class="button-large">Voir plus</a>
+        <a style="color:#FFFFFF;" href="{% url 'pagebd' random_album.isbn %}" class="button-large">Voir plus</a>
     </p>
 </section>
