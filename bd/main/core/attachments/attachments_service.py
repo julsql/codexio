@@ -1,12 +1,11 @@
 from typing import Dict
 import os
-from main.core.common.database.database_repository import DatabaseRepository
 from django.conf import settings
 
-class AttachmentsService:
-    def __init__(self, database_repository: DatabaseRepository) -> None:
-        self.database = database_repository
+from main.core.common.database.internal.bd_model import BD
 
+
+class AttachmentsService:
     def main(self) -> Dict[str, str]:
         dedicaces, dedicaces_sum = self.dedicaces()
         exlibris, exlibris_sum = self.exlibris()
@@ -15,7 +14,6 @@ class AttachmentsService:
 
     def dedicaces(self):
         image_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/dedicaces")
-        self.database.open()
         infos = []
         dedicaces_sum = 0
         for item in os.listdir(image_dir):
@@ -25,24 +23,21 @@ class AttachmentsService:
             if os.path.isdir(item_path):
                 isbn = item
                 nb_dedicace = self.count_images_in_directory(item_path)
-                req = f"SELECT Album, Numéro, Série FROM BD WHERE ISBN = {isbn};"
-                result = self.database.get_one(req)
+                result = BD.objects.filter(isbn=isbn).values('album', 'number', 'series').first()
                 dedicaces_sum += nb_dedicace
                 if result is None:
                     infos.append({'ISBN': isbn, 'Album': "", 'Numero': "", 'Serie': "",
                                   'DedicaceRange': range(1, nb_dedicace + 1), 'Dedicace': nb_dedicace})
                 else:
 
-                    infos.append({'ISBN': isbn, 'Album': result["Album"], 'Numero': result["Numéro"], 'Serie': result["Série"],
+                    infos.append({'ISBN': isbn, 'Album': result["album"], 'Numero': result["number"], 'Serie': result["series"],
                                   'DedicaceRange': range(1, nb_dedicace + 1), 'Dedicace': nb_dedicace})
-        self.database.close()
         return infos, dedicaces_sum
 
 
     def exlibris(self):
         image_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/exlibris")
         infos = []
-        self.database.open()
         exlibris_sum = 0
         for item in os.listdir(image_dir):
             item_path = os.path.join(image_dir, item)
@@ -51,16 +46,14 @@ class AttachmentsService:
             if os.path.isdir(item_path):
                 isbn = item
                 nb_exlibris = self.count_images_in_directory(item_path)
-                req = f"SELECT Album, Numéro, Série FROM BD WHERE ISBN = {isbn};"
-                result = self.database.get_one(req)
+                result = BD.objects.filter(isbn=isbn).values('album', 'number', 'series').first()
                 exlibris_sum += nb_exlibris
                 if result is None:
                     infos.append({'ISBN': isbn, 'Album': "", 'Numero': "", 'Serie': "",
                                   'ExlibrisRange': range(1, nb_exlibris + 1), 'Exlibris': nb_exlibris})
                 else:
-                    infos.append({'ISBN': isbn, 'Album': result["Album"], 'Numero': result["Numéro"], 'Serie': result["Série"],
+                    infos.append({'ISBN': isbn, 'Album': result["album"], 'Numero': result["number"], 'Serie': result["series"],
                                   'ExlibrisRange': range(1, nb_exlibris + 1), 'Exlibris': nb_exlibris})
-        self.database.close()
         return infos, exlibris_sum
 
 

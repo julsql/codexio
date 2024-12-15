@@ -69,9 +69,12 @@ GSHEET_CREDENTIALS='config/bd-sheet-91.json'
 
     ```bash
     cd bd
-    mkdir database
+    
     nano config/.env
     nano config/bd-sheet-91.json
+    mkdir database
+    chmod -R 755 database/
+    sudo chown -R www-data:www-data database/
     mkdir main/static/main/images/dedicaces
     mkdir main/static/main/images/exlibris
     chmod -R 755 main/static/main/images/exlibris
@@ -82,12 +85,10 @@ GSHEET_CREDENTIALS='config/bd-sheet-91.json'
    
 6. Create the database
 
-appel update_database
-
-   ```bash
-    chmod -R 755 database/
-    sudo chown -R www-data:www-data database/
-   ```
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
 
 7. Launch the website
 

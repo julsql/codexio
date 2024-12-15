@@ -1,14 +1,12 @@
 import unittest
 
 from main.core.update_database.update_database_service import UpdateDatabaseService
-from tests.album_data_set import FIRST_LINE, ASTERIX_LIST
+from tests.album_data_set import FIRST_LINE, ASTERIX_LIST, FIRST_LINE_DATABASE
 from tests.test_update_database.internal.database_in_memory import DatabaseInMemory
 from main.core.common.sheet.internal.sheet_in_memory import SheetInMemory
 
 
 class TestUpdateDatabaseService(unittest.TestCase):
-
-    TABLE_NAME = "BD"
 
     @classmethod
     def setUpClass(cls):
@@ -22,10 +20,10 @@ class TestUpdateDatabaseService(unittest.TestCase):
 
     def test_correctly_updated(self):
         self.service.main()
-        database = self.database_repository.get_all(self.TABLE_NAME)
+        database = self.database_repository.get_all()
         self.assertEqual(1, len(database))
-        self.assertEqual(len(FIRST_LINE), len(database[0]))
-        self.assertEqual(FIRST_LINE, list(database[0].keys()))
+        self.assertEqual(len(FIRST_LINE_DATABASE), len(database[0]))
+        self.assertEqual(FIRST_LINE_DATABASE, list(database[0].keys()))
         self.assertEqual(ASTERIX_LIST, list(database[0].values()))
 
 

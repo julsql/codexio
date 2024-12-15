@@ -6,9 +6,7 @@ from main.core.page_bd.page_bd_service import PageBdService
 
 
 def page_bd(request, isbn) -> HttpResponse:
-    database_file = DATABASES['default']['NAME']
-    database = DatabaseConnexion(database_file)
-    service = PageBdService(database)
+    service = PageBdService()
     infos = service.main(isbn)
     if len(infos.keys()) == 1:
         return render(request, 'page_bd/not_found.html', infos)

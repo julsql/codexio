@@ -24,6 +24,11 @@ FIRST_LINE = [
     "Édition", "Nombre de pages", "Cote", "Prix d'achat", "Année d'achat", "Lieu d'achat", "Tirage de tête",
     "Dédicace", "Ex Libris", "Synopsis", "Image"]
 
+FIRST_LINE_DATABASE =[
+    'isbn', 'album', 'number', 'series', 'writer', 'illustrator', 'colorist', 'publisher',
+    'publication_date', 'edition', 'number_of_pages', 'rating', 'purchase_price', 'year_of_purchase',
+    'place_of_purchase', 'deluxe_edition', 'signed_copy', 'ex_libris', 'synopsis', 'image']
+
 ASTERIX_WEB = {
     'Album': album,
     'Couleurs': couleurs,

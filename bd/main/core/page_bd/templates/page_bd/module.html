@@ -10,8 +10,8 @@
             <header>
                 <h2>Couverture</h2>
             </header>
-            <a href="{{ Image }}" data-lightbox="{{ ISBN }}">
-                <img src="{{ Image }}" width="220" alt="Couverture">
+            <a href="{{ image }}" data-lightbox="{{ isbn }}">
+                <img src="{{ image }}" width="220" alt="Couverture">
             </a>
         </section>
 
@@ -23,23 +23,23 @@
         <section>
             <header>
                 <h2>
-                {% if Serie and Serie != "" %}
-                    {{ Serie }}
+                {% if series and series != "" %}
+                    {{ series }}
                 {% else %}
                     Pas de titre
                 {% endif %}
                 </h2>
 
                 <h3>
-                {% if Numero and Numero != "" %}
-                    {% if Album and Album != "" %}
-                        Tome {{ Numero }} : {{ Album }}
+                {% if number and number != "" %}
+                    {% if album and album != "" %}
+                        Tome {{ number }} : {{ album }}
                     {% else %}
-                        Tome {{ Numero }}
+                        Tome {{ number }}
                     {% endif %}
                 {% else %}
-                    {% if Album and Album != "" %}
-                        {{ Album }}
+                    {% if album and album != "" %}
+                        {{ album }}
                     {% else %}
                         Pas de titre
                     {% endif %}
@@ -49,24 +49,24 @@
 
                 <table aria-hidden="true">
                     <tr>
-                        <td><strong>ISBN</strong> : {{ ISBN }}</td>
-                        <td><strong>Scénariste</strong> : {{ Scenariste }}</td>
-                        <td><strong>Dessinateur</strong> : {{ Dessinateur }}</td>
+                        <td><strong>ISBN</strong> : {{ isbn }}</td>
+                        <td><strong>Scénariste</strong> : {{ writer }}</td>
+                        <td><strong>Dessinateur</strong> : {{ illustrator }}</td>
                     </tr>
                     <tr>
-                        <td><strong>Couleur</strong> : {{ Couleur }}</td>
-                        <td><strong>Éditeur</strong> : {{ Editeur }}</td>
-                        <td><strong>Date de parution</strong> : {{ Date_de_parution }}</td>
+                        <td><strong>Couleur</strong> : {{ colorist }}</td>
+                        <td><strong>Éditeur</strong> : {{ publisher }}</td>
+                        <td><strong>Date de parution</strong> : {{ publication_date }}</td>
                     </tr>
                     <tr>
-                        <td><strong>Édition</strong> : {{ Edition }}</td>
-                        <td><strong>Nombre de pages</strong> : {{ Nombre_de_pages }}</td>
-                        <td><strong>Cote</strong> : {% if Cote and Cote != "" %}{{ Cote }}€{% endif %}</td>
+                        <td><strong>Édition</strong> : {{ edition }}</td>
+                        <td><strong>Nombre de pages</strong> : {{ number_of_pages }}</td>
+                        <td><strong>Cote</strong> : {% if rating and rating != "" %}{{ rating }}€{% endif %}</td>
                     </tr>
                     <tr>
-                        <td><strong>Prix d'achat</strong> : {% if Prix_dachat and Prix_dachat != "" %}{{ Prix_dachat }}€{% endif %}</td>
-                        <td><strong>Année d'achat</strong> : {{ Annee_dachat }}</td>
-                        <td><strong>Lieu d'achat</strong> : {{ Lieu_dachat }}</td>
+                        <td><strong>Prix d'achat</strong> : {% if purchase_price and purchase_price != "" %}{{ purchase_price }}€{% endif %}</td>
+                        <td><strong>Année d'achat</strong> : {{ year_of_purchase }}</td>
+                        <td><strong>Lieu d'achat</strong> : {{ place_of_purchase }}</td>
                     </tr>
                 </table>
 
@@ -84,13 +84,13 @@
             </header>
 
                 {% autoescape off %}
-                    {{ Synopsis }}
+                    {{ synopsis }}
                 {% endautoescape %}
 
         </section>
 </div>
 
-{% if dedicaces|length > 0 %}
+{% if signed_copy|length > 0 %}
     <div class="col-12">
 
         <!-- Main Content -->
@@ -99,9 +99,9 @@
                     <h2>Dédicaces</h2>
                 </header>
 
-                    {% for image in dedicaces %}
-                        <a class="photo_link" href="/static/main/images/dedicaces/{{ ISBN }}/{{ image }}" data-lightbox="{{ ISBN }}">
-                            <img src="/static/main/images/dedicaces/{{ ISBN }}/{{ image }}" alt="Couverture de l'album {{ ISBN }}" class="photo_dedicace">
+                    {% for dedicace in signed_copy %}
+                        <a class="photo_link" href="/static/main/images/dedicaces/{{ isbn }}/{{ dedicace }}" data-lightbox="{{ isbn }}">
+                            <img src="/static/main/images/dedicaces/{{ isbn }}/{{ dedicace }}" alt="Couverture de l'album {{ isbn }}" class="photo_dedicace">
                         </a>
                     {% endfor %}
 
@@ -109,7 +109,7 @@
     </div>
 {% endif %}
 
-{% if exlibris|length > 0 %}
+{% if ex_libris|length > 0 %}
     <div class="col-12">
 
         <!-- Main Content -->
@@ -118,9 +118,9 @@
                     <h2>Ex Libris</h2>
                 </header>
 
-                    {% for image in exlibris %}
-                        <a class="photo_link" href="/static/main/images/exlibris/{{ ISBN }}/{{ image }}" data-lightbox="{{ ISBN }}">
-                            <img src="/static/main/images/exlibris/{{ ISBN }}/{{ image }}" alt="Couverture de l'album {{ ISBN }}" class="photo_dedicace">
+                    {% for exlibris in ex_libris %}
+                        <a class="photo_link" href="/static/main/images/exlibris/{{ isbn }}/{{ exlibris }}" data-lightbox="{{ isbn }}">
+                            <img src="/static/main/images/exlibris/{{ isbn }}/{{ exlibris }}" alt="Couverture de l'album {{ isbn }}" class="photo_dedicace">
                         </a>
                     {% endfor %}
 
