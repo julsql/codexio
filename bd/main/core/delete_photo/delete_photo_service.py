@@ -10,10 +10,10 @@ class DeletePhotoService:
         self.exlibris_folder = os.path.join(STATIC_ROOT, 'main/images/exlibris')
         self.repository = photo_repository
 
-    def main(self, isbn: int, photo_id: int, photo_type: str) -> int:
+    def main(self, isbn: int, photo_id: int, photo_type: str) -> bool:
         if photo_type == 'dedicaces':
             return self.repository.delete_dedicace(isbn, photo_id)
         elif photo_type == 'exlibris':
-            return self.repository.delete_dedicace(isbn, photo_id)
+            return self.repository.delete_exlibris(isbn, photo_id)
         else:
             raise ValueError('Unknown photo type')

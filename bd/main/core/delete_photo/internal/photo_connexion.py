@@ -12,13 +12,13 @@ class PhotoConnexion(PhotoRepository, ABC):
         self.dedicace_folder = dedicace_folder
         self.exlibris_folder = exlibris_folder
 
-    def delete_dedicace(self, isbn: int, photo_id: int) -> int:
+    def delete_dedicace(self, isbn: int, photo_id: int) -> bool:
         return self.delete_photo(isbn, photo_id, self.dedicace_folder)
 
-    def delete_exlibris(self, isbn: int, photo_id: int) -> int:
+    def delete_exlibris(self, isbn: int, photo_id: int) -> bool:
         return self.delete_photo(isbn, photo_id, self.exlibris_folder)
 
-    def delete_photo(self, isbn: int, photo_id: int, folder: str) -> int:
+    def delete_photo(self, isbn: int, photo_id: int, folder: str) -> bool:
         album_path = os.path.join(folder, str(isbn))
         image_path = os.path.join(album_path, f"{photo_id}{self.allowed_extensions}")
         image_exists = os.path.exists(image_path)
