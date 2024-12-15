@@ -5,10 +5,10 @@ from abc import ABC
 from django.core.files.storage import FileSystemStorage
 from django.core.files.uploadedfile import UploadedFile
 
-from main.core.update_images.bd_repository import BdRepository
+from main.core.upload_photo.photo_repository import PhotoRepository
 
 
-class PhotoConnexion(BdRepository, ABC):
+class PhotoConnexion(PhotoRepository, ABC):
 
     def __init__(self, dedicace_folder: str, exlibris_folder: str):
         self.allowed_extensions = {'.jpeg'}
@@ -47,7 +47,7 @@ class PhotoConnexion(BdRepository, ABC):
         for _, _, files in os.walk(directory_path):
             for file in files:
                 file_extension = self.get_file_extension(file)
-                if file_extension == self.allowed_extensions:
+                if file_extension in self.allowed_extensions:
                     image_paths.append(file)
 
         integers = [int(re.search(r'\d+', s).group()) for s in image_paths if re.search(r'\d+', s)]

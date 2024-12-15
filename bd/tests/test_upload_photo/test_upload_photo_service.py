@@ -1,34 +1,36 @@
 import unittest
 
-from main.core.update_database.update_database_service import UpdateDatabaseService
-from tests.album_data_set import FIRST_LINE, ASTERIX_LIST
-from tests.test_update_database.internal.database_in_memory import DatabaseInMemory
-from main.core.common.sheet.internal.sheet_in_memory import SheetInMemory
+from django.core.files.uploadedfile import SimpleUploadedFile
+
+from main.core.upload_photo.upload_photo_service import UploadPhotoService
+from tests.test_upload_photo.internal.photo_in_memory import PhotoInMemory
 
 
 class TestUpdateDatabaseService(unittest.TestCase):
 
-    TABLE_NAME = "BD"
-
     @classmethod
     def setUpClass(cls):
-        cls.sheet_repository = SheetInMemory()
-        cls.database_repository = DatabaseInMemory("")
-        cls.service = UpdateDatabaseService(cls.sheet_repository, cls.database_repository)
+        cls.repository = PhotoInMemory()
+        cls.service = UploadPhotoService(cls.repository)
+        cls.ISBN = 1111
+        cls.file_name = "test_file.jpeg"
+        cls.file_content = b"Contenu du fichier exemple"
+        cls.uploaded_file = SimpleUploadedFile(cls.file_name, cls.file_content, content_type="text/plain")
 
-    def setUp(self):
-        self.sheet_repository.append(FIRST_LINE)
-        self.sheet_repository.append(ASTERIX_LIST)
+    def test_correctly_upload_dedicace(self):
+        is_uploaded = self.service.main(self.ISBN, self.uploaded_file, "dedicaces")
+        self.assertTrue(is_uploaded)
+        self.assertEqual("dedicaces", self.repository.type)
 
-    def test_correctly_updated(self):
-        self.service.main()
-        database = self.database_repository.get_all(self.TABLE_NAME)
-        self.assertEqual(1, len(database))
-        self.assertEqual(len(FIRST_LINE), len(database[0]))
-        self.assertEqual(FIRST_LINE, list(database[0].keys()))
-        self.assertEqual(ASTERIX_LIST, list(database[0].values()))
+    def test_correctly_upload_exlibris(self):
+        is_uploaded = self.service.main(self.ISBN, self.uploaded_file, "exlibris")
+        self.assertTrue(is_uploaded)
+        self.assertEqual("exlibris", self.repository.type)
+
+    def test_incorrect_type(self):
+        with self.assertRaises(ValueError):
+            self.service.main(self.ISBN, self.uploaded_file, "incorrect type")
 
 
 if __name__ == '__main__':
     unittest.main()
-
