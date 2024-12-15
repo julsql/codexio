@@ -2,8 +2,7 @@
 config/bd-sheet-91.json
 config/.env
 database/
-comics_test.sqlite3
 
 # photos
-main/static/main/images/dedicaces/
-main/static/main/images/exlibris/
+media/main/images/dedicaces/
+media/main/images/exlibris/

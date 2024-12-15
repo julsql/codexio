@@ -2,7 +2,7 @@ from django.core.files.uploadedfile import UploadedFile
 
 
 class UploadPhotoService:
-    def __init__(self, photo_repository):
+    def __init__(self, photo_repository) -> None:
         self.repository = photo_repository
 
     def main(self, isbn: int, uploaded_file: UploadedFile, photo_type: str) -> bool:

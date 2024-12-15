@@ -1,5 +1,3 @@
-from typing import List, Dict
-
 from main.core.common.database.internal.bd_model import BD
 from main.core.common.database.database_repository import DatabaseRepository
 
@@ -8,7 +6,7 @@ class DatabaseConnexion(DatabaseRepository):
     def create_table(self) -> None:
         BD.objects.all().delete()
 
-    def insert(self, value: List[Dict[str, str]]) -> None:
+    def insert(self, value: list[dict[str, str]]) -> None:
         objects = [
             BD(
                 isbn=row["isbn"],
@@ -37,5 +35,5 @@ class DatabaseConnexion(DatabaseRepository):
 
         BD.objects.bulk_create(objects)
 
-    def get_all(self) -> List[Dict[str, str]]:
+    def get_all(self) -> list[dict[str, str]]:
         return list(BD.objects.all().values())

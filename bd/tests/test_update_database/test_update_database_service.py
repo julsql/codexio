@@ -9,16 +9,16 @@ from main.core.common.sheet.internal.sheet_in_memory import SheetInMemory
 class TestUpdateDatabaseService(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
         cls.sheet_repository = SheetInMemory()
         cls.database_repository = DatabaseInMemory("")
         cls.service = UpdateDatabaseService(cls.sheet_repository, cls.database_repository)
 
-    def setUp(self):
+    def setUp(self) -> None:
         self.sheet_repository.append(FIRST_LINE)
         self.sheet_repository.append(ASTERIX_LIST)
 
-    def test_correctly_updated(self):
+    def test_correctly_updated(self) -> None:
         self.service.main()
         database = self.database_repository.get_all()
         self.assertEqual(1, len(database))

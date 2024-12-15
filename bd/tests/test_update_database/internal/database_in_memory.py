@@ -15,5 +15,5 @@ class DatabaseInMemory(DatabaseRepository):
     def insert(self, value: List[Dict[str, str]]) -> None:
         self.database = value
 
-    def get_all(self):
+    def get_all(self) -> list:
         return self.database

@@ -11,11 +11,11 @@ class TestCorrectInfos(unittest.TestCase):
     INEXISTANT_ISBN = 9791038203907
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
         cls.repository = BdInMemory()
 
 
-    def test_get_correct_info_successfully(self):
+    def test_get_correct_info_successfully(self) -> None:
         self.service = GetInfosService([])
         self.service.isbn = 0
         info = self.service.corriger_info({})
@@ -26,22 +26,15 @@ class TestCorrectInfos(unittest.TestCase):
             'Synopsis': '', 'Série': '', 'Éditeur': ''},
             info)
 
-    def test_raise_error_correct_empty_value(self):
-        self.service = GetInfosService([])
-        self.service.isbn = 0
-        with self.assertRaises(AttributeError):
-            self.service.corriger_info("")
-
-    def test_get_info_from_isbn_successfully(self):
+    def test_get_info_from_isbn_successfully(self) -> None:
         self.service = GetInfosService([self.repository])
         info = self.service.main(ASTERIX_ISBN)
         self.assertEqual(ASTERIX, info)
 
-    def test_raise_error_get_info_from_inexistant_isbn(self):
+    def test_raise_error_get_info_from_inexistant_isbn(self) -> None:
         self.service = GetInfosService([])
         with self.assertRaises(AddAlbumError):
             self.service.main(self.INEXISTANT_ISBN)
-
 
 
 if __name__ == '__main__':

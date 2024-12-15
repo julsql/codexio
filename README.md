@@ -41,14 +41,14 @@ Run tests in `bd/`
     git clone git@github.com:julsql/bd_website.git
     ```
 
-2. Don't forget to add the .env file in `./bd/config/.env` and the google sheet api keys file at `./bd/config/bd-sheet-91.json`
+2. Don't forget to add the .env file in `./bd/config/.env` and the Google sheet api keys file at `./bd/config/bd-sheet-91.json`
 
-```bash
-SECRET_KEY='django-key'
-DEBUG=False
-POST_TOKEN="TOKEN"
-GSHEET_CREDENTIALS='config/bd-sheet-91.json'
-```
+    ```bash
+    SECRET_KEY='django-key'
+    DEBUG=False
+    POST_TOKEN="TOKEN"
+    GSHEET_CREDENTIALS='config/bd-sheet-91.json'
+    ```
 
 3. Configure the python virtual environment
 
@@ -85,10 +85,10 @@ GSHEET_CREDENTIALS='config/bd-sheet-91.json'
    
 6. Create the database
 
-```bash
-python manage.py makemigrations
-python manage.py migrate
-```
+    ```bash
+    python manage.py makemigrations
+    python manage.py migrate
+    ```
 
 7. Launch the website
 

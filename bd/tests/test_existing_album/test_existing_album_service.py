@@ -10,15 +10,15 @@ class TestExistingAlbumService(unittest.TestCase):
     INEXISTANT_ISBN = 9791038203907
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
         sheet_repository = SheetInMemory()
         sheet_repository.append(ASTERIX_LIST)
         cls.service = ExistingAlbumService(sheet_repository)
 
-    def test_already_exists(self):
+    def test_already_exists(self) -> None:
         self.assertTrue(self.service.main(ASTERIX_ISBN))
 
-    def test_dont_exists(self):
+    def test_dont_exists(self) -> None:
         self.assertFalse(self.service.main(self.INEXISTANT_ISBN))
 
 

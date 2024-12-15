@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.urls import path
 
+from django.conf import settings
+from django.conf.urls.static import static
 from main.core.add_album.internal.add_album_view import add_album
 from main.core.existing_album.internal.existing_album_view import existing_album
 from main.core.update_database.internal.update_database_view import update_database
@@ -46,3 +48,6 @@ urlpatterns = [
     path('add/<int:isbn>/', add_album, name='add_album'),
     path('possede/<int:isbn>/', existing_album, name='possede'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

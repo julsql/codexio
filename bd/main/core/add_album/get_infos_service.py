@@ -1,31 +1,30 @@
-from typing import List, Dict
-
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.bd_repository import BdRepository
 from main.core.common.logger.logger import logger
 
 
 class GetInfosService:
-    def __init__(self, bd_repositories: List) -> None:
+    def __init__(self, bd_repositories: list[BdRepository]) -> None:
         self.isbn = None
         self.repositories = bd_repositories
     
-    def main(self, isbn: int) -> Dict:
+    def main(self, isbn: int) -> dict[str, str]:
         self.isbn = isbn
         for repository in self.repositories:
             try:
                 infos = self.get_infos(repository)
-            except Exception as _:
+            except Exception as e:
                 repository_name = lambda repo: 'BD Phile' if str(repo) == "BdPhileRepository" else 'BD Fugue'
+                logger.error(str(e), exc_info=True)
                 logger.warning(f"{isbn} non trouvé dans {repository_name(repository)}", exc_info=True)
             else:
                 return self.corriger_info(infos)
         raise AddAlbumError(f"Aucun album trouvé avec l'isbn {self.isbn}")
 
-    def get_infos(self, repository: BdRepository) -> Dict:
+    def get_infos(self, repository: BdRepository) -> dict[str, str | float | int]:
         return repository.get_infos(self.isbn)
 
-    def corriger_info(self, info: Dict) -> Dict:
+    def corriger_info(self, info: dict[str, str]) -> dict[str, str]:
         """Corriger info s'il manque des clefs"""
 
         keys = ['Série', 'Numéro', 'Album', 'Scénario', 'Dessin', 'Couleurs', 'Éditeur', 'Date de publication', 'Image',

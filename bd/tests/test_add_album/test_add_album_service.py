@@ -11,17 +11,17 @@ class TestAddAlbumService(unittest.TestCase):
     NB_COLUMN = 20
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
         # Before all
         cls.sheet_repository = SheetInMemory()
         cls.bd_repository = BdInMemory()
         cls.service = AddAlbumService([cls.bd_repository], cls.sheet_repository)
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         # After each
         self.sheet_repository.delete_row(0)
 
-    def test_convert_list_from_dict_empty_value_successfully(self):
+    def test_convert_list_from_dict_empty_value_successfully(self) -> None:
         liste = self.service.map_to_list({
             'Album': '', 'Couleurs': '', 'Date de publication': '',
             'Dessin': '', 'Édition': '', 'ISBN': '', 'Image': '',
@@ -29,7 +29,7 @@ class TestAddAlbumService(unittest.TestCase):
             'Synopsis': '', 'Série': '', 'Éditeur': ''})
         self.assertEqual([""] * self.NB_COLUMN, liste)
 
-    def test_convert_list_from_dict_successfully(self):
+    def test_convert_list_from_dict_successfully(self) -> None:
         liste = self.service.map_to_list({
                 'Album': 'a', 'Couleurs': 'a', 'Date de publication': 'a',
                 'Dessin': 'a', 'Édition': 'a', 'ISBN': 'a', 'Image': 'a',
@@ -38,19 +38,19 @@ class TestAddAlbumService(unittest.TestCase):
         self.assertEqual(["a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "", "a", "", "", "", "", "", "a", "a"],
                          liste)
 
-    def test_raise_error_convert_list_from_empty_dict(self):
+    def test_raise_error_convert_list_from_empty_dict(self) -> None:
         with self.assertRaises(IndexError):
             self.service.map_to_list({})
 
-    def test_add_album_successfully(self):
+    def test_add_album_successfully(self) -> None:
         self.assertEqual(ASTERIX, self.service.main(ASTERIX_ISBN))
 
-    def test_raise_error_on_duplicate_isbn(self):
+    def test_raise_error_on_duplicate_isbn(self) -> None:
         self.service.main(ASTERIX_ISBN)
         with self.assertRaises(AddAlbumError):
             self.service.main(ASTERIX_ISBN)
 
-    def test_raise_error_get_info_from_incorrect_isbn(self):
+    def test_raise_error_get_info_from_incorrect_isbn(self) -> None:
         with self.assertRaises(AddAlbumError):
             self.service.main(0)
 

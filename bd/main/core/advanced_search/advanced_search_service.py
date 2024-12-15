@@ -1,11 +1,12 @@
-from typing import Dict, Tuple, List
-
+from main.core.advanced_search.internal import AdvancedSearchConnexion
 from main.core.advanced_search.internal.forms import RechercheForm
-from main.core.common.database.internal.bd_model import BD
 
 
 class AdvancedSearchService:
-    def main(self, request) -> Tuple[RechercheForm, List[Dict[str, str]], bool]:
+    def __init__(self, advanced_search_repository: AdvancedSearchConnexion) -> None:
+        self.connexion = advanced_search_repository
+
+    def main(self, request) -> (RechercheForm, list[dict[str, str]], bool):
         if request.method == 'POST':
             form = RechercheForm(request.POST)
             infos = self.form_search(form)
@@ -14,10 +15,10 @@ class AdvancedSearchService:
         else:
             form = RechercheForm()
             infos = self.form_search()
-        return form, infos, False
+            return form, infos, False
 
-    def form_search(self, form=None) -> List[Dict[str, str]]:
-        queryset = BD.objects.all()
+    def form_search(self, form=None) -> list[dict[str, str]]:
+        queryset = self.connexion.get_all()
 
         if form and form.is_valid():
             data = form.cleaned_data
@@ -36,23 +37,22 @@ class AdvancedSearchService:
                 'ex_libris': 'ex_libris',
             }
 
+            # Appliquer les filtres à la requête
             for field_name, form_field_name in filters.items():
                 value = data.get(form_field_name)
                 if value:
                     queryset = queryset.filter(**{field_name: value})
 
+            # Filtrer par synopsis si nécessaire
             synopsis = data.get('synopsis')
             if synopsis:
-                keywords = synopsis.split(" ")
-                for keyword in keywords:
-                    queryset = queryset.filter(synopsis__icontains=keyword)
+                keywords = synopsis.split()
+                queryset = queryset.filter(synopsis__icontains=" ".join(keywords))
 
+            # Appliquer le tri si nécessaire
             tri_par = data.get('tri_par')
-            tri_croissant = data.get('tri_croissant')
-
             if tri_par:
-                tri_par = tri_par if tri_croissant else f"-{tri_par}"
-                queryset = queryset.order_by(tri_par)
+                queryset = queryset.order_by(f"-{tri_par}" if not data.get('tri_croissant') else tri_par)
 
         return [
             {

@@ -1,5 +1,3 @@
-from typing import List
-
 from main.core.common.database.database_repository import DatabaseRepository
 from main.core.common.sheet.sheet_repository import SheetRepository
 
@@ -20,7 +18,7 @@ class UpdateDatabaseService:
         self.database.create_table()
         self.database.insert(data)
 
-    def map_sheet_titles_to_database_columns(self, sheet_titles: List[str]) -> List[str]:
+    def map_sheet_titles_to_database_columns(self, sheet_titles: list[str]) -> list[str]:
         mapper = {"isbn": "isbn",
                   "album": "album",
                   "numéro": "number",

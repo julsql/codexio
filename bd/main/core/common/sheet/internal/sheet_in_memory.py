@@ -1,11 +1,9 @@
-from typing import List
-
 from main.core.common.sheet.sheet_repository import SheetRepository
 
 
 class SheetInMemory(SheetRepository):
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.worksheet = []
         self.client = {"bd": {"BD": [], "Test": []}}
         self.__OFFSET__ = 0
@@ -16,7 +14,7 @@ class SheetInMemory(SheetRepository):
         else:
             return self.client[doc_name][sheet_name]
 
-    def append(self, liste: List) -> None:
+    def append(self, liste: list[str]) -> None:
         self.worksheet.append(liste)
 
     def get(self, i: int, j: int) -> str:
@@ -24,11 +22,11 @@ class SheetInMemory(SheetRepository):
         j += self.__OFFSET__
         return self.worksheet[i][j]
 
-    def get_line(self, i: int) -> List:
+    def get_line(self, i: int) -> list[str]:
         i += self.__OFFSET__
         return [self.get(i, j) for j in range(len(self.worksheet[i]))]
 
-    def get_column(self, j: int) -> List:
+    def get_column(self, j: int) -> list[str]:
         j += self.__OFFSET__
 
         return [row[j] for row in self.worksheet]
@@ -36,7 +34,7 @@ class SheetInMemory(SheetRepository):
     def get_size(self) -> (int, int):
         return len(self.worksheet), len(self.worksheet[0])
 
-    def get_all(self) -> List:
+    def get_all(self) -> list[list[str]]:
         return self.worksheet
 
     def set(self, valeur: str, i: int, j: int) -> None:
@@ -47,7 +45,7 @@ class SheetInMemory(SheetRepository):
         else:
             raise TypeError(f"{valeur} n'est pas un type texte")
 
-    def set_line(self, valeur: List, i: int) -> None:
+    def set_line(self, valeur: list[str], i: int) -> None:
         i += self.__OFFSET__
         if i < len(self.worksheet):
             if isinstance(valeur, list):
@@ -55,7 +53,7 @@ class SheetInMemory(SheetRepository):
             else:
                 self.worksheet[i] = [valeur]
 
-    def set_column(self, valeur: List, j: int, offset: int) -> None:
+    def set_column(self, valeur: list[str], j: int, offset: int) -> None:
         for i in range(len(self.worksheet)):
             if len(self.worksheet[i]) < j:
                 self.worksheet[i][j] = valeur[i]

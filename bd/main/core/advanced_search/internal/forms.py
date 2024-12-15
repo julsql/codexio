@@ -42,7 +42,7 @@ class RechercheForm(forms.Form):
     )
 
     # Méthode pour afficher le formulaire sous forme de tableau (optionnel)
-    def as_custom_table_2(self):
+    def as_custom_table_2(self) -> str:
         html = '\t<table>\n'
         html += '\t\t\t\t\t<tr>\n'
         i = 0
@@ -67,7 +67,7 @@ class RechercheForm(forms.Form):
 
         return mark_safe(html)
 
-    def as_custom_table_3(self):
+    def as_custom_table_3(self) -> str:
         html = '\t<table>\n'
         html += '\t\t\t\t\t<tr>\n'
         i = 0
