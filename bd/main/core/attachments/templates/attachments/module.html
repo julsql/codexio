@@ -50,8 +50,8 @@
 
             <p>
                 {% for i in bd.signes_copy_range %}
-                    <a class="photo_link" href="/static/main/images/dedicaces/{{ bd.isbn }}/{{ i }}.jpeg" data-lightbox="{{ bd.isbn }}">
-                        <img src="{% static 'main/images/dedicaces/' %}{{ bd.isbn }}/{{ i }}.jpeg" alt="Dédicace de l'album {{ bd.isbn }}" class="photo_dedicace">
+                    <a class="photo_link" href="/media/main/images/dedicaces/{{ bd.isbn }}/{{ i }}.jpeg" data-lightbox="{{ bd.isbn }}">
+                        <img src="/media/main/images/dedicaces/{{ bd.isbn }}/{{ i }}.jpeg" alt="Dédicace de l'album {{ bd.isbn }}" class="photo_dedicace">
                     </a>
                 {% endfor %}
             </p>
@@ -96,8 +96,8 @@
 
             <p>
                 {% for i in bd.ex_libris_range %}
-                    <a class="photo_link" href="/static/main/images/exlibris/{{ bd.isbn }}/{{ i }}.jpeg" data-lightbox="{{ bd.isbn }}">
-                        <img src="{% static 'main/images/exlibris/' %}{{ bd.isbn }}/{{ i }}.jpeg" alt="Ex libris de l'album {{ bd.isbn }}" class="photo_dedicace">
+                    <a class="photo_link" href="/media/main/images/exlibris/{{ bd.isbn }}/{{ i }}.jpeg" data-lightbox="{{ bd.isbn }}">
+                        <img src="/media/main/images/exlibris/{{ bd.isbn }}/{{ i }}.jpeg" alt="Ex libris de l'album {{ bd.isbn }}" class="photo_dedicace">
                     </a>
                 {% endfor %}
             </p>

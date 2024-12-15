@@ -7,8 +7,7 @@ from main.core.common.sheet.internal.sheet_connexion import SheetConnexion
 from main.core.update_database.update_database_service import UpdateDatabaseService
 
 
-def insert_initial_data(apps, schema_editor):
-    # Récupérer le modèle BD
+def insert_initial_data() -> None:
     sheet_repository = SheetConnexion()
     database_repository = DatabaseConnexion()
     service = UpdateDatabaseService(sheet_repository, database_repository)

@@ -1,28 +1,26 @@
 import os
 import random
-from typing import Dict, List
 
-from django.conf import settings
+from config.settings import MEDIA_ROOT, MEDIA_URL
 
 
 class RandomDedicaceService:
-    def main(self) -> Dict[str, str]:
-        dedicace_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/dedicaces")
-        exlibris_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/exlibris")
-        image_files = self.list_files_in_subdirectories(dedicace_dir) + self.list_files_in_subdirectories(exlibris_dir)
+    def main(self) -> dict[str, str]:
+        dedicace_folder = os.path.join(MEDIA_ROOT, 'main/images/dedicaces')
+        exlibris_folder = os.path.join(MEDIA_ROOT, 'main/images/exlibris')
+        image_files = self.list_files_in_subdirectories(dedicace_folder) + self.list_files_in_subdirectories(exlibris_folder)
         random_isbn = 0
         random_type = ""
         if image_files:
             random_image = random.choice(image_files)
-            random_image_path = os.path.join("main/images/", random_image)
+            random_image_path = os.path.join(MEDIA_URL, "main/images/", random_image)
             random_isbn = os.path.basename(os.path.dirname(random_image_path))
             random_type = os.path.basename(os.path.dirname(os.path.dirname(random_image_path)))
         else:
-            random_image_path = os.path.join("main/images/banner.jpg")
-
+            random_image_path = os.path.join(MEDIA_URL, "main/images/banner.jpg")
         return {'banner_path': str(random_image_path), 'banner_isbn': random_isbn, "banner_type": random_type}
 
-    def list_files_in_subdirectories(self, directory_path: str) -> List[str]:
+    def list_files_in_subdirectories(self, directory_path: str) -> list[str]:
         if not os.path.isdir(directory_path):
             return []
 

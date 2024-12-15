@@ -4,7 +4,7 @@ from config.settings import STATIC_ROOT
 
 
 class DeletePhotoService:
-    def __init__(self):
+    def __init__(self) -> None:
         self.allowed_extensions = '.jpeg'
         self.dedicace_folder = os.path.join(STATIC_ROOT, 'main/images/dedicaces')
         self.exlibris_folder = os.path.join(STATIC_ROOT, 'main/images/exlibris')
@@ -26,7 +26,7 @@ class DeletePhotoService:
                 self.renommer_photos(album_path)
         return image_exists
 
-    def renommer_photos(self, chemin_dossier):
+    def renommer_photos(self, chemin_dossier) -> None:
         fichiers = os.listdir(chemin_dossier)
 
         fichiers_photos = [f for f in fichiers if f.endswith(self.allowed_extensions)]

@@ -1,23 +1,22 @@
-from typing import Dict
 import os
-from django.conf import settings
 
+from config.settings import MEDIA_ROOT
 from main.core.common.database.internal.bd_model import BD
 
 
 class AttachmentsService:
-    def main(self) -> Dict[str, str]:
+    def main(self) -> dict[str, list[dict[str, str]] | int]:
         signed_copies, signed_copy_sum = self.dedicaces()
         exlibris, exlibris_sum = self.exlibris()
         return {'signed_copies': signed_copies, 'signed_copy_sum': signed_copy_sum,
                 'exlibris': exlibris, 'exlibris_sum': exlibris_sum}
 
-    def dedicaces(self):
-        image_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/dedicaces")
+    def dedicaces(self) -> (list[dict[str, str]], int):
+        image_folder = os.path.join(MEDIA_ROOT, 'main/images/dedicaces')
         infos = []
         dedicaces_sum = 0
-        for item in os.listdir(image_dir):
-            item_path = os.path.join(image_dir, item)
+        for item in os.listdir(image_folder):
+            item_path = os.path.join(image_folder, item)
 
             # Vérifiez si l'élément est un répertoire
             if os.path.isdir(item_path):
@@ -35,12 +34,12 @@ class AttachmentsService:
         return infos, dedicaces_sum
 
 
-    def exlibris(self):
-        image_dir = os.path.join(settings.BASE_DIR, "main/static/main/images/exlibris")
+    def exlibris(self) -> (list[dict[str, str]], int):
+        image_folder = os.path.join(MEDIA_ROOT, 'main/images/exlibris')
         infos = []
         exlibris_sum = 0
-        for item in os.listdir(image_dir):
-            item_path = os.path.join(image_dir, item)
+        for item in os.listdir(image_folder):
+            item_path = os.path.join(image_folder, item)
 
             # Vérifiez si l'élément est un répertoire
             if os.path.isdir(item_path):
@@ -57,7 +56,7 @@ class AttachmentsService:
         return infos, exlibris_sum
 
 
-    def count_images_in_directory(self, directory_path):
+    def count_images_in_directory(self, directory_path: str) -> int:
         if not os.path.isdir(directory_path):
             return 0
 

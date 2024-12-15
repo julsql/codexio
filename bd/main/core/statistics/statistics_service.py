@@ -1,11 +1,9 @@
-from typing import Dict
-
 from django.db.models import Count, Sum, IntegerField, Case, When
 from django.db.models.functions import Cast
 from main.core.common.database.internal.bd_model import BD
 
 class StatisticsService:
-    def main(self) -> Dict[str, int]:
+    def main(self) -> dict[str, int]:
         return BD.objects.aggregate(
             nombre=Count('id'),
             pages=Cast(Sum('number_of_pages'), output_field=IntegerField()),

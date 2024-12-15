@@ -1,5 +1,3 @@
-from typing import Dict
-
 import datetime
 
 import requests
@@ -16,19 +14,39 @@ class BdPhileRepository(BdRepository):
     def __str__(self) -> str:
         return "BdPhileRepository"
 
-    def get_infos(self, isbn: int) -> Dict:
+    def get_infos(self, isbn: int) -> dict[str, str | float | int]:
         informations = {}
         url = self.get_url(isbn)
         html = self.get_html(url)
         soup = BeautifulSoup(html, 'html.parser')
 
+        # Extraction du titre
+        self._extract_title(soup, informations)
+
+        # Extraction des informations supplémentaires
+        self._extract_additional_info(soup, informations)
+
+        # Format et prix
+        self._extract_format_and_price(informations, isbn)
+
+        # Image
+        self._extract_image(soup, informations)
+
+        # Synopsis
+        self._extract_synopsis(soup, informations)
+
+        # Date de publication
+        self._parse_publication_date(informations, isbn)
+
+        logger.info(informations, extra={"isbn": isbn})
+        return informations
+
+    def _extract_title(self, soup: BeautifulSoup, informations: dict) -> None:
+        """ Extraire les informations du titre """
         title_tag = soup.find('title')
-
         if title_tag:
-            title_text = title_tag.get_text()
-            elements = title_text.split("|")[0].strip()
-
-            elements = elements.split(" - ")
+            title_text = title_tag.get_text().split("|")[0].strip()
+            elements = title_text.split(" - ")
             informations["Série"] = elements[0].strip()
             if len(elements) > 1:
                 serie = elements[1].split(".")
@@ -41,57 +59,64 @@ class BdPhileRepository(BdRepository):
                 else:
                     informations["Album"] = serie[0].strip()
 
+    def _extract_additional_info(self, soup: BeautifulSoup, informations: dict) -> None:
+        """ Extraire les informations supplémentaires """
         keys = ['Scénario', 'Dessin', 'Couleurs', 'Éditeur', 'Date de publication', 'Édition', 'Format']
         current_key = ""
         for tag in soup.find_all(['dt', 'dd']):
             if tag.name == 'dt':
                 current_key = tag.get_text(strip=True)
-                if current_key in informations.keys():
+                if current_key in informations:
                     current_key = None
             elif tag.name == 'dd' and current_key in keys:
-                    dd_text = " ".join(tag.stripped_strings)
-                    if current_key in informations.keys():
-                        informations[current_key] += "," + dd_text
-                    else:
-                        informations[current_key] = dd_text
+                dd_text = " ".join(tag.stripped_strings)
+                informations[current_key] = informations.get(current_key, "") + ("," if current_key in informations else "") + dd_text
 
-        try:
-            parsed_date = parse(self.translate(informations["Date de publication"]),
-                                       dayfirst=True, fuzzy=True, default=datetime.datetime(1900, 1, 1))
-            informations["Date de publication"] = parsed_date.date().isoformat()
-        except ParserError:
-            logger.warning("Problème de date de parution", extra={"isbn": isbn})
-
+    def _extract_format_and_price(self, informations: dict, isbn: int) -> None:
+        """ Extraire le format et le prix """
         if "Format" in informations:
-            bd_info = informations["Format"]
-            informations.pop("Format")
-            format_list = bd_info.split("-")
-            for value in format_list:
+            bd_info = informations.pop("Format")
+            for value in bd_info.split("-"):
                 if "pages" in value:
-                    try:
-                        informations["Pages"] = int(value.replace("pages", "").strip())
-                    except ValueError:
-                        logger.warning(f"{value} est un nombre de pages incorrect", extra={"isbn": isbn})
+                    self._extract_pages(value, informations, isbn)
+                elif "€" in value:
+                    self._extract_price(value, informations, isbn)
 
-                if "€" in value:
-                    try:
-                        informations["Prix"] = float(value.replace("€", "").strip())
-                    except ValueError:
-                        logger.warning(f"{value} est un prix incorrect", extra={"isbn": isbn})
+    def _extract_pages(self, value: str, informations: dict, isbn: int) -> None:
+        """ Extraire le nombre de pages """
+        try:
+            informations["Pages"] = int(value.replace("pages", "").strip())
+        except ValueError:
+            logger.warning(f"{value} est un nombre de pages incorrect", extra={"isbn": isbn})
 
+    def _extract_price(self, value: str, informations: dict, isbn: int) -> None:
+        """ Extraire le prix """
+        try:
+            informations["Prix"] = float(value.replace("€", "").strip())
+        except ValueError:
+            logger.warning(f"{value} est un prix incorrect", extra={"isbn": isbn})
+
+    def _extract_image(self, soup: BeautifulSoup, informations: dict) -> None:
+        """ Extraire l'image """
         meta_tag = soup.find('meta', attrs={'property': 'og:image'})
         if meta_tag:
             informations['Image'] = meta_tag['content']
 
+    def _extract_synopsis(self, soup: BeautifulSoup, informations: dict) -> None:
+        """ Extraire le synopsis """
         synopsis_tag = soup.find('p', class_='synopsis')
         if synopsis_tag:
-            cleaned_synopsis = ''.join(str(tag) for tag in synopsis_tag.decode_contents()).strip().replace('\r',
-                                                                                                           '').replace(
-                '\n', '').replace('\t', '')
+            cleaned_synopsis = ''.join(str(tag) for tag in synopsis_tag.decode_contents()).strip().replace('\r', '').replace('\n', '').replace('\t', '')
             informations["Synopsis"] = cleaned_synopsis
 
-        logger.info(informations, extra={"isbn": isbn})
-        return informations
+    def _parse_publication_date(self, informations: dict, isbn: int) -> None:
+        """ Parse la date de publication """
+        try:
+            parsed_date = parse(self.translate(informations.get("Date de publication", "")),
+                                dayfirst=True, fuzzy=True, default=datetime.datetime(1900, 1, 1))
+            informations["Date de publication"] = parsed_date.date().isoformat()
+        except ParserError:
+            logger.warning("Problème de date de parution", extra={"isbn": isbn})
 
     def get_url(self, isbn: int) -> str:
         """Trouver lien BD bdphile.fr à partir de son ISBN"""

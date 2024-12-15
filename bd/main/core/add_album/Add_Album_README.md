@@ -3,7 +3,7 @@
 ## Introduction
 
 Ce projet permet d'ajouter depuis son téléphone une bande dessinée à un gsheet.
-S'il y a une erreur d'ajout dans le tableur, l'erreur est ajoutée dans le fichier [logs.txt](logs/logs.txt).
+S'il y a une erreur d'ajout dans le tableur, l'erreur est ajoutée dans le fichier [app.logs](bd/logs/app.logs).
 Une fois l'ISBN ajouté, toutes les infos disponibles sur internet sont automatiquement ajoutées à un gsheet intitulé BD.
 
 - Pour accéder au site web pour rechercher une bande dessinées : [bd.julsql.fr](http://bd.julsql.fr)
@@ -32,7 +32,7 @@ Pour vérifier l'état des albums déjà renseignés et écrire dans le fichier 
 python3 sheet_add_album.py 0 -t 1 -l "logs-test-gsheet.txt"
 ```
 
-Il est aussi possible de convertir automatiquement toute la feuille de calcul en une base de données sqlite.
+Il est aussi possible de convertir automatiquement toute la feuille de calcul en une base de données SQLite.
 Pour cela :
 
 ```bash
@@ -47,7 +47,6 @@ python3 sheet_to_sql.py
 
 ## Structure
 
-- [error.py](error.py) : Classe d'erreur qui affiche l'erreur et sauvegarde dans les logs
 - [get_infos_bd.py](get_infos_bd.py) : Récupère à partir de l'ISBN les données sur la bande dessinées
 - [sheet_add_album.py](sheet_add_album.py) : Script principal qui récupère les informations et les ajoute à la feuille de calcul
 - [sheet_connection.py](sheet_connection.py) : Classe qui se gère la connection à la feuille de calcul

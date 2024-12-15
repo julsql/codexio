@@ -29,12 +29,11 @@ class PhotoConnexion(PhotoRepository, ABC):
             path_folder = os.path.join(folder, str(isbn))
             number = self.get_next_number(path_folder)
             fs = FileSystemStorage(location=path_folder)
-
             fs.save(f"{number}{file_extension}", uploaded_file)
         return allowed_file
 
     def is_image_file(self, file_path: str) -> bool:
-        return os.path.isfile(file_path) and self.get_file_extension(file_path) in self.allowed_extensions
+        return self.get_file_extension(file_path) in self.allowed_extensions
 
     def get_file_extension(self, file_path: str) -> str:
         return os.path.splitext(file_path)[1].lower()

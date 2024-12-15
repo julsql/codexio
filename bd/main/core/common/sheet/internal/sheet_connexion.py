@@ -1,5 +1,3 @@
-from typing import List
-
 import gspread
 from google.auth import exceptions
 from google.oauth2 import service_account
@@ -9,7 +7,7 @@ from main.core.common.sheet.sheet_repository import SheetRepository
 from config.settings import GSHEET_CREDENTIALS
 
 class SheetConnexion(SheetRepository):
-    def __init__(self):
+    def __init__(self) -> None:
         self.__OFFSET__ = 1
         self.worksheet = None
         __FILEPATH__ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -31,7 +29,7 @@ class SheetConnexion(SheetRepository):
         else:
             self.worksheet = self.client.open(doc_name).sheet1
 
-    def append(self, liste: List) -> None:
+    def append(self, liste: list[str]) -> None:
         self.worksheet.append_row(liste)
 
     def get(self, i: int, j: int) -> str:
@@ -39,11 +37,11 @@ class SheetConnexion(SheetRepository):
         j += self.__OFFSET__
         return self.worksheet.cell(i, j).value
 
-    def get_line(self, i: int) -> List:
+    def get_line(self, i: int) -> list[str]:
         i += self.__OFFSET__
         return self.worksheet.row_values(i)
 
-    def get_column(self, j: int) -> List:
+    def get_column(self, j: int) -> list[str]:
         j += self.__OFFSET__
         return self.worksheet.col_values(j)
 
@@ -51,7 +49,7 @@ class SheetConnexion(SheetRepository):
         sheet = self.worksheet.get_all_values()
         return len(sheet), len(sheet[0])
 
-    def get_all(self) -> List:
+    def get_all(self) -> list[list[str]]:
         return self.worksheet.get_all_values()
 
     def set(self, valeur: str, i: int, j: int) -> None:
@@ -62,12 +60,12 @@ class SheetConnexion(SheetRepository):
         else:
             raise TypeError(f"{valeur} n'est pas un type texte")
 
-    def set_line(self, valeur: List, i: int) -> None:
+    def set_line(self, valeur: list[str], i: int) -> None:
         i += self.__OFFSET__
         if isinstance(valeur, list):
             self.worksheet.update([valeur], f"A{i}")
 
-    def set_column(self, valeur: List, j: int, offset: int) -> None:
+    def set_column(self, valeur: list[str], j: int, offset: int) -> None:
         j += self.__OFFSET__
         offset += self.__OFFSET__
         plage_de_cellules = self.worksheet.range(offset, j, len(valeur), j)

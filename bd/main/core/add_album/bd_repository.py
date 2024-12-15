@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
-from typing import Dict
+
 
 class BdRepository(ABC):
     @abstractmethod
-    def get_infos(self, isbn: int) -> Dict:
+    def get_infos(self, isbn: int) -> dict[str, str | float | int]:
         pass
 
     @abstractmethod

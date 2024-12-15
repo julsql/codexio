@@ -1,22 +1,25 @@
-from typing import Dict
+from typing import Any
 import os
 
 from main.core.common.database.internal.bd_model import BD
 from config.settings import STATIC_ROOT
+from main.core.common.logger.logger import logger
+
 
 class PageBdService:
 
-    def main(self, isbn) -> Dict[str, str]:
+    def main(self, isbn: int) -> dict[str, str]:
         try:
             infos = self.page(isbn)
-        except Exception:
-            return {"isbn": isbn}
+        except Exception as e:
+            logger.error(str(e), exc_info=True)
+            return {"isbn": str(isbn)}
         infos["dedicaces"] = self.dedicaces_album(isbn)
         infos["exlibris"] = self.exlibris_album(isbn)
         return infos
 
 
-    def get_photo_dossier(self, path):
+    def get_photo_dossier(self, path: str) -> list[str]:
         if os.path.exists(path) and os.path.isdir(path):
             liste_fichiers = os.listdir(path)
 
@@ -29,16 +32,16 @@ class PageBdService:
             return []
 
 
-    def exlibris_album(self, isbn):
+    def exlibris_album(self, isbn: int) -> list[str]:
         image_dir = os.path.join(STATIC_ROOT, "main/images/exlibris", str(isbn))
         return self.get_photo_dossier(image_dir)
 
 
-    def dedicaces_album(self, isbn):
+    def dedicaces_album(self, isbn: int) -> list[str]:
         image_dir = os.path.join(STATIC_ROOT, "main/images/dedicaces", str(isbn))
         return self.get_photo_dossier(image_dir)
 
-    def page(self, isbn):
+    def page(self, isbn: int) -> dict[str, Any] | None:
         fields = [
             'isbn', 'album', 'number', 'series', 'writer', 'illustrator', 'colorist',
             'publisher', 'publication_date', 'edition', 'number_of_pages', 'rating',

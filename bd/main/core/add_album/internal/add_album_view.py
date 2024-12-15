@@ -1,4 +1,4 @@
-from django.http import HttpResponse, JsonResponse, HttpRequest
+from django.http import HttpResponse, JsonResponse, HttpRequest, HttpResponseNotFound, HttpResponseForbidden
 
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.add_album_service import AddAlbumService
@@ -12,7 +12,7 @@ def add_album(request: HttpRequest, isbn: int) -> HttpResponse | JsonResponse:
     if request.method == 'GET':
         auth_header = request.headers.get('Authorization')
         if auth_header is None or auth_header != f"Bearer {POST_TOKEN}":
-            return HttpResponse("Incorrection token", status=401)
+            return HttpResponseForbidden("Vous n'avez pas l'autorisation")
         else:
             try:
                 sheet_repository = SheetConnexion()
@@ -21,8 +21,8 @@ def add_album(request: HttpRequest, isbn: int) -> HttpResponse | JsonResponse:
                 service = AddAlbumService([bdfugue_repository, bdphile_repository], sheet_repository)
                 service.main(isbn)
             except AddAlbumError as e:
-                return HttpResponse(str(e), status=404)
+                return HttpResponseNotFound(str(e))
             except Exception as e:
                 return HttpResponse(str(e), status=500)
             else:
-                return JsonResponse({'message': f'Album {isbn} ajouté avec succès'})
+                return HttpResponse(f'Album {isbn} ajouté avec succès', status=200)

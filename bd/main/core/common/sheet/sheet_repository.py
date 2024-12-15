@@ -1,6 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import List
-
 
 class SheetRepository(ABC):
     @abstractmethod
@@ -8,7 +6,7 @@ class SheetRepository(ABC):
         pass
 
     @abstractmethod
-    def append(self, liste: List) -> None:
+    def append(self, liste: list[str]) -> None:
         pass
 
     @abstractmethod
@@ -16,11 +14,11 @@ class SheetRepository(ABC):
         pass
 
     @abstractmethod
-    def get_line(self, i: int) -> List:
+    def get_line(self, i: int) -> list[str]:
         pass
 
     @abstractmethod
-    def get_column(self, j: int) -> List:
+    def get_column(self, j: int) -> list[str]:
         pass
 
     @abstractmethod
@@ -28,7 +26,7 @@ class SheetRepository(ABC):
         pass
 
     @abstractmethod
-    def get_all(self) -> List:
+    def get_all(self) -> list[list[str]]:
         pass
 
     @abstractmethod
@@ -36,11 +34,11 @@ class SheetRepository(ABC):
         pass
 
     @abstractmethod
-    def set_line(self, valeur: List, i: int) -> None:
+    def set_line(self, valeur: list[str], i: int) -> None:
         pass
 
     @abstractmethod
-    def set_column(self, valeur: List, j: int, offset: int) -> None:
+    def set_column(self, valeur: list[str], j: int, offset: int) -> None:
         pass
 
     @abstractmethod
@@ -54,4 +52,3 @@ class SheetRepository(ABC):
     @abstractmethod
     def double(self, isbn: int) -> bool:
         pass
-

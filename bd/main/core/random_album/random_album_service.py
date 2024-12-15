@@ -1,11 +1,9 @@
-from typing import Dict
-
-from main.core.common.database.internal.bd_model import BD
+from main.core.random_album.internal.random_album_connexion import RandomAlbumConnexion
 
 
 class RandomAlbumService:
-    def main(self) -> Dict[str, str]:
-        return BD.objects.values(
-            'isbn', 'album', 'number', 'series', 'image', 'writer', 'illustrator',
-            'publication_date', 'purchase_price', 'number_of_pages', 'edition', 'synopsis'
-        ).order_by('?').first()
+    def __init__(self, random_alnum_repository: RandomAlbumConnexion) -> None:
+        self.connexion = random_alnum_repository
+
+    def main(self) -> dict[str, str]:
+        return self.connexion.get_random_album()

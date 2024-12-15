@@ -1,11 +1,9 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
-from config.settings import DATABASES
-from main.core.common.database.internal.database_connexion import DatabaseConnexion
 from main.core.page_bd.page_bd_service import PageBdService
 
 
-def page_bd(request, isbn) -> HttpResponse:
+def page_bd(request: HttpRequest, isbn: int) -> HttpResponse:
     service = PageBdService()
     infos = service.main(isbn)
     if len(infos.keys()) == 1:

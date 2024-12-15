@@ -11,7 +11,7 @@
             <div class="col-6 col-12-medium imp-medium">
                 <a href="{% url 'dedicace' %}#{{ banner_type }}_{{ banner_isbn }}" class="bordered-feature-image">
                     <div class="image-container">
-                        <img src="{% static banner_path %}" alt="Bannière" class="fixed-size-image"/>
+                        <img src="{{ banner_path }}" alt="Bannière" class="fixed-size-image"/>
                     </div>
                 </a>
             </div>
