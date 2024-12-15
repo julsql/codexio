@@ -14,7 +14,6 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns: path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path
 
 from main.core.add_album.internal.add_album_view import add_album
@@ -33,17 +32,17 @@ handler500 = error_500_view
 handler404 = error_404_view
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('bdrecherche/', bd_search, name='bdrecherche'),
     path('dedicace/', attachments, name='dedicace'),
     path('pagebd/<int:isbn>/', page_bd, name='pagebd'),
     path('statistiques/', statistiques, name='statistiques'),
+
+    path('update/', update_database, name='update'),
     path('upload/dedicace/<int:isbn>/', upload_dedicace, name='upload_dedicace'),
     path('upload/exlibris/<int:isbn>/', upload_exlibris, name='upload_exlibris'),
     path('delete/dedicace/<int:isbn>/<int:photo_id>', delete_dedicace, name='delete_dedicace'),
     path('delete/exlibris/<int:isbn>/<int:photo_id>', delete_exlibris, name='delete_exlibris'),
     path('add/<int:isbn>/', add_album, name='add_album'),
-    path('update/', update_database, name='update'),
     path('possede/<int:isbn>/', existing_album, name='possede'),
 ]

@@ -7,9 +7,9 @@ from main.core.common.database.internal.bd_model import BD
 
 class AttachmentsService:
     def main(self) -> Dict[str, str]:
-        dedicaces, dedicaces_sum = self.dedicaces()
+        signed_copies, signed_copy_sum = self.dedicaces()
         exlibris, exlibris_sum = self.exlibris()
-        return {'dedicaces': dedicaces, 'dedicaces_sum': dedicaces_sum,
+        return {'signed_copies': signed_copies, 'signed_copy_sum': signed_copy_sum,
                 'exlibris': exlibris, 'exlibris_sum': exlibris_sum}
 
     def dedicaces(self):
@@ -26,12 +26,12 @@ class AttachmentsService:
                 result = BD.objects.filter(isbn=isbn).values('album', 'number', 'series').first()
                 dedicaces_sum += nb_dedicace
                 if result is None:
-                    infos.append({'ISBN': isbn, 'Album': "", 'Numero': "", 'Serie': "",
-                                  'DedicaceRange': range(1, nb_dedicace + 1), 'Dedicace': nb_dedicace})
+                    infos.append({'isbn': isbn, 'album': "", 'number': "", 'series': "",
+                                  'signes_copy_range': range(1, nb_dedicace + 1), 'signed_copy': nb_dedicace})
                 else:
 
-                    infos.append({'ISBN': isbn, 'Album': result["album"], 'Numero': result["number"], 'Serie': result["series"],
-                                  'DedicaceRange': range(1, nb_dedicace + 1), 'Dedicace': nb_dedicace})
+                    infos.append({'isbn': isbn, 'album': result["album"], 'number': result["number"], 'series': result["series"],
+                                  'signes_copy_range': range(1, nb_dedicace + 1), 'signed_copy': nb_dedicace})
         return infos, dedicaces_sum
 
 
@@ -49,11 +49,11 @@ class AttachmentsService:
                 result = BD.objects.filter(isbn=isbn).values('album', 'number', 'series').first()
                 exlibris_sum += nb_exlibris
                 if result is None:
-                    infos.append({'ISBN': isbn, 'Album': "", 'Numero': "", 'Serie': "",
-                                  'ExlibrisRange': range(1, nb_exlibris + 1), 'Exlibris': nb_exlibris})
+                    infos.append({'isbn': isbn, 'album': "", 'number': "", 'series': "",
+                                  'ex_libris_range': range(1, nb_exlibris + 1), 'ex_libris': nb_exlibris})
                 else:
-                    infos.append({'ISBN': isbn, 'Album': result["album"], 'Numero': result["number"], 'Serie': result["series"],
-                                  'ExlibrisRange': range(1, nb_exlibris + 1), 'Exlibris': nb_exlibris})
+                    infos.append({'isbn': isbn, 'album': result["album"], 'number': result["number"], 'series': result["series"],
+                                  'ex_libris_range': range(1, nb_exlibris + 1), 'ex_libris': nb_exlibris})
         return infos, exlibris_sum
 
 
