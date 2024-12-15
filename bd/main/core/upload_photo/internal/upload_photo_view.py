@@ -5,7 +5,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseNotAllowed, HttpR
 from django.views.decorators.csrf import csrf_exempt
 
 from config.settings import POST_TOKEN
-from main.core.upload_photo.internal.photo_connexion import PhotoConnexion
+from main.core.delete_photo.internal.photo_connexion import PhotoConnexion
 from main.core.upload_photo.upload_photo_service import UploadPhotoService
 
 

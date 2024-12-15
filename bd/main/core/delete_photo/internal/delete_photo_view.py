@@ -1,8 +1,12 @@
+import os
+
 from django.http import HttpResponseForbidden, HttpResponse, HttpResponseNotFound, HttpResponseNotAllowed
 from django.views.decorators.csrf import csrf_exempt
 
-from config.settings import POST_TOKEN
+from config.settings import POST_TOKEN, STATIC_ROOT
 from main.core.delete_photo.delete_photo_service import DeletePhotoService
+from main.core.upload_photo.internal.photo_connexion import PhotoConnexion
+
 
 @csrf_exempt
 def delete_dedicace(request, isbn: int, photo_id: int):
@@ -20,7 +24,10 @@ def delete_photo(request, isbn: int, photo_id: int, photo_type: str):
             return HttpResponseForbidden("Vous n'avez pas l'autorisation")
 
         # Appeler le service pour supprimer la photo
-        service = DeletePhotoService()
+        dedicace_folder = os.path.join(STATIC_ROOT, 'main/images/dedicaces')
+        exlibris_folder = os.path.join(STATIC_ROOT, 'main/images/exlibris')
+        photo_repository = PhotoConnexion(dedicace_folder, exlibris_folder)
+        service = DeletePhotoService(photo_repository)
         if service.main(isbn, photo_id, photo_type):
             return HttpResponse("Photo supprimée correctement", status=200)
         else:
