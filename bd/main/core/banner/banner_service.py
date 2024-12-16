@@ -1,7 +1,7 @@
 import os
 import random
 
-from config.settings import MEDIA_ROOT, MEDIA_URL
+from config.settings import MEDIA_ROOT, MEDIA_URL, STATIC_URL
 
 
 class RandomDedicaceService:
@@ -17,7 +17,7 @@ class RandomDedicaceService:
             random_isbn = os.path.basename(os.path.dirname(random_image_path))
             random_type = os.path.basename(os.path.dirname(os.path.dirname(random_image_path)))
         else:
-            random_image_path = os.path.join(MEDIA_URL, "main/images/banner.jpg")
+            random_image_path = os.path.join(STATIC_URL, "main/images/banner.jpg")
         return {'banner_path': str(random_image_path), 'banner_isbn': random_isbn, "banner_type": random_type}
 
     def list_files_in_subdirectories(self, directory_path: str) -> list[str]:
