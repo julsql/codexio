@@ -25,6 +25,21 @@ It's a Django project that displays my collection of comics.
 - [bd/](bd/config): the settings files (urls, wsgi, settings) used by Django
 - [manage.py](bd/manage.py): the main file that runs the website
 
+## Docker
+
+You can run the docker-compose.yml and access to the website:
+
+```bash
+docker-compose up --build 
+```
+
+And access to localhost:8000
+
+To shut down:
+```bash
+docker-compose down
+```
+
 ## Test
 
 Run tests in `bd/`
@@ -75,11 +90,11 @@ Run tests in `bd/`
     mkdir database
     chmod -R 755 database/
     sudo chown -R www-data:www-data database/
-    mkdir main/static/main/images/dedicaces
-    mkdir main/static/main/images/exlibris
-    chmod -R 755 main/static/main/images/exlibris
+    mkdir main/media/main/images/dedicaces
+    mkdir main/media/main/images/exlibris
+    chmod -R 755 main/media/main/images/exlibris
     sudo chown -R www-data:www-data main/static/main/images/exlibris/
-    chmod -R 755 main/static/main/images/dedicaces
+    chmod -R 755 main/media/main/images/dedicaces
     sudo chown -R www-data:www-data main/static/main/images/dedicaces/
     ```
    

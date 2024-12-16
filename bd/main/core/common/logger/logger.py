@@ -1,4 +1,5 @@
 import logging
+import os
 
 from config.settings import LOGS_FILE
 
@@ -30,6 +31,14 @@ class AppLogger(logging.Logger):
 
 logging.setLoggerClass(AppLogger)
 logger = logging.getLogger("app_logger")
+
+os.makedirs(os.path.dirname(LOGS_FILE), exist_ok=True)
+
+# Vérifier si le fichier existe
+if not os.path.exists(LOGS_FILE):
+    with open(LOGS_FILE, 'w') as f:
+        # Le fichier est créé, vous pouvez écrire dedans si besoin
+        f.write("logs\n")
 
 logging.basicConfig(
     level=logging.DEBUG,

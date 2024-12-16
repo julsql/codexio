@@ -2,7 +2,3 @@
 config/bd-sheet-91.json
 config/.env
 database/
-
-# photos
-media/main/images/dedicaces/
-media/main/images/exlibris/

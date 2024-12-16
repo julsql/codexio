@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  django:
+    build:
+      context: . # Emplacement du Dockerfile
+    container_name: bd
+    ports:
+      - "8000:8000" # Expose le port 8000
+    volumes:
+      - ./media:/app/bd/media # Monte le dossier local 'media' dans le conteneur
+    environment:
+      - DEBUG=False
+    command: python bd/manage.py runserver 0.0.0.0:8000
