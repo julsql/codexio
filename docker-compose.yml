@@ -8,7 +8,8 @@ services:
     ports:
       - "8000:8000" # Expose le port 8000
     volumes:
-      - ./media:/app/bd/media # Monte le dossier local 'media' dans le conteneur
+      - ./bd/media:/app/bd/media # Monte le dossier local 'media' dans le conteneur
     environment:
       - DEBUG=False
-    command: python bd/manage.py runserver 0.0.0.0:8000
+    working_dir: /app/bd
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
