@@ -1,10 +1,10 @@
-from main.core.advanced_search.internal import AdvancedSearchConnexion
+from main.core.advanced_search.advanced_search_repository import AdvancedSearchRepository
 from main.core.advanced_search.internal.forms import RechercheForm
 
 
 class AdvancedSearchService:
-    def __init__(self, advanced_search_repository: AdvancedSearchConnexion) -> None:
-        self.connexion = advanced_search_repository
+    def __init__(self, advanced_search_repository: AdvancedSearchRepository) -> None:
+        self.repository = advanced_search_repository
 
     def main(self, request) -> (RechercheForm, list[dict[str, str]], bool):
         if request.method == 'POST':
@@ -18,41 +18,14 @@ class AdvancedSearchService:
             return form, infos, False
 
     def form_search(self, form=None) -> list[dict[str, str]]:
-        queryset = self.connexion.get_all()
-
+        queryset = self.repository.get_all()
         if form and form.is_valid():
             data = form.cleaned_data
+            queryset = self.repository.get_by_form(data, queryset)
 
-            filters = {
-                'isbn__icontains': 'isbn',
-                'album__icontains': 'album',
-                'number__icontains': 'number',
-                'series__icontains': 'series',
-                'writer__icontains': 'writer',
-                'illustrator__icontains': 'illustrator',
-                'publisher__icontains': 'publisher',
-                'edition__icontains': 'edition',
-                'year_of_purchase': 'year_of_purchase',
-                'signed_copy': 'signed_copy',
-                'ex_libris': 'ex_libris',
-            }
-
-            # Appliquer les filtres à la requête
-            for field_name, form_field_name in filters.items():
-                value = data.get(form_field_name)
-                if value:
-                    queryset = queryset.filter(**{field_name: value})
-
-            # Filtrer par synopsis si nécessaire
-            synopsis = data.get('synopsis')
-            if synopsis:
-                keywords = synopsis.split()
-                queryset = queryset.filter(synopsis__icontains=" ".join(keywords))
-
-            # Appliquer le tri si nécessaire
-            tri_par = data.get('tri_par')
-            if tri_par:
-                queryset = queryset.order_by(f"-{tri_par}" if not data.get('tri_croissant') else tri_par)
+            if tri_par := data.get('tri_par'):
+                tri_croissant = data.get('tri_croissant', True)
+                queryset = self.repository.order_by(queryset, tri_par, tri_croissant)
 
         return [
             {

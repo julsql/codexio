@@ -2,7 +2,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
 from main.core.advanced_search.advanced_search_service import AdvancedSearchService
-from main.core.advanced_search.internal.AdvancedSearchConnexion import AdvancedSearchConnexion
+from main.core.advanced_search.internal.advanced_search_connexion import AdvancedSearchConnexion
 
 
 def bd_search(request: HttpRequest) -> HttpResponse:
