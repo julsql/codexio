@@ -3,12 +3,12 @@ version: '3.8'
 services:
   django:
     build:
-      context: . # Emplacement du Dockerfile
+      context: .
     container_name: bd
     ports:
-      - "8000:8000" # Expose le port 8000
+      - "8001:8000"
     volumes:
-      - ./bd/media:/app/bd/media # Monte le dossier local 'media' dans le conteneur
+      - ./bd/media:/app/bd/media
     environment:
       - DEBUG=False
     working_dir: /app/bd
