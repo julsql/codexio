@@ -39,4 +39,4 @@ def upload_photo(request: HttpRequest, isbn: int, photo_type: str) -> HttpRespon
             else:
                 return HttpResponseBadRequest("Aucun fichier n'a été envoyé")
     else:
-        return HttpResponseNotAllowed(["POST"], "Il faut une requête DELETE")
+        return HttpResponseNotAllowed(["POST"], "Il faut une requête POST")
