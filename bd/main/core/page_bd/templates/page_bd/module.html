@@ -90,7 +90,7 @@
         </section>
 </div>
 
-{% if signed_copy|length > 0 %}
+{% if nb_dedicace > 0 %}
     <div class="col-12">
 
         <!-- Main Content -->
@@ -99,9 +99,9 @@
                     <h2>Dédicaces</h2>
                 </header>
 
-                    {% for dedicace in signed_copy %}
-                        <a class="photo_link" href="/static/main/images/dedicaces/{{ isbn }}/{{ dedicace }}" data-lightbox="{{ isbn }}">
-                            <img src="/static/main/images/dedicaces/{{ isbn }}/{{ dedicace }}" alt="Couverture de l'album {{ isbn }}" class="photo_dedicace">
+                    {% for dedicace in dedicaces %}
+                        <a class="photo_link" href="/media/main/images/dedicaces/{{ isbn }}/{{ dedicace }}" data-lightbox="{{ isbn }}">
+                            <img src="/media/main/images/dedicaces/{{ isbn }}/{{ dedicace }}" alt="Couverture de l'album {{ isbn }}" class="photo_dedicace">
                         </a>
                     {% endfor %}
 
@@ -109,7 +109,7 @@
     </div>
 {% endif %}
 
-{% if ex_libris|length > 0 %}
+{% if nb_exlibris > 0 %}
     <div class="col-12">
 
         <!-- Main Content -->
@@ -119,8 +119,8 @@
                 </header>
 
                     {% for exlibris in ex_libris %}
-                        <a class="photo_link" href="/static/main/images/exlibris/{{ isbn }}/{{ exlibris }}" data-lightbox="{{ isbn }}">
-                            <img src="/static/main/images/exlibris/{{ isbn }}/{{ exlibris }}" alt="Couverture de l'album {{ isbn }}" class="photo_dedicace">
+                        <a class="photo_link" href="/media/main/images/exlibris/{{ isbn }}/{{ exlibris }}" data-lightbox="{{ isbn }}">
+                            <img src="/media/main/images/exlibris/{{ isbn }}/{{ exlibris }}" alt="Couverture de l'album {{ isbn }}" class="photo_dedicace">
                         </a>
                     {% endfor %}
 

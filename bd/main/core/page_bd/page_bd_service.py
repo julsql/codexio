@@ -2,7 +2,7 @@ from typing import Any
 import os
 
 from main.core.common.database.internal.bd_model import BD
-from config.settings import STATIC_ROOT
+from config.settings import MEDIA_ROOT
 from main.core.common.logger.logger import logger
 
 
@@ -15,7 +15,9 @@ class PageBdService:
             logger.error(str(e), exc_info=True)
             return {"isbn": str(isbn)}
         infos["dedicaces"] = self.dedicaces_album(isbn)
-        infos["exlibris"] = self.exlibris_album(isbn)
+        infos["nb_dedicace"] = len(infos["dedicaces"])
+        infos["ex_libris"] = self.exlibris_album(isbn)
+        infos["nb_exlibris"] = len(infos["ex_libris"])
         return infos
 
 
@@ -33,19 +35,19 @@ class PageBdService:
 
 
     def exlibris_album(self, isbn: int) -> list[str]:
-        image_dir = os.path.join(STATIC_ROOT, "main/images/exlibris", str(isbn))
+        image_dir = os.path.join(MEDIA_ROOT, "main/images/exlibris", str(isbn))
         return self.get_photo_dossier(image_dir)
 
 
     def dedicaces_album(self, isbn: int) -> list[str]:
-        image_dir = os.path.join(STATIC_ROOT, "main/images/dedicaces", str(isbn))
+        image_dir = os.path.join(MEDIA_ROOT, "main/images/dedicaces", str(isbn))
         return self.get_photo_dossier(image_dir)
 
     def page(self, isbn: int) -> dict[str, Any] | None:
         fields = [
             'isbn', 'album', 'number', 'series', 'writer', 'illustrator', 'colorist',
             'publisher', 'publication_date', 'edition', 'number_of_pages', 'rating',
-            'purchase_price', 'year_of_purchase', 'place_of_purchase', 'signed_copy',
-            'ex_libris', 'synopsis', 'image'
+            'purchase_price', 'year_of_purchase', 'place_of_purchase',
+            'synopsis', 'image'
         ]
         return BD.objects.filter(isbn=isbn).values(*fields).first()
