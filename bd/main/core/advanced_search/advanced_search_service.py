@@ -10,8 +10,7 @@ class AdvancedSearchService:
         if request.method == 'POST':
             form = RechercheForm(request.POST)
             infos = self.form_search(form)
-            if infos:
-                return form, infos, True
+            return form, infos, True
         else:
             form = RechercheForm()
             infos = self.form_search()
