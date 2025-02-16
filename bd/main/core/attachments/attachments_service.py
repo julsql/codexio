@@ -28,7 +28,6 @@ class AttachmentsService:
                     infos.append({'isbn': isbn, 'album': "", 'number': "", 'series': "",
                                   'signes_copy_range': range(1, nb_dedicace + 1), 'signed_copy': nb_dedicace})
                 else:
-
                     infos.append({'isbn': isbn, 'album': result["album"], 'number': result["number"], 'series': result["series"],
                                   'signes_copy_range': range(1, nb_dedicace + 1), 'signed_copy': nb_dedicace})
         return infos, dedicaces_sum
