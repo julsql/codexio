@@ -1,10 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,300,200");
 
-/*
-	Halcyonic by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-*/
 
 html, body, div, span, applet, object,
 iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
@@ -28,8 +23,21 @@ strong {
 	font-weight: bold;
 }
 
+.cover {
+	display: flex;
+	margin-bottom: 20px;
+}
+
+.cover img {
+	margin: auto;
+}
+
 td {
 	padding: 10px 50px 10px 10px;
+	width: 33.33%; /* Chaque colonne prend un tiers de la table */
+	text-align: left; /* Alignement du texte */
+	vertical-align: top; /* Aligne le contenu en haut */
+	word-wrap: break-word; /* Force le retour à la ligne si nécessaire */
 }
 
 .photo_link {
@@ -102,6 +110,7 @@ blockquote, q {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
+	width: 100%; /* Utilise toute la largeur disponible */
 }
 
 body {
@@ -1500,23 +1509,6 @@ label[for="id_tri_croissant"] {
 			font-weight: 400;
 		}
 
-	.check-list li {
-		padding: 0.7em 0 0.7em 45px;
-		font-size: 1.2em;
-		background: url("images/icon-checkmark.png") 0px 1.05em no-repeat;
-	}
-
-		.check-list li:first-child {
-			padding-top: 0 !important;
-			border-top: 0 !important;
-			background-position: 0 0.3em;
-		}
-
-		.check-list li:last-child {
-			padding-bottom: 0 !important;
-			border-bottom: 0 !important;
-		}
-
 	.feature-image {
 		display: block;
 		margin: 0 0 2em 0;
@@ -1693,6 +1685,10 @@ label[for="id_tri_croissant"] {
 			padding: 40px 30px 45px 30px;
 			box-shadow: 2px 2px 2px 1px rgba(128, 128, 128, 0.1);
 			margin: 0 0 25px 0;
+		}
+
+		section .couverture {
+			height: 100%;
 		}
 
 		#content h2 {

@@ -48,13 +48,17 @@
                 <p>{{ bd.signed_copy }} dédicace{% if bd.signed_copy > 1 %}s{% endif %}</p>
             </header>
 
-            <p>
-                {% for i in bd.signes_copy_range %}
-                    <a class="photo_link" href="/media/main/images/dedicaces/{{ bd.isbn }}/{{ i }}.jpeg" data-lightbox="{{ bd.isbn }}">
-                        <img src="/media/main/images/dedicaces/{{ bd.isbn }}/{{ i }}.jpeg" alt="Dédicace de l'album {{ bd.isbn }}" class="photo_dedicace">
-                    </a>
+            <div class="image_group">
+            {% for i in bd.signes_copy_range %}
+                    <img src="/media/main/images/dedicaces/{{ bd.isbn }}/{{ i }}.jpeg"
+                         alt="Dédicace de l'album {{ bd.isbn }}"
+                         data-full="/media/main/images/dedicaces/{{ bd.isbn }}/{{ i }}.jpeg"
+                         data-title="<h2>{{ bd.series }}</h2>"
+                         data-info="<p>{{ bd.album }}</p>"
+                         class="photo_dedicace"
+                    />
                 {% endfor %}
-            </p>
+            </div>
         </section>
     {% endfor %}
 
@@ -93,16 +97,43 @@
                 {% endif %}
                 <p>{{bd.ex_libris}} ex libris</p>
             </header>
-
-            <p>
+            <div class="image_group">
                 {% for i in bd.ex_libris_range %}
-                    <a class="photo_link" href="/media/main/images/exlibris/{{ bd.isbn }}/{{ i }}.jpeg" data-lightbox="{{ bd.isbn }}">
-                        <img src="/media/main/images/exlibris/{{ bd.isbn }}/{{ i }}.jpeg" alt="Ex libris de l'album {{ bd.isbn }}" class="photo_dedicace">
-                    </a>
+                    <img src="/media/main/images/exlibris/{{ bd.isbn }}/{{ i }}.jpeg"
+                         alt="Ex libris de l'album {{ bd.isbn }}"
+                         data-full="/media/main/images/exlibris/{{ bd.isbn }}/{{ i }}.jpeg"
+                         data-title="<h2>{{ bd.series }}</h2>"
+                         data-info="<p>{{ bd.album }}</p>"
+                         class="photo_exlibris"
+                    />
                 {% endfor %}
-            </p>
+            </div>
         </section>
     {% endfor %}
 
 </div>
+
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <div id="image-title"></div>
+            <div id="image-info"></div>
+
+            <img id="popup-img" src="" alt="Couverture"/>
+            <button class="popup_button close" id="close-popup">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <path d="M18 6L12 12L6 6L4.59 7.41L10.59 13.41L4.59 19.41L6 21L12 15L18 21L19.41 19.41L13.41 13.41L19.41 7.41L18 6Z" />
+                </svg>
+            </button>
+            <button class="popup_button prev" id="prev-image">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+            </button>
+            <button class="popup_button next" id="next-image">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
 {% endblock %}

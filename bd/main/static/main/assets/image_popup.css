@@ -1,0 +1,107 @@
+.gallery {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.thumbnail, .cover, .photo_dedicace, .photo_exlibris {
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.popup {
+    display: none; /* cachée par défaut */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    position: relative;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    max-width: 90%;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+
+#popup-img {
+    min-width: 400px;
+    max-width: 100%;
+    max-height: 75vh;
+    height: auto;
+    width: auto;
+    object-fit: contain;
+    border-radius: 0 0 7px 7px;
+}
+
+#image-title {
+    margin-top: 10px;
+    text-align: center;
+    word-wrap: break-word;
+    font-size: 16px;
+    max-width: 100%;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+#image-info p {
+    text-align: center;
+    word-wrap: break-word;
+    font-size: 20px;
+    max-width: 100%;
+    margin: auto 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+#image-title h2 {
+    color: white;
+}
+
+.popup_button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+}
+
+button:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+#close-popup {
+    top: 27px;
+    right: -40px;
+    font-size: 30px;
+}
+
+.prev {
+    left: -40px;
+}
+
+.next {
+    right: -40px;
+}
+
