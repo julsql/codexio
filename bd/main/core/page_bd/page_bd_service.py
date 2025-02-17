@@ -14,9 +14,9 @@ class PageBdService:
         except Exception as e:
             logger.error(str(e), exc_info=True)
             return {"isbn": str(isbn)}
-        infos["dedicaces"] = self.dedicaces_album(isbn)
+        infos["dedicaces"] = sorted(self.dedicaces_album(isbn))
         infos["nb_dedicace"] = len(infos["dedicaces"])
-        infos["ex_libris"] = self.exlibris_album(isbn)
+        infos["ex_libris"] = sorted(self.exlibris_album(isbn))
         infos["nb_exlibris"] = len(infos["ex_libris"])
         return infos
 
