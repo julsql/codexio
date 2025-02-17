@@ -17,7 +17,8 @@ section, summary, time, mark, audio, video {
 	border: 0;
 	font-size: 100%;
 	font: inherit;
-	vertical-align: baseline;}
+	vertical-align: baseline;
+}
 
 strong {
 	font-weight: bold;
@@ -32,8 +33,25 @@ strong {
 	margin: auto;
 }
 
+.title {
+	display: flex;
+}
+
+#hideDedicace, #hideExlibris {
+	margin-left: auto;
+}
+
 td {
 	padding: 10px 50px 10px 10px;
+}
+
+#all_dedicaces, #all_exlibris {
+	display: none;
+	visibility: hidden;
+}
+
+.info-bd td {
+
 	width: 33.33%; /* Chaque colonne prend un tiers de la table */
 	text-align: left; /* Alignement du texte */
 	vertical-align: top; /* Aligne le contenu en haut */
@@ -48,7 +66,7 @@ td {
 	width: 49%;
 }
 
-#pagination {
+#pagination, #dedicace-pagination, #exlibris-pagination {
     text-align: center;
     font-size: 18px;
     margin: 20px 0;
@@ -88,7 +106,8 @@ td {
 
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
-	display: block;}
+	display: block;
+}
 
 body {
 	line-height: 1;
@@ -1687,6 +1706,10 @@ label[for="id_tri_croissant"] {
 			margin: 0 0 25px 0;
 		}
 
+		#content section .sub-section {
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Ombre dans toutes les directions */
+		}
+
 		section .couverture {
 			height: 100%;
 		}
@@ -1866,7 +1889,10 @@ label[for="id_tri_croissant"] {
 			}
 
 				#header > .container:first-child {
-					display: none;
+					display: block;
+				}
+				#header > .container {
+					min-height: 135px;
 				}
 
 		/* Content */
@@ -1886,8 +1912,6 @@ label[for="id_tri_croissant"] {
 				-webkit-transition: -webkit-transform 0.5s ease;
 				-ms-transition: -ms-transform 0.5s ease;
 				transition: transform 0.5s ease;
-				padding-bottom: 1px;
-				padding-top: 44px;
 			}
 
 			#titleBar {

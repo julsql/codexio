@@ -55,7 +55,7 @@
                 </h3>
             </header>
 
-                <table aria-hidden="true">
+                <table aria-hidden="true" class="info-bd">
                     <tr>
                         <td><strong>ISBN</strong> : {{ isbn }}</td>
                         <td><strong>Scénariste</strong> : {{ writer }}</td>
@@ -173,3 +173,6 @@
 
 {% endblock %}
 
+{% block javascript %}
+    <script src="{% static 'main/assets/image_popup.js' %}"></script>
+{% endblock %}
