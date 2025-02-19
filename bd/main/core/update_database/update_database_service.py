@@ -29,7 +29,7 @@ class UpdateDatabaseService:
                   "éditeur": "publisher",
                   "date de parution": "publication_date",
                   "édition": "edition",
-                  "nombre de pages": "number_of_pages",
+                  "nombre de planches": "number_of_pages",
                   "cote": "rating",
                   "prix d'achat": "purchase_price",
                   "année d'achat": "year_of_purchase",

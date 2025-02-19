@@ -21,7 +21,7 @@ edition = "Édition originale Noté : Impression en décembre 2022 - n° 616-5-0
 
 FIRST_LINE = [
     "ISBN", "Album", "Numéro", "Série", "Scénariste", "Dessinateur", "Couleur", "Éditeur", "Date de parution",
-    "Édition", "Nombre de pages", "Cote", "Prix d'achat", "Année d'achat", "Lieu d'achat", "Tirage de tête",
+    "Édition", "Nombre de planches", "Cote", "Prix d'achat", "Année d'achat", "Lieu d'achat", "Tirage de tête",
     "Dédicace", "Ex Libris", "Synopsis", "Image"]
 
 FIRST_LINE_DATABASE =[
