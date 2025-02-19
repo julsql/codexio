@@ -83,11 +83,11 @@ class BdPhileRepository(BdRepository):
                     self._extract_price(value, informations, isbn)
 
     def _extract_pages(self, value: str, informations: dict, isbn: int) -> None:
-        """ Extraire le nombre de pages """
+        """ Extraire le nombre de planches """
         try:
             informations["Pages"] = int(value.replace("pages", "").strip())
         except ValueError:
-            logger.warning(f"{value} est un nombre de pages incorrect", extra={"isbn": isbn})
+            logger.warning(f"{value} est un nombre de planches incorrect", extra={"isbn": isbn})
 
     def _extract_price(self, value: str, informations: dict, isbn: int) -> None:
         """ Extraire le prix """

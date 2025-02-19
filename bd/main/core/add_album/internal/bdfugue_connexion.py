@@ -14,7 +14,7 @@ class BdFugueRepository(BdRepository):
                    "Série": "Série", "Scénario": "Scénario",
                    "Dessin": "Dessin", "Couleurs": "Couleurs", "Éditeur": "Éditeur",
                    "date de parution": "Date de publication", "": "Édition",
-                   "Nombre de pages": "Pages"}
+                   "Nombre de planches": "Pages"}
 
     def __str__(self) -> str:
         return "BdFugueRepository"

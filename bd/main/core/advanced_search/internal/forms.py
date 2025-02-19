@@ -23,7 +23,7 @@ class RechercheForm(forms.Form):
         ('series', 'Série'),
         ('publication_date', 'Date de parution'),
         ("year_of_purchase", "Année d'achat"),
-        ('number_of_pages', 'Nombre de pages'),
+        ('number_of_pages', 'Nombre de planches'),
         ("place_of_purchase", "Lieu d'achat"),
         ('illustrator', 'Dessinateur'),
         ('writer', 'Scénariste'),
