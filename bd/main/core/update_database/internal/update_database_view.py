@@ -16,6 +16,8 @@ def update_database(request: HttpRequest) -> HttpResponse:
             database_repository = DatabaseConnexion()
             service = UpdateDatabaseService(sheet_repository, database_repository)
             service.main()
-            return HttpResponse("Site web mis à jour correctement", status=200)
+            response = HttpResponse("Site web mis à jour correctement", status=200)
+            response["Content-Type"] = "text/plain; charset=utf-8"
+            return response
     else:
         return HttpResponseNotAllowed(["GET"], "Il faut une requête GET")

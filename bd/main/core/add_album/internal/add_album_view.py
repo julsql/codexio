@@ -3,6 +3,7 @@ from django.http import HttpResponse, JsonResponse, HttpRequest, HttpResponseNot
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.add_album_service import AddAlbumService
 from main.core.add_album.internal.bdfugue_connexion import BdFugueRepository
+from main.core.add_album.internal.bdgest_connexion import BdGestRepository
 from main.core.add_album.internal.bdphile_connexion import BdPhileRepository
 from config.settings import POST_TOKEN
 from main.core.common.sheet.internal.sheet_connexion import SheetConnexion
@@ -18,7 +19,8 @@ def add_album(request: HttpRequest, isbn: int) -> HttpResponse | JsonResponse:
                 sheet_repository = SheetConnexion()
                 bdfugue_repository = BdFugueRepository()
                 bdphile_repository = BdPhileRepository()
-                service = AddAlbumService([bdfugue_repository, bdphile_repository], sheet_repository)
+                bdgest_repository = BdGestRepository()
+                service = AddAlbumService([bdfugue_repository, bdgest_repository, bdphile_repository], sheet_repository)
                 service.main(isbn)
             except AddAlbumError as e:
                 return HttpResponseNotFound(str(e))
