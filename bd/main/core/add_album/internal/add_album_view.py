@@ -25,6 +25,11 @@ def add_album(request: HttpRequest, isbn: int) -> HttpResponse | JsonResponse:
             except AddAlbumError as e:
                 return HttpResponseNotFound(str(e))
             except Exception as e:
-                return HttpResponse(str(e), status=500)
+                response = HttpResponse(str(e), status=500)
+                response["Content-Type"] = "text/plain; charset=utf-8"
+                return response
             else:
-                return HttpResponse(f'Album {isbn} ajouté avec succès', status=200)
+                text_response = f'Album {isbn} ajouté avec succès'
+                response = HttpResponse(text_response, status=200)
+                response["Content-Type"] = "text/plain; charset=utf-8"
+                return response
