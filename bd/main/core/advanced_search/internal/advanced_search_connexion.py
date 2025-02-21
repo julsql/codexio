@@ -22,8 +22,8 @@ class AdvancedSearchConnexion(AdvancedSearchRepository, ABC):
             'publisher__icontains': 'publisher',
             'edition__icontains': 'edition',
             'year_of_purchase': 'year_of_purchase',
-            'signed_copy': 'signed_copy',
-            'ex_libris': 'ex_libris',
+            'publication_date': 'publication_date',
+            'deluxe_edition': 'deluxe_edition',
         }
 
         # Appliquer les filtres

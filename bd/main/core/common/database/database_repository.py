@@ -7,7 +7,7 @@ class DatabaseRepository(ABC):
         pass
 
     @abstractmethod
-    def insert(self,value: list[dict[str, str]]) -> None:
+    def insert(self, value: list[dict[str, str]]) -> None:
         pass
 
     @abstractmethod
