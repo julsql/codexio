@@ -14,15 +14,12 @@ class StatisticsService:
             nombre=Count('id'),
             pages=Cast(Sum('number_of_pages'), output_field=IntegerField()),
             prix=Cast(Sum('rating'), output_field=IntegerField()),
-            tirage=Count(
-                Case(
-                    When(deluxe_edition__iexact='oui', then=1)  # Compte uniquement les "Tirage de tête" = 'oui'
-                )
-            )
+            tirage=Cast(Sum('deluxe_edition'), output_field=IntegerField()),
         )
         infos["dedicaces"] = dedicace_total
         infos["exlibris"] = exlibris_total
         return infos
+
 
     def get_dedicaces_total(self) -> (list[dict[str, str]], int):
         image_folder = os.path.join(MEDIA_ROOT, 'main/images/dedicaces')

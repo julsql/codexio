@@ -22,10 +22,6 @@ class AdvancedSearchService:
             data = form.cleaned_data
             queryset = self.repository.get_by_form(data, queryset)
 
-            if tri_par := data.get('tri_par'):
-                tri_croissant = data.get('tri_croissant', True)
-                queryset = self.repository.order_by(queryset, tri_par, tri_croissant)
-
         return [
             {
                 'ISBN': bd.isbn,

@@ -25,8 +25,6 @@ class DatabaseConnexion(DatabaseRepository):
                 year_of_purchase=row["year_of_purchase"],
                 place_of_purchase=row["place_of_purchase"],
                 deluxe_edition=row["deluxe_edition"],
-                signed_copy=row["signed_copy"],
-                ex_libris=row["ex_libris"],
                 synopsis=row["synopsis"],
                 image=row["image"],
             )
