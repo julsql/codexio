@@ -30,7 +30,14 @@ const inputs = document.querySelectorAll('.input-container input');
 const selects = document.querySelectorAll('.input-container select');
 const clearBtns = document.querySelectorAll('.input-container .clear-btn');
 
-// Fonction pour afficher ou cacher la croix
+const inputDateStart = document.getElementById('id_start_date');
+const inputDateEnd = document.getElementById('id_end_date');
+const clearBtnDateStart = document.getElementById('clear-start-date');
+const clearBtnDateEnd = document.getElementById('clear-end-date');
+
+const inputDates = [inputDateStart, inputDateEnd];
+const clearBtnDates = [clearBtnDateStart, clearBtnDateEnd];
+
 function toggleClearBtn(input, clearBtn) {
     if (input.value) {
         clearBtn.style.display = 'block';
@@ -39,10 +46,9 @@ function toggleClearBtn(input, clearBtn) {
     }
 }
 
-// Fonction pour effacer la valeur de l'input
 function clearInput(input, clearBtn) {
     input.value = '';
-    toggleClearBtn(input, clearBtn); // Met à jour la visibilité de la croix après effacement
+    toggleClearBtn(input, clearBtn);
 }
 
 window.onload = function () {
@@ -55,6 +61,9 @@ window.onload = function () {
         selects.forEach((select) => {
             select.value = "";
         })
+        inputDates.forEach((input) => {
+            input.value = "";
+        })
     });
 
     inputs.forEach((input, index) => {
@@ -64,18 +73,10 @@ window.onload = function () {
         clearBtn.addEventListener('click', () => clearInput(input, clearBtn));
     });
 
-    const inputDateStart = document.getElementById('id_start_date');
-    const inputDateEnd = document.getElementById('id_end_date');
-    const clearBtnDateStart = document.getElementById('clear-start-date');
-    const clearBtnDateEnd = document.getElementById('clear-end-date');
-
-    const inputDates = [inputDateStart, inputDateEnd];
-    const clearBtnDates = [clearBtnDateStart, clearBtnDateEnd];
-
     inputDates.forEach((input, index) => {
         const clearBtnDate = clearBtnDates[index];
         input.addEventListener('input', () => {
-            clearBtnDate.style.display = 'inline-block';
+            clearBtnDate.style.display = 'block';
         });
         if (clearBtnDate) {
             clearBtnDate.addEventListener('click', () => {
