@@ -1,0 +1,17 @@
+#pagination, #dedicace-pagination, #exlibris-pagination {
+    text-align: center;
+    font-size: 18px;
+    margin: 20px 0;
+}
+
+.pagination {
+    display: inline-block;
+    padding: 5px 10px;
+    color: darkblue;
+    margin: 0 5px;
+    width: 60px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+    font-size: 16px;
+}

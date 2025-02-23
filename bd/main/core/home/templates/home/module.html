@@ -2,21 +2,22 @@
 {% load static %}
 
 {% block banner %}
-    {% include 'banner/module.html' %}
 {% endblock %}
 
 {% block body %}
 
-<div class="col-8 col-12-medium">
-    {% include 'advanced_search/module.html' %}
-</div>
+    <div id="body">
+        <div class="col-1">
+            {% include 'advanced_search/module.html' %}
+        </div>
 
-<div class="col-4 col-12-medium">
-    {% include 'random_album/module.html' %}
-</div>
+        <div class="col-2">
+            {% include 'random_album/module.html' %}
+        </div>
+    </div>
 
 {% endblock %}
 
 {% block javascript %}
-    <script src="{% static 'main/assets/image_popup.js' %}"></script>
+    <script src="{% static 'main/scripts/image_popup.js' %}"></script>
 {% endblock %}
