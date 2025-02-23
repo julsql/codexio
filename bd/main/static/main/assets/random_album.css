@@ -18,18 +18,17 @@
 .icon {
     height: 20px;
     width: 20px;
-    margin-right: 5px;
 }
 
 .text_icon {
     align-items: center;
     display: flex;
     font-weight: 200;
-    margin-right: 10px;
 }
 
 #infos {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    gap: 10px;
 }

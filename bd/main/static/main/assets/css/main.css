@@ -70,10 +70,6 @@ td {
     text-decoration: none;
 }
 
-.photo_dedicace {
-	width: 49%;
-}
-
 #pagination, #dedicace-pagination, #exlibris-pagination {
     text-align: center;
     font-size: 18px;
@@ -1716,10 +1712,6 @@ label[for="id_tri_croissant"] {
 
 		#content section .sub-section {
 			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Ombre dans toutes les directions */
-		}
-
-		section .couverture {
-			height: 100%;
 		}
 
 		#content h2 {

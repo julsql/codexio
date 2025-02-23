@@ -45,8 +45,8 @@ function displayPage(pageNumber) {
         lastPage.style.visibility = "visible"
         nextPage.style.visibility = "visible"
     }
-
 }
+
 document.getElementById("prev-page").addEventListener("click", function () {
     if (currentPageInt > 1) {
         currentPageInt--;
