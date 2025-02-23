@@ -5,7 +5,7 @@
     justify-content: center;
 }
 
-.thumbnail, .cover, .photo_dedicace, .photo_exlibris {
+.thumbnail, .cover {
     object-fit: cover;
     cursor: pointer;
 }

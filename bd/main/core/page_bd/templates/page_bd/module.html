@@ -2,16 +2,9 @@
 {% load static %}
 
 {% block body %}
-
-<div class="col-3 col-12-medium">
-
-    <!-- Sidebar -->
-        <section class="couverture">
-            <header>
-                <h2>Couverture</h2>
-            </header>
-
-            <div class="image_group cover">
+    <div id="body">
+        <div class="col-30">
+            <div class="image_group album-cover">
                 <img src="{{ image }}"
                      alt="Couverture"
                      data-full="{{ image }}"
@@ -20,158 +13,297 @@
                      class="thumbnail"
                 />
             </div>
-        </section>
+        </div>
 
-</div>
-<div class="col-9 col-12-medium imp-medium">
-
-    <!-- Main Content -->
-
-        <section class="couverture">
-            <header>
-                <h2>
-                {% if series and series != "" %}
-                    {{ series }}
-                {% else %}
-                    Pas de titre
-                {% endif %}
-                </h2>
-
-                <h3>
-                {% if number and number != "" %}
-                    {% if album and album != "" %}
-                        Tome {{ number }} : {{ album }}
-                    {% else %}
-                        Tome {{ number }}
-                    {% endif %}
-                {% else %}
-                    {% if album and album != "" %}
-                        {{ album }}
+        <div class="col-80">
+            <section>
+                <header>
+                    <h2>
+                    {% if series and series != "" %}
+                        {{ series }}
                     {% else %}
                         Pas de titre
                     {% endif %}
-                {% endif %}
-                </h3>
+                    </h2>
+                    <h3>
+                    {% if number and number != "" %}
+                        {% if album and album != "" %}
+                            Tome {{ number }} : {{ album }}
+                        {% else %}
+                            Tome {{ number }}
+                        {% endif %}
+                    {% else %}
+                        {% if album and album != "" %}
+                            {{ album }}
+                        {% else %}
+                            Pas de titre
+                        {% endif %}
+                    {% endif %}
+                    </h3>
+                </header>
+
+                <div class="additional-infos">
+                     {% if purchase_price and purchase_price != "" %}
+                     <div class="text_icon" title="Prix">
+                         <img class="icon" src="{% static 'main/icons/price.svg' %}" alt="price">
+                         {{ purchase_price }}€
+                     </div>
+                     {% endif %}
+
+                     {% if publication_date and publication_date != "" %}
+                     <div class="text_icon" title="Date de parution">
+                         <img class="icon" src="{% static 'main/icons/date.svg' %}" alt="date">
+                         <p>{{ publication_date|date:"d/m/Y" }}</p>
+                     </div>
+                     {% endif %}
+
+                     {% if number_of_pages and number_of_pages != "" %}
+                         <div class="text_icon" title="Nombre de planches">
+                             <img class="icon" src="{% static 'main/icons/pages.svg' %}" alt="pages">
+                             {{ number_of_pages }}
+                         </div>
+                     {% endif %}
+
+                    <div class="text_icon" title="ISBN">
+                         <img class="icon" src="{% static 'main/icons/barcode.svg' %}" alt="pages">
+                         {{ isbn }}
+                    </div>
+                </div>
+
+                <div class="author-info">
+                    <p>
+                    {% if writer and writer != "" %}
+                        {% if writer == illustrator and illustrator == colorist %}
+                            <strong>{{ writer }}</strong> (Scénariste, Dessinateur, Couleurs),
+                        {% elif writer == illustrator %}
+                            <strong>{{ writer }}</strong> (Scénariste, Dessinateur),
+                        {% elif writer == colorist %}
+                            <strong>{{ writer }}</strong> (Scénariste, Couleurs),
+                        {% else %}
+                            <strong>{{ writer }}</strong> (Scénariste),
+                        {% endif %}
+                    {% endif %}
+
+                    {% if illustrator and illustrator != "" %}
+                        {% if illustrator != writer and illustrator == colorist %}
+                            <strong>{{ illustrator }}</strong> (Dessinateur, Couleurs),
+                        {% elif illustrator != writer and illustrator != colorist %}
+                            <strong>{{ illustrator }}</strong> (Dessinateur),
+                        {% endif %}
+                    {% endif %}
+
+                    {% if colorist and colorist != "" and colorist != writer and colorist != illustrator%}
+                        <strong>{{ colorist }}</strong> (Couleurs),
+                    {% endif %}
+
+                    {% if publisher and publisher != "" %}
+                        <strong>{{ publisher }}</strong> (Éditeur)
+                    {% endif %}
+                    </p>
+                </div>
+
+                <div class="edition-info">
+                    {% if edition and edition != "" %}
+                        <p>{{ edition }}</p>
+                    {% endif %}
+                </div>
+
+                <div class="achat-info">
+                    <p>Acheté
+                        {% if place_of_purchase and place_of_purchase != "" %}
+                            à <strong>{{ place_of_purchase }}</strong>
+                        {% endif %}
+                        {% if year_of_purchase and year_of_purchase != "" %}
+                            en {{ year_of_purchase }}
+                        {% endif %}
+                    </p>
+                </div>
+
+                <div class="synopsis">
+                    <h4>Synopsis</h4>
+                    {% autoescape off %}
+                        <p>{{ synopsis }}</p>
+                    {% endautoescape %}
+                </div>
+            </section>
+        </div>
+    </div>
+
+    {% if nb_dedicace > 0 %}
+         <section>
+            <header>
+                <h2>{{ nb_dedicace }} dédicaces</h2>
             </header>
 
-                <table aria-hidden="true" class="info-bd">
-                    <tr>
-                        <td><strong>ISBN</strong> : {{ isbn }}</td>
-                        <td><strong>Scénariste</strong> : {{ writer }}</td>
-                        <td><strong>Dessinateur</strong> : {{ illustrator }}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Couleur</strong> : {{ colorist }}</td>
-                        <td><strong>Éditeur</strong> : {{ publisher }}</td>
-                        <td><strong>Date de parution</strong> : {{ publication_date }}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Édition</strong> : {{ edition }}</td>
-                        <td><strong>Nombre de planches</strong> : {{ number_of_pages }}</td>
-                        <td><strong>Cote</strong> : {% if rating and rating != "" %}{{ rating }}€{% endif %}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Prix d'achat</strong> : {% if purchase_price and purchase_price != "" %}{{ purchase_price }}€{% endif %}</td>
-                        <td><strong>Année d'achat</strong> : {{ year_of_purchase }}</td>
-                        <td><strong>Lieu d'achat</strong> : {{ place_of_purchase }}</td>
-                    </tr>
-                </table>
+            <div class="image_group carousel-container">
+                <div class="prev-carousel" id="prev-dedicace">←</div>
+                <div class="carousel carousel-dedicace">
 
-
+                {% for dedicace in dedicaces %}
+                    <img src="/media/main/images/dedicaces/{{ isbn }}/{{ dedicace }}"
+                         alt="{{ isbn }}"
+                         data-full="/media/main/images/dedicaces/{{ isbn }}/{{ dedicace }}"
+                         data-title="<h2>{{ dedicace }}</h2>"
+                         data-info="<p></p>"
+                         class="photo_dedicace thumbnail"
+                    />
+                {% endfor %}
+                </div>
+                <div class="next-carousel" id="next-dedicace">→</div>
+            </div>
         </section>
+    {% endif %}
 
-</div>
-
-<div class="col-12">
-
-    <!-- Main Content -->
+    {% if nb_exlibris > 0 %}
         <section>
             <header>
-                <h2>Synopsis</h2>
+                <h2>{{ nb_exlibris }} ex libris</h2>
             </header>
-
-                {% autoescape off %}
-                    {{ synopsis }}
-                {% endautoescape %}
-
+            <div class="image_group carousel-container">
+                <div class="prev-carousel" id="prev-exlibris">←</div>
+                <div class="carousel carousel-exlibris">
+                {% for exlibris in ex_libris %}
+                    <img src="/media/main/images/exlibris/{{ isbn }}/{{ exlibris }}"
+                         alt="{{ isbn }}"
+                         data-full="/media/main/images/exlibris/{{ isbn }}/{{ exlibris }}"
+                         data-title="<h2>{{ exlibris }}</h2>"
+                         data-info="<p></p>"
+                         class="photo_exlibris thumbnail"
+                    />
+                {% endfor %}
+                </div>
+                <div class="next-carousel" id="next-exlibris">→</div>
+            </div>
         </section>
-</div>
+    {% endif %}
 
-{% if nb_dedicace > 0 %}
-    <div class="col-12">
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <div id="image-title"></div>
+            <div id="image-info"></div>
 
-        <!-- Main Content -->
-            <section>
-                <header>
-                    <h2>Dédicaces</h2>
-                </header>
+            <img id="popup-img" src="" alt="Couverture"/>
 
-                <div class="image_group cover">
-                    {% for dedicace in dedicaces %}
-                        <img src="/media/main/images/dedicaces/{{ isbn }}/{{ dedicace }}"
-                             alt="{{ isbn }}"
-                             data-full="/media/main/images/dedicaces/{{ isbn }}/{{ dedicace }}"
-                             data-title="<h2>{{ dedicace }}</h2>"
-                             data-info="<p></p>"
-                             class="photo_dedicace"
-                        />
-                    {% endfor %}
-                </div>
-            </section>
+            <button class="popup_button close" id="close-popup">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <path d="M18 6L12 12L6 6L4.59 7.41L10.59 13.41L4.59 19.41L6 21L12 15L18 21L19.41 19.41L13.41 13.41L19.41 7.41L18 6Z" />
+                </svg>
+            </button>
+
+            <button class="popup_button prev" id="prev-image">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+            </button>
+
+            <button class="popup_button next" id="next-image">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+                </svg>
+            </button>
+
+        </div>
     </div>
-{% endif %}
-
-{% if nb_exlibris > 0 %}
-    <div class="col-12">
-
-        <!-- Main Content -->
-            <section>
-                <header>
-                    <h2>Ex Libris</h2>
-                </header>
-                <div class="image_group" id="exlibris-group">
-                    {% for exlibris in ex_libris %}
-                        <img src="/media/main/images/exlibris/{{ isbn }}/{{ exlibris }}"
-                             alt="{{ isbn }}"
-                             data-full="/media/main/images/exlibris/{{ isbn }}/{{ exlibris }}"
-                             data-title="<h2>{{ exlibris }}</h2>"
-                             data-info="<p></p>"
-                             class="photo_exlibris"
-                        />
-
-                    {% endfor %}
-                </div>
-
-            </section>
-    </div>
-{% endif %}
-
-<div class="popup" id="popup">
-    <div class="popup-content">
-        <div id="image-title"></div>
-        <div id="image-info"></div>
-
-        <img id="popup-img" src="" alt="Couverture"/>
-        <button class="popup_button close" id="close-popup">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
-                <path d="M18 6L12 12L6 6L4.59 7.41L10.59 13.41L4.59 19.41L6 21L12 15L18 21L19.41 19.41L13.41 13.41L19.41 7.41L18 6Z" />
-            </svg>
-        </button>
-        <button class="popup_button prev" id="prev-image">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
-                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-            </svg>
-        </button>
-        <button class="popup_button next" id="next-image">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
-                <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
-            </svg>
-        </button>
-    </div>
-</div>
 
 {% endblock %}
 
 {% block javascript %}
-    <script src="{% static 'main/assets/image_popup.js' %}"></script>
+    <script src="{% static 'main/scripts/image_popup.js' %}"></script>
+    <script>
+        function useCarousel(classCarousel, idNext, idPrev, classImages) {
+
+            const carousel = document.querySelector(classCarousel);
+            const next = document.querySelector(idNext);
+            const prev = document.querySelector(idPrev);
+            const images = document.querySelectorAll(classImages);
+
+            function hideItem(item) {
+                item.style.visibility = "hidden";
+                item.style.display = "none";
+            }
+            function showItem(item) {
+                item.style.visibility = "visible";
+                item.style.display = "flex";
+            }
+
+            if (images.length > 1) {
+                showItem(next);
+                showItem(prev);
+            } else {
+                hideItem(next);
+                hideItem(prev);
+            }
+
+            let currentIndexImage = 0; // Index de l'image affichée
+
+            // Fonction pour centrer l'image actuelle
+            function centerImage(index) {
+                if (images.length === 0) return;
+                const image = images[index];
+                const carouselWidth = carousel.clientWidth;
+                const imageWidth = image.clientWidth;
+                const imageOffsetLeft = image.offsetLeft;
+
+                // Calcul pour centrer l'image
+                const scrollPosition = imageOffsetLeft - (carouselWidth / 2) + (imageWidth / 2);
+                carousel.scrollTo({ left: scrollPosition, behavior: "smooth" });
+            }
+
+            // Fonction pour aller à l'image suivante
+            function nextImage() {
+                if (currentIndexImage < images.length - 1) {
+                    currentIndexImage++;
+                } else {
+                    currentIndexImage = 0;
+                }
+                centerImage(currentIndexImage);
+                console.log(currentIndexImage)
+            }
+
+            function prevImage() {
+                if (currentIndexImage > 0) {
+                    currentIndexImage--;
+                } else {
+                    currentIndexImage = images.length - 1;
+                }
+                centerImage(currentIndexImage);
+                console.log(currentIndexImage)
+            }
+
+            // Ajout des événements sur les boutons
+            next.addEventListener("click", nextImage);
+            prev.addEventListener("click", prevImage);
+
+            function getOffsetLeftFromParent(element, parent) {
+                const elementRect = element.getBoundingClientRect();
+                const parentRect = parent.getBoundingClientRect();
+                return elementRect.left - parentRect.left;
+            }
+
+            carousel.addEventListener("scroll", () => {
+                let closestIndex = 0;
+                let minDifference = Infinity;
+
+                images.forEach((img, index) => {
+                    const diff = carousel.offsetWidth/2 - (getOffsetLeftFromParent(img, carousel) + img.width/2);
+                    if (Math.abs(diff) < minDifference) {
+                        closestIndex = index;
+                        minDifference = diff;
+                    }
+                });
+                if (Math.abs(minDifference) > 5) {
+                    if (closestIndex === 1) {
+                        closestIndex = 0;
+                    } else if (closestIndex === images.length - 2) {
+                        closestIndex = images.length -1
+                    }
+                }
+                currentIndexImage = closestIndex;
+            });
+        }
+
+        useCarousel(".carousel-dedicace", "#next-dedicace", "#prev-dedicace", ".photo_dedicace");
+        useCarousel(".carousel-exlibris", "#next-exlibris", "#prev-exlibris", ".photo_exlibris");
+
+    </script>
 {% endblock %}

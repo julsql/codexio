@@ -63,7 +63,7 @@
                     <div class="image_group">
                     {% for i in bd.signes_copy_range %}
                             <img src="/media/main/images/dedicaces/{{ bd.isbn }}/{{ i }}.jpeg"
-                                 alt="Dédicace de l'album {{ bd.isbn }}"
+                                 alt="{{ bd.isbn }}"
                                  data-full="/media/main/images/dedicaces/{{ bd.isbn }}/{{ i }}.jpeg"
                                  data-title="<h2>{{ bd.series }}</h2>"
                                  data-info="<p>{{ bd.album }}</p>"
@@ -122,7 +122,7 @@
                 <div class="image_group">
                     {% for i in bd.ex_libris_range %}
                         <img src="/media/main/images/exlibris/{{ bd.isbn }}/{{ i }}.jpeg"
-                             alt="Ex libris de l'album {{ bd.isbn }}"
+                             alt="{{ bd.isbn }}"
                              data-full="/media/main/images/exlibris/{{ bd.isbn }}/{{ i }}.jpeg"
                              data-title="<h2>{{ bd.series }}</h2>"
                              data-info="<p>{{ bd.album }}</p>"
@@ -164,7 +164,7 @@
 {% endblock %}
 
 {% block javascript %}
-    <script src="{% static 'main/assets/image_popup.js' %}"></script>
+    <script src="{% static 'main/scripts/image_popup.js' %}"></script>
     <script>
         const allDedicaces = document.getElementById("all_dedicaces");
         const dedicaces = document.getElementById("hideDedicace");
