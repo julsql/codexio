@@ -142,3 +142,26 @@ input:is([type="submit"]) {
     background-color: transparent;
     box-sizing: border-box;
 }
+
+#titleBar, #navPanel {
+    display: none;
+}
+
+@media (max-width: 800px) {
+    #content h2 {
+        font-size: 1.20em;
+        margin: 0 0 0 0;
+    }
+
+    #content h3 {
+        font-size: 1em;
+    }
+
+    #content h4 {
+        font-size: 1em;
+    }
+
+    #content header {
+        margin: 0 0 20px 0;
+    }
+}

@@ -19,3 +19,10 @@
 #current-page {
     font-weight: bold;
 }
+
+@media (max-width: 800px) {
+    .pagination {
+        padding: 0;
+        width: auto;
+    }
+}

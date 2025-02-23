@@ -71,33 +71,33 @@
                 </div>
 
                 <div class="author-info">
-                    <p>
+
                     {% if writer and writer != "" %}
                         {% if writer == illustrator and illustrator == colorist %}
-                            <strong>{{ writer }}</strong> (Scénariste, Dessinateur, Couleurs),
+                            <p><strong>{{ writer }}</strong> (Scénariste, Dessinateur, Couleurs),</p>
                         {% elif writer == illustrator %}
-                            <strong>{{ writer }}</strong> (Scénariste, Dessinateur),
+                            <p><strong>{{ writer }}</strong> (Scénariste, Dessinateur),</p>
                         {% elif writer == colorist %}
-                            <strong>{{ writer }}</strong> (Scénariste, Couleurs),
+                            <p><strong>{{ writer }}</strong> (Scénariste, Couleurs),</p>
                         {% else %}
-                            <strong>{{ writer }}</strong> (Scénariste),
+                            <p><strong>{{ writer }}</strong> (Scénariste),</p>
                         {% endif %}
                     {% endif %}
 
                     {% if illustrator and illustrator != "" %}
                         {% if illustrator != writer and illustrator == colorist %}
-                            <strong>{{ illustrator }}</strong> (Dessinateur, Couleurs),
+                            <p><strong>{{ illustrator }}</strong> (Dessinateur, Couleurs),</p>
                         {% elif illustrator != writer and illustrator != colorist %}
-                            <strong>{{ illustrator }}</strong> (Dessinateur),
+                            <p><strong>{{ illustrator }}</strong> (Dessinateur),</p>
                         {% endif %}
                     {% endif %}
 
                     {% if colorist and colorist != "" and colorist != writer and colorist != illustrator%}
-                        <strong>{{ colorist }}</strong> (Couleurs),
+                        <p><strong>{{ colorist }}</strong> (Couleurs),</p>
                     {% endif %}
 
                     {% if publisher and publisher != "" %}
-                        <strong>{{ publisher }}</strong> (Éditeur)
+                        <p><strong>{{ publisher }}</strong> (Éditeur)</p>
                     {% endif %}
                     </p>
                 </div>
