@@ -8,6 +8,7 @@
 
 .additional-infos, .author-info, .edition-info, .achat-info {
     display: flex;
+    flex-wrap: wrap;
 }
 
 .additional-infos {

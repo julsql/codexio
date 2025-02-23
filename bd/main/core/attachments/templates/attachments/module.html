@@ -3,7 +3,9 @@
 
 {% block body %}
 
-<div class="col-12">
+    <button id="scrollTopBtn" class="scroll-top" onclick="scrollToTop()">&#x23F6;</button>
+
+    <div class="col-12">
 
     <section>
         <header>
@@ -14,6 +16,7 @@
     </section>
 
 <!-- Main Content -->
+
     <section id="dedicaces">
         <div class="title">
             <header>
@@ -26,11 +29,11 @@
 
         <div id="all_dedicaces">
             <div id="dedicace-pagination">
-                <div id="dedicace-first-page" class="pagination">Début</div>
-                <div id="dedicace-prev-page" class="pagination">Précédent</div>
+                <div id="dedicace-first-page" class="pagination">&lt;&lt;</div>
+                <div id="dedicace-prev-page" class="pagination">&lt;</div>
                 <span id="dedicace-current-page"></span>
-                <div id="dedicace-next-page" class="pagination">Suivant</div>
-                <div id="dedicace-last-page" class="pagination">Fin</div>
+                <div id="dedicace-next-page" class="pagination">&gt;</div>
+                <div id="dedicace-last-page" class="pagination">&gt;&gt;</div>
             </div>
             {% for bd in signed_copies %}
 
@@ -60,7 +63,7 @@
                     </header>
 
                     <div class="image_group carousel-container">
-                        <div class="prev-carousel" id="prev-dedicace-{{ bd.isbn }}">←</div>
+                        <div class="prev-carousel" id="prev-dedicace-{{ bd.isbn }}">&lt;</div>
                         <div class="carousel carousel-dedicace-{{ bd.isbn }}">
                             {% for i in bd.signes_copy_range %}
                                     <img src="/media/main/images/dedicaces/{{ bd.isbn }}/{{ i }}.jpeg"
@@ -72,7 +75,7 @@
                                     />
                             {% endfor %}
                         </div>
-                        <div class="next-carousel" id="next-dedicace-{{ bd.isbn }}">→</div>
+                        <div class="next-carousel" id="next-dedicace-{{ bd.isbn }}">&gt;</div>
                     </div>
                 </section>
             {% endfor %}
@@ -91,11 +94,11 @@
 
     <div id="all_exlibris">
         <div id="exlibris-pagination">
-            <div id="exlibris-first-page" class="pagination">Début</div>
-            <div id="exlibris-prev-page" class="pagination">Précédent</div>
+            <div id="exlibris-first-page" class="pagination">&lt;&lt;</div>
+            <div id="exlibris-prev-page" class="pagination">&lt;</div>
             <span id="exlibris-current-page"></span>
-            <div id="exlibris-next-page" class="pagination">Suivant</div>
-            <div id="exlibris-last-page" class="pagination">Fin</div>
+            <div id="exlibris-next-page" class="pagination">&gt;</div>
+            <div id="exlibris-last-page" class="pagination">&gt;&gt;</div>
         </div>
         {% for bd in exlibris %}
 
@@ -124,7 +127,7 @@
                     <p>{{bd.ex_libris}} ex libris</p>
                 </header>
                 <div class="image_group carousel-container">
-                    <div class="prev-carousel" id="prev-exlibris-{{ bd.isbn }}">←</div>
+                    <div class="prev-carousel" id="prev-exlibris-{{ bd.isbn }}">&lt;</div>
                     <div class="carousel carousel-exlibris-{{ bd.isbn }}">
                     {% for i in bd.ex_libris_range %}
                         <img src="/media/main/images/exlibris/{{ bd.isbn }}/{{ i }}.jpeg"
@@ -136,7 +139,7 @@
                         />
                     {% endfor %}
                     </div>
-                    <div class="next-carousel" id="next-exlibris-{{ bd.isbn }}">→</div>
+                    <div class="next-carousel" id="next-exlibris-{{ bd.isbn }}">&gt;</div>
                 </div>
             </section>
         {% endfor %}
