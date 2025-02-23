@@ -1,0 +1,249 @@
+[data-see="false"] {
+    display: none;
+}
+
+[data-see="true"] {
+    display: block;
+}
+
+
+#see-more {
+    cursor: pointer;
+    text-align: end;
+    margin: 10px 0;
+    color: #999;
+    font-size: 14px;
+}
+
+select {
+    box-sizing: border-box;
+    background-color: canvas;
+    align-items: center;
+    white-space-collapse: preserve;
+    text-wrap-mode: nowrap;
+    -webkit-rtl-ordering: logical;
+    cursor: default;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+}
+
+.errorlist {
+    list-style-type: none;
+}
+
+.errorlist li {
+    font-size: 12px;
+    font-style: italic;
+}
+
+.row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.input-container input,
+.input-container select {
+    width: 100%; /* Prend toute la largeur disponible */
+    box-sizing: border-box; /* Empêche le débordement */
+}
+
+.mb-4 {
+    margin-bottom: 0!important;
+}
+
+button, input, optgroup, select, textarea {
+    font-size: inherit;
+}
+
+th {
+    text-align: inherit;
+}
+
+@media (min-width: 800px) {
+    .col-md-4 {
+        flex: 0 0 auto;
+        width: 32%;
+        margin-top: 10px;
+    }
+}
+
+.container .formulaire .form{
+    position: absolute;
+    background-color: #fff;
+    transition: 0.3s ease;
+}
+.container .formulaire .formulaire.second{
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(100%);
+}
+.formulaire.secActive .formulaire.second{
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+}
+.formulaire.secActive .formulaire.first{
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-100%);
+}
+.container .formulaire .title{
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 6px 0 8px 0;
+    color: #333;
+}
+.container .formulaire .fields{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.formulaire .fields input{
+    display: flex;
+    width: calc(100% / 3 - 15px);
+    flex-direction: column;
+    margin: 4px 0;
+}
+input label {
+    font-size: 10px;
+    font-weight: 500;
+    color: #2e2e2e;
+}
+
+.formulaire input, .formulaire select {
+    outline: none;
+    font-size: 12px;
+    font-weight: 400;
+    color: #333;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 0 5px lightgrey;
+    padding: 0 5px;
+    height: 30px;
+    width: 100%;
+    margin: 3px 0;
+}
+.formulaire input :focus,
+.formulaire input select:focus{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.13);
+}
+.formulaire input select,
+.formulaire input[type="date"]{
+    color: #707070;
+}
+.formulaire input[type="date"]:valid{
+    color: #333;
+}
+.container .formulaire button, .backBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    max-width: 150px;
+    width: 100%;
+    border: none;
+    outline: none;
+    color: #fff;
+    border-radius: 5px;
+    margin-right: 0;
+    margin-left: auto;
+    background-color: rgb(55, 55, 55);
+    transition: all 0.3s linear;
+    cursor: pointer;
+}
+.container .formulaire .btnText{
+    font-size: 12px;
+    font-weight: 400;
+}
+.container .formulaire button:hover{
+    background-color: black;
+}
+.formulaire button i,
+.formulaire .backBtn i{
+    margin: 0 6px;
+}
+.formulaire .backBtn i{
+    transform: rotate(180deg);
+}
+.formulaire .buttons{
+    display: flex;
+    align-items: center;
+}
+.formulaire .buttons button , .backBtn{
+    margin-right: 14px;
+}
+.formulaire p {
+    margin-bottom: 0;
+}
+
+@media (max-width: 750px) {
+    .container .formulaire{
+        overflow-y: scroll;
+    }
+    .container .formulaire::-webkit-scrollbar{
+        display: none;
+    }
+    .formulaire .fields input{
+        width: calc(100% / 2 - 15px);
+    }
+}
+@media (max-width: 300px) {
+    .formulaire .fields input{
+        width: 100%;
+    }
+}
+
+.input-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.input-container input[type="date"] {
+    padding-right: 30px;
+    font-size: 12px;
+}
+
+.date {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.input-container .clear-btn {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #999;
+    font-size: 14px;
+    display: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.input-container .clear-btn:hover {
+    color: #333;
+}
+
+.clear-all {
+    text-align: end;
+    cursor: pointer;
+    color: #999;
+    font-size: 14px;
+    transition: color 0.2s ease-in-out;
+}
+
+.clear-all:hover {
+    color: #333;
+}

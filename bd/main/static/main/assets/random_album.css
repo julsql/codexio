@@ -1,0 +1,35 @@
+.cover {
+    display: flex;
+}
+
+.cover img {
+    margin: auto;
+    max-width: 220px;
+    width: 100%;
+}
+
+.album_description {
+    font-weight: 200;
+    line-height: 1.25em;
+    margin: 1em 0 0 0;
+    text-align: center;
+}
+
+.icon {
+    height: 20px;
+    width: 20px;
+    margin-right: 5px;
+}
+
+.text_icon {
+    align-items: center;
+    display: flex;
+    font-weight: 200;
+    margin-right: 10px;
+}
+
+#infos {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}

@@ -22,7 +22,6 @@ class AdvancedSearchConnexion(AdvancedSearchRepository, ABC):
             'publisher__icontains': 'publisher',
             'edition__icontains': 'edition',
             'year_of_purchase': 'year_of_purchase',
-            'publication_date': 'publication_date',
             'deluxe_edition': 'deluxe_edition',
         }
 
@@ -36,6 +35,16 @@ class AdvancedSearchConnexion(AdvancedSearchRepository, ABC):
         # Filtrer par synopsis
         if synopsis := data.get('synopsis'):
             queryset = queryset.filter(synopsis__icontains=" ".join(synopsis.split()))
+
+        start_date = data.get("start_date")
+        end_date = data.get("end_date")
+
+        if start_date and end_date:
+            queryset = queryset.filter(publication_date__range=[start_date, end_date])
+        elif start_date:
+            queryset = queryset.filter(publication_date__gte=start_date)
+        elif end_date:
+            queryset = queryset.filter(publication_date__lte=end_date)
         return queryset
 
     def order_by(self, queryset: QuerySet[BD], criteria: bool, croissant: bool) -> QuerySet[BD]:

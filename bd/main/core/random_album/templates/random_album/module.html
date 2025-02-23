@@ -1,3 +1,5 @@
+{% load static %}
+
 <section>
     <header>
         {% if random_album.series and random_album.series != "" %}
@@ -24,7 +26,6 @@
     <div class="image_group cover">
         <img src="{{ random_album.image }}"
              alt="Couverture"
-             width="220"
              data-full="{{ random_album.image }}"
              data-title="<h2>{{ random_album.series }}</h2>"
              data-info="<p>{{ random_album.album }}</p>"
@@ -32,32 +33,56 @@
         />
     </div>
 
-    <p>
-        Scénariste : {{ random_album.writer }}<br />
-        Dessinateur : {{ random_album.illustrator }}<br />
-        Date de parution : {{ random_album.publication_date }}<br />
-        {% if random_album.purchase_price and random_album.number_of_pages and random_album.purchase_price != "" and random_album.number_of_pages != "" %}
-            {{ random_album.purchase_price }}€ | {{ random_album.number_of_pages }} pages<br />
-        {% else %}
-            {% if random_album.purchase_price and random_album.purchase_price != "" %}
-                {{ random_album.purchase_price }}€<br />
+        <div class="album_description">
+            {% if random_album.writer == random_album.illustrator %}
+                {{ random_album.writer }} (Scénariste, Dessinateur)
+            {% else %}
+                {{ random_album.writer }} (Scénariste),</br>{{ random_album.illustrator }} (Dessinateur)
             {% endif %}
 
-            {% if random_album.number_of_pages and random_album.number_of_pages != "" %}
-                {{ random_album.number_of_pages }} pages<br />
-            {% endif %}
-        {% endif %}
+            <div id="infos">
 
-        {{ random_album.edition }}
-    </p>
-    <p>
-        {% autoescape off %}
-            {{ random_album.synopsis|truncatechars:200 }}
-        {% endautoescape %}
-    </p>
-    <p>
-        <a style="color:#FFFFFF;" href="{% url 'pagebd' random_album.isbn %}" class="button-large">Voir plus</a>
-    </p>
+                <div class="text_icon" title="Date de parution">
+                    <img class="icon" src="{% static 'main/icons/date.svg' %}" alt="date">
+                    <p>{{ random_album.publication_date|date:"d/m/Y" }}</p>
+                </div>
+
+                {% if random_album.purchase_price and random_album.number_of_pages and random_album.purchase_price != "" and random_album.number_of_pages != "" %}
+                    <div class="text_icon" title="Prix">
+                    <img class="icon" src="{% static 'main/icons/price.svg' %}" alt="price">
+                    {{ random_album.purchase_price }}€
+                    </div>
+                    <div class="text_icon" title="Nombre de planches">
+                    <img class="icon" src="{% static 'main/icons/pages.svg' %}" alt="pages">
+                    {{ random_album.number_of_pages }}
+                    </div>
+                    {% else %}
+                        {% if random_album.purchase_price and random_album.purchase_price != "" %}
+                            <div class="text_icon" title="Prix>
+                            <img class="icon" src="{% static 'main/icons/price.svg' %}" alt="price">
+                            {{ random_album.purchase_price }}€
+                            </div>
+                        {% endif %}
+
+                        {% if random_album.number_of_pages and random_album.number_of_pages != "" %}
+                            <div class="text_icon" title="Nombre de planches">
+                            <img class="icon" src="{% static 'main/icons/pages.svg' %}" alt="pages">
+                            {{ random_album.number_of_pages }}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+            </div>
+        </div>
+        <div class="album_description">
+            {% autoescape off %}
+                {{ random_album.synopsis|truncatechars:300 }}
+            {% endautoescape %}
+        </div>
+    <div class="album_description">
+        <span class="button-large">
+            <a style="color:#FFFFFF;" href="{% url 'pagebd' random_album.isbn %}">Voir plus</a>
+        </span>
+    </divê>
 </section>
 
 <div class="popup" id="popup">

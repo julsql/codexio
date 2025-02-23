@@ -14,7 +14,6 @@
             <div class="image_group cover">
                 <img src="{{ image }}"
                      alt="Couverture"
-                     width="220"
                      data-full="{{ image }}"
                      data-title="<h2>{{ series }}</h2>"
                      data-info="<p>{{ album }}</p>"
@@ -110,7 +109,7 @@
                 <div class="image_group cover">
                     {% for dedicace in dedicaces %}
                         <img src="/media/main/images/dedicaces/{{ isbn }}/{{ dedicace }}"
-                             alt="Couverture de l'album {{ isbn }}"
+                             alt="{{ isbn }}"
                              data-full="/media/main/images/dedicaces/{{ isbn }}/{{ dedicace }}"
                              data-title="<h2>{{ dedicace }}</h2>"
                              data-info="<p></p>"
@@ -133,7 +132,7 @@
                 <div class="image_group" id="exlibris-group">
                     {% for exlibris in ex_libris %}
                         <img src="/media/main/images/exlibris/{{ isbn }}/{{ exlibris }}"
-                             alt="Couverture de l'album {{ isbn }}"
+                             alt="{{ isbn }}"
                              data-full="/media/main/images/exlibris/{{ isbn }}/{{ exlibris }}"
                              data-title="<h2>{{ exlibris }}</h2>"
                              data-info="<p></p>"
