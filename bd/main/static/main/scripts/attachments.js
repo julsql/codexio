@@ -15,3 +15,18 @@ function showSection(sectionId, buttonId) {
         isVisible = !isVisible;
     });
 }
+
+// Affiche le bouton si on scroll vers le bas
+window.onscroll = function () {
+    let scrollTopBtn = document.getElementById("scrollTopBtn");
+    if (document.documentElement.scrollTop > 300) {
+        scrollTopBtn.style.display = "block";
+    } else {
+        scrollTopBtn.style.display = "none";
+    }
+};
+
+// Fonction pour remonter en haut
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}

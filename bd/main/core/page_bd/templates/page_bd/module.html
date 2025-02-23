@@ -136,7 +136,7 @@
             </header>
 
             <div class="image_group carousel-container">
-                <div class="prev-carousel" id="prev-dedicace">←</div>
+                <div class="prev-carousel" id="prev-dedicace">&lt;</div>
                 <div class="carousel carousel-dedicace">
 
                 {% for dedicace in dedicaces %}
@@ -149,7 +149,7 @@
                     />
                 {% endfor %}
                 </div>
-                <div class="next-carousel" id="next-dedicace">→</div>
+                <div class="next-carousel" id="next-dedicace">&gt;</div>
             </div>
         </section>
     {% endif %}
@@ -160,7 +160,7 @@
                 <h2>{{ nb_exlibris }} ex libris</h2>
             </header>
             <div class="image_group carousel-container">
-                <div class="prev-carousel" id="prev-exlibris">←</div>
+                <div class="prev-carousel" id="prev-exlibris">&lt;</div>
                 <div class="carousel carousel-exlibris">
                 {% for exlibris in ex_libris %}
                     <img src="/media/main/images/exlibris/{{ isbn }}/{{ exlibris }}"
@@ -172,7 +172,7 @@
                     />
                 {% endfor %}
                 </div>
-                <div class="next-carousel" id="next-exlibris">→</div>
+                <div class="next-carousel" id="next-exlibris">&gt;</div>
             </div>
         </section>
     {% endif %}
