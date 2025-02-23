@@ -44,4 +44,7 @@
 {% endblock %}
 {% block javascript %}
     <script src="{% static 'main/scripts/pagination.js' %}"></script>
+    <script>
+        paginate("first-page", "prev-page", "current-page", "next-page", "last-page", ".pagination-item");
+    </script>
 {% endblock %}

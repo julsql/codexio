@@ -21,7 +21,7 @@
                 <h3>Toutes les dédicaces</h3>
             </header>
 
-            <div id="hideDedicace">Afficher</div>
+            <div class="hide" id="hide_dedicace">Afficher</div>
         </div>
 
         <div id="all_dedicaces">
@@ -32,7 +32,6 @@
                 <div id="dedicace-next-page" class="pagination">Suivant</div>
                 <div id="dedicace-last-page" class="pagination">Fin</div>
             </div>
-
             {% for bd in signed_copies %}
 
                 <section id="dedicaces_{{ bd.isbn }}" class="pagination-item-dedicace sub-section">
@@ -60,19 +59,24 @@
                         <p>{{ bd.signed_copy }} dédicace{% if bd.signed_copy > 1 %}s{% endif %}</p>
                     </header>
 
-                    <div class="image_group">
-                    {% for i in bd.signes_copy_range %}
-                            <img src="/media/main/images/dedicaces/{{ bd.isbn }}/{{ i }}.jpeg"
-                                 alt="{{ bd.isbn }}"
-                                 data-full="/media/main/images/dedicaces/{{ bd.isbn }}/{{ i }}.jpeg"
-                                 data-title="<h2>{{ bd.series }}</h2>"
-                                 data-info="<p>{{ bd.album }}</p>"
-                                 class="photo_dedicace"
-                            />
-                        {% endfor %}
+                    <div class="image_group carousel-container">
+                        <div class="prev-carousel" id="prev-dedicace-{{ bd.isbn }}">←</div>
+                        <div class="carousel carousel-dedicace-{{ bd.isbn }}">
+                            {% for i in bd.signes_copy_range %}
+                                    <img src="/media/main/images/dedicaces/{{ bd.isbn }}/{{ i }}.jpeg"
+                                         alt="{{ bd.isbn }}"
+                                         data-full="/media/main/images/dedicaces/{{ bd.isbn }}/{{ i }}.jpeg"
+                                         data-title="<h2>{{ bd.series }}</h2>"
+                                         data-info="<p>{{ bd.album }}</p>"
+                                         class="photo-dedicace-{{ bd.isbn }}"
+                                    />
+                            {% endfor %}
+                        </div>
+                        <div class="next-carousel" id="next-dedicace-{{ bd.isbn }}">→</div>
                     </div>
                 </section>
             {% endfor %}
+
         </div>
     </section>
 
@@ -82,7 +86,7 @@
                 <h2>Les Ex Libris</h2>
                 <h3>Tous les ex libris</h3>
             </header>
-            <div id="hideExlibris">Afficher</div>
+            <div class="hide" id="hide_exlibris">Afficher</div>
         </div>
 
     <div id="all_exlibris">
@@ -119,16 +123,20 @@
 
                     <p>{{bd.ex_libris}} ex libris</p>
                 </header>
-                <div class="image_group">
+                <div class="image_group carousel-container">
+                    <div class="prev-carousel" id="prev-exlibris-{{ bd.isbn }}">←</div>
+                    <div class="carousel carousel-exlibris-{{ bd.isbn }}">
                     {% for i in bd.ex_libris_range %}
                         <img src="/media/main/images/exlibris/{{ bd.isbn }}/{{ i }}.jpeg"
                              alt="{{ bd.isbn }}"
                              data-full="/media/main/images/exlibris/{{ bd.isbn }}/{{ i }}.jpeg"
                              data-title="<h2>{{ bd.series }}</h2>"
                              data-info="<p>{{ bd.album }}</p>"
-                             class="photo_exlibris"
+                             class="photo-exlibris-{{ bd.isbn }}"
                         />
                     {% endfor %}
+                    </div>
+                    <div class="next-carousel" id="next-exlibris-{{ bd.isbn }}">→</div>
                 </div>
             </section>
         {% endfor %}
@@ -165,198 +173,23 @@
 
 {% block javascript %}
     <script src="{% static 'main/scripts/image_popup.js' %}"></script>
-    <script>
-        const allDedicaces = document.getElementById("all_dedicaces");
-        const dedicaces = document.getElementById("hideDedicace");
-        let dedicaceVisible = false;
-        dedicaces.addEventListener("click", function () {
-                if (dedicaceVisible) {
-                    allDedicaces.style.visibility = "hidden";
-                    allDedicaces.style.display = "none";
-                    dedicaces.textContent = "Afficher";
-                } else {
-                    allDedicaces.style.visibility = "visible";
-                    allDedicaces.style.display = "block";
-                    dedicaces.textContent = "Masquer";
-                }
-                dedicaceVisible = !dedicaceVisible;
-        });
-
-        const allExlibris = document.getElementById("all_exlibris");
-        const exlibris = document.getElementById("hideExlibris");
-        let exlibrisVisible = false;
-        exlibris.addEventListener("click", function () {
-            if (exlibrisVisible) {
-                allExlibris.style.visibility = "hidden";
-                allExlibris.style.display = "none";
-                exlibris.textContent = "Afficher";
-            } else {
-                allExlibris.style.visibility = "visible";
-                allExlibris.style.display = "block";
-                exlibris.textContent = "Masquer";
-            }
-            exlibrisVisible = !exlibrisVisible;
-        });
-    </script>
-     <script>
-            const firstPage = document.getElementById("dedicace-first-page");
-            const prevPage = document.getElementById("dedicace-prev-page");
-            const currentPage = document.getElementById("dedicace-current-page");
-            const nextPage = document.getElementById("dedicace-next-page");
-            const lastPage = document.getElementById("dedicace-last-page");
-
-            firstPage.addEventListener("selectstart", function (e) {e.preventDefault();});
-            prevPage.addEventListener("selectstart", function (e) {e.preventDefault();});
-            currentPage.addEventListener("selectstart", function (e) {e.preventDefault();});
-            nextPage.addEventListener("selectstart", function (e) {e.preventDefault();});
-            lastPage.addEventListener("selectstart", function (e) {e.preventDefault();});
-
-            const paginationItems = document.querySelectorAll(".pagination-item-dedicace");
-            const itemsPerPage = 20;
-            const nbPage = Math.ceil(paginationItems.length / itemsPerPage);
-            let currentPageInt = 1;
-
-            function displayPage(pageNumber) {
-                const startIndex = (pageNumber - 1) * itemsPerPage;
-                const endIndex = startIndex + itemsPerPage;
-
-                paginationItems.forEach((item, index) => {
-                    if (index >= startIndex && index < endIndex) {
-                        item.style.visibility = "visible";
-                        item.style.display = "block";
-                    } else {
-                        item.style.visibility = "hidden";
-                        item.style.display = "none";
-                    }
-                });
-                currentPage.textContent = pageNumber + "/" + nbPage
-                if (currentPageInt === 1) {
-                    firstPage.style.visibility = "hidden"
-                }
-                else {
-                    firstPage.style.visibility = "visible"
-                }
-                if (currentPageInt === nbPage) {
-                    lastPage.style.visibility = "hidden"
-                }
-                else {
-                    lastPage.style.visibility = "visible"
-                }
-
-            }
-            prevPage.addEventListener("click", function () {
-                if (currentPageInt > 1) {
-                    currentPageInt--;
-                    displayPage(currentPageInt);
-                }
-            });
-
-            nextPage.addEventListener("click", function () {
-
-                if (currentPageInt < nbPage) {
-                    currentPageInt++;
-                    displayPage(currentPageInt);
-                }
-            });
-
-            firstPage.addEventListener("click", function () {
-
-                if (currentPageInt > 1) {
-                    currentPageInt = 1;
-                    displayPage(currentPageInt);
-                }
-            });
-
-            lastPage.addEventListener("click", function () {
-
-                if (currentPageInt < nbPage) {
-                    currentPageInt = nbPage;
-                    displayPage(currentPageInt);
-                }
-            });
-
-            displayPage(currentPageInt);
-
-        </script>
+    <script src="{% static 'main/scripts/attachments.js' %}"></script>
+    <script src="{% static 'main/scripts/pagination.js' %}"></script>
+    <script src="{% static 'main/scripts/carousel.js' %}"></script>
 
     <script>
-        const firstPageExlibris = document.getElementById("exlibris-first-page");
-        const prevPageExlibris = document.getElementById("exlibris-prev-page");
-        const currentPageExlibris = document.getElementById("exlibris-current-page");
-        const nextPageExlibris = document.getElementById("exlibris-next-page");
-        const lastPageExlibris = document.getElementById("exlibris-last-page");
+        showSection("all_dedicaces", "hide_dedicace")
+        showSection("all_exlibris", "hide_exlibris")
 
-        firstPageExlibris.addEventListener("selectstart", function (e) {e.preventDefault();});
-        prevPageExlibris.addEventListener("selectstart", function (e) {e.preventDefault();});
-        currentPageExlibris.addEventListener("selectstart", function (e) {e.preventDefault();});
-        nextPageExlibris.addEventListener("selectstart", function (e) {e.preventDefault();});
-        lastPageExlibris.addEventListener("selectstart", function (e) {e.preventDefault();});
-
-        const paginationItemsExlibris = document.querySelectorAll(".pagination-item-exlibris");
-        const nbPageExlibris = Math.ceil(paginationItemsExlibris.length / itemsPerPage);
-        let currentPageIntExlibris = 1;
-
-        function displayPage(pageNumber) {
-            const startIndex = (pageNumber - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-
-            paginationItemsExlibris.forEach((item, index) => {
-                if (index >= startIndex && index < endIndex) {
-                    item.style.visibility = "visible";
-                    item.style.display = "block";
-                } else {
-                    item.style.visibility = "hidden";
-                    item.style.display = "none";
-                }
-            });
-            currentPageExlibris.textContent = pageNumber + "/" + nbPageExlibris
-            if (currentPageIntExlibris === 1) {
-                firstPageExlibris.style.visibility = "hidden"
-            }
-            else {
-                firstPageExlibris.style.visibility = "visible"
-            }
-            if (currentPageIntExlibris === nbPageExlibris) {
-                lastPageExlibris.style.visibility = "hidden"
-            }
-            else {
-                lastPageExlibris.style.visibility = "visible"
-            }
-
-        }
-        prevPageExlibris.addEventListener("click", function () {
-            if (currentPageIntExlibris > 1) {
-                currentPageIntExlibris--;
-                displayPage(currentPageIntExlibris);
-            }
-        });
-
-        nextPageExlibris.addEventListener("click", function () {
-
-            if (currentPageIntExlibris < nbPageExlibris) {
-                currentPageIntExlibris++;
-                displayPage(currentPageIntExlibris);
-            }
-        });
-
-        firstPageExlibris.addEventListener("click", function () {
-
-            if (currentPageIntExlibris > 1) {
-                currentPageIntExlibris = 1;
-                displayPage(currentPageIntExlibris);
-            }
-        });
-
-        lastPageExlibris.addEventListener("click", function () {
-
-            if (currentPageIntExlibris < nbPageExlibris) {
-                currentPageIntExlibris = nbPageExlibris;
-                displayPage(currentPageIntExlibris);
-            }
-        });
-
-        displayPage(currentPageIntExlibris);
-
+        paginate("exlibris-first-page", "exlibris-prev-page", "exlibris-current-page", "exlibris-next-page", "exlibris-last-page", ".pagination-item-exlibris");
+        paginate("dedicace-first-page", "dedicace-prev-page", "dedicace-current-page", "dedicace-next-page", "dedicace-last-page", ".pagination-item-dedicace");
+        {% for bd in signed_copies %}
+            useCarousel(".carousel-dedicace-{{ bd.isbn }}", "#next-dedicace-{{ bd.isbn }}", "#prev-dedicace-{{ bd.isbn }}", ".photo-dedicace-{{ bd.isbn }}");
+        {% endfor %}
+        
+        {% for bd in exlibris %}
+            useCarousel(".carousel-exlibris-{{ bd.isbn }}", "#next-exlibris-{{ bd.isbn }}", "#prev-exlibris-{{ bd.isbn }}", ".photo-exlibris-{{ bd.isbn }}");
+        {% endfor %}
     </script>
 
 {% endblock %}
