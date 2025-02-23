@@ -63,5 +63,27 @@ window.onload = function () {
         input.addEventListener('input', () => toggleClearBtn(input, clearBtn));
         clearBtn.addEventListener('click', () => clearInput(input, clearBtn));
     });
+
+    const inputDateStart = document.getElementById('id_start_date');
+    const inputDateEnd = document.getElementById('id_end_date');
+    const clearBtnDateStart = document.getElementById('clear-start-date');
+    const clearBtnDateEnd = document.getElementById('clear-end-date');
+
+    const inputDates = [inputDateStart, inputDateEnd];
+    const clearBtnDates = [clearBtnDateStart, clearBtnDateEnd];
+
+    inputDates.forEach((input, index) => {
+        const clearBtnDate = clearBtnDates[index];
+        input.addEventListener('input', () => {
+            clearBtnDate.style.display = 'inline-block';
+        });
+        if (clearBtnDate) {
+            clearBtnDate.addEventListener('click', () => {
+                input.value = '';
+                clearBtnDate.style.display = 'none';
+            });
+        }
+    })
+
 }
 
