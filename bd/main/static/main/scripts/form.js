@@ -2,15 +2,28 @@ const seeMoreButton = document.getElementById("see-more");
 const arrow = document.querySelector(".arrow");
 const upperLine = document.getElementById("upper-line");
 const lowerLine = document.getElementById("lower-line");
+
 let seeMore = false;
+
 seeMoreButton.addEventListener("click", (event) => {
     document.querySelectorAll('[data-see="false"]').forEach(function(element) {
-        element.style.display = seeMore ? "none": "table-cell";
+        console.log(window.innerWidth);
+        if (window.innerWidth < 800) {
+            element.style.display = seeMore ? "none" : "block";
+        } else {
+            element.style.display = seeMore ? "none" : "table-cell";
+        }
     });
     seeMore = !seeMore;
+
+    if (window.innerWidth < 800) {
+        upperLine.style.display = "none";
+        lowerLine.style.display = "none";
+    } else {
+        upperLine.style.display = seeMore ? "none" : "block";
+        lowerLine.style.display = seeMore ? "block" : "none";
+    }
     arrow.style.transform = seeMore ? "rotate(0deg)" : "rotate(180deg)";
-    upperLine.style.display = seeMore ? "none" : "block";
-    lowerLine.style.display = seeMore ? "block" : "none";
 });
 
 const inputs = document.querySelectorAll('.input-container input');
