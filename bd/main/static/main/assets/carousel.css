@@ -1,0 +1,47 @@
+
+.carousel-container {
+    display: flex;
+    justify-content: center;
+    overflow: hidden; /* Cache les images hors écran */
+    width: 100%;
+}
+
+.carousel {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 20px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel img {
+    scroll-snap-align: center;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+    max-height: 600px;
+}
+
+.carousel img:focus {
+    transform: scale(3);
+}
+
+.prev-carousel, .next-carousel {
+    visibility: hidden;
+    display: none;
+    cursor: pointer;
+    align-items: center;
+    height: auto;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}

@@ -46,8 +46,11 @@ class PageBdService:
     def page(self, isbn: int) -> dict[str, Any] | None:
         fields = [
             'isbn', 'album', 'number', 'series', 'writer', 'illustrator', 'colorist',
-            'publisher', 'publication_date', 'edition', 'number_of_pages', 'rating',
+            'publisher', 'publication_date', 'edition', 'number_of_pages',
             'purchase_price', 'year_of_purchase', 'place_of_purchase',
             'synopsis', 'image'
         ]
-        return BD.objects.filter(isbn=isbn).values(*fields).first()
+        result = BD.objects.filter(isbn=isbn).values(*fields).first()
+        if int(result['purchase_price']) == float(result['purchase_price']):
+            result['purchase_price'] = int(result['purchase_price'])
+        return result
