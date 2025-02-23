@@ -213,18 +213,20 @@ input label {
     margin-bottom: 0;
 }
 
-@media (max-width: 750px) {
-    .container .formulaire{
-        overflow-y: scroll;
+
+@media (max-width: 800px) {
+    .row {
+        display: block;
     }
-    .container .formulaire::-webkit-scrollbar{
+
+    .col-md-4 {
+        margin-top: 10px;
+    }
+
+    .see-more #upper-line {
         display: none;
     }
-    .formulaire .fields input{
-        width: calc(100% / 2 - 15px);
-    }
-}
-@media (max-width: 300px) {
+
     .formulaire .fields input{
         width: 100%;
     }

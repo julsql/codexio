@@ -9,3 +9,16 @@
     justify-content: space-between;
     gap: 20px;
 }
+
+@media screen and (max-width: 800px) {
+    #body {
+        display: block;
+    }
+
+    .col-70 {
+        width: 100%;
+    }
+    .col-30 {
+        width: 100%;
+    }
+}
