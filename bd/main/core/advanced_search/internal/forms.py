@@ -10,7 +10,7 @@ class RechercheForm(forms.Form):
     end_date = forms.DateField(required=False, widget=forms.DateInput(attrs={"type": "date", "data_see": "true"}))
 
     # Voir plus
-    year_of_purchase = forms.IntegerField(required=False, label="Année d'achat", widget=forms.TextInput(attrs={"data_see": "false"}))
+    year_of_purchase = forms.IntegerField(required=False, label="Année d'achat", widget=forms.NumberInput(attrs={"data_see": "false"}))
     edition = forms.CharField(required=False, label='Édition', widget=forms.TextInput(attrs={"data_see": "false"}))
     deluxe_edition = forms.ChoiceField(
         required=False,
@@ -22,6 +22,6 @@ class RechercheForm(forms.Form):
         ],
         widget=forms.Select(attrs={"data_see": "false"})
     )
-    isbn = forms.IntegerField(required=False, label='ISBN', widget=forms.TextInput(attrs={"data_see": "false"}))
+    isbn = forms.IntegerField(required=False, label='ISBN', widget=forms.NumberInput(attrs={"data_see": "false"}))
     number = forms.CharField(required=False, label='Numéro', widget=forms.TextInput(attrs={"data_see": "false"}))
     synopsis = forms.CharField(required=False, label='Synopsis', widget=forms.TextInput(attrs={"data_see": "false"}))
