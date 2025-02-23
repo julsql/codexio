@@ -1,9 +1,10 @@
-function paginate(classFirstPage, classPrevPage, classCurrentPage, classNextPage, classLastPage, classPaginationItem) {
+function paginate(classFirstPage, classPrevPage, classCurrentPage, classNextPage, classLastPage, classPaginationItem, idDiv) {
     const firstPage = document.getElementById(classFirstPage);
     const prevPage = document.getElementById(classPrevPage);
     const currentPage = document.getElementById(classCurrentPage);
     const nextPage = document.getElementById(classNextPage);
     const lastPage = document.getElementById(classLastPage);
+    const container = document.getElementById(idDiv);
 
     firstPage.addEventListener("selectstart", function (e) {e.preventDefault();});
     prevPage.addEventListener("selectstart", function (e) {e.preventDefault();});
@@ -17,6 +18,11 @@ function paginate(classFirstPage, classPrevPage, classCurrentPage, classNextPage
     let currentPageInt = 1;
 
     function displayPage(pageNumber) {
+        if (paginationItems.length === 0) {
+            container.style.visibility = "hidden";
+            container.style.display = "none";
+            return;
+        }
         const startIndex = (pageNumber - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
 
@@ -48,14 +54,14 @@ function paginate(classFirstPage, classPrevPage, classCurrentPage, classNextPage
         }
     }
 
-    document.getElementById(classPrevPage).addEventListener("click", function () {
+    prevPage.addEventListener("click", function () {
         if (currentPageInt > 1) {
             currentPageInt--;
             displayPage(currentPageInt);
         }
     });
 
-    document.getElementById(classNextPage).addEventListener("click", function () {
+    nextPage.addEventListener("click", function () {
 
         if (currentPageInt < nbPage) {
             currentPageInt++;
@@ -63,7 +69,7 @@ function paginate(classFirstPage, classPrevPage, classCurrentPage, classNextPage
         }
     });
 
-    document.getElementById(classFirstPage).addEventListener("click", function () {
+    firstPage.addEventListener("click", function () {
 
         if (currentPageInt > 1) {
             currentPageInt = 1;

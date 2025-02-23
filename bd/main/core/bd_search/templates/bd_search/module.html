@@ -12,24 +12,28 @@
         </header>
 
         <div id="data-container">
-            {% for album in infos %}
+            {% if not infos %}
+                <p>Aucun résultat. Veuillez retenter une nouvelle recherche.</p>
+            {% else %}
+                {% for album in infos %}
 
-                {% if not album.Album and album.Album == "" and not album.Numero and album.Numero == "" and not album.Serie and album.Serie == "" %}
-                    <a class="pagination-item" href="{% url 'pagebd' album.ISBN %}" >Pas de titre</a>
-                {% else %}
-                    <a class="pagination-item" href="{% url 'pagebd' album.ISBN %}" >
-                        {% if album.Album and album.Album != "" %}
-                            {{ album.Album }}
-                        {% endif %}
-                            {% if album.Numero and album.Numero != "" %}
-                            Tome {{ album.Numero }} :
-                        {% endif %}
-                        {% if album.Serie and album.Serie != "" %}
-                            {{ album.Serie }}
-                        {% endif %}
-                    </a>
-                {% endif %}
-            {% endfor %}
+                    {% if not album.Album and album.Album == "" and not album.Numero and album.Numero == "" and not album.Serie and album.Serie == "" %}
+                        <a class="pagination-item" href="{% url 'pagebd' album.ISBN %}" >Pas de titre</a>
+                    {% else %}
+                        <a class="pagination-item" href="{% url 'pagebd' album.ISBN %}" >
+                            {% if album.Album and album.Album != "" %}
+                                {{ album.Album }}
+                            {% endif %}
+                                {% if album.Numero and album.Numero != "" %}
+                                Tome {{ album.Numero }} :
+                            {% endif %}
+                            {% if album.Serie and album.Serie != "" %}
+                                {{ album.Serie }}
+                            {% endif %}
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
         </div>
 
         <div id="pagination">
@@ -45,6 +49,6 @@
 {% block javascript %}
     <script src="{% static 'main/scripts/pagination.js' %}"></script>
     <script>
-        paginate("first-page", "prev-page", "current-page", "next-page", "last-page", ".pagination-item");
+        paginate("first-page", "prev-page", "current-page", "next-page", "last-page", ".pagination-item", "pagination");
     </script>
 {% endblock %}

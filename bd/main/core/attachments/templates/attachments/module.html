@@ -184,8 +184,8 @@
         showSection("all_dedicaces", "hide_dedicace")
         showSection("all_exlibris", "hide_exlibris")
 
-        paginate("exlibris-first-page", "exlibris-prev-page", "exlibris-current-page", "exlibris-next-page", "exlibris-last-page", ".pagination-item-exlibris");
-        paginate("dedicace-first-page", "dedicace-prev-page", "dedicace-current-page", "dedicace-next-page", "dedicace-last-page", ".pagination-item-dedicace");
+        paginate("exlibris-first-page", "exlibris-prev-page", "exlibris-current-page", "exlibris-next-page", "exlibris-last-page", ".pagination-item-exlibris", "#dedicace-pagination");
+        paginate("dedicace-first-page", "dedicace-prev-page", "dedicace-current-page", "dedicace-next-page", "dedicace-last-page", ".pagination-item-dedicace", "#exlibris-pagination");
         {% for bd in signed_copies %}
             useCarousel(".carousel-dedicace-{{ bd.isbn }}", "#next-dedicace-{{ bd.isbn }}", "#prev-dedicace-{{ bd.isbn }}", ".photo-dedicace-{{ bd.isbn }}");
         {% endfor %}
