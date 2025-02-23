@@ -20,7 +20,7 @@ function showSection(sectionId, buttonId) {
 window.onscroll = function () {
     let scrollTopBtn = document.getElementById("scrollTopBtn");
     if (document.documentElement.scrollTop > 300) {
-        scrollTopBtn.style.display = "block";
+        scrollTopBtn.style.display = "flex";
     } else {
         scrollTopBtn.style.display = "none";
     }

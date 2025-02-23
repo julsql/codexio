@@ -227,6 +227,10 @@ input label {
         display: none;
     }
 
+    .see-more .arrow {
+        margin: 0;
+    }
+
     .formulaire .fields input{
         width: 100%;
     }

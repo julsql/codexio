@@ -21,8 +21,6 @@
                     <h2>
                     {% if series and series != "" %}
                         {{ series }}
-                    {% else %}
-                        Pas de titre
                     {% endif %}
                     </h2>
                     <h3>
@@ -35,8 +33,6 @@
                     {% else %}
                         {% if album and album != "" %}
                             {{ album }}
-                        {% else %}
-                            Pas de titre
                         {% endif %}
                     {% endif %}
                     </h3>
@@ -211,7 +207,11 @@
     <script src="{% static 'main/scripts/image_popup.js' %}"></script>
     <script src="{% static 'main/scripts/carousel.js' %}"></script>
     <script>
-        useCarousel(".carousel-dedicace", "#next-dedicace", "#prev-dedicace", ".photo-dedicace");
-        useCarousel(".carousel-exlibris", "#next-exlibris", "#prev-exlibris", ".photo-exlibris");
+        {% if nb_dedicace > 0 %}
+            useCarousel(".carousel-dedicace", "#next-dedicace", "#prev-dedicace", ".photo-dedicace");
+        {% endif %}
+        {% if nb_exlibris > 0 %}
+            useCarousel(".carousel-exlibris", "#next-exlibris", "#prev-exlibris", ".photo-exlibris");
+        {% endif %}
     </script>
 {% endblock %}

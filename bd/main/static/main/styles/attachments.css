@@ -25,8 +25,13 @@
     font-size: 24px;
     cursor: pointer;
     display: none; /* Caché par défaut */
+    justify-content: center;
+    align-items: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transition: opacity 0.3s;
+    z-index: 1;
+    text-align: center;
+    box-sizing: border-box;
 }
 
 .scroll-top:hover {
