@@ -45,3 +45,15 @@
 .center {
     text-align: center;
 }
+
+
+@media (max-width: 800px) {
+    .button-large {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    input.button-large {
+        display: flex;
+    }
+}
