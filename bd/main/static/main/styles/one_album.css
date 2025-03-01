@@ -9,14 +9,14 @@
 .additional-infos, .author-info, .edition-info, .achat-info {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    column-gap: 5px;
 }
 
 .additional-infos {
     position: absolute;
     top: 2.2em;
     right: 30px;
-    gap: 10px;
+    column-gap: 10px;
 }
 
 .synopsis {

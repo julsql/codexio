@@ -108,9 +108,12 @@
                     <p>Acheté
                         {% if place_of_purchase and place_of_purchase != "" %}
                             à <strong>{{ place_of_purchase }}</strong>
+                            {% if not year_of_purchase or year_of_purchase == "" %}
+                                .
+                            {% endif %}
                         {% endif %}
                         {% if year_of_purchase and year_of_purchase != "" %}
-                            en {{ year_of_purchase }}
+                            en {{ year_of_purchase }}.
                         {% endif %}
                     </p>
                 </div>
