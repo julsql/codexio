@@ -104,6 +104,11 @@
         line-height: 48px;
     }
 
+    #titleBar .title a {
+        color: white;
+        text-decoration: none;
+    }
+
     #titleBar .toggle {
         position: absolute;
         left: 0;
