@@ -45,7 +45,6 @@ function useCarousel(classCarousel, idNext, idPrev, classImages) {
             currentIndexImage = 0;
         }
         centerImage(currentIndexImage);
-        console.log(currentIndexImage)
     }
 
     function prevImage() {
@@ -55,7 +54,6 @@ function useCarousel(classCarousel, idNext, idPrev, classImages) {
             currentIndexImage = images.length - 1;
         }
         centerImage(currentIndexImage);
-        console.log(currentIndexImage)
     }
 
     // Ajout des événements sur les boutons

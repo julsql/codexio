@@ -2,21 +2,39 @@ const seeMoreButton = document.getElementById("see-more");
 const arrow = document.querySelector(".arrow");
 const upperLine = document.getElementById("upper-line");
 const lowerLine = document.getElementById("lower-line");
+const deluxeEditionSelect = document.getElementById("id_deluxe_edition");
+const hiddenInputs = document.querySelectorAll('[data_see="false"]');
+const hiddenCells = document.querySelectorAll('[data-see="false"]');
 
-let seeMore = false;
+deluxeEditionSelect.addEventListener('change', () => {
+    if (deluxeEditionSelect.value === "") {
+        deluxeEditionSelect.classList.add('default-option');
+    } else {
+        deluxeEditionSelect.classList.remove('default-option');
+    }
+});
 
-seeMoreButton.addEventListener("click", (event) => {
-    document.querySelectorAll('[data-see="false"]').forEach(function(element) {
-        console.log(window.innerWidth);
-        if (window.innerWidth < 800) {
-            element.style.display = seeMore ? "none" : "block";
+function isAllHiddenInputEmpty() {
+    let allEmpty = true;
+    hiddenInputs.forEach(function (element) {
+        allEmpty = allEmpty && element.value === "";
+    });
+    return allEmpty;
+}
+
+let seeMore = !isAllHiddenInputEmpty();
+
+function displayHiddenInput() {
+    const smallScreen = window.innerWidth < 800;
+
+    hiddenCells.forEach(function (element) {
+        if (smallScreen) {
+            element.style.display = seeMore ? "block" : "none";
         } else {
-            element.style.display = seeMore ? "none" : "table-cell";
+            element.style.display = seeMore ? "table-cell" : "none";
         }
     });
-    seeMore = !seeMore;
-
-    if (window.innerWidth < 800) {
+    if (smallScreen) {
         upperLine.style.display = "none";
         lowerLine.style.display = "none";
     } else {
@@ -24,6 +42,11 @@ seeMoreButton.addEventListener("click", (event) => {
         lowerLine.style.display = seeMore ? "block" : "none";
     }
     arrow.style.transform = seeMore ? "rotate(0deg)" : "rotate(180deg)";
+}
+
+seeMoreButton.addEventListener("click", (event) => {
+    seeMore = !seeMore;
+    displayHiddenInput();
 });
 
 const inputs = document.querySelectorAll('.input-container input');
@@ -52,6 +75,10 @@ function clearInput(input, clearBtn) {
 }
 
 window.onload = function () {
+    if (seeMore) {
+        displayHiddenInput();
+    }
+
     const clearBtnAll = document.getElementById('clear-all');
     clearBtnAll.addEventListener('click', () => {
         inputs.forEach((input, index) => {
@@ -85,6 +112,4 @@ window.onload = function () {
             });
         }
     })
-
 }
-

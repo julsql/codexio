@@ -160,6 +160,15 @@ input label {
     width: 100%;
     margin: 3px 0;
 }
+
+.formulaire select.default-option {
+    color: lightgrey;
+}
+
+.formulaire select:not(.default-option) {
+    color: #333;
+}
+
 .formulaire input :focus,
 .formulaire input select:focus{
     box-shadow: 0 3px 6px rgba(0,0,0,0.13);
