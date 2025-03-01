@@ -20,7 +20,7 @@ class RechercheForm(forms.Form):
             ("True", "Oui"),
             ("False", "Non")
         ],
-        widget=forms.Select(attrs={"data_see": "false"})
+        widget=forms.Select(attrs={"data_see": "false", "class": "default-option"})
     )
     isbn = forms.IntegerField(required=False, label='ISBN', widget=forms.NumberInput(attrs={"data_see": "false"}))
     number = forms.CharField(required=False, label='Numéro', widget=forms.TextInput(attrs={"data_see": "false"}))
