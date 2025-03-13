@@ -11,7 +11,7 @@
 }
 
 .popup {
-    display: none; /* cachée par défaut */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -37,7 +37,6 @@
 }
 
 #popup-img {
-    min-width: 400px;
     max-width: 100%;
     max-height: 75vh;
     height: auto;
