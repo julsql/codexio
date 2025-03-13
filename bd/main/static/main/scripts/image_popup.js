@@ -9,6 +9,7 @@ const closePopupButton = document.getElementById('close-popup');
 
 let currentGroup = [];
 let currentIndex = 0;
+let isScrolling = false;
 
 // Ouvrir la pop-up avec le groupe d'images
 group.forEach(row => {
@@ -114,3 +115,19 @@ function disableScroll(disable) {
         document.addEventListener("keydown", disableScrollKeys);
     }
 }
+
+// Ajouter l'événement de scroll (wheel) avec temporisation
+popup.addEventListener("wheel", (event) => {
+    if (isScrolling) return;
+    isScrolling = true;
+
+    setTimeout(() => {
+        isScrolling = false;
+    }, 300);
+
+    if (event.deltaX < 0) {
+        showPrevImage();
+    } else if (event.deltaX > 0) {
+        showNextImage();
+    }
+});
