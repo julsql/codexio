@@ -49,7 +49,7 @@ FIRST_LINE = [
 FIRST_LINE_DATABASE =[
     'isbn', 'album', 'number', 'series', 'writer', 'illustrator', 'colorist', 'publisher',
     'publication_date', 'edition', 'number_of_pages', 'rating', 'purchase_price', 'year_of_purchase',
-    'place_of_purchase', 'deluxe_edition', 'signed_copy', 'ex_libris', 'synopsis', 'image']
+    'place_of_purchase', 'deluxe_edition', 'synopsis', 'image']
 
 ASTERIX_WEB_PHILE = {
     'Album': album_phile,
@@ -96,12 +96,56 @@ ASTERIX_LIST = [
     edition_phile,
     pages_phile,
     '',
+    str(prix_phile),
+    '',
+    '',
+    '',
+    '',
+    '',
+    synopsis_phile,
+    image_phile
+]
+
+ASTERIX_LIST_2 = [
+    ASTERIX_ISBN,
+    album_phile,
+    numero_phile,
+    serie_phile,
+    scenario_phile,
+    dessin_phile,
+    couleurs_phile,
+    editeur_phile,
+    date_de_publication_phile,
+    edition_phile,
+    pages_phile,
+    '',
     prix_phile,
     '',
     '',
     '',
     '',
     '',
+    synopsis_phile,
+    image_phile
+]
+
+ASTERIX_LIST_RESULT = [
+    ASTERIX_ISBN,
+    album_phile,
+    numero_phile,
+    serie_phile,
+    scenario_phile,
+    dessin_phile,
+    couleurs_phile,
+    editeur_phile,
+    date_de_publication_phile,
+    edition_phile,
+    pages_phile,
+    None,
+    prix_phile,
+    None,
+    '',
+    False,
     synopsis_phile,
     image_phile
 ]
