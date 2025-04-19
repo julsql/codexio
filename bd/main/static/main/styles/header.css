@@ -1,7 +1,6 @@
 #header {
     background: #3B4346 url("images/bg01.jpg");
     border-bottom: solid 1px #272d30;
-    box-shadow: inset 0 -1px 0 0 #51575a;
     text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.75);
     height: 155px;
 }
