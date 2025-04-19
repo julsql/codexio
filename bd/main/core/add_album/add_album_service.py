@@ -37,8 +37,8 @@ class AddAlbumService:
 
     def map_to_list(self, infos: dict[str, str]) -> list[str]:
         titles = ["ISBN", "Album", "Numéro", "Série", "Scénario", "Dessin", "Couleurs",
-                  "Éditeur", "Date de publication", "Édition", "Pages", None, "Prix", None, None, None, None, None, "Synopsis",
-                  "Image"]
+                  "Éditeur", "Date de publication", "Édition", "Pages", None, "Prix",
+                  None, None, None, None, None, None, "Synopsis", "Image"]
 
         liste = []
         for title in titles:

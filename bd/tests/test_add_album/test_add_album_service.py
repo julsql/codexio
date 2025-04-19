@@ -8,7 +8,7 @@ from main.core.common.sheet.internal.sheet_in_memory import SheetInMemory
 
 
 class TestAddAlbumService(unittest.TestCase):
-    NB_COLUMN = 20
+    NB_COLUMN = 21
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -26,7 +26,7 @@ class TestAddAlbumService(unittest.TestCase):
             'Album': '', 'Couleurs': '', 'Date de publication': '',
             'Dessin': '', 'Édition': '', 'ISBN': '', 'Image': '',
             'Numéro': '', 'Pages': '', 'Prix': '', 'Scénario': '',
-            'Synopsis': '', 'Série': '', 'Éditeur': ''})
+            'Emplacement': '', 'Synopsis': '', 'Série': '', 'Éditeur': ''})
         self.assertEqual([""] * self.NB_COLUMN, liste)
 
     def test_convert_list_from_dict_successfully(self) -> None:
@@ -35,7 +35,7 @@ class TestAddAlbumService(unittest.TestCase):
                 'Dessin': 'a', 'Édition': 'a', 'ISBN': 'a', 'Image': 'a',
                 'Numéro': 'a', 'Pages': 'a', 'Prix': 'a', 'Scénario': 'a',
                 'Synopsis': 'a', 'Série': 'a', 'Éditeur': 'a'})
-        self.assertEqual(["a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "", "a", "", "", "", "", "", "a", "a"],
+        self.assertEqual(["a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "", "a", "", "", "", "", "", "", "a", "a"],
                          liste)
 
     def test_raise_error_convert_list_from_empty_dict(self) -> None:
