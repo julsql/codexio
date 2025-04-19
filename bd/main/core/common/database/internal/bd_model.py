@@ -20,6 +20,7 @@ class BD(models.Model):
     year_of_purchase = models.IntegerField(null=True)
     place_of_purchase = models.TextField()
     deluxe_edition = models.BooleanField()
+    localisation = models.TextField()
     synopsis = models.TextField()
     image = models.TextField()
 

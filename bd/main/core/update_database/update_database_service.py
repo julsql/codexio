@@ -105,6 +105,7 @@ class UpdateDatabaseService:
                   "tirage de tête": "deluxe_edition",
                   "dédicace": "signed_copy",
                   "ex libris": "ex_libris",
+                  "emplacement": "localisation",
                   "synopsis": "synopsis",
                   "image": "image"
                   }

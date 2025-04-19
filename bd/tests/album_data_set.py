@@ -44,12 +44,12 @@ editeur_gest = "Les Éditions Albert René"
 FIRST_LINE = [
     "ISBN", "Album", "Numéro", "Série", "Scénariste", "Dessinateur", "Couleur", "Éditeur", "Date de parution",
     "Édition", "Nombre de planches", "Cote", "Prix d'achat", "Année d'achat", "Lieu d'achat", "Tirage de tête",
-    "Dédicace", "Ex Libris", "Synopsis", "Image"]
+    "Dédicace", "Ex Libris", "Emplacement", "Synopsis", "Image"]
 
 FIRST_LINE_DATABASE =[
     'isbn', 'album', 'number', 'series', 'writer', 'illustrator', 'colorist', 'publisher',
     'publication_date', 'edition', 'number_of_pages', 'rating', 'purchase_price', 'year_of_purchase',
-    'place_of_purchase', 'deluxe_edition', 'synopsis', 'image']
+    'place_of_purchase', 'deluxe_edition', "localisation", 'synopsis', 'image']
 
 ASTERIX_WEB_PHILE = {
     'Album': album_phile,
@@ -102,6 +102,7 @@ ASTERIX_LIST = [
     '',
     '',
     '',
+    '',
     synopsis_phile,
     image_phile
 ]
@@ -120,6 +121,7 @@ ASTERIX_LIST_2 = [
     pages_phile,
     '',
     prix_phile,
+    '',
     '',
     '',
     '',
@@ -146,6 +148,7 @@ ASTERIX_LIST_RESULT = [
     None,
     '',
     False,
+    '',
     synopsis_phile,
     image_phile
 ]
@@ -164,6 +167,7 @@ ASTERIX_LIST_STR = [
     str(pages_phile),
     '',
     str(prix_phile).replace('.', ','),
+    '',
     '',
     '',
     '',
