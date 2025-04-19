@@ -1,4 +1,5 @@
-from django.http import HttpResponse, JsonResponse, HttpRequest, HttpResponseNotFound, HttpResponseForbidden
+from django.http import HttpResponse, JsonResponse, HttpRequest, HttpResponseNotFound, HttpResponseForbidden, \
+    HttpResponseNotAllowed
 
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.add_album_service import AddAlbumService
@@ -9,7 +10,7 @@ from config.settings import POST_TOKEN
 from main.core.common.sheet.internal.sheet_connexion import SheetConnexion
 
 
-def add_album(request: HttpRequest, isbn: int) -> HttpResponse | JsonResponse:
+def add_album(request: HttpRequest, isbn: int) -> HttpResponseNotFound | HttpResponseForbidden | HttpResponse:
     if request.method == 'GET':
         auth_header = request.headers.get('Authorization')
         if auth_header is None or auth_header != f"Bearer {POST_TOKEN}":
@@ -20,7 +21,7 @@ def add_album(request: HttpRequest, isbn: int) -> HttpResponse | JsonResponse:
                 bdfugue_repository = BdFugueRepository()
                 bdphile_repository = BdPhileRepository()
                 bdgest_repository = BdGestRepository()
-                service = AddAlbumService([bdfugue_repository, bdgest_repository, bdphile_repository], sheet_repository)
+                service = AddAlbumService([bdphile_repository, bdgest_repository, bdfugue_repository], sheet_repository)
                 service.main(isbn)
             except AddAlbumError as e:
                 return HttpResponseNotFound(str(e))
@@ -33,3 +34,5 @@ def add_album(request: HttpRequest, isbn: int) -> HttpResponse | JsonResponse:
                 response = HttpResponse(text_response, status=200)
                 response["Content-Type"] = "text/plain; charset=utf-8"
                 return response
+    else:
+        return HttpResponseNotAllowed(["GET"], "Il faut une requête GET")
