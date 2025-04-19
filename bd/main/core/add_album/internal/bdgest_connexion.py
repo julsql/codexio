@@ -11,6 +11,8 @@ from dateutil.parser import parse, ParserError
 
 class BdGestRepository(BdRepository):
     SEARCH_URL = "https://www.bedetheque.com/search/albums"
+    BANDEAU_CLASS = "bandeau-info album panier"
+    IMAGE_CLASS = "bandeau-image album"
 
     def __init__(self) -> None:
         self.header = {"Titre album": "Album", "Tome": "Numéro",
@@ -53,7 +55,7 @@ class BdGestRepository(BdRepository):
 
     def _extract_title(self, soup: BeautifulSoup, informations: dict) -> None:
         """ Extraire les informations du titre """
-        album_tag = soup.find("div", class_="bandeau-info album")
+        album_tag = soup.find("div", class_=self.BANDEAU_CLASS)
 
         title = album_tag.find("h1")
         a_tag = title.find("a") if title else None
@@ -76,7 +78,7 @@ class BdGestRepository(BdRepository):
     def _extract_authors(self, soup: BeautifulSoup, informations: dict) -> None:
         """ Extraire les informations supplémentaires """
         keys = ['Scénario', 'Dessin', 'Couleurs']
-        album_tag = soup.find("div", class_="bandeau-info album")
+        album_tag = soup.find("div", class_=self.BANDEAU_CLASS)
 
         sub_title = album_tag.find("h3")
         editor_tag = sub_title.find('span',{"itemprop": "publisher"})
@@ -102,7 +104,7 @@ class BdGestRepository(BdRepository):
     def _extract_additional_info(self, soup: BeautifulSoup, informations: dict) -> None:
         """ Extraire les informations supplémentaires """
 
-        album_tag = soup.find("div", class_="bandeau-info album")
+        album_tag = soup.find("div", class_=self.BANDEAU_CLASS)
 
         info_tag = album_tag.find("h4")
         date_tag = info_tag.find('span',{"title": "Dépot légal"}).get_text()
@@ -135,7 +137,7 @@ class BdGestRepository(BdRepository):
     def _extract_image(self, soup: BeautifulSoup, informations: dict) -> None:
         """ Extraire l'image """
 
-        body = soup.find("div", class_="bandeau-image album")
+        body = soup.find("div", class_=self.IMAGE_CLASS)
         a_tag = body.find("a") if body else None
         if a_tag:
             informations['Image'] = a_tag.get('href')
@@ -157,7 +159,7 @@ class BdGestRepository(BdRepository):
             logger.warning("Problème de date de parution", extra={"isbn": isbn})
 
     def get_url(self, isbn: int) -> str:
-        """Trouver lien BD bdphile.fr à partir de son ISBN"""
+        """Trouver lien BD bdgest.fr à partir de son ISBN"""
 
         with requests.Session() as session:
             csrf_token = self.get_csrf_token(session)
