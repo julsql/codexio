@@ -121,7 +121,7 @@ The body request a form sending a file with key `file`.
 
    The urls are:
       - http://bd.julsql.fr/upload/dedicace/isbn/ for the dedicace
-      - http://bd.julsql.fr/upload/exlibris/isbn/ for the ex libris
+      - http://bd.julsql.fr/upload/exlibris/isbn/ for the ex-libris
 
 ## Deploy
 
