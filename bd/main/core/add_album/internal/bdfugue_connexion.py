@@ -1,10 +1,12 @@
 import re
+
 import requests
 from bs4 import BeautifulSoup
 
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.bd_repository import BdRepository
 from main.core.common.logger.logger import logger
+
 
 ## Ne fonctionne pas : scrapping impossible
 

@@ -2,8 +2,8 @@ from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 
 from main.core.advanced_search.internal.advanced_search_view import advanced_search
-from main.core.random_album.internal.random_album_view import random_album
 from main.core.banner.internal.banner_view import random_dedicace
+from main.core.random_album.internal.random_album_view import random_album
 
 
 def home(request: HttpRequest) -> HttpResponse:

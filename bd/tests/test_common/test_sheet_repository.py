@@ -1,4 +1,5 @@
 import unittest
+
 from main.core.common.sheet.internal.sheet_connexion import SheetConnexion
 from tests.album_data_set import FIRST_LINE, ASTERIX_LIST, ASTERIX_ISBN, ASTERIX_LIST_STR, ASTERIX_LIST_2
 

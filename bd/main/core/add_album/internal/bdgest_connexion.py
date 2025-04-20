@@ -1,12 +1,13 @@
 import datetime
-import requests
 import re
+
+import requests
 from bs4 import BeautifulSoup
+from dateutil.parser import parse, ParserError
 
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.bd_repository import BdRepository
 from main.core.common.logger.logger import logger
-from dateutil.parser import parse, ParserError
 
 
 class BdGestRepository(BdRepository):

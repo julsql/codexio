@@ -1,8 +1,8 @@
-from typing import Any
 import os
+from typing import Any
 
-from main.core.common.database.internal.bd_model import BD
 from config.settings import MEDIA_ROOT
+from main.core.common.database.internal.bd_model import BD
 from main.core.common.logger.logger import logger
 
 

@@ -1,7 +1,9 @@
 import os
 import tempfile
 import unittest
+
 from main.core.delete_photo.internal.photo_connexion import PhotoConnexion
+
 
 class TestPhotoConnexion(unittest.TestCase):
 
