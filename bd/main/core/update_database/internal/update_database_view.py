@@ -1,24 +1,23 @@
-from django.http import HttpRequest, HttpResponse, HttpResponseNotAllowed, HttpResponseForbidden
+from django.http import HttpRequest
 
 from config.settings import POST_TOKEN
 from main.core.common.database.internal.database_connexion import DatabaseConnexion
+from main.core.common.reponse.utf8_response import UTF8ResponseNotAllowed, UTF8ResponseForbidden, UTF8Response
 from main.core.common.sheet.internal.sheet_connexion import SheetConnexion
 from main.core.update_database.update_database_service import UpdateDatabaseService
 
 
-def update_database(request: HttpRequest) -> HttpResponse:
+def update_database(request: HttpRequest) -> UTF8ResponseForbidden | UTF8Response | UTF8ResponseNotAllowed:
     if request.method == 'GET':
         auth_header = request.headers.get('Authorization')
         if auth_header is None or auth_header != f"Bearer {POST_TOKEN}":
-            return HttpResponseForbidden("Vous n'avez pas l'autorisation")
+            return UTF8ResponseForbidden("Vous n'avez pas l'autorisation")
         else:
             sheet_repository = SheetConnexion()
             database_repository = DatabaseConnexion()
             service = UpdateDatabaseService(sheet_repository, database_repository)
             service.main()
             text_response = "Site web mis à jour correctement"
-            response = HttpResponse(text_response, status=200)
-            response["Content-Type"] = "text/plain; charset=utf-8"
-            return response
+            return UTF8Response(text_response, status=200)
     else:
-        return HttpResponseNotAllowed(["GET"], "Il faut une requête GET")
+        return UTF8ResponseNotAllowed(["GET"], "Il faut une requête GET")

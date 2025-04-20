@@ -21,7 +21,6 @@ class TestUpdateDatabaseService(unittest.TestCase):
     def test_correctly_updated(self) -> None:
         self.service.main()
         database = self.database_repository.get_all()
-        print(database[0])
         self.assertEqual(1, len(database))
         self.assertEqual(len(FIRST_LINE_DATABASE), len(database[0]))
         self.assertEqual(FIRST_LINE_DATABASE, list(database[0].keys()))
@@ -30,4 +29,3 @@ class TestUpdateDatabaseService(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
