@@ -13,27 +13,49 @@ class UpdateDatabaseService:
 
     def main(self) -> None:
         rows = self.sheet.get_all()
-        title = self.map_sheet_titles_to_database_columns(rows[0])
+        titles = self.map_sheet_titles_to_database_columns(rows[0])
 
-        data = [{
-                title[i]:
-                    (row[i].lower() == "oui" if title[i] == "deluxe_edition" else
-                     self.convert_date(row[i]) if title[i] == "publication_date" else
-                     self.convert_price(row[i]) if title[i] == "purchase_price" else
-                     self.convert_int(row[i]) if title[i] == "number_of_pages" else
-                     self.convert_price(row[i]) if title[i] == "rating" else
-                     self.convert_int(row[i]) if title[i] == "year_of_purchase" else
-                     row[i]
-                     )
-                for i in range(len(row))
-            if title[i] != "signed_copy" and title[i] != "ex_libris"
-            } for row in rows[1:]]
+        isbn_index = titles.index("isbn")
+        deluxe_edition_index = titles.index("deluxe_edition")
+        publication_date_index = titles.index("publication_date")
+        purchase_price_index = titles.index("purchase_price")
+        number_of_pages_index = titles.index("number_of_pages")
+        rating_index = titles.index("rating")
+        year_of_purchase_index = titles.index("year_of_purchase")
+        signed_copy_index = titles.index("signed_copy")
+        ex_libris_index = titles.index("ex_libris")
 
-        title.remove("signed_copy")
-        title.remove("ex_libris")
+        data = []
+
+        for row in rows[1:]:
+            isbn = self.convert_isbn(row[isbn_index])
+            if isbn is not None:
+                data.append({titles[i]:
+                                 (row[i].lower() == "oui" if i == deluxe_edition_index else
+                                  isbn if i == isbn_index else
+                                  self.convert_date(row[i]) if i == publication_date_index else
+                                  self.convert_price(row[i]) if i == purchase_price_index else
+                                  self.convert_int(row[i]) if i == number_of_pages_index else
+                                  self.convert_price(row[i]) if i == rating_index else
+                                  self.convert_int(row[i]) if i == year_of_purchase_index else
+                                  row[i])
+                             for i in range(len(row))
+                             if i != signed_copy_index and i != ex_libris_index})
+
+        titles.remove("signed_copy")
+        titles.remove("ex_libris")
 
         self.database.create_table()
         self.database.insert(data)
+
+    def convert_isbn(self, isbn: str) -> int|None:
+        if isbn:
+            try:
+                return int(isbn.replace("-", ""))
+            except ValueError:
+                return None
+        else:
+            return None
 
     def convert_date(self, date: str) -> str|None:
         # Dictionnaire des mois français
