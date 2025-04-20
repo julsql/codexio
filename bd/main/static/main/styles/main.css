@@ -14,7 +14,6 @@ section, summary, time, mark, audio, video {
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 100%;
     font: inherit;
     vertical-align: baseline;
 }
@@ -24,11 +23,7 @@ body {
     color: #474f51;
     font-size: 13.5pt;
     font-family: 'Yanone Kaffeesatz', serif;
-    line-height: 1.85em;
     font-weight: 300;
-}
-
-body {
     line-height: 1;
 }
 
@@ -111,12 +106,9 @@ input, select, textarea {
     -webkit-appearance: none;
     -ms-appearance: none;
     appearance: none;
-}
-
-input, textarea, select {
     color: #474f51;
     font-size: 13.5pt;
-    font-family: 'Yanone Kaffeesatz';
+    font-family: 'Yanone Kaffeesatz', serif;
     line-height: 1.85em;
     font-weight: 300;
 }

@@ -15,39 +15,54 @@ class UpdateDatabaseService:
     def main(self) -> None:
         rows = self.sheet.get_all()
         titles = self.map_sheet_titles_to_database_columns(rows[0])
+        column_indices = self._get_column_indices(titles)
 
-        isbn_index = titles.index("isbn")
-        deluxe_edition_index = titles.index("deluxe_edition")
-        publication_date_index = titles.index("publication_date")
-        purchase_price_index = titles.index("purchase_price")
-        number_of_pages_index = titles.index("number_of_pages")
-        rating_index = titles.index("rating")
-        year_of_purchase_index = titles.index("year_of_purchase")
-        signed_copy_index = titles.index("signed_copy")
-        ex_libris_index = titles.index("ex_libris")
-
-        data = []
-
-        for row in rows[1:]:
-            isbn = self.convert_isbn(row[isbn_index])
-            if isbn is not None:
-                data.append({titles[i]:
-                                 (row[i].lower() == "oui" if i == deluxe_edition_index else
-                                  isbn if i == isbn_index else
-                                  self.convert_date(row[i]) if i == publication_date_index else
-                                  self.convert_price(row[i]) if i == purchase_price_index else
-                                  self.convert_int(row[i]) if i == number_of_pages_index else
-                                  self.convert_price(row[i]) if i == rating_index else
-                                  self.convert_int(row[i]) if i == year_of_purchase_index else
-                                  row[i])
-                             for i in range(len(row))
-                             if i != signed_copy_index and i != ex_libris_index})
-
-        titles.remove("signed_copy")
-        titles.remove("ex_libris")
+        data = self._process_rows(rows[1:], titles, column_indices)
 
         self.database.create_table()
         self.database.insert(data)
+
+    def _get_column_indices(self, titles: list[str]) -> dict[str, int]:
+        return {
+            "isbn": titles.index("isbn"),
+            "deluxe_edition": titles.index("deluxe_edition"),
+            "publication_date": titles.index("publication_date"),
+            "purchase_price": titles.index("purchase_price"),
+            "number_of_pages": titles.index("number_of_pages"),
+            "rating": titles.index("rating"),
+            "year_of_purchase": titles.index("year_of_purchase"),
+            "signed_copy": titles.index("signed_copy"),
+            "ex_libris": titles.index("ex_libris")
+        }
+
+    def _process_rows(self, rows: list[list[str]], titles: list[str], indices: dict[str, int]) -> list[dict]:
+        data = []
+        for row in rows:
+            isbn = self.convert_isbn(row[indices["isbn"]])
+            if isbn is not None:
+                processed_row = {}
+                for i in range(len(row)):
+                    if i not in (indices["signed_copy"], indices["ex_libris"]):
+                        processed_row[titles[i]] = self._convert_cell_value(row[i], i, isbn, indices)
+                data.append(processed_row)
+        return data
+
+    def _convert_cell_value(self, value: str, index: int, isbn: int, indices: dict[str, int]) -> any:
+        if index == indices["deluxe_edition"]:
+            return value.lower() == "oui"
+        if index == indices["isbn"]:
+            return isbn
+        if index == indices["publication_date"]:
+            return self.convert_date(value)
+        if index == indices["purchase_price"]:
+            return self.convert_price(value)
+        if index == indices["number_of_pages"]:
+            return self.convert_int(value)
+        if index == indices["rating"]:
+            return self.convert_price(value)
+        if index == indices["year_of_purchase"]:
+            return self.convert_int(value)
+        return value
 
     def convert_isbn(self, isbn: str) -> int | None:
         if isbn:
