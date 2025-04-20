@@ -84,7 +84,7 @@ ASTERIX = ASTERIX_WEB_PHILE.copy()
 ASTERIX['ISBN'] = ASTERIX_ISBN
 
 ASTERIX_LIST = [
-    ASTERIX_ISBN,
+    str(ASTERIX_ISBN),
     album_phile,
     numero_phile,
     serie_phile,
