@@ -1,10 +1,11 @@
 import os
 
-from django.db.models import Count, Sum, IntegerField, Case, When
+from django.db.models import Count, Sum, IntegerField
 from django.db.models.functions import Cast
 
 from config.settings import MEDIA_ROOT
 from main.core.common.database.internal.bd_model import BD
+
 
 class StatisticsService:
     def main(self) -> dict[str, int]:

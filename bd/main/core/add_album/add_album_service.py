@@ -1,7 +1,7 @@
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.get_infos_service import GetInfosService
-from main.core.common.sheet.sheet_repository import SheetRepository
 from main.core.common.logger.logger import logger
+from main.core.common.sheet.sheet_repository import SheetRepository
 
 
 class AddAlbumService:

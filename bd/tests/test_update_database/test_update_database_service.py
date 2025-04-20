@@ -1,9 +1,9 @@
 import unittest
 
+from main.core.common.sheet.internal.sheet_in_memory import SheetInMemory
 from main.core.update_database.update_database_service import UpdateDatabaseService
 from tests.album_data_set import FIRST_LINE, ASTERIX_LIST, FIRST_LINE_DATABASE, ASTERIX_LIST_RESULT
 from tests.test_update_database.internal.database_in_memory import DatabaseInMemory
-from main.core.common.sheet.internal.sheet_in_memory import SheetInMemory
 
 
 class TestUpdateDatabaseService(unittest.TestCase):

@@ -4,6 +4,7 @@ from main.core.advanced_search.advanced_search_service import AdvancedSearchServ
 from main.core.advanced_search.internal.advanced_search_connexion import AdvancedSearchConnexion
 from main.core.advanced_search.internal.forms import RechercheForm
 
+
 @csrf_exempt
 def advanced_search(request) -> (RechercheForm, list[dict[str, str]], bool):
         repository = AdvancedSearchConnexion()

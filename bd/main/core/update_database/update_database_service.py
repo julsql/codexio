@@ -3,6 +3,7 @@ from datetime import datetime
 from main.core.common.database.database_repository import DatabaseRepository
 from main.core.common.sheet.sheet_repository import SheetRepository
 
+
 class UpdateDatabaseService:
     def __init__(self, sheet_repository: SheetRepository, database_repository: DatabaseRepository) -> None:
         doc_name = "bd"

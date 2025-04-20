@@ -1,5 +1,5 @@
-from main.core.common.database.internal.bd_model import BD
 from main.core.common.database.database_repository import DatabaseRepository
+from main.core.common.database.internal.bd_model import BD
 
 
 class DatabaseConnexion(DatabaseRepository):
