@@ -20,7 +20,6 @@ class PageBdService:
         infos["nb_exlibris"] = len(infos["ex_libris"])
         return infos
 
-
     def get_photo_dossier(self, path: str) -> list[str]:
         if os.path.exists(path) and os.path.isdir(path):
             liste_fichiers = os.listdir(path)
@@ -33,11 +32,9 @@ class PageBdService:
         else:
             return []
 
-
     def exlibris_album(self, isbn: int) -> list[str]:
         image_dir = os.path.join(MEDIA_ROOT, "main/images/exlibris", str(isbn))
         return self.get_photo_dossier(image_dir)
-
 
     def dedicaces_album(self, isbn: int) -> list[str]:
         image_dir = os.path.join(MEDIA_ROOT, "main/images/dedicaces", str(isbn))

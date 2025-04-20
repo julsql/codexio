@@ -29,6 +29,7 @@ class AppLogger(logging.Logger):
     def critical(self, msg, *args, **kwargs) -> None:
         self._log_with_isbn(logging.CRITICAL, msg, args, **kwargs)
 
+
 logging.setLoggerClass(AppLogger)
 logger = logging.getLogger("app_logger")
 

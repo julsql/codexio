@@ -1,5 +1,6 @@
 from main.core.common.sheet.sheet_repository import SheetRepository
 
+
 class ExistingAlbumService:
     def __init__(self, sheet_repository: SheetRepository) -> None:
         doc_name = "bd"

@@ -9,6 +9,7 @@ function useCarousel(classCarousel, idNext, idPrev, classImages) {
         item.style.visibility = "hidden";
         item.style.display = "none";
     }
+
     function showItem(item) {
         item.style.visibility = "visible";
         item.style.display = "flex";
@@ -34,7 +35,7 @@ function useCarousel(classCarousel, idNext, idPrev, classImages) {
 
         // Calcul pour centrer l'image
         const scrollPosition = imageOffsetLeft - (carouselWidth / 2) + (imageWidth / 2);
-        carousel.scrollTo({ left: scrollPosition, behavior: "smooth" });
+        carousel.scrollTo({left: scrollPosition, behavior: "smooth"});
     }
 
     // Fonction pour aller à l'image suivante
@@ -71,7 +72,7 @@ function useCarousel(classCarousel, idNext, idPrev, classImages) {
         let minDifference = Infinity;
 
         images.forEach((img, index) => {
-            const diff = carousel.offsetWidth/2 - (getOffsetLeftFromParent(img, carousel) + img.width/2);
+            const diff = carousel.offsetWidth / 2 - (getOffsetLeftFromParent(img, carousel) + img.width / 2);
             if (Math.abs(diff) < minDifference) {
                 closestIndex = index;
                 minDifference = diff;
@@ -81,7 +82,7 @@ function useCarousel(classCarousel, idNext, idPrev, classImages) {
             if (closestIndex === 1) {
                 closestIndex = 0;
             } else if (closestIndex === images.length - 2) {
-                closestIndex = images.length -1
+                closestIndex = images.length - 1
             }
         }
         currentIndexImage = closestIndex;

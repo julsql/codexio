@@ -31,12 +31,13 @@ class TestAddAlbumService(unittest.TestCase):
 
     def test_convert_list_from_dict_successfully(self) -> None:
         liste = self.service.map_to_list({
-                'Album': 'a', 'Couleurs': 'a', 'Date de publication': 'a',
-                'Dessin': 'a', 'Édition': 'a', 'ISBN': 'a', 'Image': 'a',
-                'Numéro': 'a', 'Pages': 'a', 'Prix': 'a', 'Scénario': 'a',
-                'Synopsis': 'a', 'Série': 'a', 'Éditeur': 'a'})
-        self.assertEqual(["a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "", "a", "", "", "", "", "", "", "a", "a"],
-                         liste)
+            'Album': 'a', 'Couleurs': 'a', 'Date de publication': 'a',
+            'Dessin': 'a', 'Édition': 'a', 'ISBN': 'a', 'Image': 'a',
+            'Numéro': 'a', 'Pages': 'a', 'Prix': 'a', 'Scénario': 'a',
+            'Synopsis': 'a', 'Série': 'a', 'Éditeur': 'a'})
+        self.assertEqual(
+            ["a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "", "a", "", "", "", "", "", "", "a", "a"],
+            liste)
 
     def test_raise_error_convert_list_from_empty_dict(self) -> None:
         with self.assertRaises(IndexError):

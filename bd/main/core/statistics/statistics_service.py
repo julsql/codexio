@@ -21,7 +21,6 @@ class StatisticsService:
         infos["exlibris"] = exlibris_total
         return infos
 
-
     def get_dedicaces_total(self) -> (list[dict[str, str]], int):
         image_folder = os.path.join(MEDIA_ROOT, 'main/images/dedicaces')
         dedicaces_sum = 0
@@ -34,7 +33,6 @@ class StatisticsService:
                 dedicaces_sum += nb_dedicace
         return dedicaces_sum
 
-
     def get_exlibris_total(self) -> (list[dict[str, str]], int):
         image_folder = os.path.join(MEDIA_ROOT, 'main/images/exlibris')
         exlibris_sum = 0
@@ -46,7 +44,6 @@ class StatisticsService:
                 nb_exlibris = self.count_images_in_directory(item_path)
                 exlibris_sum += nb_exlibris
         return exlibris_sum
-
 
     def count_images_in_directory(self, directory_path: str) -> int:
         if not os.path.isdir(directory_path):

@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class SheetRepository(ABC):
     @abstractmethod
     def open(self, doc_name: str, sheet_name: str = None) -> None:

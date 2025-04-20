@@ -14,10 +14,10 @@ class BdFugueRepository(BdRepository):
 
     def __init__(self) -> None:
         self.header = {"Titre album": "Album", "Tome": "Numéro",
-                   "Série": "Série", "Scénario": "Scénario",
-                   "Dessin": "Dessin", "Couleurs": "Couleurs", "Éditeur": "Éditeur",
-                   "date de parution": "Date de publication", "": "Édition",
-                   "Nombre de planches": "Pages"}
+                       "Série": "Série", "Scénario": "Scénario",
+                       "Dessin": "Dessin", "Couleurs": "Couleurs", "Éditeur": "Éditeur",
+                       "date de parution": "Date de publication", "": "Édition",
+                       "Nombre de planches": "Pages"}
 
     def __str__(self) -> str:
         return "BdFugueRepository"

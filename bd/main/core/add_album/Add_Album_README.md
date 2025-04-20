@@ -7,7 +7,8 @@ S'il y a une erreur d'ajout dans le tableur, l'erreur est ajoutée dans le fichi
 Une fois l'ISBN ajouté, toutes les infos disponibles sur internet sont automatiquement ajoutées à un gsheet intitulé BD.
 
 - Pour accéder au site web pour rechercher une bande dessinées : [bd.julsql.fr](http://bd.julsql.fr)
-- Pour accéder au gsheet des bandes dessinées (si vous y avez l'accès) : [lien du gsheet](https://docs.google.com/spreadsheets/d/1z4iFF1ROr_sXZkkFJS12kKk7ndUaA9fNconarZIAIxo/edit?usp=sharing)
+- Pour accéder au gsheet des bandes dessinées (si vous y avez
+  l'accès) : [lien du gsheet](https://docs.google.com/spreadsheets/d/1z4iFF1ROr_sXZkkFJS12kKk7ndUaA9fNconarZIAIxo/edit?usp=sharing)
 
 ## Table des matières
 
@@ -26,7 +27,8 @@ Pour ajouter un album (-t & -l optionnels) :
 python3 sheet_add_album.py 9782413043096 -t 0 -l "logs.txt"
 ```
 
-Pour vérifier l'état des albums déjà renseignés et écrire dans le fichier log la trace d'execution (isbn & -l optionnels)
+Pour vérifier l'état des albums déjà renseignés et écrire dans le fichier log la trace d'execution (isbn & -l
+optionnels)
 
 ```bash
 python3 sheet_add_album.py 0 -t 1 -l "logs-test-gsheet.txt"
@@ -48,16 +50,19 @@ python3 sheet_to_sql.py
 ## Structure
 
 - [get_infos_bd.py](get_infos_bd.py) : Récupère à partir de l'ISBN les données sur la bande dessinées
-- [sheet_add_album.py](sheet_add_album.py) : Script principal qui récupère les informations et les ajoute à la feuille de calcul
+- [sheet_add_album.py](sheet_add_album.py) : Script principal qui récupère les informations et les ajoute à la feuille
+  de calcul
 - [sheet_connection.py](sheet_connection.py) : Classe qui se gère la connection à la feuille de calcul
 - [sheet_to_sql.py](sheet_to_sql.py) : Conversion de la feuille de calcul en base de données SQLite
 
 ## Tests
 
-Il existe des tests [unitaires](../../tests/add_album/test_unit) et d'[intégration](../../tests/add_album/test_integration).
+Il existe des tests [unitaires](../../tests/add_album/test_unit) et
+d'[intégration](../../tests/add_album/test_integration).
 Vous les trouverez dans le package [tests](../../../tests).
 
 Pour tous les run :
+
 ```bash
 python3 -m unittest discover tests
 ```
@@ -92,9 +97,10 @@ Ajouter le fichier de configuration de l'API google sheet `private/bd-sheet-91.j
 ### Configurer son téléphone
 
 Ajouter le raccourci qui :
+
 1. Scanne le code bar pour en récupérer l'ISBN
 2. Exécute le script python sur la VM en s'y connectant en SSH
-    > Ajouter la clef SSH su téléphone dans la VM au préalable
+   > Ajouter la clef SSH su téléphone dans la VM au préalable
 3. Affiche le message (erreur ou validé)
 
 ## Guide

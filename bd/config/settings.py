@@ -55,15 +55,15 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-           BASE_DIR / 'main/core/banner/templates',
-           BASE_DIR / 'main/core/advanced_search/templates',
-           BASE_DIR / 'main/core/random_album/templates',
-           BASE_DIR / 'main/core/statistics/templates',
-           BASE_DIR / 'main/core/attachments/templates',
-           BASE_DIR / 'main/core/home/templates',
-           BASE_DIR / 'main/core/bd_search/templates',
-           BASE_DIR / 'main/core/page_bd/templates',
-           BASE_DIR / 'main/core/errors/templates',
+            BASE_DIR / 'main/core/banner/templates',
+            BASE_DIR / 'main/core/advanced_search/templates',
+            BASE_DIR / 'main/core/random_album/templates',
+            BASE_DIR / 'main/core/statistics/templates',
+            BASE_DIR / 'main/core/attachments/templates',
+            BASE_DIR / 'main/core/home/templates',
+            BASE_DIR / 'main/core/bd_search/templates',
+            BASE_DIR / 'main/core/page_bd/templates',
+            BASE_DIR / 'main/core/errors/templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -78,7 +78,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -107,7 +106,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

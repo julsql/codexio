@@ -7,6 +7,6 @@ from main.core.advanced_search.internal.forms import RechercheForm
 
 @csrf_exempt
 def advanced_search(request) -> (RechercheForm, list[dict[str, str]], bool):
-        repository = AdvancedSearchConnexion()
-        service = AdvancedSearchService(repository)
-        return service.main(request)
+    repository = AdvancedSearchConnexion()
+    service = AdvancedSearchService(repository)
+    return service.main(request)

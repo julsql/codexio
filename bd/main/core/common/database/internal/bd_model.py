@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class BD(models.Model):
     class Meta:
         db_table = 'BD'

@@ -6,11 +6,21 @@ function paginate(classFirstPage, classPrevPage, classCurrentPage, classNextPage
     const lastPage = document.getElementById(classLastPage);
     const container = document.getElementById(idDiv);
 
-    firstPage.addEventListener("selectstart", function (e) {e.preventDefault();});
-    prevPage.addEventListener("selectstart", function (e) {e.preventDefault();});
-    currentPage.addEventListener("selectstart", function (e) {e.preventDefault();});
-    nextPage.addEventListener("selectstart", function (e) {e.preventDefault();});
-    lastPage.addEventListener("selectstart", function (e) {e.preventDefault();});
+    firstPage.addEventListener("selectstart", function (e) {
+        e.preventDefault();
+    });
+    prevPage.addEventListener("selectstart", function (e) {
+        e.preventDefault();
+    });
+    currentPage.addEventListener("selectstart", function (e) {
+        e.preventDefault();
+    });
+    nextPage.addEventListener("selectstart", function (e) {
+        e.preventDefault();
+    });
+    lastPage.addEventListener("selectstart", function (e) {
+        e.preventDefault();
+    });
 
     const paginationItems = document.querySelectorAll(classPaginationItem);
     const itemsPerPage = 10;
@@ -39,16 +49,14 @@ function paginate(classFirstPage, classPrevPage, classCurrentPage, classNextPage
         if (currentPageInt === 1) {
             firstPage.style.visibility = "hidden"
             prevPage.style.visibility = "hidden"
-        }
-        else {
+        } else {
             firstPage.style.visibility = "visible"
             prevPage.style.visibility = "visible"
         }
         if (currentPageInt === nbPage) {
             lastPage.style.visibility = "hidden"
             nextPage.style.visibility = "hidden"
-        }
-        else {
+        } else {
             lastPage.style.visibility = "visible"
             nextPage.style.visibility = "visible"
         }

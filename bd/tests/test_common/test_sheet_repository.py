@@ -74,6 +74,5 @@ class TestSheetRepository(unittest.TestCase):
         self.assertEqual(FIRST_LINE, line_content)
 
 
-
 if __name__ == '__main__':
     unittest.main()

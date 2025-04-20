@@ -19,50 +19,50 @@
             <section>
                 <header>
                     <h2>
-                    {% if series and series != "" %}
-                        {{ series }}
-                    {% endif %}
+                        {% if series and series != "" %}
+                            {{ series }}
+                        {% endif %}
                     </h2>
                     <h3>
-                    {% if number and number != "" %}
-                        {% if album and album != "" %}
-                            Tome {{ number }} : {{ album }}
+                        {% if number and number != "" %}
+                            {% if album and album != "" %}
+                                Tome {{ number }} : {{ album }}
+                            {% else %}
+                                Tome {{ number }}
+                            {% endif %}
                         {% else %}
-                            Tome {{ number }}
+                            {% if album and album != "" %}
+                                {{ album }}
+                            {% endif %}
                         {% endif %}
-                    {% else %}
-                        {% if album and album != "" %}
-                            {{ album }}
-                        {% endif %}
-                    {% endif %}
                     </h3>
                 </header>
 
                 <div class="additional-infos">
-                     {% if purchase_price and purchase_price != "" %}
-                     <div class="text_icon" title="Prix">
-                         <img class="icon" src="{% static 'main/icons/price.svg' %}" alt="price">
-                         {{ purchase_price }}€
-                     </div>
-                     {% endif %}
+                    {% if purchase_price and purchase_price != "" %}
+                        <div class="text_icon" title="Prix">
+                            <img class="icon" src="{% static 'main/icons/price.svg' %}" alt="price">
+                            {{ purchase_price }}€
+                        </div>
+                    {% endif %}
 
-                     {% if publication_date and publication_date != "" %}
-                     <div class="text_icon" title="Date de parution">
-                         <img class="icon" src="{% static 'main/icons/date.svg' %}" alt="date">
-                         <p>{{ publication_date|date:"d/m/Y" }}</p>
-                     </div>
-                     {% endif %}
+                    {% if publication_date and publication_date != "" %}
+                        <div class="text_icon" title="Date de parution">
+                            <img class="icon" src="{% static 'main/icons/date.svg' %}" alt="date">
+                            <p>{{ publication_date|date:"d/m/Y" }}</p>
+                        </div>
+                    {% endif %}
 
-                     {% if number_of_pages and number_of_pages != "" %}
-                         <div class="text_icon" title="Nombre de planches">
-                             <img class="icon" src="{% static 'main/icons/pages.svg' %}" alt="pages">
-                             {{ number_of_pages }}
-                         </div>
-                     {% endif %}
+                    {% if number_of_pages and number_of_pages != "" %}
+                        <div class="text_icon" title="Nombre de planches">
+                            <img class="icon" src="{% static 'main/icons/pages.svg' %}" alt="pages">
+                            {{ number_of_pages }}
+                        </div>
+                    {% endif %}
 
                     <div class="text_icon" title="ISBN">
-                         <img class="icon" src="{% static 'main/icons/barcode.svg' %}" alt="pages">
-                         {{ isbn }}
+                        <img class="icon" src="{% static 'main/icons/barcode.svg' %}" alt="pages">
+                        {{ isbn }}
                     </div>
                 </div>
 
@@ -88,7 +88,7 @@
                         {% endif %}
                     {% endif %}
 
-                    {% if colorist and colorist != "" and colorist != writer and colorist != illustrator%}
+                    {% if colorist and colorist != "" and colorist != writer and colorist != illustrator %}
                         <p><strong>{{ colorist }}</strong> (Couleurs),</p>
                     {% endif %}
 
@@ -129,7 +129,7 @@
     </div>
 
     {% if nb_dedicace > 0 %}
-         <section>
+        <section>
             <header>
                 <h2>{{ nb_dedicace }} dédicaces</h2>
             </header>
@@ -138,15 +138,15 @@
                 <div class="prev-carousel" id="prev-dedicace">&lt;</div>
                 <div class="carousel carousel-dedicace">
 
-                {% for dedicace in dedicaces %}
-                    <img src="/media/main/images/dedicaces/{{ isbn }}/{{ dedicace }}"
-                         alt="{{ isbn }}"
-                         data-full="/media/main/images/dedicaces/{{ isbn }}/{{ dedicace }}"
-                         data-title="<h2>{{ dedicace }}</h2>"
-                         data-info="<p></p>"
-                         class="photo-dedicace thumbnail"
-                    />
-                {% endfor %}
+                    {% for dedicace in dedicaces %}
+                        <img src="/media/main/images/dedicaces/{{ isbn }}/{{ dedicace }}"
+                             alt="{{ isbn }}"
+                             data-full="/media/main/images/dedicaces/{{ isbn }}/{{ dedicace }}"
+                             data-title="<h2>{{ dedicace }}</h2>"
+                             data-info="<p></p>"
+                             class="photo-dedicace thumbnail"
+                        />
+                    {% endfor %}
                 </div>
                 <div class="next-carousel" id="next-dedicace">&gt;</div>
             </div>
@@ -161,15 +161,15 @@
             <div class="image_group carousel-container">
                 <div class="prev-carousel" id="prev-exlibris">&lt;</div>
                 <div class="carousel carousel-exlibris">
-                {% for exlibris in ex_libris %}
-                    <img src="/media/main/images/exlibris/{{ isbn }}/{{ exlibris }}"
-                         alt="{{ isbn }}"
-                         data-full="/media/main/images/exlibris/{{ isbn }}/{{ exlibris }}"
-                         data-title="<h2>{{ exlibris }}</h2>"
-                         data-info="<p></p>"
-                         class="photo-exlibris thumbnail"
-                    />
-                {% endfor %}
+                    {% for exlibris in ex_libris %}
+                        <img src="/media/main/images/exlibris/{{ isbn }}/{{ exlibris }}"
+                             alt="{{ isbn }}"
+                             data-full="/media/main/images/exlibris/{{ isbn }}/{{ exlibris }}"
+                             data-title="<h2>{{ exlibris }}</h2>"
+                             data-info="<p></p>"
+                             class="photo-exlibris thumbnail"
+                        />
+                    {% endfor %}
                 </div>
                 <div class="next-carousel" id="next-exlibris">&gt;</div>
             </div>
@@ -185,7 +185,7 @@
 
             <button class="popup_button close" id="close-popup">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
-                    <path d="M18 6L12 12L6 6L4.59 7.41L10.59 13.41L4.59 19.41L6 21L12 15L18 21L19.41 19.41L13.41 13.41L19.41 7.41L18 6Z" />
+                    <path d="M18 6L12 12L6 6L4.59 7.41L10.59 13.41L4.59 19.41L6 21L12 15L18 21L19.41 19.41L13.41 13.41L19.41 7.41L18 6Z"/>
                 </svg>
             </button>
 

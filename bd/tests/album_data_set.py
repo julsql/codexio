@@ -12,10 +12,10 @@ pages_phile = 48
 prix_phile = 10.5
 scenario_phile = "Olivier Gay"
 synopsis_phile = ("Nous sommes en 50 av J.-C. Loin, très loin du petit village d'Armorique que nous connaissons bien,"
-            " l'Impératrice de Chine est emprisonnée suite à coup d'état fomenté par l'infâme Deng Tsin Qin."
-            "<br/>La princesse Fu Yi, fille unique de l'Impératrice, aidée par sa fidèle guerrière Tat Han et"
-            " Graindemaïs, le neveu du marchand phénicien Epidemaïs, s'enfuit pour demander de l'aide aux"
-            " Irréductibles Gaulois.")
+                  " l'Impératrice de Chine est emprisonnée suite à coup d'état fomenté par l'infâme Deng Tsin Qin."
+                  "<br/>La princesse Fu Yi, fille unique de l'Impératrice, aidée par sa fidèle guerrière Tat Han et"
+                  " Graindemaïs, le neveu du marchand phénicien Epidemaïs, s'enfuit pour demander de l'aide aux"
+                  " Irréductibles Gaulois.")
 serie_phile = "Astérix (Albums des films)"
 editeur_phile = "Albert René"
 edition_phile = "Édition originale Noté : Impression en décembre 2022 - n° 616-5-01 Impression et reliure par Pollina - n°13651"
@@ -40,13 +40,12 @@ synopsis_gest = ("Nous sommes en 50 av J.-C. Loin, très loin du petit village "
 serie_gest = "Astérix (Hors Série)"
 editeur_gest = "Les Éditions Albert René"
 
-
 FIRST_LINE = [
     "ISBN", "Album", "Numéro", "Série", "Scénariste", "Dessinateur", "Couleur", "Éditeur", "Date de parution",
     "Édition", "Nombre de planches", "Cote", "Prix d'achat", "Année d'achat", "Lieu d'achat", "Tirage de tête",
     "Dédicace", "Ex Libris", "Emplacement", "Synopsis", "Image"]
 
-FIRST_LINE_DATABASE =[
+FIRST_LINE_DATABASE = [
     'isbn', 'album', 'number', 'series', 'writer', 'illustrator', 'colorist', 'publisher',
     'publication_date', 'edition', 'number_of_pages', 'rating', 'purchase_price', 'year_of_purchase',
     'place_of_purchase', 'deluxe_edition', "localisation", 'synopsis', 'image']
@@ -56,7 +55,7 @@ ASTERIX_WEB_PHILE = {
     'Couleurs': couleurs_phile,
     'Date de publication': date_de_publication_phile,
     'Dessin': dessin_phile,
-    'Image':  image_phile,
+    'Image': image_phile,
     'Numéro': numero_phile,
     'Pages': pages_phile,
     'Prix': prix_phile,
@@ -72,7 +71,7 @@ ASTERIX_WEB_GEST = {
     'Couleurs': couleurs_gest,
     'Date de publication': date_de_publication_gest,
     'Dessin': dessin_gest,
-    'Image':  image_gest,
+    'Image': image_gest,
     'Pages': pages_gest,
     'Scénario': scenario_gest,
     'Synopsis': synopsis_gest,
