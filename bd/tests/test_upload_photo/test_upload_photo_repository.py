@@ -12,6 +12,7 @@ from main.core.upload_photo.internal.photo_connexion import PhotoConnexion
 os.environ['DJANGO_SETTINGS_MODULE'] = 'config.settings'
 django.setup()
 
+
 class TestUpdateDatabaseService(unittest.TestCase):
 
     @classmethod
@@ -43,7 +44,6 @@ class TestUpdateDatabaseService(unittest.TestCase):
             content = f.read()
         self.assertEqual(content, self.file_content.decode('utf-8'))
 
-
     def test_correctly_upload_multiple_files(self) -> None:
         with patch('os.path.isfile') as mock_isfile:
             mock_isfile.return_value = True
@@ -64,7 +64,6 @@ class TestUpdateDatabaseService(unittest.TestCase):
         with open(file, 'r', encoding='utf-8') as f:
             content = f.read()
         self.assertEqual(content, self.file_content.decode('utf-8'))
-
 
     def test_correctly_upload_multiple_files_and_delete(self) -> None:
         with patch('os.path.isfile') as mock_isfile:

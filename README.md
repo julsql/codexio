@@ -36,6 +36,7 @@ docker-compose -f docker-compose-local.yml up --build
 And access to localhost:8000
 
 To shut down:
+
 ```bash
 docker-compose -f docker-compose-local.yml down
 ```
@@ -56,7 +57,8 @@ Run tests in `bd/`
     git clone git@github.com:julsql/bd_website.git
     ```
 
-2. Don't forget to add the .env file in `./bd/config/.env` and the Google sheet api keys file at `./bd/config/bd-sheet-91.json`
+2. Don't forget to add the .env file in `./bd/config/.env` and the Google sheet api keys file at
+   `./bd/config/bd-sheet-91.json`
 
     ```bash
     SECRET_KEY='django-key'
@@ -73,7 +75,7 @@ Run tests in `bd/`
     python3 -m venv env
     source env/bin/activate
     ```
-   
+
 4. Install the libraries
 
     ```bash
@@ -95,7 +97,7 @@ Run tests in `bd/`
     chmod -R 755 media/
     sudo chown -R www-data:www-data media/
     ```
-   
+
 6. Create the database
 
     ```bash
@@ -108,27 +110,28 @@ Run tests in `bd/`
     ```bash
     ./manage.py runserver
     ```
-   
+
 8. To leave the virtual environment
     ```bash
     deactivate
     ```
-   
+
 ### Upload photo
 
 You can upload image with a `POST` request
 The body request a form sending a file with key `file`.
 
-   The urls are:
-      - http://bd.julsql.fr/upload/dedicace/isbn/ for the dedicace
-      - http://bd.julsql.fr/upload/exlibris/isbn/ for the ex-libris
+The urls are:
+
+- http://bd.julsql.fr/upload/dedicace/isbn/ for the dedicace
+- http://bd.julsql.fr/upload/exlibris/isbn/ for the ex-libris
 
 ## Deploy
 
 You need to configure your VM.
 
 Don't forget to download git, python, apache2, pip on your VM:
-    
+
 ```bash
 sudo apt-get update
 sudo apt-get install apache2
@@ -175,6 +178,7 @@ sudo nano /etc/apache2/sites-available/myconfig.conf
 ```
 
 You load the configuration and restart the apache server
+
 ```bash
 sudo a2ensite myconfig.conf
 sudo service apache2 restart

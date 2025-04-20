@@ -33,56 +33,56 @@
         />
     </div>
 
-        <div class="album_description">
-            {% if random_album.writer == random_album.illustrator %}
-                {{ random_album.writer }} (Scénariste, Dessinateur)
-            {% else %}
-                {{ random_album.writer }} (Scénariste),<br/>{{ random_album.illustrator }} (Dessinateur)
-            {% endif %}
+    <div class="album_description">
+        {% if random_album.writer == random_album.illustrator %}
+            {{ random_album.writer }} (Scénariste, Dessinateur)
+        {% else %}
+            {{ random_album.writer }} (Scénariste),<br/>{{ random_album.illustrator }} (Dessinateur)
+        {% endif %}
 
-            <div id="infos">
+        <div id="infos">
 
-                <div class="text_icon" title="Date de parution">
-                    <img class="icon" src="{% static 'main/icons/date.svg' %}" alt="date">
-                    <p>{{ random_album.publication_date|date:"d/m/Y" }}</p>
-                </div>
+            <div class="text_icon" title="Date de parution">
+                <img class="icon" src="{% static 'main/icons/date.svg' %}" alt="date">
+                <p>{{ random_album.publication_date|date:"d/m/Y" }}</p>
+            </div>
 
-                {% if random_album.purchase_price and random_album.number_of_pages and random_album.purchase_price != "" and random_album.number_of_pages != "" %}
-                    <div class="text_icon" title="Prix">
+            {% if random_album.purchase_price and random_album.number_of_pages and random_album.purchase_price != "" and random_album.number_of_pages != "" %}
+                <div class="text_icon" title="Prix">
                     <img class="icon" src="{% static 'main/icons/price.svg' %}" alt="price">
                     {{ random_album.purchase_price }}€
-                    </div>
-                    <div class="text_icon" title="Nombre de planches">
+                </div>
+                <div class="text_icon" title="Nombre de planches">
                     <img class="icon" src="{% static 'main/icons/pages.svg' %}" alt="pages">
                     {{ random_album.number_of_pages }}
+                </div>
+            {% else %}
+                {% if random_album.purchase_price and random_album.purchase_price != "" %}
+                    <div class="text_icon" title="Prix">
+                        <img class="icon" src="{% static 'main/icons/price.svg' %}" alt="price">
+                        {{ random_album.purchase_price }}€
                     </div>
-                    {% else %}
-                        {% if random_album.purchase_price and random_album.purchase_price != "" %}
-                            <div class="text_icon" title="Prix">
-                            <img class="icon" src="{% static 'main/icons/price.svg' %}" alt="price">
-                            {{ random_album.purchase_price }}€
-                            </div>
-                        {% endif %}
+                {% endif %}
 
-                        {% if random_album.number_of_pages and random_album.number_of_pages != "" %}
-                            <div class="text_icon" title="Nombre de planches">
-                            <img class="icon" src="{% static 'main/icons/pages.svg' %}" alt="pages">
-                            {{ random_album.number_of_pages }}
-                            </div>
-                        {% endif %}
-                    {% endif %}
-            </div>
+                {% if random_album.number_of_pages and random_album.number_of_pages != "" %}
+                    <div class="text_icon" title="Nombre de planches">
+                        <img class="icon" src="{% static 'main/icons/pages.svg' %}" alt="pages">
+                        {{ random_album.number_of_pages }}
+                    </div>
+                {% endif %}
+            {% endif %}
         </div>
-        <div class="album_description">
-            {% autoescape off %}
-                {{ random_album.synopsis|truncatechars:300 }}
-            {% endautoescape %}
-        </div>
+    </div>
+    <div class="album_description">
+        {% autoescape off %}
+            {{ random_album.synopsis|truncatechars:300 }}
+        {% endautoescape %}
+    </div>
     <div class="album_description">
         <span class="button-large">
             <a style="color:#FFFFFF;" href="{% url 'pagebd' random_album.isbn %}">Voir plus</a>
         </span>
-    </divê>
+        </divê>
 </section>
 
 <div class="popup" id="popup">
@@ -93,7 +93,7 @@
         <img id="popup-img" src="" alt="Couverture"/>
         <button class="popup_button close" id="close-popup">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
-                <path d="M18 6L12 12L6 6L4.59 7.41L10.59 13.41L4.59 19.41L6 21L12 15L18 21L19.41 19.41L13.41 13.41L19.41 7.41L18 6Z" />
+                <path d="M18 6L12 12L6 6L4.59 7.41L10.59 13.41L4.59 19.41L6 21L12 15L18 21L19.41 19.41L13.41 13.41L19.41 7.41L18 6Z"/>
             </svg>
         </button>
         <button class="popup_button prev" id="prev-image">

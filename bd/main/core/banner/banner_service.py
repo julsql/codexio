@@ -8,7 +8,8 @@ class RandomDedicaceService:
     def main(self) -> dict[str, str]:
         dedicace_folder = os.path.join(MEDIA_ROOT, 'main/images/dedicaces')
         exlibris_folder = os.path.join(MEDIA_ROOT, 'main/images/exlibris')
-        image_files = self.list_files_in_subdirectories(dedicace_folder) + self.list_files_in_subdirectories(exlibris_folder)
+        image_files = self.list_files_in_subdirectories(dedicace_folder) + self.list_files_in_subdirectories(
+            exlibris_folder)
         random_isbn = 0
         random_type = ""
         if image_files:

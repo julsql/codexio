@@ -6,7 +6,6 @@ from tests.album_data_set import ASTERIX_LIST, ASTERIX_ISBN
 
 
 class TestExistingAlbumService(unittest.TestCase):
-
     INEXISTANT_ISBN = 9791038203907
 
     @classmethod

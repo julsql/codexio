@@ -1,5 +1,6 @@
 from main.core.common.logger.logger import logger
 
+
 class AddAlbumError(Exception):
 
     def __init__(self, message_log: str, isbn: int = None) -> None:

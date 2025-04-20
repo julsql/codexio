@@ -1,64 +1,64 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <title>Bandes Dessinées</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-        <link rel="stylesheet" href="{% static 'main/styles/main.css' %}" />
-        <link rel="stylesheet" href="{% static 'main/styles/header.css' %}" />
-        <link rel="stylesheet" href="{% static 'main/styles/home.css' %}" />
-        <link rel="stylesheet" href="{% static 'main/styles/button.css' %}" />
-        <link rel="stylesheet" href="{% static 'main/styles/form.css' %}" />
-        <link rel="stylesheet" href="{% static 'main/styles/bd_list.css' %}" />
-        <link rel="stylesheet" href="{% static 'main/styles/random_album.css' %}" />
-        <link rel="stylesheet" href="{% static 'main/styles/pagination.css' %}" />
-        <link rel="stylesheet" href="{% static 'main/styles/one_album.css' %}" />
-        <link rel="stylesheet" href="{% static 'main/styles/image_popup.css' %}" />
-        <link rel="stylesheet" href="{% static 'main/styles/carousel.css' %}" />
-        <link rel="stylesheet" href="{% static 'main/styles/attachments.css' %}" />
-        <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<head>
+    <title>Bandes Dessinées</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="{% static 'main/styles/main.css' %}"/>
+    <link rel="stylesheet" href="{% static 'main/styles/header.css' %}"/>
+    <link rel="stylesheet" href="{% static 'main/styles/home.css' %}"/>
+    <link rel="stylesheet" href="{% static 'main/styles/button.css' %}"/>
+    <link rel="stylesheet" href="{% static 'main/styles/form.css' %}"/>
+    <link rel="stylesheet" href="{% static 'main/styles/bd_list.css' %}"/>
+    <link rel="stylesheet" href="{% static 'main/styles/random_album.css' %}"/>
+    <link rel="stylesheet" href="{% static 'main/styles/pagination.css' %}"/>
+    <link rel="stylesheet" href="{% static 'main/styles/one_album.css' %}"/>
+    <link rel="stylesheet" href="{% static 'main/styles/image_popup.css' %}"/>
+    <link rel="stylesheet" href="{% static 'main/styles/carousel.css' %}"/>
+    <link rel="stylesheet" href="{% static 'main/styles/attachments.css' %}"/>
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
 
-        {% block head %}{% endblock %}
+    {% block head %}{% endblock %}
 
-    </head>
+</head>
 
-    <body>
-        <div id="page-wrapper">
-            <!-- Header -->
-            <section id="header">
-                <div class="container">
-                    <div id="header_container">
-                        <!-- Logo -->
-                        <h1 id="logo"><a href="{% url 'home' %}">BD</a></h1>
+<body>
+<div id="page-wrapper">
+    <!-- Header -->
+    <section id="header">
+        <div class="container">
+            <div id="header_container">
+                <!-- Logo -->
+                <h1 id="logo"><a href="{% url 'home' %}">BD</a></h1>
 
-                        <button id="menu-toggle">&#9776;</button>
-                        <!-- Nav -->
-                        <nav id="nav">
-                            <a href="{% url 'home' %}">Menu</a>
-                            <a href="{% url 'bdrecherche' %}">Les bandes dessinées</a>
-                            <a href="{% url 'dedicaces' %}">Les dédicaces</a>
-                            <a href="{% url 'exlibris' %}">Les Ex-libris</a>
-                            <a href="{% url 'statistiques' %}">Statistiques</a>
-                        </nav>
-                    </div>
-                </div>
-            </section>
-
-            <section id="content">
-                <div class="container">
-                {% block body %}{% endblock %}
-                </div>
-            </section>
+                <button id="menu-toggle">&#9776;</button>
+                <!-- Nav -->
+                <nav id="nav">
+                    <a href="{% url 'home' %}">Menu</a>
+                    <a href="{% url 'bdrecherche' %}">Les bandes dessinées</a>
+                    <a href="{% url 'dedicaces' %}">Les dédicaces</a>
+                    <a href="{% url 'exlibris' %}">Les Ex-libris</a>
+                    <a href="{% url 'statistiques' %}">Statistiques</a>
+                </nav>
+            </div>
         </div>
+    </section>
 
-        <!-- Scripts -->
-        <!-- Fonctionnement header navigation -->
-        <script src="{% static 'main/scripts/header/jquery.min.js' %}"></script>
-        <script src="{% static 'main/scripts/header/breakpoints.min.js' %}"></script>
-        <script src="{% static 'main/scripts/header/util.js' %}"></script>
-        <script src="{% static 'main/scripts/header/main.js' %}"></script>
+    <section id="content">
+        <div class="container">
+            {% block body %}{% endblock %}
+        </div>
+    </section>
+</div>
 
-        {% block javascript %}{% endblock %}
-    </body>
+<!-- Scripts -->
+<!-- Fonctionnement header navigation -->
+<script src="{% static 'main/scripts/header/jquery.min.js' %}"></script>
+<script src="{% static 'main/scripts/header/breakpoints.min.js' %}"></script>
+<script src="{% static 'main/scripts/header/util.js' %}"></script>
+<script src="{% static 'main/scripts/header/main.js' %}"></script>
+
+{% block javascript %}{% endblock %}
+</body>
 </html>

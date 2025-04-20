@@ -17,10 +17,10 @@ class BdGestRepository(BdRepository):
 
     def __init__(self) -> None:
         self.header = {"Titre album": "Album", "Tome": "Numéro",
-                   "Série": "Série", "Scénario": "Scénario",
-                   "Dessin": "Dessin", "Couleurs": "Couleurs", "Éditeur": "Éditeur",
-                   "date de parution": "Date de publication", "": "Édition",
-                   "Nombre de planches": "Pages"}
+                       "Série": "Série", "Scénario": "Scénario",
+                       "Dessin": "Dessin", "Couleurs": "Couleurs", "Éditeur": "Éditeur",
+                       "date de parution": "Date de publication", "": "Édition",
+                       "Nombre de planches": "Pages"}
 
     def __str__(self) -> str:
         return "BdGestRepository"
@@ -82,7 +82,7 @@ class BdGestRepository(BdRepository):
         album_tag = soup.find("div", class_=self.BANDEAU_CLASS)
 
         sub_title = album_tag.find("h3")
-        editor_tag = sub_title.find('span',{"itemprop": "publisher"})
+        editor_tag = sub_title.find('span', {"itemprop": "publisher"})
         informations["Éditeur"] = editor_tag.get_text()
 
         auteur_tag = album_tag.find("div", class_="liste-auteurs")
@@ -101,14 +101,13 @@ class BdGestRepository(BdRepository):
             if categorie in keys:
                 informations[categorie] = nom
 
-
     def _extract_additional_info(self, soup: BeautifulSoup, informations: dict) -> None:
         """ Extraire les informations supplémentaires """
 
         album_tag = soup.find("div", class_=self.BANDEAU_CLASS)
 
         info_tag = album_tag.find("h4")
-        date_tag = info_tag.find('span',{"title": "Dépot légal"}).get_text()
+        date_tag = info_tag.find('span', {"title": "Dépot légal"}).get_text()
 
         # Vérifier s'il y a une date entre parenthèses (ex: 08 février 2023)
         match_precise = re.search(r"\((\d{2}) (\w+) (\d{4})\)", date_tag)
@@ -124,7 +123,7 @@ class BdGestRepository(BdRepository):
 
         informations['Date de publication'] = f"{annee}-{mois_fr}-{jour}"
 
-        page_tag = info_tag.find('span',{"itemprop": "numberOfPages"}).get_text()
+        page_tag = info_tag.find('span', {"itemprop": "numberOfPages"}).get_text()
 
         try:
             informations["Pages"] = int(page_tag)
@@ -146,7 +145,7 @@ class BdGestRepository(BdRepository):
     def _extract_synopsis(self, soup: BeautifulSoup, informations: dict) -> None:
         """ Extraire le synopsis """
 
-        synopsis_tag = soup.find('span',{"itemprop": "description"})
+        synopsis_tag = soup.find('span', {"itemprop": "description"})
         if synopsis_tag:
             informations["Synopsis"] = synopsis_tag.get_text()
 

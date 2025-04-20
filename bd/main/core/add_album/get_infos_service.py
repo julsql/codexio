@@ -7,7 +7,7 @@ class GetInfosService:
     def __init__(self, bd_repositories: list[BdRepository]) -> None:
         self.isbn = None
         self.repositories = bd_repositories
-    
+
     def main(self, isbn: int) -> dict[str, str]:
         self.isbn = isbn
         for repository in self.repositories:

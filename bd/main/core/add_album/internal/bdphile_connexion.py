@@ -70,7 +70,8 @@ class BdPhileRepository(BdRepository):
                     current_key = None
             elif tag.name == 'dd' and current_key in keys:
                 dd_text = " ".join(tag.stripped_strings)
-                informations[current_key] = informations.get(current_key, "") + ("," if current_key in informations else "") + dd_text
+                informations[current_key] = informations.get(current_key, "") + (
+                    "," if current_key in informations else "") + dd_text
 
     def _extract_format_and_price(self, informations: dict, isbn: int) -> None:
         """ Extraire le format et le prix """
@@ -106,7 +107,9 @@ class BdPhileRepository(BdRepository):
         """ Extraire le synopsis """
         synopsis_tag = soup.find('p', class_='synopsis')
         if synopsis_tag:
-            cleaned_synopsis = ''.join(str(tag) for tag in synopsis_tag.decode_contents()).strip().replace('\r', '').replace('\n', '').replace('\t', '')
+            cleaned_synopsis = ''.join(str(tag) for tag in synopsis_tag.decode_contents()).strip().replace('\r',
+                                                                                                           '').replace(
+                '\n', '').replace('\t', '')
             informations["Synopsis"] = cleaned_synopsis
 
     def _parse_publication_date(self, informations: dict, isbn: int) -> None:
@@ -147,7 +150,6 @@ class BdPhileRepository(BdRepository):
         "décembre": "December",
         "decembre": "December",
     }
-
 
     def translate(self, date: str) -> str:
         for mois, month in self.TRANSLATED_MONTHS.items():

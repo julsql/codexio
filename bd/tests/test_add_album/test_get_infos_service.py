@@ -7,13 +7,11 @@ from tests.test_add_album.internal.bd_in_memory import BdInMemory
 
 
 class TestCorrectInfos(unittest.TestCase):
-
     INEXISTANT_ISBN = 9791038203907
 
     @classmethod
     def setUpClass(cls) -> None:
         cls.repository = BdInMemory()
-
 
     def test_get_correct_info_successfully(self) -> None:
         self.service = GetInfosService([])

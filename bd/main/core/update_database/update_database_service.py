@@ -49,7 +49,7 @@ class UpdateDatabaseService:
         self.database.create_table()
         self.database.insert(data)
 
-    def convert_isbn(self, isbn: str) -> int|None:
+    def convert_isbn(self, isbn: str) -> int | None:
         if isbn:
             try:
                 return int(isbn.replace("-", ""))
@@ -58,7 +58,7 @@ class UpdateDatabaseService:
         else:
             return None
 
-    def convert_date(self, date: str) -> str|None:
+    def convert_date(self, date: str) -> str | None:
         # Dictionnaire des mois français
         mois_fr = {
             "janv.": "01", "févr.": "02", "mars": "03", "avr.": "04", "mai": "05", "juin": "06",
@@ -97,13 +97,13 @@ class UpdateDatabaseService:
 
         return None
 
-    def convert_int(self, year: str) -> int|None :
+    def convert_int(self, year: str) -> int | None:
         if year:
             return int(year)
         else:
             return None
 
-    def convert_price(self, price: str) -> float|None :
+    def convert_price(self, price: str) -> float | None:
         if price:
             return float(price.replace(",", "."))
         else:

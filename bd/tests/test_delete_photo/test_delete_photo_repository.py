@@ -41,7 +41,7 @@ class TestPhotoConnexion(unittest.TestCase):
         photo_path = os.path.join(album_path, f"{photo_id}.jpeg")
         with open(photo_path, 'w') as f:
             f.write("test image content")
-        another_photo_path = os.path.join(album_path, f"{photo_id+1}.jpeg")
+        another_photo_path = os.path.join(album_path, f"{photo_id + 1}.jpeg")
         with open(another_photo_path, 'w') as f:
             f.write("another test image content")
 
@@ -69,7 +69,7 @@ class TestPhotoConnexion(unittest.TestCase):
         filenames = ["3.jpeg", "4.jpeg", "5.jpeg"]
         for i, filename in enumerate(filenames):
             with open(os.path.join(chemin_dossier, filename), 'w') as f:
-                f.write(f"test image content {i+1}")
+                f.write(f"test image content {i + 1}")
 
         self.photo_connexion.renommer_photos(chemin_dossier)
 
@@ -80,7 +80,8 @@ class TestPhotoConnexion(unittest.TestCase):
         for i, filename in enumerate(expected_files):
             with open(os.path.join(chemin_dossier, filename), 'r') as f:
                 content = f.read()
-                self.assertEqual(f"test image content {i+1}", content)
+                self.assertEqual(f"test image content {i + 1}", content)
+
 
 if __name__ == "__main__":
     unittest.main()
