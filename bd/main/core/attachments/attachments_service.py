@@ -5,11 +5,13 @@ from main.core.common.database.internal.bd_model import BD
 
 
 class AttachmentsService:
-    def main(self) -> dict[str, list[dict[str, str]] | int]:
+    def main_signed_copies(self) -> dict[str, list[dict[str, str]] | int]:
         signed_copies, signed_copy_sum = self.dedicaces()
+        return {'signed_copies': signed_copies, 'signed_copy_sum': signed_copy_sum}
+
+    def main_ex_libris(self) -> dict[str, list[dict[str, str]] | int]:
         exlibris, exlibris_sum = self.exlibris()
-        return {'signed_copies': signed_copies, 'signed_copy_sum': signed_copy_sum,
-                'exlibris': exlibris, 'exlibris_sum': exlibris_sum}
+        return {'exlibris': exlibris, 'exlibris_sum': exlibris_sum}
 
     def dedicaces(self) -> (list[dict[str, str]], int):
         image_folder = os.path.join(MEDIA_ROOT, 'main/images/dedicaces')
@@ -28,10 +30,10 @@ class AttachmentsService:
                     infos.append({'isbn': isbn, 'album': "", 'number': "", 'series': "",
                                   'signes_copy_range': range(1, nb_dedicace + 1), 'signed_copy': nb_dedicace})
                 else:
-                    infos.append({'isbn': isbn, 'album': result["album"], 'number': result["number"], 'series': result["series"],
-                                  'signes_copy_range': range(1, nb_dedicace + 1), 'signed_copy': nb_dedicace})
+                    infos.append(
+                        {'isbn': isbn, 'album': result["album"], 'number': result["number"], 'series': result["series"],
+                         'signes_copy_range': range(1, nb_dedicace + 1), 'signed_copy': nb_dedicace})
         return infos, dedicaces_sum
-
 
     def exlibris(self) -> (list[dict[str, str]], int):
         image_folder = os.path.join(MEDIA_ROOT, 'main/images/exlibris')
@@ -50,10 +52,10 @@ class AttachmentsService:
                     infos.append({'isbn': isbn, 'album': "", 'number': "", 'series': "",
                                   'ex_libris_range': range(1, nb_exlibris + 1), 'ex_libris': nb_exlibris})
                 else:
-                    infos.append({'isbn': isbn, 'album': result["album"], 'number': result["number"], 'series': result["series"],
-                                  'ex_libris_range': range(1, nb_exlibris + 1), 'ex_libris': nb_exlibris})
+                    infos.append(
+                        {'isbn': isbn, 'album': result["album"], 'number': result["number"], 'series': result["series"],
+                         'ex_libris_range': range(1, nb_exlibris + 1), 'ex_libris': nb_exlibris})
         return infos, exlibris_sum
-
 
     def count_images_in_directory(self, directory_path: str) -> int:
         if not os.path.isdir(directory_path):
