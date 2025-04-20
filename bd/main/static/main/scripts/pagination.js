@@ -13,7 +13,7 @@ function paginate(classFirstPage, classPrevPage, classCurrentPage, classNextPage
     lastPage.addEventListener("selectstart", function (e) {e.preventDefault();});
 
     const paginationItems = document.querySelectorAll(classPaginationItem);
-    const itemsPerPage = 20;
+    const itemsPerPage = 10;
     const nbPage = Math.ceil(paginationItems.length / itemsPerPage);
     let currentPageInt = 1;
 

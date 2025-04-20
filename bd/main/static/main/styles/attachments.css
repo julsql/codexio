@@ -1,12 +1,11 @@
 #all_dedicaces, #all_exlibris {
-    display: none;
-    visibility: hidden;
+    display: block;
 }
 
 .hide {
+    display: none;
     cursor: pointer;
     user-select: none;
-    -webkit-user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
