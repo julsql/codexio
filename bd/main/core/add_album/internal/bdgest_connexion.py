@@ -14,6 +14,7 @@ class BdGestRepository(BdRepository):
     SEARCH_URL = "https://www.bedetheque.com/search/albums"
     BANDEAU_CLASS = "bandeau-info album panier"
     IMAGE_CLASS = "bandeau-image album"
+    BS_FEATURE = 'html.parser'
 
     def __init__(self) -> None:
         self.header = {"Titre album": "Album", "Tome": "Numéro",
@@ -30,7 +31,7 @@ class BdGestRepository(BdRepository):
         url = self.get_url(isbn)
 
         html = self.get_html(url)
-        soup = BeautifulSoup(html, 'html.parser')
+        soup = BeautifulSoup(html, self.BS_FEATURE)
         body = soup.find("div", class_="bandeau-principal")
 
         # Extraction du titre
@@ -179,7 +180,7 @@ class BdGestRepository(BdRepository):
 
             html = response.text
 
-            soup = BeautifulSoup(html, 'html.parser')
+            soup = BeautifulSoup(html, self.BS_FEATURE)
             search_list = soup.find("ul", class_="search-list")
 
             # Trouver le premier <li> dans cette liste
@@ -230,9 +231,9 @@ class BdGestRepository(BdRepository):
         response = session.get(self.SEARCH_URL)
 
         if response.status_code != 200:
-            raise Exception(f"Erreur {response.status_code} lors de l'accès au site.")
+            raise AddAlbumError(f"Erreur {response.status_code} lors de l'accès au site.")
 
-        soup = BeautifulSoup(response.text, 'html.parser')
+        soup = BeautifulSoup(response.text, self.BS_FEATURE)
 
         # Trouver le champ input contenant le token CSRF
         csrf_input = soup.find("input", {"name": "csrf_token_bel"})
@@ -240,4 +241,4 @@ class BdGestRepository(BdRepository):
         if csrf_input:
             return csrf_input["value"]
         else:
-            raise Exception("Impossible de récupérer le token CSRF.")
+            raise AddAlbumError("Impossible de récupérer le token CSRF.")
