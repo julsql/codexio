@@ -5,7 +5,7 @@
     justify-content: center;
 }
 
-.thumbnail, .cover {
+.thumbnail {
     object-fit: cover;
     cursor: pointer;
 }
@@ -55,10 +55,10 @@
     padding-left: 10px;
 }
 
-#image-info p {
+#image-info {
     text-align: center;
     word-wrap: break-word;
-    font-size: 20px;
+    font-size: 16px;
     max-width: 100%;
     margin: auto 10px;
     padding-right: 10px;
@@ -66,6 +66,7 @@
 }
 
 #image-title h2 {
+    font-size: 20px;
     color: white;
 }
 
@@ -91,8 +92,10 @@ button:hover {
 }
 
 #close-popup {
-    top: 27px;
-    right: -40px;
+    position: absolute;
+    background-color: transparent;
+    top: 20px;
+    right: 0;
     font-size: 30px;
 }
 
@@ -104,3 +107,24 @@ button:hover {
     right: -40px;
 }
 
+@media (max-width: 600px) {
+    .popup_button {
+        position: fixed;
+    }
+
+    .prev {
+        left: 0;
+    }
+
+    .next {
+        right: 0;
+    }
+
+    #image-title {
+        font-size: 12px;
+    }
+
+    #image-info {
+        font-size: 12px;
+    }
+}
