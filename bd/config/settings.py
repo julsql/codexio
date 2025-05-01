@@ -85,10 +85,14 @@ WSGI_APPLICATION = 'config.wsgi.application'
 POSTGRES_USER = config('POSTGRES_USER')
 POSTGRES_PASSWORD = config('POSTGRES_PASSWORD')
 POSTGRES_DB = config('POSTGRES_DB')
+ENV = config('DJANGO_ENV')
 
-if config('DJANGO_ENV') == 'production':
+if ENV == 'production':
     db_host = 'postgres'
     port = '5432'
+elif ENV == 'test':
+    db_host = 'localhost'
+    port = '5452'
 else:
     db_host = "localhost"
     port = '5442'

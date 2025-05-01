@@ -19,7 +19,7 @@ class UpdateDatabaseService:
 
         data = self._process_rows(rows[1:], titles, column_indices)
 
-        self.database.create_table()
+        self.database.reset_table()
         self.database.insert(data)
 
     def _get_column_indices(self, titles: list[str]) -> dict[str, int]:
