@@ -10,11 +10,11 @@ class AdvancedSearchService:
         if request.method == 'POST':
             form = RechercheForm(request.POST)
             infos = self.form_search(form)
-            return form, infos, True
+            return form, infos, len(infos), True
         else:
             form = RechercheForm()
             infos = self.form_search()
-            return form, infos, False
+            return form, infos, len(infos), False
 
     def form_search(self, form=None) -> list[dict[str, str]]:
         queryset = self.repository.get_all()
