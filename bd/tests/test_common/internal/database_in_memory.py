@@ -4,12 +4,11 @@ from main.core.common.database.database_repository import DatabaseRepository
 
 
 class DatabaseInMemory(DatabaseRepository):
-    def __init__(self, filename: str):
-        self.filename = filename
-        self.database = []
+    def __init__(self):
+        self.database = None
         self.column_names = None
 
-    def create_table(self) -> None:
+    def reset_table(self) -> None:
         self.database = []
 
     def insert(self, value: List[Dict[str, str]]) -> None:

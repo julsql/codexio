@@ -1,3 +1,5 @@
+from datetime import datetime
+
 ASTERIX_ISBN = 9782864976165
 ASTERIX_BDPHILE_LINK = "https://www.bdphile.fr/album/view/160391/"
 ASTERIX_BDGEST_LINK = "https://www.bedetheque.com/BD-Asterix-Hors-Serie-C14-L-Empire-du-Milieu-467639.html"
@@ -175,3 +177,31 @@ ASTERIX_LIST_STR = [
     synopsis_phile,
     image_phile
 ]
+
+rating = 10.0
+year_of_purchase = 2025
+place_of_purchase = "Lyon"
+deluxe_edition = False
+localisation = ""
+
+ALBUM_EXEMPLE = {
+    "isbn": ASTERIX_ISBN,
+    "album": album_phile,
+    "number": numero_phile,
+    "series": serie_phile,
+    "writer": scenario_phile,
+    "illustrator": dessin_phile,
+    "colorist": couleurs_phile,
+    "publisher": editeur_phile,
+    "publication_date": datetime.strptime(date_de_publication_phile, '%Y-%m-%d').date(),
+    "edition": edition_phile,
+    "number_of_pages": pages_phile,
+    "rating": rating,
+    "purchase_price": prix_phile,
+    "year_of_purchase": year_of_purchase,
+    "place_of_purchase": place_of_purchase,
+    "deluxe_edition": deluxe_edition,
+    "localisation": localisation,
+    "synopsis": synopsis_phile,
+    "image": image_phile
+}

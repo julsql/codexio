@@ -1,0 +1,20 @@
+services:
+  postgres_test:
+    image: postgres:15
+    container_name: postgres_test
+    restart: always
+    env_file:
+      - .test.env
+    ports:
+      - "5452:5432"
+    volumes:
+      - postgres_data_test:/var/lib/postgresql/data
+      - ./bd/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - bd_test_network
+
+volumes:
+  postgres_data_test:
+
+networks:
+  bd_test_network:

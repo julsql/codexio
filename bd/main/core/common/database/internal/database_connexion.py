@@ -3,7 +3,7 @@ from main.core.common.database.internal.bd_model import BD
 
 
 class DatabaseConnexion(DatabaseRepository):
-    def create_table(self) -> None:
+    def reset_table(self) -> None:
         BD.objects.all().delete()
 
     def insert(self, value: list[dict[str, str]]) -> None:

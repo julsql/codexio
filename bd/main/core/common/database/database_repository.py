@@ -4,7 +4,7 @@ from abc import abstractmethod, ABC
 class DatabaseRepository(ABC):
 
     @abstractmethod
-    def create_table(self) -> None:
+    def reset_table(self) -> None:
         pass
 
     @abstractmethod
