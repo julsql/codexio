@@ -19,6 +19,10 @@ jobs:
       DEBUG: false
       POST_TOKEN: ${{ secrets.POST_TOKEN }}
       GSHEET_CREDENTIALS: config/bd-sheet-91.json
+      DJANGO_ENV: test
+      POSTGRES_USER: postgres_test
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_DB: test_db
 
     steps:
       # Étape 1 : Vérifiez le code source

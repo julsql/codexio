@@ -1,4 +1,4 @@
 # Config files
 config/bd-sheet-91.json
-config/.env
-database/
+.env
+database/old

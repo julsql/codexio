@@ -10,11 +10,7 @@ WORKDIR /app
 COPY . /app/
 
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt && \
-    mkdir -p /app/bd/database /app/bd/media && \
-    chmod -R 755 /app/bd/media && \
-    chown -R www-data:www-data /app/bd/media/ && \
-    python3 bd/manage.py migrate
+    pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8000
 

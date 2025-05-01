@@ -1,7 +1,7 @@
 import os
 
-from django.db.models import Count, Sum, IntegerField
-from django.db.models.functions import Cast
+from django.db.models import Count, Sum, IntegerField, FloatField
+from django.db.models.functions import Cast, Round
 
 from config.settings import MEDIA_ROOT
 from main.core.common.database.internal.bd_model import BD
@@ -13,9 +13,9 @@ class StatisticsService:
         exlibris_total = self.get_exlibris_total()
         infos = BD.objects.aggregate(
             nombre=Count('id'),
-            pages=Cast(Sum('number_of_pages'), output_field=IntegerField()),
-            prix=Cast(Sum('rating'), output_field=IntegerField()),
-            tirage=Cast(Sum('deluxe_edition'), output_field=IntegerField()),
+            pages=Sum(Cast('number_of_pages', output_field=IntegerField())),
+            prix=Cast(Round(Sum(Cast('rating', output_field=FloatField()))), output_field=IntegerField()),
+            tirage=Sum(Cast('deluxe_edition', output_field=IntegerField())),
         )
         infos["dedicaces"] = dedicace_total
         infos["exlibris"] = exlibris_total
