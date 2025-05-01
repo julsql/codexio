@@ -6,37 +6,22 @@
     <button id="scrollTopBtn" class="scroll-top" onclick="scrollToTop()">&#x23F6;</button>
 
     <div class="col-12">
-
-        <section>
-            <header>
-                <h2>Sommaire</h2>
-                <h3><a href="#dedicaces">Dédicaces ({{ signed_copy_sum }})</a></h3>
-            </header>
-        </section>
-
         <!-- Main Content -->
 
         <section id="dedicaces">
             <div class="title">
                 <header>
                     <h2>Les dédicaces</h2>
-                    <h3>Toutes les dédicaces</h3>
+                    <h3>Toutes les dédicaces ({{ signed_copy_sum }})</h3>
                 </header>
 
                 <div class="hide" id="hide_dedicace">Afficher</div>
             </div>
 
             <div id="all_dedicaces">
-                <div id="dedicace-pagination">
-                    <div id="dedicace-first-page" class="pagination">&lt;&lt;</div>
-                    <div id="dedicace-prev-page" class="pagination">&lt;</div>
-                    <span id="dedicace-current-page"></span>
-                    <div id="dedicace-next-page" class="pagination">&gt;</div>
-                    <div id="dedicace-last-page" class="pagination">&gt;&gt;</div>
-                </div>
                 {% for bd in signed_copies %}
 
-                    <section id="dedicaces_{{ bd.isbn }}" class="pagination-item-dedicace sub-section">
+                    <div id="dedicaces_{{ bd.isbn }}" class="pagination-item-dedicace sub-section">
                         <header>
                             <h2>
                                 <a href="{% url 'pagebd' bd.isbn %}">
@@ -65,18 +50,20 @@
                             <div class="prev-carousel" id="prev-dedicace-{{ bd.isbn }}">&lt;</div>
                             <div class="carousel carousel-dedicace-{{ bd.isbn }}">
                                 {% for i in bd.signes_copy_range %}
-                                    <img src="/media/main/images/dedicaces/{{ bd.isbn }}/{{ i }}.jpeg"
+                                    <img class="photo-dedicace-{{ bd.isbn }}"
+                                         src="{% static 'main/images/skeleton.gif' %}"
+                                         data-src="/media/main/images/dedicaces/{{ bd.isbn }}/{{ i }}.jpeg"
                                          alt="{{ bd.isbn }}"
                                          data-full="/media/main/images/dedicaces/{{ bd.isbn }}/{{ i }}.jpeg"
                                          data-title="<h2>{{ bd.series }}</h2>"
                                          data-info="<p>{{ bd.album }}</p>"
-                                         class="photo-dedicace-{{ bd.isbn }}"
+
                                     />
                                 {% endfor %}
                             </div>
                             <div class="next-carousel" id="next-dedicace-{{ bd.isbn }}">&gt;</div>
                         </div>
-                    </section>
+                    </div>
                 {% endfor %}
 
             </div>
@@ -112,13 +99,9 @@
 {% block javascript %}
     <script src="{% static 'main/scripts/image_popup.js' %}"></script>
     <script src="{% static 'main/scripts/attachments.js' %}"></script>
-    <script src="{% static 'main/scripts/pagination.js' %}"></script>
     <script src="{% static 'main/scripts/carousel.js' %}"></script>
 
     <script>
-        showSection("all_dedicaces", "hide_dedicace")
-
-        paginate("dedicace-first-page", "dedicace-prev-page", "dedicace-current-page", "dedicace-next-page", "dedicace-last-page", ".pagination-item-dedicace", "#dedicace-pagination");
         {% for bd in signed_copies %}
             useCarousel(".carousel-dedicace-{{ bd.isbn }}", "#next-dedicace-{{ bd.isbn }}", "#prev-dedicace-{{ bd.isbn }}", ".photo-dedicace-{{ bd.isbn }}");
         {% endfor %}

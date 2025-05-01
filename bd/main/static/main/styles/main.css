@@ -54,8 +54,8 @@ strong {
     position: relative;
 }
 
-#content section .sub-section {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Ombre dans toutes les directions */
+#content .sub-section {
+    margin-bottom: 20px;
 }
 
 section .couverture {

@@ -6,36 +6,21 @@
     <button id="scrollTopBtn" class="scroll-top" onclick="scrollToTop()">&#x23F6;</button>
 
     <div class="col-12">
-
-        <section>
-            <header>
-                <h2>Sommaire</h2>
-                <h3><a href="#exlibris">Ex-libris ({{ exlibris_sum }})</a></h3>
-            </header>
-        </section>
-
         <!-- Main Content -->
 
         <section id="exlibris">
             <div class="title">
                 <header>
                     <h2>Les Ex-libris</h2>
-                    <h3>Tous les ex-libris</h3>
+                    <h3>Tous les ex-libris ({{ exlibris_sum }})</h3>
                 </header>
                 <div class="hide" id="hide_exlibris">Afficher</div>
             </div>
 
             <div id="all_exlibris">
-                <div id="exlibris-pagination">
-                    <div id="exlibris-first-page" class="pagination">&lt;&lt;</div>
-                    <div id="exlibris-prev-page" class="pagination">&lt;</div>
-                    <span id="exlibris-current-page"></span>
-                    <div id="exlibris-next-page" class="pagination">&gt;</div>
-                    <div id="exlibris-last-page" class="pagination">&gt;&gt;</div>
-                </div>
                 {% for bd in exlibris %}
 
-                    <section id="exlibris_{{ bd.isbn }}" class="pagination-item-exlibris sub-section">
+                    <div id="exlibris_{{ bd.isbn }}" class="pagination-item-exlibris sub-section">
                         <header>
                             <h2>
                                 <a href="{% url 'pagebd' bd.isbn %}">
@@ -63,18 +48,19 @@
                             <div class="prev-carousel" id="prev-exlibris-{{ bd.isbn }}">&lt;</div>
                             <div class="carousel carousel-exlibris-{{ bd.isbn }}">
                                 {% for i in bd.ex_libris_range %}
-                                    <img src="/media/main/images/exlibris/{{ bd.isbn }}/{{ i }}.jpeg"
+                                    <img class="photo-exlibris-{{ bd.isbn }}"
+                                         src="{% static 'main/images/skeleton.gif' %}"
+                                         data-src="/media/main/images/exlibris/{{ bd.isbn }}/{{ i }}.jpeg"
                                          alt="{{ bd.isbn }}"
                                          data-full="/media/main/images/exlibris/{{ bd.isbn }}/{{ i }}.jpeg"
                                          data-title="<h2>{{ bd.series }}</h2>"
                                          data-info="<p>{{ bd.album }}</p>"
-                                         class="photo-exlibris-{{ bd.isbn }}"
                                     />
                                 {% endfor %}
                             </div>
                             <div class="next-carousel" id="next-exlibris-{{ bd.isbn }}">&gt;</div>
                         </div>
-                    </section>
+                    </div>
                 {% endfor %}
             </div>
         </section>
@@ -110,13 +96,9 @@
 {% block javascript %}
     <script src="{% static 'main/scripts/image_popup.js' %}"></script>
     <script src="{% static 'main/scripts/attachments.js' %}"></script>
-    <script src="{% static 'main/scripts/pagination.js' %}"></script>
     <script src="{% static 'main/scripts/carousel.js' %}"></script>
 
     <script>
-        showSection("all_exlibris", "hide_exlibris")
-
-        paginate("exlibris-first-page", "exlibris-prev-page", "exlibris-current-page", "exlibris-next-page", "exlibris-last-page", ".pagination-item-exlibris", "#exlibris-pagination");
         {% for bd in exlibris %}
             useCarousel(".carousel-exlibris-{{ bd.isbn }}", "#next-exlibris-{{ bd.isbn }}", "#prev-exlibris-{{ bd.isbn }}", ".photo-exlibris-{{ bd.isbn }}");
         {% endfor %}
