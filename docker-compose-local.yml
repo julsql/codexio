@@ -9,6 +9,8 @@ services:
       - "8000:8000" # Expose le port 8000
     volumes:
       - ./bd/media:/app/bd/media # Monte le dossier local 'media' dans le conteneur
+      - ./bd/database:/app/bd/database
     environment:
       - DEBUG=True
-    command: python bd/manage.py runserver 0.0.0.0:8000
+    command: >
+      sh -c "python manage.py migrate && python bd/manage.py runserver 0.0.0.0:8000

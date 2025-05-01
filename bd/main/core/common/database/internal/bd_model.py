@@ -1,9 +1,12 @@
 from django.db import models
+from django.db.models import Manager
 
 
 class BD(models.Model):
     class Meta:
         db_table = 'BD'
+
+    objects: Manager
 
     isbn = models.BigIntegerField()
     album = models.TextField()
