@@ -9,7 +9,7 @@ from main.core.random_album.internal.random_album_view import random_album
 def home(request: HttpRequest) -> HttpResponse:
     infos_album = random_album()
     banner = random_dedicace()
-    form, _, form_send = advanced_search(request)
+    form, _, _, form_send = advanced_search(request)
     value = banner.copy()
     if form_send:
         return render(request, 'bd_search/module.html', value)

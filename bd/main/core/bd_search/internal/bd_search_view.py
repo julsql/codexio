@@ -10,5 +10,5 @@ from main.core.advanced_search.internal.advanced_search_connexion import Advance
 def bd_search(request: HttpRequest) -> HttpResponse:
     repository = AdvancedSearchConnexion()
     service = AdvancedSearchService(repository)
-    form, infos, _ = service.main(request)
-    return render(request, 'bd_search/module.html', {'form': form, 'infos': infos})
+    form, infos, result_sum, _ = service.main(request)
+    return render(request, 'bd_search/module.html', {'form': form, 'infos': infos, 'total': result_sum})
