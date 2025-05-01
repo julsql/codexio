@@ -1,5 +1,5 @@
 [data-see="false"] {
-    display: none;
+    display: block; /* none */
 }
 
 [data-see="true"] {
@@ -14,6 +14,7 @@
     color: darkgray;
     font-size: 14px;
     display: grid;
+    visibility: hidden;
 }
 
 .see-more {
