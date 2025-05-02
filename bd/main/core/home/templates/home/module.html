@@ -12,7 +12,11 @@
         </div>
 
         <div class="col-30">
-            {% include 'random_album/module.html' %}
+            {% if random_album %}
+                {% include 'random_album/module.html' %}
+            {% else %}
+                {% include 'random_album/no_album.html' %}
+            {% endif %}
         </div>
     </div>
 
