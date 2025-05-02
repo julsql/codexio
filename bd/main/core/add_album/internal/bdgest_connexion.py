@@ -1,9 +1,7 @@
-import datetime
 import re
 
 import requests
 from bs4 import BeautifulSoup
-from dateutil.parser import parse, ParserError
 
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.bd_repository import BdRepository
@@ -150,15 +148,6 @@ class BdGestRepository(BdRepository):
         if synopsis_tag:
             informations["Synopsis"] = synopsis_tag.get_text()
 
-    def _parse_publication_date(self, informations: dict, isbn: int) -> None:
-        """ Parse la date de publication """
-        try:
-            parsed_date = parse(self.translate(informations.get("Date de publication", "")),
-                                dayfirst=True, fuzzy=True, default=datetime.datetime(1900, 1, 1))
-            informations["Date de publication"] = parsed_date.date().isoformat()
-        except ParserError:
-            logger.warning("Problème de date de parution", extra={"isbn": isbn})
-
     def get_url(self, isbn: int) -> str:
         """Trouver lien BD bdgest.fr à partir de son ISBN"""
 
@@ -192,30 +181,6 @@ class BdGestRepository(BdRepository):
                 return a_tag.get('href')
             else:
                 raise AddAlbumError(f"ISBN {isbn} introuvable dans BD Gest")
-
-    TRANSLATED_MONTHS = {
-        "janvier": "January",
-        "février": "February",
-        "fevrier": "February",
-        "mars": "March",
-        "avril": "April",
-        "mai": "May",
-        "juin": "June",
-        "juillet": "July",
-        "août": "August",
-        "aout": "August",
-        "septembre": "September",
-        "octobre": "October",
-        "novembre": "November",
-        "décembre": "December",
-        "decembre": "December",
-    }
-
-    def translate(self, date: str) -> str:
-        for mois, month in self.TRANSLATED_MONTHS.items():
-            if mois in date.lower():
-                date = date.lower().replace(mois, month)
-        return date
 
     def get_html(self, url: str) -> str:
         response = requests.get(url)

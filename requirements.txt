@@ -4,6 +4,7 @@ bs4==0.0.2
 cachetools==5.5.2
 certifi==2025.4.26
 charset-normalizer==3.4.1
+cloudscraper==1.2.71
 coverage==7.8.0
 Django==5.2
 google-auth==2.39.0
@@ -16,10 +17,12 @@ packaging==25.0
 psycopg2-binary==2.9.10
 pyasn1==0.6.1
 pyasn1_modules==0.4.2
+pyparsing==3.2.3
 python-dateutil==2.9.0.post0
 python-decouple==3.8
 requests==2.32.3
 requests-oauthlib==2.0.0
+requests-toolbelt==1.0.0
 rsa==4.9.1
 six==1.17.0
 soupsieve==2.7
