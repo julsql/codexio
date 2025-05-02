@@ -3,7 +3,6 @@ from django.http import HttpRequest
 from config.settings import POST_TOKEN
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.add_album_service import AddAlbumService
-from main.core.add_album.internal.bdfugue_connexion import BdFugueRepository
 from main.core.add_album.internal.bdgest_connexion import BdGestRepository
 from main.core.add_album.internal.bdphile_connexion import BdPhileRepository
 from main.core.common.reponse.utf8_response import UTF8Response, UTF8ResponseNotAllowed, UTF8ResponseForbidden, \
@@ -20,10 +19,10 @@ def add_album(request: HttpRequest,
         else:
             try:
                 sheet_repository = SheetConnexion()
-                bdfugue_repository = BdFugueRepository()
+                # bdfugue_repository = BdFugueRepository()
                 bdphile_repository = BdPhileRepository()
                 bdgest_repository = BdGestRepository()
-                service = AddAlbumService([bdphile_repository, bdgest_repository, bdfugue_repository], sheet_repository)
+                service = AddAlbumService([bdphile_repository, bdgest_repository], sheet_repository)
                 service.main(isbn)
             except AddAlbumError as e:
                 return UTF8ResponseNotFound(str(e))

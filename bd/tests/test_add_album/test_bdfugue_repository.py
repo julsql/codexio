@@ -18,6 +18,7 @@ class TestBdFugueRepository(unittest.TestCase):
         with self.assertRaises(AddAlbumError):
             self.bd_repository.get_infos(0)
 
+    @unittest.skip("CI can not access Cloudscraper")
     def test_get_correct_infos_from_isbn(self) -> None:
         infos = self.bd_repository.get_infos(ASTERIX_ISBN)
         self.assertEqual(ASTERIX_WEB_FUGUE, infos)
