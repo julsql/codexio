@@ -42,6 +42,30 @@ synopsis_gest = ("Nous sommes en 50 av J.-C. Loin, très loin du petit village "
 serie_gest = "Astérix (Hors Série)"
 editeur_gest = "Les Éditions Albert René"
 
+album_fugue = "L'empire du milieu (album illustré)"
+couleurs_fugue = "Thierry Mébarki"
+date_de_publication_fugue = "2023-02-08"
+dessin_fugue = "Fabrice Tarrin"
+image_fugue = "https://www.bdfugue.com/media/catalog/product/cache/0d950bd4d3aaddc02a824ea154d9c41e/9/7/9782864976165_1_75.jpg"
+numero_fugue = 1
+pages_fugue = 48
+prix_fugue = 10.9
+scenario_fugue = "Olivier Gay"
+synopsis_fugue = ('NOUVEL ALBUM ILLUSTRÉ   Nous sommes en 50 av J.-C. Loin, très '
+                  "loin du petit village d'Armorique que nous connaissons bien, "
+                  "l'Impératrice de Chine est emprisonnée suite à coup d'état "
+                  "fomenté par l'infâme Deng Tsin Qin.  \r\n"
+                  '\r\n'
+                  "La princesse Fu Yi, fille unique de l'Impératrice, aidée par sa "
+                  'fidèle guerrière Tat Han et Graindemaïs, le neveu du marchand '
+                  "phénicien Epidemaïs, s'enfuit pour demander de l'aide aux "
+                  'Irréductibles Gaulois.\r\n'
+                  '\r\n'
+                  'Une histoire originale basée sur le scénario du film Astérix & '
+                  "Obélix, L'Empire du Milieu réalisé par Guillaume Canet.")
+serie_fugue = "Astérix"
+editeur_fugue = "ALBERT RENE"
+
 FIRST_LINE = [
     "ISBN", "Album", "Numéro", "Série", "Scénariste", "Dessinateur", "Couleur", "Éditeur", "Date de parution",
     "Édition", "Nombre de planches", "Cote", "Prix d'achat", "Année d'achat", "Lieu d'achat", "Tirage de tête",
@@ -79,6 +103,21 @@ ASTERIX_WEB_GEST = {
     'Synopsis': synopsis_gest,
     'Série': serie_gest,
     'Éditeur': editeur_gest,
+}
+# 9782754801096
+ASTERIX_WEB_FUGUE = {
+    'Album': album_fugue,
+    'Couleurs': couleurs_gest,  # Missing
+    'Date de publication': date_de_publication_fugue,
+    'Dessin': dessin_fugue,
+    'Image': image_fugue,
+    'Numéro': numero_fugue,
+    'Pages': pages_fugue,
+    'Prix': prix_fugue,
+    'Scénario': scenario_fugue,
+    'Synopsis': synopsis_fugue,
+    'Série': serie_fugue,
+    'Éditeur': editeur_fugue,
 }
 
 ASTERIX = ASTERIX_WEB_PHILE.copy()
