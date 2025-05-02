@@ -1,17 +1,14 @@
-name: Run Django Tests
+name: Test and deploy
 
-# Déclenche le workflow sur un push ou une pull request vers la branche principale
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - '**'
 
 # Définir les jobs
 jobs:
   test:
+    name: Tests
     runs-on: ubuntu-latest
 
     services:
@@ -20,9 +17,9 @@ jobs:
         ports:
           - 5452:5432
         env:
-          POSTGRES_USER: postgres_test
-          POSTGRES_PASSWORD: postgres_test
-          POSTGRES_DB: test
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: $POSTGRES_DB
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -35,9 +32,9 @@ jobs:
       POST_TOKEN: ${{ secrets.POST_TOKEN }}
       GSHEET_CREDENTIALS: config/bd-sheet-91.json
       DJANGO_ENV: test
-      POSTGRES_USER: postgres_test
-      POSTGRES_PASSWORD: postgres_test
-      POSTGRES_DB: test
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_DB: $POSTGRES_DB
 
     steps:
       - name: Checkout code
@@ -72,3 +69,22 @@ jobs:
           cd bd
           python manage.py migrate
           python manage.py test
+
+  deploy:
+    name: Deploy to server
+    if: github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /home/debian/websites/bd_website
+            git pull
+            docker-compose down
+            docker image rm bd_website-django:latest
+            docker-compose up -d
