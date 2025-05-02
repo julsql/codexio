@@ -63,6 +63,10 @@ jobs:
             sleep 2
           done
 
+      - name: Run init.sql manually
+        run: |
+          PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -p 5452 -U $POSTGRES_USER -d $POSTGRES_DB -f bd/database/init.sql
+
       - name: Run tests
         run: |
           cd bd
