@@ -19,9 +19,9 @@ def add_album(request: HttpRequest,
         else:
             try:
                 sheet_repository = SheetConnexion()
-                # bdfugue_repository = BdFugueRepository()
                 bdphile_repository = BdPhileRepository()
                 bdgest_repository = BdGestRepository()
+                # bdfugue_repository = BdFugueRepository()
                 service = AddAlbumService([bdphile_repository, bdgest_repository], sheet_repository)
                 service.main(isbn)
             except AddAlbumError as e:

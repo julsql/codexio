@@ -78,46 +78,45 @@ FIRST_LINE_DATABASE = [
 
 ASTERIX_WEB_PHILE = {
     'Album': album_phile,
-    'Couleurs': couleurs_phile,
-    'Date de publication': date_de_publication_phile,
-    'Dessin': dessin_phile,
-    'Image': image_phile,
-    'Numéro': numero_phile,
-    'Pages': pages_phile,
-    'Prix': prix_phile,
-    'Scénario': scenario_phile,
-    'Synopsis': synopsis_phile,
     'Série': serie_phile,
+    'Numéro': numero_phile,
+    'Scénario': scenario_phile,
+    'Dessin': dessin_phile,
+    'Couleurs': couleurs_phile,
     'Éditeur': editeur_phile,
     'Édition': edition_phile,
+    'Date de publication': date_de_publication_phile,
+    'Pages': pages_phile,
+    'Prix': prix_phile,
+    'Synopsis': synopsis_phile,
+    'Image': image_phile,
 }
 
 ASTERIX_WEB_GEST = {
     'Album': album_gest,
-    'Couleurs': couleurs_gest,
-    'Date de publication': date_de_publication_gest,
-    'Dessin': dessin_gest,
-    'Image': image_gest,
-    'Pages': pages_gest,
-    'Scénario': scenario_gest,
-    'Synopsis': synopsis_gest,
     'Série': serie_gest,
+    'Scénario': scenario_gest,
+    'Dessin': dessin_gest,
+    'Couleurs': couleurs_gest,
     'Éditeur': editeur_gest,
+    'Date de publication': date_de_publication_gest,
+    'Pages': pages_gest,
+    'Synopsis': synopsis_gest,
+    'Image': image_gest,
 }
-# 9782754801096
+
 ASTERIX_WEB_FUGUE = {
     'Album': album_fugue,
-    'Couleurs': couleurs_gest,  # Missing
-    'Date de publication': date_de_publication_fugue,
-    'Dessin': dessin_fugue,
-    'Image': image_fugue,
+    'Série': serie_fugue,
     'Numéro': numero_fugue,
+    'Scénario': scenario_fugue,
+    'Dessin': dessin_fugue,
+    'Éditeur': editeur_fugue,
+    'Date de publication': date_de_publication_fugue,
     'Pages': pages_fugue,
     'Prix': prix_fugue,
-    'Scénario': scenario_fugue,
     'Synopsis': synopsis_fugue,
-    'Série': serie_fugue,
-    'Éditeur': editeur_fugue,
+    'Image': image_fugue,
 }
 
 ASTERIX = ASTERIX_WEB_PHILE.copy()
