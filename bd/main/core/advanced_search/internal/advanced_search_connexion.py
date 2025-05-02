@@ -1,3 +1,4 @@
+import re
 from abc import ABC
 from typing import Any
 from typing import Set
@@ -15,6 +16,111 @@ class AdvancedSearchConnexion(AdvancedSearchRepository, ABC):
 
     def get_all(self) -> QuerySet[BD, BD]:
         return BD.objects.all()
+
+    def order_by(self, queryset: QuerySet[BD], criteria: bool, croissant: bool) -> QuerySet[BD]:
+        return queryset.order_by(criteria if croissant else f"-{criteria}")
+
+    def get_by_form(self, data: dict[str, Any], queryset: QuerySet[BD, BD]) -> QuerySet[BD, BD]:
+        queryset = self.filter_contains(data, queryset)
+        queryset = self.filter_equals(data, queryset)
+        queryset = self.filter_synopsis(data, queryset)
+        queryset = self.filter_date(data, queryset)
+
+        return queryset
+
+    def filter_date(self, data, queryset):
+        start_date = data.get("start_date")
+        end_date = data.get("end_date")
+        if start_date and end_date:
+            queryset = queryset.filter(publication_date__range=[start_date, end_date])
+        elif start_date:
+            queryset = queryset.filter(publication_date__gte=start_date)
+        elif end_date:
+            queryset = queryset.filter(publication_date__lte=end_date)
+        return queryset
+
+    def filter_synopsis(self, data, queryset):
+        if synopsis := data.get('synopsis'):
+            queryset = self._search_synopsis(queryset, synopsis)
+        return queryset
+
+    def filter_equals(self, data, queryset):
+        filter_equals_mappings = {
+            'isbn': 'isbn',
+            'year_of_purchase': 'year_of_purchase',
+            'deluxe_edition': 'deluxe_edition',
+        }
+        for form_field, model_fields in filter_equals_mappings.items():
+            value = data.get(form_field)
+            if value is not None and value != '':
+                queryset = queryset.filter(**{model_fields: value})
+        return queryset
+
+    def filter_contains(self, data, queryset):
+        filter_contains_mappings = {
+            'album': ['album', 'series', 'number'],
+            'number': ['number'],
+            'series': ['series'],
+            'writer': ['writer'],
+            'illustrator': ['illustrator'],
+            'publisher': ['publisher'],
+            'edition': ['edition'],
+        }
+
+        onomastic_search = ['album',
+                            'series',
+                            'writer',
+                            'illustrator',
+                            'publisher',
+                            'edition']
+
+        for form_field, model_fields in filter_contains_mappings.items():
+            value = data.get(form_field)
+            if value is not None and value != '':
+                if isinstance(value, str):
+                    search_terms = value.lower().split()
+                else:
+                    search_terms = [value]
+
+                # Créer un filtre global pour tous les termes
+                global_filter = Q()
+
+                # Pour chaque terme de recherche
+                for term in search_terms:
+                    term_filter = Q()
+
+                    # Pour chaque champ à rechercher
+                    for model_field in model_fields:
+                        if model_field in onomastic_search:
+                            # Annotation pour le champ sans accents
+                            annotated_queryset = queryset.annotate(**{
+                                f"unaccented_{model_field}": Func(
+                                    Lower(model_field),
+                                    function="unaccent"
+                                )
+                            })
+
+                            # Condition pour ce terme dans ce champ
+                            search_condition = Q(**{
+                                f"unaccented_{model_field}__icontains": Func(
+                                    Value(term),
+                                    function="unaccent"
+                                )
+                            })
+
+                            # Ajouter au filtre du terme (OR entre les champs)
+                            term_filter |= Q(
+                                id__in=annotated_queryset.filter(search_condition).values('id')
+                            )
+                        else:
+                            term_filter |= Q(**{f"{model_field}__icontains": term})
+
+                    # AND entre les termes
+                    global_filter &= term_filter
+
+                # Appliquer le filtre global
+                queryset = queryset.filter(global_filter)
+        return queryset
 
     # Liste des mots vides en français
     STOP_WORDS: Set[str] = {
@@ -45,18 +151,36 @@ class AdvancedSearchConnexion(AdvancedSearchRepository, ABC):
         'puis', 'car', 'donc', 'cependant', 'néanmoins',
     }
 
-    def _clean_search_terms(self, text: str) -> list[str]:
+    def _divide_search_terms(self, text: str):
         """
-        Nettoie et filtre les termes de recherche en enlevant les mots vides
+        Divise le texte en mots et nettoie chaque mot
         """
-        # Divise le texte en mots et nettoie chaque mot
+
+        ponctuation = [',', ';', ':', '!', '?', '.', '"', "'", '(', ')', '[', ']', '{', '}', '/', '\\', '-', '_']
+        # Remplacer la ponctuation par des espaces
+        for p in ponctuation:
+            text = text.replace(p, ' ')
+
         words = [
             word.strip().lower()
             for word in text.split()
             if word.strip()
         ]
 
-        # Filtre les mots vides et les mots trop courts
+        # Nettoie chaque mot des caractères spéciaux
+        cleaned_words = []
+        for word in words:
+            # Garde uniquement les lettres et les chiffres
+            cleaned_word = re.sub(r'[^a-zA-Z0-9àáâãäçèéêëìíîïñòóôõöùúûüýÿ]', '', word)
+            if cleaned_word:  # Si le mot n'est pas vide après nettoyage
+                cleaned_words.append(cleaned_word)
+
+        return cleaned_words
+
+    def _clean_search_terms(self, words: list[str]) -> list[str]:
+        """
+        Filtre les termes de recherche en enlevant les mots vides
+        """
         return [
             word for word in words
             if word not in self.STOP_WORDS and len(word) > 2
@@ -70,9 +194,18 @@ class AdvancedSearchConnexion(AdvancedSearchRepository, ABC):
             return queryset
 
         # Nettoyage et préparation des mots de recherche
-        words = self._clean_search_terms(synopsis)
-        if not words:
-            return queryset
+        words = self._divide_search_terms(synopsis)
+        original_words = words.copy()
+        words = self._clean_search_terms(words)
+
+        # Si tous les mots sont filtrés, mais qu'il y avait des mots dans la recherche originale
+        if not words and original_words:
+            # Utiliser les mots originaux si leur longueur est significative (> 2 caractères)
+            search_words = [w for w in original_words if len(w) > 2]
+            if search_words:
+                words = search_words
+            else:
+                return queryset.none()
 
         # Création de l'annotation une seule fois pour le champ sans accents
         queryset = queryset.annotate(
@@ -120,87 +253,3 @@ class AdvancedSearchConnexion(AdvancedSearchRepository, ABC):
             pass
 
         return queryset
-
-    def get_by_form(self, data: dict[str, Any], queryset: QuerySet[BD, BD]) -> QuerySet[BD, BD]:
-        filter_mappings = {
-            'isbn__icontains': ['isbn'],
-            'album': ['album', 'series'],
-            'number__icontains': ['number'],
-            'series': ['series'],
-            'writer': ['writer'],
-            'illustrator': ['illustrator'],
-            'publisher': ['publisher'],
-            'edition': ['edition'],
-            'year_of_purchase': ['year_of_purchase'],
-            'deluxe_edition': ['deluxe_edition'],
-        }
-
-        onomastic_search = ['album',
-                            'series',
-                            'writer',
-                            'illustrator',
-                            'publisher',
-                            'edition']
-
-        for form_field, model_fields in filter_mappings.items():
-            value = data.get(form_field)
-            if value is not None and value != '':
-                # Diviser la recherche en mots
-                search_terms = value.lower().split()
-
-                # Créer un filtre global pour tous les termes
-                global_filter = Q()
-
-                # Pour chaque terme de recherche
-                for term in search_terms:
-                    term_filter = Q()
-
-                    # Pour chaque champ à rechercher
-                    for model_field in model_fields:
-                        if model_field in onomastic_search:
-                            # Annotation pour le champ sans accents
-                            annotated_queryset = queryset.annotate(**{
-                                f"unaccented_{model_field}": Func(
-                                    Lower(model_field),
-                                    function="unaccent"
-                                )
-                            })
-
-                            # Condition pour ce terme dans ce champ
-                            search_condition = Q(**{
-                                f"unaccented_{model_field}__icontains": Func(
-                                    Value(term),
-                                    function="unaccent"
-                                )
-                            })
-
-                            # Ajouter au filtre du terme (OR entre les champs)
-                            term_filter |= Q(
-                                id__in=annotated_queryset.filter(search_condition).values('id')
-                            )
-                        else:
-                            term_filter |= Q(**{f"{model_field}__icontains": term})
-
-                    # AND entre les termes
-                    global_filter &= term_filter
-
-                # Appliquer le filtre global
-                queryset = queryset.filter(global_filter)
-
-    # Filtrer par synopsis
-        if synopsis := data.get('synopsis'):
-            queryset = self._search_synopsis(queryset, synopsis)
-
-        start_date = data.get("start_date")
-        end_date = data.get("end_date")
-
-        if start_date and end_date:
-            queryset = queryset.filter(publication_date__range=[start_date, end_date])
-        elif start_date:
-            queryset = queryset.filter(publication_date__gte=start_date)
-        elif end_date:
-            queryset = queryset.filter(publication_date__lte=end_date)
-        return queryset
-
-    def order_by(self, queryset: QuerySet[BD], criteria: bool, croissant: bool) -> QuerySet[BD]:
-        return queryset.order_by(criteria if croissant else f"-{criteria}")
