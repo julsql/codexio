@@ -297,10 +297,12 @@ input label {
 }
 
 .clear-all {
+    position: absolute;
+    top: 20px;
+    right: 20px;
     text-align: end;
     cursor: pointer;
     color: #999;
-    font-size: 14px;
     transition: color 0.2s ease-in-out;
 }
 
