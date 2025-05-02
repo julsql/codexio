@@ -2,7 +2,7 @@ import unittest
 
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.internal.bdgest_connexion import BdGestRepository
-from tests.album_data_set import ASTERIX_ISBN, ASTERIX_BDGEST_LINK, ASTERIX_WEB_GEST
+from tests.album_data_set import ASTERIX_ISBN, ASTERIX_URLS, ASTERIX_DATA
 
 
 class TestBdGestRepository(unittest.TestCase):
@@ -12,7 +12,7 @@ class TestBdGestRepository(unittest.TestCase):
 
     def test_get_correct_url_from_isbn(self) -> None:
         link = self.bd_repository.get_url(ASTERIX_ISBN)
-        self.assertEqual(ASTERIX_BDGEST_LINK, link)
+        self.assertEqual(ASTERIX_URLS['BDGEST'], link)
 
     def test_get_correct_url_from_empty_isbn(self) -> None:
         with self.assertRaises(AddAlbumError):
@@ -24,7 +24,7 @@ class TestBdGestRepository(unittest.TestCase):
 
     def test_get_correct_infos_from_isbn(self) -> None:
         infos = self.bd_repository.get_infos(ASTERIX_ISBN)
-        self.assertEqual(ASTERIX_WEB_GEST, infos)
+        self.assertEqual(ASTERIX_DATA['BDGEST'], infos)
 
 
 if __name__ == '__main__':

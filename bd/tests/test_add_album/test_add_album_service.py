@@ -14,12 +14,12 @@ class TestAddAlbumService(unittest.TestCase):
     def setUpClass(cls) -> None:
         # Before all
         cls.sheet_repository = SheetInMemory()
-        cls.bd_repository = BdInMemory()
+        cls.bd_repository = BdInMemory("AddAlbumBdRepository", ASTERIX)
         cls.service = AddAlbumService([cls.bd_repository], cls.sheet_repository)
 
     def tearDown(self) -> None:
         # After each
-        self.sheet_repository.delete_row(0)
+        self.sheet_repository.clear()
 
     def test_convert_list_from_dict_empty_value_successfully(self) -> None:
         liste = self.service.map_to_list({
@@ -53,7 +53,7 @@ class TestAddAlbumService(unittest.TestCase):
 
     def test_raise_error_get_info_from_incorrect_isbn(self) -> None:
         with self.assertRaises(AddAlbumError):
-            self.service.main(0)
+            a = self.service.main(0)
 
 
 if __name__ == '__main__':

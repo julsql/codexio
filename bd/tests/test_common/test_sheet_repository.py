@@ -1,7 +1,7 @@
 import unittest
 
 from main.core.common.sheet.internal.sheet_connexion import SheetConnexion
-from tests.album_data_set import FIRST_LINE, ASTERIX_LIST, ASTERIX_ISBN, ASTERIX_LIST_STR, ASTERIX_LIST_2
+from tests.album_data_set import FIRST_LINE, ASTERIX_LIST, ASTERIX_ISBN
 
 
 class TestSheetRepository(unittest.TestCase):
@@ -58,9 +58,9 @@ class TestSheetRepository(unittest.TestCase):
 
     def test_set_line_to_test_sheet(self) -> None:
         line_index = 0
-        self.conn_test.set_line(ASTERIX_LIST_2, line_index)
+        self.conn_test.set_line(ASTERIX_LIST, line_index)
         line_content = self.conn_test.get_line(line_index)
-        self.assertEqual(ASTERIX_LIST_STR, line_content)
+        self.assertEqual(ASTERIX_LIST, line_content)
 
     def test_album_existing_from_test_sheet(self) -> None:
         self.conn_test.append(ASTERIX_LIST)
