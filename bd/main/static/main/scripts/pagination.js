@@ -1,4 +1,4 @@
-function paginate(classFirstPage, classPrevPage, classCurrentPage, classNextPage, classLastPage, classPaginationItem, idDiv) {
+function paginate(itemsPerPage, classFirstPage, classPrevPage, classCurrentPage, classNextPage, classLastPage, classPaginationItem, idDiv) {
     const firstPage = document.getElementById(classFirstPage);
     const prevPage = document.getElementById(classPrevPage);
     const currentPage = document.getElementById(classCurrentPage);
@@ -23,7 +23,6 @@ function paginate(classFirstPage, classPrevPage, classCurrentPage, classNextPage
     });
 
     const paginationItems = document.querySelectorAll(classPaginationItem);
-    const itemsPerPage = 10;
     const nbPage = Math.ceil(paginationItems.length / itemsPerPage);
     let currentPageInt = 1;
 
