@@ -13,11 +13,11 @@
 
             <div class="list">
                 <ul>
-                    <li>{{ nombre }} bandes dessinées</li>
-                    <li>{{ pages }} pages</li>
-                    <li>{{ dedicaces }} dédicaces</li>
+                    <li>{{ nombre }} bande{% if nombre > 1 %}s{% endif %} dessinée{% if nombre > 1 %}s{% endif %}</li>
+                    <li>{{ pages }} page{% if pages > 1 %}s{% endif %}</li>
+                    <li>{{ dedicaces }} dédicace{% if dedicaces > 1 %}s{% endif %}</li>
                     <li>{{ exlibris }} ex-libris</li>
-                    <li>{{ tirage }} tirages de tête</li>
+                    <li>{{ tirage }} tirage{% if tirage > 1 %}s{% endif %} de tête</li>
                 </ul>
             </div>
         </section>

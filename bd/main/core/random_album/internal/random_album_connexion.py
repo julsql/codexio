@@ -11,6 +11,6 @@ class RandomAlbumConnexion:
             'publication_date', 'purchase_price', 'number_of_pages', 'edition', 'synopsis'
         ).order_by('?').first()
 
-        if int(result['purchase_price']) == float(result['purchase_price']):
+        if result and int(result['purchase_price']) == float(result['purchase_price']):
             result['purchase_price'] = int(result['purchase_price'])
         return result
