@@ -1,4 +1,4 @@
-[data-see="false"] {
+html body [data-see="false"] {
     display: block; /* none */
 }
 
@@ -242,6 +242,14 @@ input label {
 
 
 @media (max-width: 800px) {
+    html body [data-see="false"] {
+        display: none;
+    }
+
+    #see-more {
+        visibility: visible;
+    }
+
     .row {
         display: block;
     }
