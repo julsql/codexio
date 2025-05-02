@@ -4,6 +4,7 @@ bs4==0.0.2
 cachetools==5.5.2
 certifi==2025.4.26
 charset-normalizer==3.4.1
+coverage==7.8.0
 Django==5.2
 google-auth==2.39.0
 google-auth-oauthlib==1.2.2
