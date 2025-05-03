@@ -2,13 +2,13 @@ from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 
 from main.core.advanced_search.internal.advanced_search_view import advanced_search
-from main.core.banner.internal.banner_view import random_dedicace
+from main.core.banner.internal.banner_view import random_attachment
 from main.core.random_album.internal.random_album_view import random_album
 
 
 def home(request: HttpRequest) -> HttpResponse:
     infos_album = random_album()
-    banner = random_dedicace()
+    banner = random_attachment()
     form, _, _, form_send = advanced_search(request)
     value = banner.copy()
     if form_send:
