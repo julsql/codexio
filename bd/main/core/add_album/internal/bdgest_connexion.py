@@ -14,13 +14,6 @@ class BdGestRepository(BdRepository):
     IMAGE_CLASS = "bandeau-image album"
     BS_FEATURE = 'html.parser'
 
-    def __init__(self) -> None:
-        self.header = {"Titre album": "Album", "Tome": "Numéro",
-                       "Série": "Série", "Scénario": "Scénario",
-                       "Dessin": "Dessin", "Couleurs": "Couleurs", "Éditeur": "Éditeur",
-                       "date de parution": "Date de publication", "": "Édition",
-                       "Nombre de planches": "Pages"}
-
     def __str__(self) -> str:
         return "BdGestRepository"
 
@@ -39,7 +32,10 @@ class BdGestRepository(BdRepository):
         self._extract_authors(soup, informations)
 
         # Extraction des informations supplémentaires
-        self._extract_additional_info(soup, informations)
+        self._extract_additional_info(soup, informations, isbn)
+
+        # Extraction le prix
+        self._extract_price(soup, informations, isbn)
 
         # Image
         self._extract_image(body, informations)
@@ -100,7 +96,7 @@ class BdGestRepository(BdRepository):
             if categorie in keys:
                 informations[categorie] = nom
 
-    def _extract_additional_info(self, soup: BeautifulSoup, informations: dict) -> None:
+    def _extract_additional_info(self, soup: BeautifulSoup, informations: dict, isbn: int) -> None:
         """ Extraire les informations supplémentaires """
 
         album_tag = soup.find("div", class_=self.BANDEAU_CLASS)
@@ -127,10 +123,29 @@ class BdGestRepository(BdRepository):
         try:
             informations["Pages"] = int(page_tag)
         except ValueError:
-            logger.warning(f"{page_tag} est un nombre de planches incorrect")
+            logger.warning(f"{page_tag} est un nombre de planches incorrect", extra={"isbn": isbn})
 
-    def _extract_price(self, value: str, informations: dict, isbn: int) -> None:
+    def _get_input(self, soup: BeautifulSoup, id: str):
+        tag = soup.find("input", {"id": id})
+        if tag:
+            return tag.get("value")
+        else:
+            return None
+
+    def _extract_price(self, soup: BeautifulSoup, informations: dict, isbn: int) -> None:
         """ Extraire le prix """
+        album_id = self._get_input(soup, "IdAlbum")
+        eans = self._get_input(soup, "EANs")
+        ean = self._get_input(soup, "EAN")
+
+        if album_id and eans and ean:
+            url = f"https://www.bedetheque.com/ajax/album_bdfugue/idalbum/{album_id}/idbdfugue/{ean}/id/{eans}"
+            response = requests.get(url)
+
+            if response.status_code == 200:
+                result = response.json()
+                if 'price' in result:
+                    informations["Prix"] = float(result['price'])
         return None
 
     def _extract_image(self, soup: BeautifulSoup, informations: dict) -> None:
@@ -164,7 +179,7 @@ class BdGestRepository(BdRepository):
             response = session.get(self.SEARCH_URL, params=params, headers=headers)
 
             if response.status_code != 200:
-                logger.error(f"La requête a échoué. Statut de la réponse : {response.status_code}")
+                logger.error(f"La requête a échoué. Statut de la réponse : {response.status_code}", extra={"isbn": isbn})
                 raise AddAlbumError(f"Impossible d'affiche le code html de la page {self.SEARCH_URL}")
 
             html = response.text
