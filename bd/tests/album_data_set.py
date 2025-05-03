@@ -34,10 +34,10 @@ ASTERIX_DATA = {
         'Dessin': "Fabrice Tarrin",
         'Couleurs': "Thierry Mébarki",
         'Éditeur': "Albert René",
+        'Édition': "Édition originale Noté : Impression en décembre 2022 - n° 616-5-01 Impression et reliure par Pollina - n°13651",
         'Date de publication': "2023-02-08",
         'Pages': 48,
         'Prix': 10.5,
-        'Édition': "Édition originale Noté : Impression en décembre 2022 - n° 616-5-01 Impression et reliure par Pollina - n°13651",
         'Synopsis': "Nous sommes en 50 av J.-C. Loin, très loin du petit village d'Armorique que nous connaissons bien,"
                     " l'Impératrice de Chine est emprisonnée suite à coup d'état fomenté par l'infâme Deng Tsin Qin."
                     "<br/>La princesse Fu Yi, fille unique de l'Impératrice, aidée par sa fidèle guerrière Tat Han et"
@@ -47,13 +47,14 @@ ASTERIX_DATA = {
     },
     'BDGEST': {
         'Album': "L'Empire du Milieu",
-        'Couleurs': "Thierry Mébarki",
-        'Scénario': "Olivier Gay",
         "Série": "Astérix (Hors Série)",
-        "Éditeur": "Les Éditions Albert René",
+        'Scénario': "Olivier Gay",
         'Dessin': "Fabrice Tarrin",
+        'Couleurs': "Thierry Mébarki",
+        "Éditeur": "Les Éditions Albert René",
         'Date de publication': '2023-02-08',
         'Pages': 44,
+        'Prix': 10.9,
         'Synopsis': "Nous sommes en 50 av J.-C. Loin, très loin du petit village "
                     "d'Armorique que nous connaissons bien, l'Impératrice de Chine "
                     "est emprisonnée suite à un coup d'état fomenté par l'infâme Deng "
