@@ -56,16 +56,16 @@ ASTERIX_DATA = {
         'Date de publication': '2023-02-08',
         'Pages': 44,
         'Prix': 10.9,
-        'Synopsis': "Nous sommes en 50 av J.-C. Loin, très loin du petit village "
+        'Synopsis': 'Nous sommes en 50 av J.-C. Loin, très loin du petit village '
                     "d'Armorique que nous connaissons bien, l'Impératrice de Chine "
                     "est emprisonnée suite à un coup d'état fomenté par l'infâme Deng "
                     "Tsin Qin. La princesse Fu Yi, fille unique de l'Impératrice, "
                     'aidée par sa fidèle guerrière Tat Han et Graindemaïs, le neveu '
                     "du marchand phénicien Épidemaïs, s'enfuit pour demander de "
-                    "l'aide aux Irréductibles Gaulois.\n"
-                    '\n'
-                    'Une histoire originale basée sur le scénario du film Astérix & '
-                    "Obélix, L'Empire du Milieu réalisé par Guillaume Canet.",
+                    "l'aide aux Irréductibles Gaulois.<br />\n"
+                    '<br />\n'
+                    'Une histoire originale basée sur le scénario du film Astérix '
+                    "&amp; Obélix, L'Empire du Milieu réalisé par Guillaume Canet.",
         'Image': "https://www.bedetheque.com/media/Couvertures/Couv_467639.jpg",
     },
     'BDFUGUE': {

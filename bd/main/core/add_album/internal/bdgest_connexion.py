@@ -107,7 +107,10 @@ class BdGestRepository(BdRepository):
 
             categorie = metier.text.strip("()")  # Enlever les parenthèses
             if categorie in keys:
-                informations[categorie] = nom
+                if categorie in informations:
+                    informations[categorie] = f"{informations[categorie]},{nom}"
+                else:
+                    informations[categorie] = nom
 
     def _extract_additional_info(self, soup: BeautifulSoup, informations: dict, isbn: int) -> None:
         """ Extraire les informations supplémentaires """
@@ -177,12 +180,18 @@ class BdGestRepository(BdRepository):
 
     def _extract_synopsis(self, soup: BeautifulSoup, informations: dict, isbn: int) -> None:
         """ Extraire le synopsis """
+        album_id = self._get_input(soup, "IdAlbum")
 
-        synopsis_tag = soup.find('span', {"itemprop": "description"})
-        if not synopsis_tag:
-            logger.warning("Synopsis non trouvé", extra={"isbn": isbn})
-            return
-        informations["Synopsis"] = synopsis_tag.get_text()
+        if album_id:
+            url = f"https://www.bedetheque.com/ajax/resume/album/{album_id}"
+            response = requests.get(url)
+
+            if response.status_code == 200:
+                result = response.text
+                informations["Synopsis"] = result
+        else:
+            logger.warning("Impossible d'extraire le synppsis", extra={"isbn": isbn})
+        return None
 
     def get_url(self, isbn: int) -> str:
         """Trouver lien BD bdgest.fr à partir de son ISBN"""
