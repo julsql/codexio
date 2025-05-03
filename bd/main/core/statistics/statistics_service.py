@@ -5,6 +5,7 @@ from django.db.models.functions import Cast, Round, Coalesce
 
 from config.settings import MEDIA_ROOT
 from main.core.common.database.internal.bd_model import BD
+from main.core.common.folder.folder_connexion import count_images_in_directory
 
 
 class StatisticsService:
@@ -29,7 +30,7 @@ class StatisticsService:
 
             # Vérifiez si l'élément est un répertoire
             if os.path.isdir(item_path):
-                nb_dedicace = self.count_images_in_directory(item_path)
+                nb_dedicace = count_images_in_directory(item_path)
                 dedicaces_sum += nb_dedicace
         return dedicaces_sum
 
@@ -41,21 +42,6 @@ class StatisticsService:
 
             # Vérifiez si l'élément est un répertoire
             if os.path.isdir(item_path):
-                nb_exlibris = self.count_images_in_directory(item_path)
+                nb_exlibris = count_images_in_directory(item_path)
                 exlibris_sum += nb_exlibris
         return exlibris_sum
-
-    def count_images_in_directory(self, directory_path: str) -> int:
-        if not os.path.isdir(directory_path):
-            return 0
-
-        image_count = 0
-        allowed_image_extensions = ".jpeg"
-
-        for root, dirs, files in os.walk(directory_path):
-            for file in files:
-                file_extension = os.path.splitext(file)[1].lower()
-                if file_extension == allowed_image_extensions:
-                    image_count += 1
-
-        return image_count
