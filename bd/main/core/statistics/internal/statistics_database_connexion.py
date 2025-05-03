@@ -12,6 +12,14 @@ class StatisticsDatabaseConnexion(StatisticsDatabaseRepository, ABC):
         return BD.objects.aggregate(
             nombre=Count('id'),
             pages=Coalesce(Sum(Cast('number_of_pages', output_field=IntegerField())), 0),
-            prix=Cast(Round(Sum(Cast('rating', output_field=FloatField()))), output_field=IntegerField()),
+            prix=Coalesce(
+                Round(
+                    Sum(
+                        Coalesce('rating', 0.0, output_field=FloatField())
+                    )
+                ),
+                0,
+                output_field=IntegerField()
+            ),
             tirage=Coalesce(Sum(Cast('deluxe_edition', output_field=IntegerField())), 0),
         )

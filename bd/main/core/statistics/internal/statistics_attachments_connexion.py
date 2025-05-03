@@ -1,16 +1,19 @@
 import os
 from abc import ABC
 
-from main.core.common.data.data import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
 from main.core.common.directory.directory_methods import count_images_in_directory
 from main.core.statistics.statistics_attachments_repository import StatisticsAttachmentsRepository
 
 
 class StatisticsAttachmentsConnexion(StatisticsAttachmentsRepository, ABC):
 
+    def __init__(self, signer_copy_folder: str, exlibris_folder: str):
+        self.SIGNED_COPY_FOLDER = signer_copy_folder
+        self.EXLIBRIS_FOLDER = exlibris_folder
+
     def get_information(self):
-        dedicace_total = self.get_attachments_total(SIGNED_COPY_FOLDER)
-        exlibris_total = self.get_attachments_total(EXLIBRIS_FOLDER)
+        dedicace_total = self.get_attachments_total(self.SIGNED_COPY_FOLDER)
+        exlibris_total = self.get_attachments_total(self.EXLIBRIS_FOLDER)
 
         infos = {}
         infos["dedicaces"] = dedicace_total
