@@ -1,12 +1,6 @@
 from datetime import datetime
 
-# ISBN et URLs
-ASTERIX_ISBN = 9782864976165
-ASTERIX_URLS = {
-    'BDPHILE': "https://www.bdphile.fr/album/view/160391/",
-    'BDGEST': "https://www.bedetheque.com/BD-Asterix-Hors-Serie-C14-L-Empire-du-Milieu-467639.html",
-    'BDFUGUE': "https://www.bdfugue.com/catalogsearch/result/?q=9782864976165"
-}
+from test_add_album.album_large_data_set import ASTERIX_DATA, ASTERIX_ISBN
 
 # Structures de données communes
 COLUMN_HEADERS = {
@@ -22,76 +16,6 @@ COLUMN_HEADERS = {
         'purchase_price', 'year_of_purchase', 'place_of_purchase', 'deluxe_edition',
         "localisation", 'synopsis', 'image'
     ]
-}
-
-# Données par source
-ASTERIX_DATA = {
-    'BDPHILE': {
-        'Album': "L'empire du milieu",
-        'Série': "Astérix (Albums des films)",
-        'Numéro': "10",
-        'Scénario': "Olivier Gay",
-        'Dessin': "Fabrice Tarrin",
-        'Couleurs': "Thierry Mébarki",
-        'Éditeur': "Albert René",
-        'Édition': "Édition originale Noté : Impression en décembre 2022 - n° 616-5-01 Impression et reliure par Pollina - n°13651",
-        'Date de publication': "2023-02-08",
-        'Pages': 48,
-        'Prix': 10.5,
-        'Synopsis': "Nous sommes en 50 av J.-C. Loin, très loin du petit village d'Armorique que nous connaissons bien,"
-                    " l'Impératrice de Chine est emprisonnée suite à coup d'état fomenté par l'infâme Deng Tsin Qin."
-                    "<br/>La princesse Fu Yi, fille unique de l'Impératrice, aidée par sa fidèle guerrière Tat Han et"
-                    " Graindemaïs, le neveu du marchand phénicien Epidemaïs, s'enfuit pour demander de l'aide aux"
-                    " Irréductibles Gaulois.",
-        'Image': "https://static.bdphile.fr/images/media/cover/0160/160391.jpg"
-    },
-    'BDGEST': {
-        'Album': "L'Empire du Milieu",
-        "Série": "Astérix (Hors Série)",
-        'Numéro': 'C14',
-        'Scénario': "Olivier Gay",
-        'Dessin': "Fabrice Tarrin",
-        'Couleurs': "Thierry Mébarki",
-        "Éditeur": "Les Éditions Albert René",
-        'Date de publication': '2023-02-08',
-        'Pages': 44,
-        'Prix': 10.9,
-        'Synopsis': 'Nous sommes en 50 av J.-C. Loin, très loin du petit village '
-                    "d'Armorique que nous connaissons bien, l'Impératrice de Chine "
-                    "est emprisonnée suite à un coup d'état fomenté par l'infâme Deng "
-                    "Tsin Qin. La princesse Fu Yi, fille unique de l'Impératrice, "
-                    'aidée par sa fidèle guerrière Tat Han et Graindemaïs, le neveu '
-                    "du marchand phénicien Épidemaïs, s'enfuit pour demander de "
-                    "l'aide aux Irréductibles Gaulois.<br />\n"
-                    '<br />\n'
-                    'Une histoire originale basée sur le scénario du film Astérix '
-                    "&amp; Obélix, L'Empire du Milieu réalisé par Guillaume Canet.",
-        'Image': "https://www.bedetheque.com/media/Couvertures/Couv_467639.jpg",
-    },
-    'BDFUGUE': {
-        'Album': "L'empire du milieu (album illustré)",
-        'Série': "Astérix",
-        'Numéro': 1,
-        'Scénario': "Olivier Gay",
-        'Dessin': "Fabrice Tarrin",
-        'Éditeur': "ALBERT RENE",
-        'Date de publication': "2023-02-08",
-        'Pages': 48,
-        'Prix': 10.9,
-        'Synopsis': 'NOUVEL ALBUM ILLUSTRÉ   Nous sommes en 50 av J.-C. Loin, très '
-                    "loin du petit village d'Armorique que nous connaissons bien, "
-                    "l'Impératrice de Chine est emprisonnée suite à coup d'état "
-                    "fomenté par l'infâme Deng Tsin Qin.  \r\n"
-                    '\r\n'
-                    "La princesse Fu Yi, fille unique de l'Impératrice, aidée par sa "
-                    'fidèle guerrière Tat Han et Graindemaïs, le neveu du marchand '
-                    "phénicien Epidemaïs, s'enfuit pour demander de l'aide aux "
-                    'Irréductibles Gaulois.\r\n'
-                    '\r\n'
-                    'Une histoire originale basée sur le scénario du film Astérix & '
-                    "Obélix, L'Empire du Milieu réalisé par Guillaume Canet.",
-        'Image': "https://www.bdfugue.com/media/catalog/product/cache/0d950bd4d3aaddc02a824ea154d9c41e/9/7/9782864976165_1_75.jpg",
-    }
 }
 
 # Données consolidées
