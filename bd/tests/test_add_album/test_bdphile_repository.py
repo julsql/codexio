@@ -2,7 +2,8 @@ import unittest
 
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.internal.bdphile_connexion import BdPhileRepository
-from test_add_album.album_large_data_set import ASTERIX_ISBN, ASTERIX_URLS, ASTERIX_DATA, SAMBRE_ISBN, SAMBRE_DATA
+from test_add_album.album_large_data_set import ASTERIX_ISBN, ASTERIX_URLS, ASTERIX_DATA, SAMBRE_ISBN, SAMBRE_DATA, \
+    THORGAL_ISBN, THORGAL_DATA, SAULE_ISBN, SAULE_DATA
 
 
 class TestBdPhileRepository(unittest.TestCase):
@@ -29,6 +30,14 @@ class TestBdPhileRepository(unittest.TestCase):
     def test_get_correct_infos_from_sambre_isbn(self) -> None:
         infos = self.bd_repository.get_infos(SAMBRE_ISBN)
         self.assertEqual(SAMBRE_DATA['BDPHILE'], infos)
+
+    def test_get_correct_infos_from_thorgal_isbn(self) -> None:
+        infos = self.bd_repository.get_infos(THORGAL_ISBN)
+        self.assertEqual(THORGAL_DATA['BDPHILE'], infos)
+
+    def test_get_correct_infos_from_saule_isbn(self) -> None:
+        infos = self.bd_repository.get_infos(SAULE_ISBN)
+        self.assertEqual(SAULE_DATA['BDPHILE'], infos)
 
 
 if __name__ == '__main__':
