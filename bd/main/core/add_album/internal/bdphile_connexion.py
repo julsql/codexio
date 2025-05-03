@@ -18,7 +18,7 @@ class BdPhileRepository(BdRepository):
         soup = BeautifulSoup(html, 'html.parser')
 
         # Extraction du titre
-        self._extract_title(soup, informations)
+        self._extract_title(soup, informations, isbn)
 
         # Extraction des informations supplémentaires
         self._extract_additional_info(soup, informations)
@@ -27,10 +27,10 @@ class BdPhileRepository(BdRepository):
         self._extract_format_and_price(informations, isbn)
 
         # Image
-        self._extract_image(soup, informations)
+        self._extract_image(soup, informations, isbn)
 
         # Synopsis
-        self._extract_synopsis(soup, informations)
+        self._extract_synopsis(soup, informations, isbn)
 
         # Date de publication
         self._parse_publication_date(informations, isbn)
@@ -38,23 +38,26 @@ class BdPhileRepository(BdRepository):
         logger.info(informations, extra={"isbn": isbn})
         return informations
 
-    def _extract_title(self, soup: BeautifulSoup, informations: dict) -> None:
+    def _extract_title(self, soup: BeautifulSoup, informations: dict, isbn: int) -> None:
         """ Extraire les informations du titre """
         title_tag = soup.find('title')
-        if title_tag:
-            title_text = title_tag.get_text().split("|")[0].strip()
-            elements = title_text.split(" - ")
-            informations["Série"] = elements[0].strip()
-            if len(elements) > 1:
-                serie = elements[1].split(".")
-                if serie[0] == "One-shot":
-                    informations["Numéro"] = 1
-                    informations["Album"] = informations["Série"]
-                elif len(serie) > 1:
-                    informations["Numéro"] = serie[0].strip()
-                    informations["Album"] = serie[1].strip()
-                else:
-                    informations["Album"] = serie[0].strip()
+        if not title_tag:
+            logger.warning("Informations sur le titre non trouvées", extra={"isbn": isbn})
+            return
+
+        title_text = title_tag.get_text().split("|")[0].strip()
+        elements = title_text.split(" - ")
+        informations["Série"] = elements[0].strip()
+        if len(elements) > 1:
+            serie = elements[1].split(".")
+            if serie[0] == "One-shot":
+                informations["Numéro"] = 1
+                informations["Album"] = informations["Série"]
+            elif len(serie) > 1:
+                informations["Numéro"] = serie[0].strip()
+                informations["Album"] = serie[1].strip()
+            else:
+                informations["Album"] = serie[0].strip()
 
     def _extract_additional_info(self, soup: BeautifulSoup, informations: dict) -> None:
         """ Extraire les informations supplémentaires """
@@ -94,20 +97,27 @@ class BdPhileRepository(BdRepository):
         except ValueError:
             logger.warning(f"{value} est un prix incorrect", extra={"isbn": isbn})
 
-    def _extract_image(self, soup: BeautifulSoup, informations: dict) -> None:
+    def _extract_image(self, soup: BeautifulSoup, informations: dict, isbn: int) -> None:
         """ Extraire l'image """
         meta_tag = soup.find('meta', attrs={'property': 'og:image'})
-        if meta_tag:
-            informations['Image'] = meta_tag['content']
+        if not meta_tag:
+            logger.warning("Image non trouvée", extra={"isbn": isbn})
+            return
+        informations['Image'] = meta_tag['content']
 
-    def _extract_synopsis(self, soup: BeautifulSoup, informations: dict) -> None:
+    def _extract_synopsis(self, soup: BeautifulSoup, informations: dict, isbn: int) -> None:
         """ Extraire le synopsis """
         synopsis_tag = soup.find('p', class_='synopsis')
-        if synopsis_tag:
-            cleaned_synopsis = ''.join(str(tag) for tag in synopsis_tag.decode_contents()).strip().replace('\r',
-                                                                                                           '').replace(
-                '\n', '').replace('\t', '')
-            informations["Synopsis"] = cleaned_synopsis
+        if not synopsis_tag:
+            logger.warning("Synopsis non trouvé", extra={"isbn": isbn})
+            return
+
+        cleaned_synopsis = (''.join(str(tag) for tag in synopsis_tag.decode_contents())
+                            .strip()
+                            .replace('\r', '')
+                            .replace('\n', '')
+                            .replace('\t', ''))
+        informations["Synopsis"] = cleaned_synopsis
 
     def get_url(self, isbn: int) -> str:
         """Trouver lien BD bdphile.fr à partir de son ISBN"""
