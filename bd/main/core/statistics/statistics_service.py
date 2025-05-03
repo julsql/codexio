@@ -3,8 +3,6 @@ from main.core.statistics.statistics_database_repository import StatisticsDataba
 
 
 class StatisticsService:
-    SIGNED_COPY_PATH = "main/images/dedicaces"
-    EX_LIBRIS_PATH = "main/images/exlibris"
 
     def __init__(self, attachments_repository: StatisticsAttachmentsRepository,
                  database_repository: StatisticsDatabaseRepository) -> None:

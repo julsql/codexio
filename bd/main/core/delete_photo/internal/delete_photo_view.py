@@ -1,9 +1,7 @@
-import os
-
 from django.http import HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 
-from config.settings import POST_TOKEN, MEDIA_ROOT
+from config.settings import POST_TOKEN
 from main.core.common.reponse.utf8_response import UTF8ResponseForbidden, UTF8Response, UTF8ResponseNotFound, \
     UTF8ResponseNotAllowed
 from main.core.delete_photo.delete_photo_service import DeletePhotoService
@@ -28,9 +26,7 @@ def delete_photo(request: HttpRequest, isbn: int, photo_id: int,
             return UTF8ResponseForbidden("Vous n'avez pas l'autorisation")
 
         # Appeler le service pour supprimer la photo
-        dedicace_folder = os.path.join(MEDIA_ROOT, 'main/images/dedicaces')
-        exlibris_folder = os.path.join(MEDIA_ROOT, 'main/images/exlibris')
-        photo_repository = PhotoConnexion(dedicace_folder, exlibris_folder)
+        photo_repository = PhotoConnexion()
         service = DeletePhotoService(photo_repository)
         if service.main(isbn, photo_id, photo_type):
             return UTF8Response("Photo supprimée correctement", status=200)

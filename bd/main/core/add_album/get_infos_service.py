@@ -13,7 +13,7 @@ class GetInfosService:
         infos_complete = {}
         for repository in self.repositories:
             try:
-                current_infos = self.get_infos(repository)
+                current_infos = repository.get_infos(self.isbn)
                 # Fusion des informations
                 for key, value in current_infos.items():
                     # On ne remplace que si la valeur est vide ou n'existe pas
@@ -46,9 +46,6 @@ class GetInfosService:
             key in infos and infos[key]
             for key in required_keys
         )
-
-    def get_infos(self, repository: BdRepository) -> dict[str, str | float | int]:
-        return repository.get_infos(self.isbn)
 
     def corriger_info(self, info: dict[str, str]) -> dict[str, str]:
         """Corriger info s'il manque des clefs"""

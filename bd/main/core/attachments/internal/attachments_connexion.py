@@ -1,16 +1,15 @@
 import os
 from abc import ABC
 
-from config.settings import MEDIA_ROOT
 from main.core.attachments.attachments_repository import AttachmentsRepository
 from main.core.common.database.internal.bd_model import BD
-from main.core.common.folder.folder_connexion import count_images_in_directory
+from main.core.common.directory.directory_methods import count_images_in_directory
 
 
 class AttachmentsConnexion(AttachmentsRepository, ABC):
 
     def get_attachments(self, path: str) -> (list[dict[str, str]], int):
-        image_folder = os.path.join(MEDIA_ROOT, path)
+        image_folder = path
         infos = []
         attachments_sum = 0
         for item in os.listdir(image_folder):

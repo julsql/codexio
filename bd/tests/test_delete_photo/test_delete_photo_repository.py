@@ -2,18 +2,22 @@ import os
 import tempfile
 import unittest
 
+from main.core.common.data.data import SIGNED_COPY_PATH, EXLIBRIS_PATH
 from main.core.delete_photo.internal.photo_connexion import PhotoConnexion
 
 
 class TestPhotoConnexion(unittest.TestCase):
 
-    def setUp(self):
-        self.temp_dir = tempfile.TemporaryDirectory()
-        self.dedicace_folder = os.path.join(self.temp_dir.name, "dedicace")
-        self.exlibris_folder = os.path.join(self.temp_dir.name, "exlibris")
-        os.makedirs(self.dedicace_folder, exist_ok=True)
-        os.makedirs(self.exlibris_folder, exist_ok=True)
-        self.photo_connexion = PhotoConnexion(self.dedicace_folder, self.exlibris_folder)
+    def setUp(cls):
+        cls.temp_dir = tempfile.TemporaryDirectory()
+
+        cls.SIGNED_COPY_FOLDER = os.path.join(cls.temp_dir.name, SIGNED_COPY_PATH)
+        cls.EXLIBRIS_FOLDER = os.path.join(cls.temp_dir.name, EXLIBRIS_PATH)
+
+        os.makedirs(cls.SIGNED_COPY_FOLDER, exist_ok=True)
+        os.makedirs(cls.EXLIBRIS_FOLDER, exist_ok=True)
+
+        cls.photo_connexion = PhotoConnexion()
 
     def tearDown(self):
         self.temp_dir.cleanup()
@@ -21,13 +25,13 @@ class TestPhotoConnexion(unittest.TestCase):
     def test_delete_dedicace_photo_exists_and_folder_empty(self):
         isbn = 12345
         photo_id = 1
-        album_path = os.path.join(self.dedicace_folder, str(isbn))
+        album_path = os.path.join(self.SIGNED_COPY_FOLDER, str(isbn))
         os.makedirs(album_path, exist_ok=True)
         photo_path = os.path.join(album_path, f"{photo_id}.jpeg")
         with open(photo_path, 'w') as f:
             f.write("test image content")
 
-        result = self.photo_connexion.delete_dedicace(isbn, photo_id)
+        result = self.photo_connexion.delete_photo(isbn, photo_id, self.SIGNED_COPY_FOLDER)
 
         self.assertFalse(os.path.exists(photo_path))
         self.assertFalse(os.path.exists(album_path))
@@ -36,7 +40,7 @@ class TestPhotoConnexion(unittest.TestCase):
     def test_delete_exlibris_photo_exists_and_folder_not_empty(self):
         isbn = 67890
         photo_id = 1
-        album_path = os.path.join(self.exlibris_folder, str(isbn))
+        album_path = os.path.join(self.EXLIBRIS_FOLDER, str(isbn))
         os.makedirs(album_path, exist_ok=True)
         photo_path = os.path.join(album_path, f"{photo_id}.jpeg")
         with open(photo_path, 'w') as f:
@@ -45,7 +49,7 @@ class TestPhotoConnexion(unittest.TestCase):
         with open(another_photo_path, 'w') as f:
             f.write("another test image content")
 
-        result = self.photo_connexion.delete_exlibris(isbn, photo_id)
+        result = self.photo_connexion.delete_photo(isbn, photo_id, self.EXLIBRIS_FOLDER)
 
         self.assertTrue(os.path.exists(photo_path))
         self.assertFalse(os.path.exists(another_photo_path))
@@ -55,10 +59,10 @@ class TestPhotoConnexion(unittest.TestCase):
     def test_delete_photo_does_not_exist(self):
         isbn = 11111
         photo_id = 3
-        album_path = os.path.join(self.dedicace_folder, str(isbn))
+        album_path = os.path.join(self.SIGNED_COPY_FOLDER, str(isbn))
         os.makedirs(album_path, exist_ok=True)
 
-        result = self.photo_connexion.delete_dedicace(isbn, photo_id)
+        result = self.photo_connexion.delete_photo(isbn, photo_id, self.SIGNED_COPY_FOLDER)
 
         self.assertFalse(result)
 

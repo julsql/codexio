@@ -2,15 +2,16 @@ import unittest
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 
+from main.core.common.data.data import EXLIBRIS_FOLDER, SIGNED_COPY_FOLDER
 from main.core.upload_photo.upload_photo_service import UploadPhotoService
-from tests.test_upload_photo.internal.photo_in_memory import PhotoInMemory
+from tests.test_upload_photo.internal.photo_in_memory import UploadPhotoInMemory
 
 
 class TestUpdateDatabaseService(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.repository = PhotoInMemory()
+        cls.repository = UploadPhotoInMemory()
         cls.service = UploadPhotoService(cls.repository)
         cls.ISBN = 1111
         cls.file_name = "test_file.jpeg"
@@ -20,12 +21,12 @@ class TestUpdateDatabaseService(unittest.TestCase):
     def test_correctly_upload_dedicace(self) -> None:
         is_uploaded = self.service.main(self.ISBN, self.uploaded_file, "dedicaces")
         self.assertTrue(is_uploaded)
-        self.assertEqual("dedicaces", self.repository.type)
+        self.assertEqual(SIGNED_COPY_FOLDER, self.repository.type)
 
     def test_correctly_upload_exlibris(self) -> None:
         is_uploaded = self.service.main(self.ISBN, self.uploaded_file, "exlibris")
         self.assertTrue(is_uploaded)
-        self.assertEqual("exlibris", self.repository.type)
+        self.assertEqual(EXLIBRIS_FOLDER, self.repository.type)
 
     def test_incorrect_type(self) -> None:
         with self.assertRaises(ValueError):

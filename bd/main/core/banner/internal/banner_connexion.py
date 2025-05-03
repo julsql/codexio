@@ -2,7 +2,7 @@ import os
 import random
 from abc import ABC
 
-from config.settings import MEDIA_ROOT, MEDIA_URL
+from config.settings import MEDIA_URL
 from main.core.banner.banner_repository import BannerRepository
 
 
@@ -10,7 +10,7 @@ class BannerConnexion(BannerRepository, ABC):
 
     def get_all_images_path(self, paths: list[str]) -> list[str]:
         return sum([self.list_files_in_subdirectories(
-            os.path.join(MEDIA_ROOT, path)) for path in paths], [])
+            path) for path in paths], [])
 
     def list_files_in_subdirectories(self, directory_path: str) -> list[str]:
         if not os.path.isdir(directory_path):

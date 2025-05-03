@@ -1,19 +1,15 @@
-import os
-
-from config.settings import MEDIA_ROOT
+from main.core.common.data.data import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
 from main.core.delete_photo.photo_repository import PhotoRepository
 
 
 class DeletePhotoService:
     def __init__(self, photo_repository: PhotoRepository) -> None:
-        self.dedicace_folder = os.path.join(MEDIA_ROOT, 'main/images/dedicaces')
-        self.exlibris_folder = os.path.join(MEDIA_ROOT, 'main/images/exlibris')
         self.repository = photo_repository
 
     def main(self, isbn: int, photo_id: int, photo_type: str) -> bool:
         if photo_type == 'dedicaces':
-            return self.repository.delete_dedicace(isbn, photo_id)
+            return self.repository.delete_photo(isbn, photo_id, SIGNED_COPY_FOLDER)
         elif photo_type == 'exlibris':
-            return self.repository.delete_exlibris(isbn, photo_id)
+            return self.repository.delete_photo(isbn, photo_id, EXLIBRIS_FOLDER)
         else:
             raise ValueError('Unknown photo type')

@@ -14,7 +14,3 @@ class AdvancedSearchRepository(ABC):
     @abstractmethod
     def get_by_form(self, data: dict[str, Any], queryset: QuerySet[BD, BD]) -> QuerySet[BD, BD]:
         pass
-
-    @abstractmethod
-    def order_by(self, queryset: QuerySet[BD], criteria: bool, croissant: bool) -> QuerySet[BD]:
-        pass
