@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from test_add_album.album_large_data_set import ASTERIX_DATA, ASTERIX_ISBN
+from tests.test_add_album.album_large_data_set import ASTERIX_ISBN, ASTERIX_DATA
 
 # Structures de données communes
 COLUMN_HEADERS = {

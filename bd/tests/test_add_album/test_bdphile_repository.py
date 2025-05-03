@@ -2,7 +2,8 @@ import unittest
 
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.internal.bdphile_connexion import BdPhileRepository
-from test_add_album.album_large_data_set import ASTERIX_ISBN, ASTERIX_URLS, ASTERIX_DATA, SAMBRE_ISBN, SAMBRE_DATA, \
+from tests.test_add_album.album_large_data_set import ASTERIX_ISBN, ASTERIX_URLS, ASTERIX_DATA, SAMBRE_ISBN, \
+    SAMBRE_DATA, \
     THORGAL_ISBN, THORGAL_DATA, SAULE_ISBN, SAULE_DATA
 
 
