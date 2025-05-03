@@ -7,7 +7,7 @@ from main.core.page_bd.page_bd_attachments_repository import PageBdAttachmentsRe
 
 class PageBdAttachmentsConnexion(PageBdAttachmentsRepository, ABC):
 
-    def add_attachments(self, infos, isbn):
+    def get_attachments(self, infos, isbn):
         infos["dedicaces"] = sorted(self.attachment_album(isbn, SIGNED_COPY_FOLDER))
         infos["nb_dedicace"] = len(infos["dedicaces"])
         infos["ex_libris"] = sorted(self.attachment_album(isbn, EXLIBRIS_FOLDER))

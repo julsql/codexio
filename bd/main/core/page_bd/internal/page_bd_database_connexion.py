@@ -14,6 +14,7 @@ class PageBdDatabaseConnexion(PageBdDatabaseRepository, ABC):
             'synopsis', 'image'
         ]
         result = BD.objects.filter(isbn=isbn).values(*fields).first()
-        if int(result['purchase_price']) == float(result['purchase_price']):
+        if result and 'purchase_price' in result and result['purchase_price'] and int(
+                result['purchase_price']) == float(result['purchase_price']):
             result['purchase_price'] = int(result['purchase_price'])
         return result

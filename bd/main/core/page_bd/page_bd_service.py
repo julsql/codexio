@@ -16,5 +16,5 @@ class PageBdService:
         except Exception as e:
             logger.error(str(e), exc_info=True)
             return {"isbn": str(isbn)}
-        self.attachments_repository.add_attachments(infos, isbn)
+        self.attachments_repository.get_attachments(infos, isbn)
         return infos
