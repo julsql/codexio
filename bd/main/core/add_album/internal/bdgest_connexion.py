@@ -23,13 +23,12 @@ class BdGestRepository(BdRepository):
 
         html = self.get_html(url)
         soup = BeautifulSoup(html, self.BS_FEATURE)
-        body = soup.find("div", class_="bandeau-principal")
 
         # Extraction du titre
-        self._extract_title(soup, informations)
+        self._extract_title(soup, informations, isbn)
 
         # Extraction des informations sur les auteurs
-        self._extract_authors(soup, informations)
+        self._extract_authors(soup, informations, isbn)
 
         # Extraction des informations supplémentaires
         self._extract_additional_info(soup, informations, isbn)
@@ -38,10 +37,10 @@ class BdGestRepository(BdRepository):
         self._extract_price(soup, informations, isbn)
 
         # Image
-        self._extract_image(body, informations)
+        self._extract_image(soup, informations, isbn)
 
         # Synopsis
-        self._extract_synopsis(soup, informations)
+        self._extract_synopsis(soup, informations, isbn)
 
         # Date de publication
         self._parse_publication_date(informations, isbn)
@@ -49,38 +48,52 @@ class BdGestRepository(BdRepository):
         logger.info(informations, extra={"isbn": isbn})
         return informations
 
-    def _extract_title(self, soup: BeautifulSoup, informations: dict) -> None:
+    def _extract_title(self, soup: BeautifulSoup, informations: dict, isbn: int) -> None:
         """ Extraire les informations du titre """
-        album_tag = soup.find("div", class_=self.BANDEAU_CLASS)
+        full_title = self._get_input(soup, "AltTitle")
+        if full_title:
+            pattern = r'-([^-\s]+)-'
+            match = re.search(pattern, full_title)
 
-        title = album_tag.find("h1")
-        a_tag = title.find("a") if title else None
-        if a_tag:
-            informations['Série'] = a_tag.get('title')
+            if not match:
+                raise ValueError("Format de titre invalide : le numéro de tome est introuvable")
 
-        sub_title = album_tag.find("h2")
-        if sub_title and sub_title.find("span", class_="numa"):
-            sub_title.find("span", class_="numa").extract()
+            # Découpe aux positions trouvées
+            tome = match.group(1)
+            serie = full_title[:match.start()].strip()
+            album = full_title[match.end():].strip()
+            if tome:
+                informations["Numéro"] = tome
+            if serie:
+                informations["Série"] = serie
+            if album:
+                informations["Album"] = album
+        else:
+            logger.warning("Impossible d'extraire le titre", extra={"isbn": isbn})
+        return None
 
-        # Récupérer le texte nettoyé
-
-        sub_title = sub_title.text.split()
-        if sub_title[0] == ".":
-            sub_title = sub_title[1:]
-        sub_title = " ".join(sub_title)
-
-        informations['Album'] = sub_title
-
-    def _extract_authors(self, soup: BeautifulSoup, informations: dict) -> None:
+    def _extract_authors(self, soup: BeautifulSoup, informations: dict, isbn: int) -> None:
         """ Extraire les informations supplémentaires """
         keys = ['Scénario', 'Dessin', 'Couleurs']
         album_tag = soup.find("div", class_=self.BANDEAU_CLASS)
+        if not album_tag:
+            logger.warning("Informations supplémentaires non trouvées", extra={"isbn": isbn})
+            return
 
         sub_title = album_tag.find("h3")
+        if not sub_title:
+            logger.warning("Éditeur non trouvé", extra={"isbn": isbn})
+            return
         editor_tag = sub_title.find('span', {"itemprop": "publisher"})
+        if not editor_tag:
+            logger.warning("Éditeur non trouvé", extra={"isbn": isbn})
+            return
         informations["Éditeur"] = editor_tag.get_text()
 
         auteur_tag = album_tag.find("div", class_="liste-auteurs")
+        if not editor_tag:
+            logger.warning("Créateurs non trouvés", extra={"isbn": isbn})
+            return
 
         auteurs = auteur_tag.select("a")
         metiers = auteur_tag.select(".metier")
@@ -146,22 +159,30 @@ class BdGestRepository(BdRepository):
                 result = response.json()
                 if 'price' in result:
                     informations["Prix"] = float(result['price'])
+        else:
+            logger.warning("Impossible d'extraire le prix", extra={"isbn": isbn})
         return None
 
-    def _extract_image(self, soup: BeautifulSoup, informations: dict) -> None:
+    def _extract_image(self, soup: BeautifulSoup, informations: dict, isbn: int) -> None:
         """ Extraire l'image """
-
         body = soup.find("div", class_=self.IMAGE_CLASS)
+        if not body:
+            logger.warning("Image non trouvée", extra={"isbn": isbn})
+            return
         a_tag = body.find("a") if body else None
-        if a_tag:
-            informations['Image'] = a_tag.get('href')
+        if not a_tag:
+            logger.warning("Image non trouvée", extra={"isbn": isbn})
+            return
+        informations['Image'] = a_tag.get('href')
 
-    def _extract_synopsis(self, soup: BeautifulSoup, informations: dict) -> None:
+    def _extract_synopsis(self, soup: BeautifulSoup, informations: dict, isbn: int) -> None:
         """ Extraire le synopsis """
 
         synopsis_tag = soup.find('span', {"itemprop": "description"})
-        if synopsis_tag:
-            informations["Synopsis"] = synopsis_tag.get_text()
+        if not synopsis_tag:
+            logger.warning("Synopsis non trouvé", extra={"isbn": isbn})
+            return
+        informations["Synopsis"] = synopsis_tag.get_text()
 
     def get_url(self, isbn: int) -> str:
         """Trouver lien BD bdgest.fr à partir de son ISBN"""
@@ -179,7 +200,8 @@ class BdGestRepository(BdRepository):
             response = session.get(self.SEARCH_URL, params=params, headers=headers)
 
             if response.status_code != 200:
-                logger.error(f"La requête a échoué. Statut de la réponse : {response.status_code}", extra={"isbn": isbn})
+                logger.error(f"La requête a échoué. Statut de la réponse : {response.status_code}",
+                             extra={"isbn": isbn})
                 raise AddAlbumError(f"Impossible d'affiche le code html de la page {self.SEARCH_URL}")
 
             html = response.text

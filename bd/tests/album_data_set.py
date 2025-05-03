@@ -48,6 +48,7 @@ ASTERIX_DATA = {
     'BDGEST': {
         'Album': "L'Empire du Milieu",
         "Série": "Astérix (Hors Série)",
+        'Numéro': 'C14',
         'Scénario': "Olivier Gay",
         'Dessin': "Fabrice Tarrin",
         'Couleurs': "Thierry Mébarki",
