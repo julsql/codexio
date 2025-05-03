@@ -100,7 +100,8 @@ class BdFugueRepository(BdRepository):
                 attributs = [attr.strip() for attr in match.group(2).split(',')]
                 for fonction in attributs:
                     if fonction in self.header.keys():
-                        infos[fonction] = infos.get(fonction, '') + ("," if fonction in infos else "") + nom
+                        if nom not in infos.get(fonction, ''):
+                            infos[fonction] = infos.get(fonction, '') + ("," if fonction in infos else "") + nom
 
     def _handle_label(self, label: str, value: str, infos: dict, isbn: int) -> None:
         """ Traiter les labels généraux """

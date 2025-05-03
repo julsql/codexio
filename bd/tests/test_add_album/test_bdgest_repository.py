@@ -2,7 +2,8 @@ import unittest
 
 from main.core.add_album.add_album_error import AddAlbumError
 from main.core.add_album.internal.bdgest_connexion import BdGestRepository
-from test_add_album.album_large_data_set import ASTERIX_ISBN, ASTERIX_URLS, ASTERIX_DATA, SAMBRE_DATA, SAMBRE_ISBN
+from test_add_album.album_large_data_set import ASTERIX_ISBN, ASTERIX_URLS, ASTERIX_DATA, SAMBRE_DATA, SAMBRE_ISBN, \
+    THORGAL_DATA, THORGAL_ISBN, SAULE_ISBN, SAULE_DATA
 
 
 class TestBdGestRepository(unittest.TestCase):
@@ -29,6 +30,14 @@ class TestBdGestRepository(unittest.TestCase):
     def test_get_correct_infos_from_sambre_isbn(self) -> None:
         infos = self.bd_repository.get_infos(SAMBRE_ISBN)
         self.assertEqual(SAMBRE_DATA['BDGEST'], infos)
+
+    def test_get_correct_infos_from_thorgal_isbn(self) -> None:
+        infos = self.bd_repository.get_infos(THORGAL_ISBN)
+        self.assertEqual(THORGAL_DATA['BDGEST'], infos)
+
+    def test_get_correct_infos_from_saule_isbn(self) -> None:
+        infos = self.bd_repository.get_infos(SAULE_ISBN)
+        self.assertEqual(SAULE_DATA['BDGEST'], infos)
 
 
 if __name__ == '__main__':

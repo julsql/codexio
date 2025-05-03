@@ -64,6 +64,35 @@ class TestDateParsing(unittest.TestCase):
             {
                 "input": "28 déc. 2023",
                 "expected": "2023-12-28"
+            },
+            # formats incomplets
+            {
+                "input": "2024-03-15",
+                "expected": "2024-03-15"
+            },
+            {
+                "input": "2024-03",
+                "expected": "2024-03-01"
+            },
+            {
+                "input": "2024",
+                "expected": "2024-01-01"
+            },
+            {
+                "input": "Mars 2024",
+                "expected": "2024-03-01"
+            },
+            {
+                "input": "15 Mars 2024",
+                "expected": "2024-03-15"
+            },
+            {
+                "input": "2024-3-15",
+                "expected": "2024-03-15"
+            },
+            {
+                "input": "15/03/2024",
+                "expected": "2024-03-15"
             }
         ]
 
@@ -100,6 +129,22 @@ class TestDateParsing(unittest.TestCase):
                     expected,
                     f"Failed to translate {input_date} correctly"
                 )
+
+    def test_translate_method(self):
+        dates_test = [
+            "2024-03-15",  # Date complète
+            "2024-03",  # Année-mois
+            "2024",  # Seulement année
+            "Mars 2024",  # Mois textuel et année
+            "15 Mars 2024",  # Date complète textuelle
+            "2024-3-15",  # Format sans zéros
+            "15/03/2024",  # Format avec slashes
+        ]
+
+        for date in dates_test:
+            resultat = parse_date(date, "TEST-ISBN")
+            print(f"\nDate originale : {date}")
+            print(f"Date parsée : {resultat}")
 
     def test_invalid_dates(self):
         invalid_dates = [

@@ -72,7 +72,6 @@ class BdPhileRepository(BdRepository):
             )
             informations["Album"] = title.strip()
 
-
     def _extract_additional_info(self, soup: BeautifulSoup, informations: dict) -> None:
         """ Extraire les informations supplémentaires """
         keys = ['Scénario', 'Dessin', 'Couleurs', 'Éditeur', 'Date de publication', 'Édition', 'Format']

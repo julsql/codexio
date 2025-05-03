@@ -1,3 +1,4 @@
+import re
 from abc import ABC, abstractmethod
 from datetime import datetime
 
@@ -21,15 +22,32 @@ class BdRepository(ABC):
 
     def _parse_publication_date(self, informations: dict, isbn: int) -> None:
         """ Parse la date de publication """
-        date_string = informations.get("Date de publication", "")
+        publication_date_key = "Date de publication"
+
+        date_string = informations.get(publication_date_key, "")
 
         if not date_string:
-            return
+            return None
 
-        # Vérifier d'abord si la date est déjà au format ISO
+        # Essaie d'abord le format complet YYYY-MM-DD
         try:
-            datetime.strptime(date_string, "%Y-%m-%d")
-            return
+            informations[publication_date_key] = datetime.strptime(date_string, "%Y-%m-%d").strftime("%Y-%m-%d")
+            return None
+        except ValueError:
+            pass
+
+        # Essaie le format YYYY-MM
+        try:
+            informations[publication_date_key] = datetime.strptime(date_string, "%Y-%m").strftime("%Y-%m-01")
+            return None
+        except ValueError:
+            pass
+
+        # Essaie le format YYYY
+        try:
+            if re.match(r'^\d{4}$', date_string):
+                informations[publication_date_key] = f"{date_string}-01-01"
+                return None
         except ValueError:
             pass
 
@@ -57,12 +75,21 @@ class BdRepository(ABC):
                 jour, mois, annee = date_string.replace('.', '').split()
                 if mois.lower() in mois_fr:
                     mois = mois_fr[mois.lower()]
-                    informations["Date de publication"] = f"{annee}-{mois}-{int(jour):02d}"
+                    informations[publication_date_key] = f"{annee}-{mois}-{int(jour):02d}"
                     return None
 
-            # Utiliser dateutil.parser comme fallback
             parsed_date = parse(date_string, dayfirst=True, fuzzy=True)
-            informations["Date de publication"] = parsed_date.strftime("%Y-%m-%d")
+
+            # Vérifie le niveau de précision de la date originale
+            if re.match(r'^\d{4}$', date_string):
+                # Seulement l'année
+                informations[publication_date_key] = f"{parsed_date.year}-01-01"
+            elif re.match(r'^\d{4}-\d{1,2}$', date_string) or len(date_string.split()) == 2:
+                # Année et mois seulement
+                informations[publication_date_key] = f"{parsed_date.year}-{parsed_date.month:02d}-01"
+            else:
+                # Date complète
+                informations[publication_date_key] = parsed_date.strftime("%Y-%m-%d")
             return None
 
         except ValueError:
