@@ -14,7 +14,7 @@ class BannerService:
         image_files = self.repository.get_all_images_path([SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER])
         random_isbn = 0
         random_type = ""
-        if image_files:
+        if image_files and len(image_files) > 0:
             random_image_path, random_isbn, random_type = self.repository.get_random_attachment(
                 image_files)
         else:
