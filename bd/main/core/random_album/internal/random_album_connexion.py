@@ -1,9 +1,11 @@
+from abc import ABC
 from typing import Any
 
 from main.core.common.database.internal.bd_model import BD
+from main.core.random_album.random_album_repository import RandomAlbumRepository
 
 
-class RandomAlbumConnexion:
+class RandomAlbumConnexion(RandomAlbumRepository, ABC):
 
     def get_random_album(self) -> dict[str, Any] | None:
         result = BD.objects.values(

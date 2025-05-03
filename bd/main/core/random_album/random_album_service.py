@@ -1,8 +1,8 @@
-from main.core.random_album.internal.random_album_connexion import RandomAlbumConnexion
+from main.core.random_album.random_album_repository import RandomAlbumRepository
 
 
 class RandomAlbumService:
-    def __init__(self, random_album_repository: RandomAlbumConnexion) -> None:
+    def __init__(self, random_album_repository: RandomAlbumRepository) -> None:
         self.connexion = random_album_repository
 
     def main(self) -> dict[str, str]:
