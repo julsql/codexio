@@ -6,17 +6,8 @@ from main.core.delete_photo.photo_repository import PhotoRepository
 
 class PhotoConnexion(PhotoRepository, ABC):
 
-    def __init__(self, dedicace_folder: str, exlibris_folder: str):
+    def __init__(self):
         self.allowed_extensions = '.jpeg'
-
-        self.dedicace_folder = dedicace_folder
-        self.exlibris_folder = exlibris_folder
-
-    def delete_dedicace(self, isbn: int, photo_id: int) -> bool:
-        return self.delete_photo(isbn, photo_id, self.dedicace_folder)
-
-    def delete_exlibris(self, isbn: int, photo_id: int) -> bool:
-        return self.delete_photo(isbn, photo_id, self.exlibris_folder)
 
     def delete_photo(self, isbn: int, photo_id: int, folder: str) -> bool:
         album_path = os.path.join(folder, str(isbn))

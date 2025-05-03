@@ -1,13 +1,10 @@
-import os
-
 from django.http import HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 
-from config.settings import MEDIA_ROOT
 from config.settings import POST_TOKEN
 from main.core.common.reponse.utf8_response import UTF8ResponseBadRequest, UTF8ResponseNotAllowed, UTF8Response, \
     UTF8ResponseForbidden
-from main.core.upload_photo.internal.photo_connexion import PhotoConnexion
+from main.core.upload_photo.internal.upload_photo_connexion import UploadPhotoConnexion
 from main.core.upload_photo.upload_photo_service import UploadPhotoService
 
 
@@ -30,9 +27,7 @@ def upload_photo(request: HttpRequest, isbn: int,
         else:
             if 'file' in request.FILES:
                 uploaded_file = request.FILES['file']
-                dedicace_folder = os.path.join(MEDIA_ROOT, 'main/images/dedicaces')
-                exlibris_folder = os.path.join(MEDIA_ROOT, 'main/images/exlibris')
-                photo_repository = PhotoConnexion(dedicace_folder, exlibris_folder)
+                photo_repository = UploadPhotoConnexion()
                 service = UploadPhotoService(photo_repository)
                 if service.main(isbn, uploaded_file, photo_type):
                     return UTF8Response(

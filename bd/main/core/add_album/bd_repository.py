@@ -12,14 +12,6 @@ class BdRepository(ABC):
     def get_infos(self, isbn: int) -> dict[str, str | float | int]:
         pass
 
-    @abstractmethod
-    def get_url(self, isbn: int) -> str:
-        pass
-
-    @abstractmethod
-    def get_html(self, url: str) -> str:
-        pass
-
     def _parse_publication_date(self, informations: dict, isbn: int) -> None:
         """ Parse la date de publication """
         publication_date_key = "Date de publication"

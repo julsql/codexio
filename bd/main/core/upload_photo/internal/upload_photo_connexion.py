@@ -5,22 +5,13 @@ from abc import ABC
 from django.core.files.storage import FileSystemStorage
 from django.core.files.uploadedfile import UploadedFile
 
-from main.core.upload_photo.photo_repository import PhotoRepository
+from main.core.upload_photo.upload_photo_repository import UploadPhotoRepository
 
 
-class PhotoConnexion(PhotoRepository, ABC):
+class UploadPhotoConnexion(UploadPhotoRepository, ABC):
 
-    def __init__(self, dedicace_folder: str, exlibris_folder: str):
+    def __init__(self):
         self.allowed_extensions = {'.jpeg'}
-
-        self.dedicace_folder = dedicace_folder
-        self.exlibris_folder = exlibris_folder
-
-    def upload_dedicace(self, isbn: int, uploaded_file: UploadedFile) -> bool:
-        return self.upload_photo(isbn, uploaded_file, self.dedicace_folder)
-
-    def upload_exlibris(self, isbn: int, uploaded_file: UploadedFile) -> bool:
-        return self.upload_photo(isbn, uploaded_file, self.exlibris_folder)
 
     def upload_photo(self, isbn: int, uploaded_file: UploadedFile, folder: str) -> bool:
         allowed_file = self.is_image_file(uploaded_file.name)

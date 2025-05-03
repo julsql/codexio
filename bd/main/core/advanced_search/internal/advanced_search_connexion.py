@@ -17,9 +17,6 @@ class AdvancedSearchConnexion(AdvancedSearchRepository, ABC):
     def get_all(self) -> QuerySet[BD, BD]:
         return BD.objects.all()
 
-    def order_by(self, queryset: QuerySet[BD], criteria: bool, croissant: bool) -> QuerySet[BD]:
-        return queryset.order_by(criteria if croissant else f"-{criteria}")
-
     def get_by_form(self, data: dict[str, Any], queryset: QuerySet[BD, BD]) -> QuerySet[BD, BD]:
         queryset = self.filter_contains(data, queryset)
         queryset = self.filter_equals(data, queryset)

@@ -2,17 +2,16 @@ import os
 
 from config.settings import STATIC_URL
 from main.core.banner.banner_repository import BannerRepository
+from main.core.common.data.data import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
 
 
 class BannerService:
-    SIGNED_COPY_PATH = "main/images/dedicaces"
-    EX_LIBRIS_PATH = "main/images/exlibris"
 
     def __init__(self, banner_repository: BannerRepository) -> None:
         self.repository = banner_repository
 
     def main(self) -> dict[str, str]:
-        image_files = self.repository.get_all_images_path([self.SIGNED_COPY_PATH, self.EX_LIBRIS_PATH])
+        image_files = self.repository.get_all_images_path([SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER])
         random_isbn = 0
         random_type = ""
         if image_files:

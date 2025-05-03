@@ -1,26 +1,23 @@
 import os
 from abc import ABC
 
-from config.settings import MEDIA_ROOT
-from main.core.common.folder.folder_connexion import count_images_in_directory
+from main.core.common.data.data import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
+from main.core.common.directory.directory_methods import count_images_in_directory
 from main.core.statistics.statistics_attachments_repository import StatisticsAttachmentsRepository
 
 
 class StatisticsAttachmentsConnexion(StatisticsAttachmentsRepository, ABC):
-    SIGNED_COPY_PATH = "main/images/dedicaces"
-    EX_LIBRIS_PATH = "main/images/exlibris"
 
     def get_information(self):
-        dedicace_total = self.get_attachments_total(self.SIGNED_COPY_PATH)
-        exlibris_total = self.get_attachments_total(self.EX_LIBRIS_PATH)
+        dedicace_total = self.get_attachments_total(SIGNED_COPY_FOLDER)
+        exlibris_total = self.get_attachments_total(EXLIBRIS_FOLDER)
 
         infos = {}
         infos["dedicaces"] = dedicace_total
         infos["exlibris"] = exlibris_total
         return infos
 
-    def get_attachments_total(self, path: str) -> (list[dict[str, str]], int):
-        image_folder = os.path.join(MEDIA_ROOT, path)
+    def get_attachments_total(self, image_folder: str) -> (list[dict[str, str]], int):
         attachments_sum = 0
         for item in os.listdir(image_folder):
             item_path = os.path.join(image_folder, item)

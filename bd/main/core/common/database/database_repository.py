@@ -10,7 +10,3 @@ class DatabaseRepository(ABC):
     @abstractmethod
     def insert(self, value: list[dict[str, str]]) -> None:
         pass
-
-    @abstractmethod
-    def get_all(self) -> list[dict[str, str]]:
-        pass

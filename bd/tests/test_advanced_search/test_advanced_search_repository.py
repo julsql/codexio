@@ -257,26 +257,6 @@ class TestAdvancedSearchRepository(unittest.TestCase):
         self.assertEqual(1, result.count())
         self.assertEqual(self.bd2, result.first())
 
-    def test_order_by_album_ascending(self):
-        result = self.repository.order_by(
-            self.repository.get_all(),
-            'album',
-            True
-        )
-        bds = list(result)
-        self.assertEqual(self.bd1, bds[0])
-        self.assertEqual(self.bd2, bds[1])
-
-    def test_order_by_publication_date_descending(self):
-        result = self.repository.order_by(
-            self.repository.get_all(),
-            'publication_date',
-            False
-        )
-        bds = list(result)
-        self.assertEqual(self.bd1, bds[0])
-        self.assertEqual(self.bd2, bds[1])
-
     def test_empty_form_returns_all(self):
         result = self.repository.get_by_form(
             {},

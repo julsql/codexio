@@ -2,6 +2,7 @@ import unittest
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 
+from main.core.common.data.data import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
 from main.core.delete_photo.delete_photo_service import DeletePhotoService
 from tests.test_delete_photo.internal.photo_in_memory import PhotoInMemory
 
@@ -20,12 +21,12 @@ class TestDeletePhotoService(unittest.TestCase):
     def test_correctly_delete_dedicace(self) -> None:
         is_uploaded = self.service.main(self.ISBN, 1, "dedicaces")
         self.assertTrue(is_uploaded)
-        self.assertEqual("dedicaces", self.repository.type)
+        self.assertEqual(SIGNED_COPY_FOLDER, self.repository.type)
 
     def test_correctly_delete_exlibris(self) -> None:
         is_uploaded = self.service.main(self.ISBN, 1, "exlibris")
         self.assertTrue(is_uploaded)
-        self.assertEqual("exlibris", self.repository.type)
+        self.assertEqual(EXLIBRIS_FOLDER, self.repository.type)
 
     def test_incorrect_type(self) -> None:
         with self.assertRaises(ValueError):

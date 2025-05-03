@@ -7,20 +7,25 @@ from unittest.mock import patch
 import django
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from main.core.upload_photo.internal.photo_connexion import PhotoConnexion
+from main.core.common.data.data import SIGNED_COPY_PATH, EXLIBRIS_PATH
+from main.core.upload_photo.internal.upload_photo_connexion import UploadPhotoConnexion
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'config.settings'
 django.setup()
 
 
-class TestUpdateDatabaseService(unittest.TestCase):
+class TestUpdateDatabaseRepository(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
         cls.temp_dir = tempfile.TemporaryDirectory()
         cls.ISBN = 1111
         cls.file_name = "test_file.jpeg"
-        cls.repository = PhotoConnexion(cls.temp_dir.name, cls.temp_dir.name)
+
+        cls.SIGNED_COPY_FOLDER = os.path.join(cls.temp_dir.name, SIGNED_COPY_PATH)
+        cls.EXLIBRIS_FOLDER = os.path.join(cls.temp_dir.name, EXLIBRIS_PATH)
+
+        cls.repository = UploadPhotoConnexion()
         cls.file_content = b"Contenu du fichier exemple"
         cls.uploaded_file = SimpleUploadedFile(cls.file_name, cls.file_content, content_type="text/plain")
 
@@ -36,9 +41,9 @@ class TestUpdateDatabaseService(unittest.TestCase):
     def test_correctly_upload_dedicace(self) -> None:
         with patch('os.path.isfile') as mock_isfile:
             mock_isfile.return_value = True
-            is_uploaded = self.repository.upload_dedicace(self.ISBN, self.uploaded_file)
+            is_uploaded = self.repository.upload_photo(self.ISBN, self.uploaded_file, self.SIGNED_COPY_FOLDER)
         self.assertTrue(is_uploaded)
-        file = os.path.join(self.temp_dir.name, str(self.ISBN), "1.jpeg")
+        file = os.path.join(self.SIGNED_COPY_FOLDER, str(self.ISBN), "1.jpeg")
         self.assertTrue(os.path.exists(file))
         with open(file, 'r', encoding='utf-8') as f:
             content = f.read()
@@ -47,10 +52,11 @@ class TestUpdateDatabaseService(unittest.TestCase):
     def test_correctly_upload_multiple_files(self) -> None:
         with patch('os.path.isfile') as mock_isfile:
             mock_isfile.return_value = True
-            is_uploaded = self.repository.upload_dedicace(self.ISBN, self.uploaded_file)
-            is_uploaded = is_uploaded and self.repository.upload_dedicace(self.ISBN, self.uploaded_file)
+            is_uploaded = self.repository.upload_photo(self.ISBN, self.uploaded_file, self.SIGNED_COPY_FOLDER)
+            is_uploaded = is_uploaded and self.repository.upload_photo(self.ISBN, self.uploaded_file,
+                                                                       self.SIGNED_COPY_FOLDER)
         self.assertTrue(is_uploaded)
-        folder = os.path.join(self.temp_dir.name, str(self.ISBN))
+        folder = os.path.join(self.SIGNED_COPY_FOLDER, str(self.ISBN))
         self.assertEqual(2, len([f for f in Path(folder).iterdir() if f.is_file()]))
 
         file = os.path.join(folder, "1.jpeg")
@@ -68,26 +74,26 @@ class TestUpdateDatabaseService(unittest.TestCase):
     def test_correctly_upload_multiple_files_and_delete(self) -> None:
         with patch('os.path.isfile') as mock_isfile:
             mock_isfile.return_value = True
-            is_uploaded = self.repository.upload_dedicace(self.ISBN, self.uploaded_file)
+            is_uploaded = self.repository.upload_photo(self.ISBN, self.uploaded_file, self.SIGNED_COPY_FOLDER)
         self.assertTrue(is_uploaded)
-        folder = os.path.join(self.temp_dir.name, str(self.ISBN))
+        folder = os.path.join(self.SIGNED_COPY_FOLDER, str(self.ISBN))
         file = os.path.join(folder, "1.jpeg")
         self.assertTrue(os.path.exists(file))
         os.remove(file)
         with patch('os.path.isfile') as mock_isfile:
             mock_isfile.return_value = True
-            is_uploaded = self.repository.upload_dedicace(self.ISBN, self.uploaded_file)
+            is_uploaded = self.repository.upload_photo(self.ISBN, self.uploaded_file, self.SIGNED_COPY_FOLDER)
         self.assertTrue(is_uploaded)
-        folder = os.path.join(self.temp_dir.name, str(self.ISBN))
+        folder = os.path.join(self.SIGNED_COPY_FOLDER, str(self.ISBN))
         file = os.path.join(folder, "1.jpeg")
         self.assertTrue(os.path.exists(file))
 
     def test_correctly_upload_exlilbris(self) -> None:
         with patch('os.path.isfile') as mock_isfile:
             mock_isfile.return_value = True
-            is_uploaded = self.repository.upload_exlibris(self.ISBN, self.uploaded_file)
+            is_uploaded = self.repository.upload_photo(self.ISBN, self.uploaded_file, self.EXLIBRIS_FOLDER)
         self.assertTrue(is_uploaded)
-        file = os.path.join(self.temp_dir.name, str(self.ISBN), "1.jpeg")
+        file = os.path.join(self.EXLIBRIS_FOLDER, str(self.ISBN), "1.jpeg")
         self.assertTrue(os.path.exists(file))
         with open(file, 'r', encoding='utf-8') as f:
             content = f.read()
