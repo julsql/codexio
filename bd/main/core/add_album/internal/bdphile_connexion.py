@@ -1,3 +1,5 @@
+import re
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -40,24 +42,36 @@ class BdPhileRepository(BdRepository):
 
     def _extract_title(self, soup: BeautifulSoup, informations: dict, isbn: int) -> None:
         """ Extraire les informations du titre """
-        title_tag = soup.find('title')
-        if not title_tag:
+        album_tag = soup.find("section", id="page-title")
+        if not album_tag:
             logger.warning("Informations sur le titre non trouvées", extra={"isbn": isbn})
             return
+        serie_tag = album_tag.find("h1").find("a")
+        if not serie_tag:
+            logger.warning("Informations sur la série non trouvées", extra={"isbn": isbn})
+        serie = serie_tag.get_text()
+        informations["Série"] = serie
 
-        title_text = title_tag.get_text().split("|")[0].strip()
-        elements = title_text.split(" - ")
-        informations["Série"] = elements[0].strip()
-        if len(elements) > 1:
-            serie = elements[1].split(".")
-            if serie[0] == "One-shot":
-                informations["Numéro"] = 1
-                informations["Album"] = informations["Série"]
-            elif len(serie) > 1:
-                informations["Numéro"] = serie[0].strip()
-                informations["Album"] = serie[1].strip()
-            else:
-                informations["Album"] = serie[0].strip()
+        title_tag = album_tag.find("h2")
+        if not title_tag:
+            logger.warning("Informations sur le titre non trouvées", extra={"isbn": isbn})
+        title = title_tag.get_text()
+        match = re.search(r"^Tome\s+(\d+)\s*:", title, re.IGNORECASE)
+
+        if match:
+            numero = match.group(1)
+            titre = title[match.end():].strip()
+            informations["Numéro"] = numero
+            informations["Album"] = titre
+            return None
+        else:
+            # Pas de numéro de tome trouvé
+            logger.debug(
+                f"Pas de numéro de tome trouvé dans le titre: '{title}'",
+                extra={"isbn": isbn}
+            )
+            informations["Album"] = title.strip()
+
 
     def _extract_additional_info(self, soup: BeautifulSoup, informations: dict) -> None:
         """ Extraire les informations supplémentaires """
