@@ -17,7 +17,7 @@ class UpdateDatabaseService:
         titles = self.map_sheet_titles_to_database_columns(rows[0])
         column_indices = self._get_column_indices(titles)
 
-        data = self._process_rows(rows[1:], titles, column_indices)
+        data = self._process_rows(rows[1:], rows[0], titles, column_indices)
 
         self.database.reset_table()
         self.database.insert(data)
@@ -35,15 +35,19 @@ class UpdateDatabaseService:
             "ex_libris": titles.index("ex_libris")
         }
 
-    def _process_rows(self, rows: list[list[str]], titles: list[str], indices: dict[str, int]) -> list[dict]:
+    def _process_rows(self, rows: list[list[str]], column_titles: list[str], titles: list[str], indices: dict[str, int]) -> list[dict]:
         data = []
-        for row in rows:
+        for row_index in range(len(rows)):
+            row = rows[row_index]
             isbn = self.convert_isbn(row[indices["isbn"]])
             if isbn is not None:
                 processed_row = {}
-                for i in range(len(row)):
-                    if i not in (indices["signed_copy"], indices["ex_libris"]):
-                        processed_row[titles[i]] = self._convert_cell_value(row[i], i, isbn, indices)
+                for column_index in range(len(row)):
+                    if column_index not in (indices["signed_copy"], indices["ex_libris"]):
+                        try:
+                            processed_row[titles[column_index]] = self._convert_cell_value(row[column_index], column_index, isbn, indices)
+                        except Exception:
+                            raise ValueError(f"Erreur lors de la conversion de la colonne `{column_titles[column_index]}` ligne {row_index+2}")
                 data.append(processed_row)
         return data
 
