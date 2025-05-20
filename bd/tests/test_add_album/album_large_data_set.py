@@ -284,7 +284,7 @@ SAULE_DATA = {
         'Éditeur': "Delcourt",
         'Date de publication': "1996-10-01",
         'Pages': 31,
-        'Prix': 13.5,
+        'Prix': 12.99,
         'Synopsis': "Qu'est ce qui lui prend à Taupe ? Les premiers rayons du soleil "
                     'lui auraient-ils tapé sur la tête ? Le voilà qui quitte, '
                     'guilleret, son trou empoussiéré pour musarder au bord de la '
