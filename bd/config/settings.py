@@ -58,12 +58,12 @@ TEMPLATES = [
             BASE_DIR / 'main/core/banner/templates',
             BASE_DIR / 'main/core/advanced_search/templates',
             BASE_DIR / 'main/core/random_album/templates',
-            BASE_DIR / 'main/core/statistics/templates',
             BASE_DIR / 'main/core/attachments/templates',
             BASE_DIR / 'main/core/home/templates',
             BASE_DIR / 'main/core/bd_search/templates',
             BASE_DIR / 'main/core/page_bd/templates',
             BASE_DIR / 'main/core/errors/templates',
+            BASE_DIR / 'main/infrastructure/templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {

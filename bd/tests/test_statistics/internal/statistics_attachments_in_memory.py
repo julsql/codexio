@@ -1,13 +1,14 @@
 from abc import ABC
 
-from main.core.statistics.statistics_attachments_repository import StatisticsAttachmentsRepository
+from main.domain.model.statistics import Statistics
+from main.domain.ports.repositories.statistics_attachment_repository import StatisticsAttachmentRepository
 
 
-class StatisticsAttachmentsInMemory(StatisticsAttachmentsRepository, ABC):
-    def __init__(self, return_value: dict[str, int]) -> None:
+class StatisticsAttachmentsInMemory(StatisticsAttachmentRepository, ABC):
+    def __init__(self, return_value: Statistics) -> None:
         self.return_value = return_value
         self.get_information_called = False
 
-    def get_information(self) -> dict[str, int]:
+    def get_attachment_statistics(self) -> Statistics:
         self.get_information_called = True
         return self.return_value
