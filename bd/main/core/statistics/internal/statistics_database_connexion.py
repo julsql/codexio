@@ -3,7 +3,7 @@ from abc import ABC
 from django.db.models import Count, Sum, IntegerField, FloatField
 from django.db.models.functions import Cast, Round, Coalesce
 
-from main.core.common.database.internal.bd_model import BD
+from main.infrastructure.persistence.database.models import BD
 from main.core.statistics.statistics_database_repository import StatisticsDatabaseRepository
 
 
