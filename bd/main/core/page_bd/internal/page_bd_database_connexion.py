@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import Any
 
-from main.core.common.database.internal.bd_model import BD
+from main.infrastructure.persistence.database.models import BD
 from main.core.page_bd.page_bd_database_repository import PageBdDatabaseRepository
 
 

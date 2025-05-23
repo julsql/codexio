@@ -2,7 +2,7 @@ import os
 from abc import ABC
 
 from main.core.attachments.attachments_repository import AttachmentsRepository
-from main.core.common.database.internal.bd_model import BD
+from main.infrastructure.persistence.database.models import BD
 from main.core.common.directory.directory_methods import count_images_in_directory
 
 

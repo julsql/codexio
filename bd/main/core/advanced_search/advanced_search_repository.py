@@ -3,7 +3,7 @@ from typing import Any
 
 from django.db.models import QuerySet
 
-from main.core.common.database.internal.bd_model import BD
+from main.infrastructure.persistence.database.models import BD
 
 
 class AdvancedSearchRepository(ABC):

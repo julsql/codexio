@@ -12,7 +12,7 @@ django.setup()
 from django.db.models import QuerySet
 
 from main.core.advanced_search.internal.advanced_search_connexion import AdvancedSearchConnexion
-from main.core.common.database.internal.bd_model import BD
+from main.infrastructure.persistence.database.models import BD
 
 
 class TestAdvancedSearchRepository(unittest.TestCase):
