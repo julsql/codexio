@@ -5,15 +5,16 @@ import unittest
 
 import django
 
+from main.infrastructure.persistence.file.random_attachment_adapter import RandomAttachmentAdapter
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
 from main.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
-from main.core.banner.internal.banner_connexion import BannerConnexion
 
 
-class TestBannerRepository(unittest.TestCase):
+class TestRandomAttachmentRepository(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
@@ -27,7 +28,7 @@ class TestBannerRepository(unittest.TestCase):
         os.makedirs(cls.SIGNED_COPY_FOLDER, exist_ok=True)
         os.makedirs(cls.EXLIBRIS_FOLDER, exist_ok=True)
 
-        cls.repository = BannerConnexion()
+        cls.repository = RandomAttachmentAdapter()
 
     @classmethod
     def tearDownClass(cls) -> None:
@@ -105,12 +106,12 @@ class TestBannerRepository(unittest.TestCase):
         image_path = "signed_copy/12345/test.jpg"
 
         # Act
-        path, isbn, attachment_type = self.repository.get_random_attachment([image_path])
+        banner = self.repository.get_random_attachment([image_path])
 
         # Assert
-        self.assertTrue(path.endswith(image_path))
-        self.assertEqual("12345", isbn)
-        self.assertEqual("signed_copy", attachment_type)
+        self.assertTrue(banner.path.endswith(image_path))
+        self.assertEqual(12345, banner.isbn)
+        self.assertEqual("signed_copy", banner.type)
 
     def test_get_random_attachment_maintains_structure(self):
         # Arrange
@@ -122,15 +123,15 @@ class TestBannerRepository(unittest.TestCase):
         # Act
         results = set()
         for _ in range(10):  # Plusieurs essais pour tester le caractère aléatoire
-            path, isbn, attachment_type = self.repository.get_random_attachment(test_images)
-            results.add((path, isbn, attachment_type))
+            banner = self.repository.get_random_attachment(test_images)
+            results.add(banner)
 
         # Assert
         self.assertLessEqual(len(results), 2)  # Il ne devrait pas y avoir plus de résultats que d'images
-        for path, isbn, attachment_type in results:
-            self.assertTrue(any(path.endswith(img) for img in test_images))
-            self.assertIn(isbn, ["12345", "67890"])
-            self.assertIn(attachment_type, ["signed_copy", "exlibris"])
+        for banner in results:
+            self.assertTrue(any(banner.path.endswith(img) for img in test_images))
+            self.assertIn(banner.isbn, [12345, 67890])
+            self.assertIn(banner.type, ["signed_copy", "exlibris"])
 
     def test_list_files_in_subdirectories_valid_extensions(self):
         # Arrange

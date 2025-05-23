@@ -55,7 +55,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / 'main/core/banner/templates',
+            BASE_DIR / 'main/core/random_attachment/templates',
             BASE_DIR / 'main/core/advanced_search/templates',
             BASE_DIR / 'main/core/random_album/templates',
             BASE_DIR / 'main/core/attachments/templates',

@@ -1,29 +1,29 @@
 import unittest
-from pathlib import Path
 
-from main.core.banner.banner_service import BannerService
+from main.application.usecases.random_attachment.random_attachment_service import RandomAttachmentService
+from main.domain.model.random_attachment import RandomAttachment
 from main.infrastructure.persistence.file.paths import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
-from test_banner.internal.banner_in_memory import BannerInMemory
+from test_random_attachment.internal.random_attachment_in_memory import RandomAttachmentInMemory
 
 
-class TestBannerService(unittest.TestCase):
+class TestRandomAttachmentService(unittest.TestCase):
     def setUp(self):
-        self.repository = BannerInMemory()
-        self.service = BannerService(self.repository)
+        self.repository = RandomAttachmentInMemory()
+        self.service = RandomAttachmentService(self.repository)
 
     def test_main_no_images_returns_default_banner(self):
         # Arrange
         self.repository.images = []
 
         # Act
-        result = self.service.main()
+        banner = self.service.main()
 
         # Assert
         self.assertTrue(self.repository.get_all_images_path_called)
         self.assertFalse(self.repository.get_random_attachment_called)
-        self.assertIn('main/images/banner.jpg', result['banner_path'])
-        self.assertEqual(0, result['banner_isbn'])
-        self.assertEqual("", result['banner_type'])
+        self.assertIn('main/images/random_attachment.jpg', banner.path)
+        self.assertEqual(0, banner.isbn)
+        self.assertEqual("", banner.type)
 
     def test_main_with_images_calls_get_random_attachment(self):
         # Arrange
@@ -31,21 +31,21 @@ class TestBannerService(unittest.TestCase):
             "path/to/image1.jpg",
             "path/to/image2.jpg"
         ]
-        self.repository.return_random_attachment = (
-            "path/to/selected.jpg",
-            "123456789",
-            "dedicace"
+        self.repository.return_random_attachment = RandomAttachment(
+            path="path/to/selected.jpg",
+            isbn=123456789,
+            type="dedicace"
         )
 
         # Act
-        result = self.service.main()
+        banner = self.service.main()
 
         # Assert
         self.assertTrue(self.repository.get_all_images_path_called)
         self.assertTrue(self.repository.get_random_attachment_called)
-        self.assertEqual("path/to/selected.jpg", result['banner_path'])
-        self.assertEqual("123456789", result['banner_isbn'])
-        self.assertEqual("dedicace", result['banner_type'])
+        self.assertEqual("path/to/selected.jpg", banner.path)
+        self.assertEqual(123456789, banner.isbn)
+        self.assertEqual("dedicace", banner.type)
 
     def test_main_verifies_correct_folders(self):
         # Act
@@ -72,46 +72,47 @@ class TestBannerService(unittest.TestCase):
         self.repository.images = ["image.jpg"]
 
         # Act
-        result = self.service.main()
+        banner = self.service.main()
+
         # Assert
-        self.assertEqual("", result['banner_path'])
-        self.assertEqual(0, result['banner_isbn'])
-        self.assertEqual("", result['banner_type'])
+        self.assertEqual("", banner.path)
+        self.assertEqual(0, banner.isbn)
+        self.assertEqual("", banner.type)
 
     def test_main_converts_path_to_string(self):
         # Arrange
         self.repository.images = ["image.jpg"]
-        self.repository.return_random_attachment = (
-            Path("path/to/image.jpg"),
-            123456789,
-            "exlibris"
+        self.repository.return_random_attachment = RandomAttachment(
+            path="path/to/image.jpg",
+            isbn=123456789,
+            type="exlibris"
         )
 
         # Act
-        result = self.service.main()
+        banner = self.service.main()
 
         # Assert
-        self.assertIsInstance(result['banner_path'], str)
-        self.assertEqual("path/to/image.jpg", result['banner_path'])
-        self.assertEqual(123456789, result['banner_isbn'])
-        self.assertEqual("exlibris", result['banner_type'])
+        self.assertIsInstance(banner.path, str)
+        self.assertEqual("path/to/image.jpg", banner.path)
+        self.assertEqual(123456789, banner.isbn)
+        self.assertEqual("exlibris", banner.type)
 
     def test_main_with_special_characters_in_paths(self):
         # Arrange
         self.repository.images = ["image with spaces.jpg"]
-        self.repository.return_random_attachment = (
-            "path/with spaces/and_special_chars#!@.jpg",
-            "123456789",
-            "dedicace"
+        self.repository.return_random_attachment = RandomAttachment(
+            path="path/with spaces/and_special_chars#!@.jpg",
+            isbn=123456789,
+            type="dedicace"
         )
 
         # Act
-        result = self.service.main()
+        banner = self.service.main()
 
         # Assert
         self.assertEqual(
             "path/with spaces/and_special_chars#!@.jpg",
-            result['banner_path']
+            banner.path
         )
 
 
