@@ -1,15 +1,16 @@
 import os
+from typing import Union
 
 import gspread
 from google.auth import exceptions
 from google.oauth2 import service_account
 
 from config.settings import GSHEET_CREDENTIALS
-from main.core.common.sheet.internal.sheet_error import SheetError
-from main.core.common.sheet.sheet_repository import SheetRepository
+from main.domain.exceptions.sheet_exceptions import SheetConnexionException
+from main.domain.ports.repositories.sheet_repository import SheetRepository
 
 
-class SheetConnexion(SheetRepository):
+class SheetAdapter(SheetRepository):
     def __init__(self) -> None:
         self.__OFFSET__ = 1
         self.worksheet = None
@@ -22,9 +23,11 @@ class SheetConnexion(SheetRepository):
             )
             self.client = gspread.Client(auth=creds)
         except exceptions.DefaultCredentialsError:
-            message_log = "Google sheet non accessible."
             self.client = None
-            raise SheetError(message_log, None)
+            raise SheetConnexionException(
+                "Service Google Sheets temporairement indisponible. "
+                "Veuillez réessayer plus tard."
+            )
 
     def open(self, doc_name: str, sheet_name: str = None) -> None:
         if sheet_name is not None:
@@ -32,7 +35,7 @@ class SheetConnexion(SheetRepository):
         else:
             self.worksheet = self.client.open(doc_name).sheet1
 
-    def append(self, liste: list[str]) -> None:
+    def append(self, liste: list[Union[str, int, float]]) -> None:
         self.worksheet.append_row(liste)
 
     def get(self, i: int, j: int) -> str:

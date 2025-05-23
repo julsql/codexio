@@ -1,21 +1,24 @@
-from main.core.add_album.add_album_error import AddAlbumError
-from main.core.add_album.bd_repository import BdRepository
+from main.domain.exceptions.album_exceptions import AlbumNotFoundException
+from main.domain.model.album import Album
+from main.domain.ports.repositories.album_repository import AlbumRepository
 
 
-class BdInMemory(BdRepository):
+class BdInMemory(AlbumRepository):
 
-    def __init__(self, name: str, data: dict) -> None:
+    def __init__(self, name: str, data: Album) -> None:
         self.name = name
-        self.data = {int(data.get('ISBN', '0')): data}
+        self.data = {data.isbn: data}
+        self.isbn = 0
 
-    def get_infos(self, isbn: int) -> dict:
+    def get_infos(self, isbn: int) -> Album:
+        self.isbn = isbn
         if isbn in self.data:
             return self.data[isbn]
         else:
-            raise AddAlbumError(f"Aucun album trouvé avec l'isbn {isbn}")
+            raise AlbumNotFoundException(f"Aucun album trouvé avec l'isbn {isbn}", isbn)
 
-    def get_url(self, isbn: int) -> str:
-        return f"http://mock-{self.name}.com/{isbn}"
+    def get_url(self, ) -> str:
+        return f"http://mock-{self.name}.com/{self.isbn}"
 
     def get_html(self, url: str) -> str:
         return "<html><body><h1>Mock</h1></body></html>"
