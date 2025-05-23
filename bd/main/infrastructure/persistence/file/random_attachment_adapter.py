@@ -3,10 +3,11 @@ import random
 from abc import ABC
 
 from config.settings import MEDIA_URL
-from main.core.banner.banner_repository import BannerRepository
+from main.domain.model.random_attachment import RandomAttachment
+from main.domain.ports.repositories.random_attachment_repository import RandomAttachmentRepository
 
 
-class BannerConnexion(BannerRepository, ABC):
+class RandomAttachmentAdapter(RandomAttachmentRepository, ABC):
 
     def get_all_images_path(self, paths: list[str]) -> list[str]:
         return sum([self.list_files_in_subdirectories(
@@ -28,10 +29,10 @@ class BannerConnexion(BannerRepository, ABC):
 
         return files
 
-    def get_random_attachment(self, images_files: list[str]) -> tuple[str, str, str]:
+    def get_random_attachment(self, images_files: list[str]) -> RandomAttachment:
         random_image = random.choice(images_files)
 
         random_image_path = os.path.join(MEDIA_URL, "main/images/", random_image)
         random_isbn = os.path.basename(os.path.dirname(random_image_path))
         random_type = os.path.basename(os.path.dirname(os.path.dirname(random_image_path)))
-        return random_image_path, random_isbn, random_type
+        return RandomAttachment(path=str(random_image_path), isbn=int(random_isbn), type=random_type)
