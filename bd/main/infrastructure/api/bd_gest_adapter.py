@@ -1,54 +1,58 @@
 import re
+from decimal import Decimal
 
 import requests
 from bs4 import BeautifulSoup
 
-from main.core.add_album.add_album_error import AddAlbumError
-from main.core.add_album.bd_repository import BdRepository
-from main.core.common.logger.logger import logger
+from main.domain.exceptions.api_exceptions import ApiConnexionException, ApiConnexionRefused, ApiConnexionDataNotFound
+from main.domain.model.album import Album
+from main.domain.ports.repositories.logger_repository import LoggerRepository
+from main.infrastructure.api.base_album_adapter import BaseAlbumAdapter
 
 
-class BdGestRepository(BdRepository):
+class BdGestAdapter(BaseAlbumAdapter):
     SEARCH_URL = "https://www.bedetheque.com/search/albums"
     BANDEAU_CLASS = "bandeau-info album panier"
     IMAGE_CLASS = "bandeau-image album"
     BS_FEATURE = 'html.parser'
 
+    def __init__(self, logger_repository: LoggerRepository) -> None:
+        super().__init__(logger_repository)
+        self.isbn = 0
+
     def __str__(self) -> str:
         return "BdGestRepository"
 
-    def get_infos(self, isbn: int) -> dict[str, str | float | int]:
-        informations = {}
-        url = self.get_url(isbn)
+    def get_infos(self, isbn: int) -> Album:
+        self.isbn = isbn
+        album = Album(isbn=self.isbn)
+        url = self.get_url()
 
         html = self.get_html(url)
         soup = BeautifulSoup(html, self.BS_FEATURE)
 
         # Extraction du titre
-        self._extract_title(soup, informations, isbn)
+        self._extract_title(soup, album)
 
         # Extraction des informations sur les auteurs
-        self._extract_authors(soup, informations, isbn)
+        self._extract_authors(soup, album)
 
         # Extraction des informations supplémentaires
-        self._extract_additional_info(soup, informations, isbn)
+        self._extract_additional_info(soup, album)
 
         # Extraction le prix
-        self._extract_price(soup, informations, isbn)
+        self._extract_price(soup, album)
 
         # Image
-        self._extract_image(soup, informations, isbn)
+        self._extract_image(soup, album)
 
         # Synopsis
-        self._extract_synopsis(soup, informations, isbn)
+        self._extract_synopsis(soup, album)
 
-        # Date de publication
-        self._parse_publication_date(informations, isbn)
+        self.logging_repository.info(str(album), extra={"isbn": self.isbn})
+        return album
 
-        logger.info(informations, extra={"isbn": isbn})
-        return informations
-
-    def _extract_title(self, soup: BeautifulSoup, informations: dict, isbn: int) -> None:
+    def _extract_title(self, soup: BeautifulSoup, album: Album) -> None:
         """ Extraire les informations du titre """
         full_title = self._get_input(soup, "AltTitle")
         if full_title:
@@ -61,38 +65,37 @@ class BdGestRepository(BdRepository):
             # Découpe aux positions trouvées
             tome = match.group(1)
             serie = full_title[:match.start()].strip()
-            album = full_title[match.end():].strip()
+            titre = full_title[match.end():].strip()
             if tome:
-                informations["Numéro"] = tome
+                album.numero = tome
             if serie:
-                informations["Série"] = serie
+                album.serie = serie
             if album:
-                informations["Album"] = album
+                album.titre = titre
         else:
-            logger.warning("Impossible d'extraire le titre", extra={"isbn": isbn})
+            self.logging_repository.warning("Impossible d'extraire le titre", extra={"isbn": self.isbn})
         return None
 
-    def _extract_authors(self, soup: BeautifulSoup, informations: dict, isbn: int) -> None:
+    def _extract_authors(self, soup: BeautifulSoup, album: Album) -> None:
         """ Extraire les informations supplémentaires """
-        keys = ['Scénario', 'Dessin', 'Couleurs']
         album_tag = soup.find("div", class_=self.BANDEAU_CLASS)
         if not album_tag:
-            logger.warning("Informations supplémentaires non trouvées", extra={"isbn": isbn})
+            self.logging_repository.warning("Informations supplémentaires non trouvées", extra={"isbn": self.isbn})
             return
 
         sub_title = album_tag.find("h3")
         if not sub_title:
-            logger.warning("Éditeur non trouvé", extra={"isbn": isbn})
+            self.logging_repository.warning("Éditeur non trouvé", extra={"isbn": self.isbn})
             return
         editor_tag = sub_title.find('span', {"itemprop": "publisher"})
         if not editor_tag:
-            logger.warning("Éditeur non trouvé", extra={"isbn": isbn})
+            self.logging_repository.warning("Éditeur non trouvé", extra={"isbn": self.isbn})
             return
-        informations["Éditeur"] = editor_tag.get_text()
+        album.editeur = editor_tag.get_text()
 
         auteur_tag = album_tag.find("div", class_="liste-auteurs")
         if not editor_tag:
-            logger.warning("Créateurs non trouvés", extra={"isbn": isbn})
+            self.logging_repository.warning("Créateurs non trouvés", extra={"isbn": self.isbn})
             return
 
         auteurs = auteur_tag.select("a")
@@ -105,14 +108,16 @@ class BdGestRepository(BdRepository):
                 name, surname = nom.split(", ")
                 nom = f"{surname} {name}"
 
-            categorie = metier.text.strip("()")  # Enlever les parenthèses
-            if categorie in keys:
-                if categorie in informations:
-                    informations[categorie] = f"{informations[categorie]},{nom}"
-                else:
-                    informations[categorie] = nom
+            categories = metier.text.strip("()")
+            match categories:
+                case "Scénario":
+                    album.scenariste = album.scenariste + ("," if album.scenariste != "" else "") + nom
+                case "Dessin":
+                    album.dessinateur = album.dessinateur + ("," if album.dessinateur != "" else "") + nom
+                case "Couleurs":
+                    album.coloriste = album.coloriste + ("," if album.coloriste != "" else "") + nom
 
-    def _extract_additional_info(self, soup: BeautifulSoup, informations: dict, isbn: int) -> None:
+    def _extract_additional_info(self, soup: BeautifulSoup, album: Album) -> None:
         """ Extraire les informations supplémentaires """
 
         album_tag = soup.find("div", class_=self.BANDEAU_CLASS)
@@ -132,14 +137,17 @@ class BdGestRepository(BdRepository):
             mois_fr, annee = match_generale.groups()
             jour = "01"  # On met par défaut le premier jour du mois
 
-        informations['Date de publication'] = f"{annee}-{mois_fr}-{jour}"
+        date = f"{annee}-{mois_fr}-{jour}"
+        album.date_publication = self._parse_publication_date(date, self.isbn)
 
-        page_tag = info_tag.find('span', {"itemprop": "numberOfPages"}).get_text()
-
-        try:
-            informations["Pages"] = int(page_tag)
-        except ValueError:
-            logger.warning(f"{page_tag} est un nombre de planches incorrect", extra={"isbn": isbn})
+        page = info_tag.find('span', {"itemprop": "numberOfPages"})
+        if page:
+            page_tag = page.get_text()
+            try:
+                album.nombre_pages = int(page_tag)
+            except ValueError:
+                self.logging_repository.warning(f"{page_tag} est un nombre de planches incorrect",
+                                                extra={"isbn": self.isbn})
 
     def _get_input(self, soup: BeautifulSoup, id: str):
         tag = soup.find("input", {"id": id})
@@ -148,7 +156,7 @@ class BdGestRepository(BdRepository):
         else:
             return None
 
-    def _extract_price(self, soup: BeautifulSoup, informations: dict, isbn: int) -> None:
+    def _extract_price(self, soup: BeautifulSoup, album: Album) -> None:
         """ Extraire le prix """
         album_id = self._get_input(soup, "IdAlbum")
         eans = self._get_input(soup, "EANs")
@@ -161,24 +169,24 @@ class BdGestRepository(BdRepository):
             if response.status_code == 200:
                 result = response.json()
                 if 'price' in result:
-                    informations["Prix"] = float(result['price'])
+                    album.prix = Decimal(result['price'])
         else:
-            logger.warning("Impossible d'extraire le prix", extra={"isbn": isbn})
+            self.logging_repository.warning("Impossible d'extraire le prix", extra={"isbn": self.isbn})
         return None
 
-    def _extract_image(self, soup: BeautifulSoup, informations: dict, isbn: int) -> None:
+    def _extract_image(self, soup: BeautifulSoup, album: Album) -> None:
         """ Extraire l'image """
         body = soup.find("div", class_=self.IMAGE_CLASS)
         if not body:
-            logger.warning("Image non trouvée", extra={"isbn": isbn})
+            self.logging_repository.warning("Image non trouvée", extra={"isbn": self.isbn})
             return
         a_tag = body.find("a") if body else None
         if not a_tag:
-            logger.warning("Image non trouvée", extra={"isbn": isbn})
+            self.logging_repository.warning("Image non trouvée", extra={"isbn": self.isbn})
             return
-        informations['Image'] = a_tag.get('href')
+        album.image_url = a_tag.get('href')
 
-    def _extract_synopsis(self, soup: BeautifulSoup, informations: dict, isbn: int) -> None:
+    def _extract_synopsis(self, soup: BeautifulSoup, album: Album) -> None:
         """ Extraire le synopsis """
         album_id = self._get_input(soup, "IdAlbum")
 
@@ -188,19 +196,19 @@ class BdGestRepository(BdRepository):
 
             if response.status_code == 200:
                 result = response.text
-                informations["Synopsis"] = result
+                album.synopsis = result
         else:
-            logger.warning("Impossible d'extraire le synppsis", extra={"isbn": isbn})
+            self.logging_repository.warning("Impossible d'extraire le synppsis", extra={"isbn": self.isbn})
         return None
 
-    def get_url(self, isbn: int) -> str:
+    def get_url(self) -> str:
         """Trouver lien BD bdgest.fr à partir de son ISBN"""
 
         with requests.Session() as session:
             csrf_token = self.get_csrf_token(session)
             params = {
                 "csrf_token_bel": csrf_token,
-                "RechISBN": isbn
+                "RechISBN": self.isbn
             }
             headers = {
                 "User-Agent": "Mozilla/5.0",
@@ -209,9 +217,10 @@ class BdGestRepository(BdRepository):
             response = session.get(self.SEARCH_URL, params=params, headers=headers)
 
             if response.status_code != 200:
-                logger.error(f"La requête a échoué. Statut de la réponse : {response.status_code}",
-                             extra={"isbn": isbn})
-                raise AddAlbumError(f"Impossible d'affiche le code html de la page {self.SEARCH_URL}")
+                self.logging_repository.error(f"La requête a échoué. Statut de la réponse : {response.status_code}",
+                                              extra={"isbn": self.isbn})
+                raise ApiConnexionException(f"Impossible d'affiche le code html de la page {self.SEARCH_URL}",
+                                            str(self))
 
             html = response.text
 
@@ -226,7 +235,7 @@ class BdGestRepository(BdRepository):
             if a_tag:
                 return a_tag.get('href')
             else:
-                raise AddAlbumError(f"ISBN {isbn} introuvable dans BD Gest")
+                raise ApiConnexionDataNotFound(f"ISBN {self.isbn} introuvable", str(self), self.isbn)
 
     def get_html(self, url: str) -> str:
         response = requests.get(url)
@@ -234,15 +243,16 @@ class BdGestRepository(BdRepository):
         if response.status_code == 200:
             return response.text
         else:
-            logger.error(f"La requête a échoué. Statut de la réponse : {response.status_code}")
-            raise AddAlbumError(f"Impossible d'affiche le code html de la page {url}")
+            self.logging_repository.error(f"La requête a échoué. Statut de la réponse : {response.status_code}")
+            raise ApiConnexionException(f"Impossible d'affiche le code html de la page {url}", str(self))
 
     def get_csrf_token(self, session):
         """Récupère dynamiquement le token CSRF depuis la page de recherche."""
         response = session.get(self.SEARCH_URL)
+        print(self.SEARCH_URL)
 
         if response.status_code != 200:
-            raise AddAlbumError(f"Erreur {response.status_code} lors de l'accès au site.")
+            raise ApiConnexionException(f"Erreur {response.status_code} lors de l'accès au site.", str(self))
 
         soup = BeautifulSoup(response.text, self.BS_FEATURE)
 
@@ -252,4 +262,4 @@ class BdGestRepository(BdRepository):
         if csrf_input:
             return csrf_input["value"]
         else:
-            raise AddAlbumError("Impossible de récupérer le token CSRF.")
+            raise ApiConnexionRefused("Impossible de récupérer le token CSRF.", str(self))

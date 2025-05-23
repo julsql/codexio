@@ -5,7 +5,7 @@ from google.auth import exceptions
 from google.oauth2 import service_account
 
 from config.settings import GSHEET_CREDENTIALS
-from main.core.add_album.add_album_error import AddAlbumError
+from main.core.common.sheet.internal.sheet_error import SheetError
 from main.core.common.sheet.sheet_repository import SheetRepository
 
 
@@ -24,7 +24,7 @@ class SheetConnexion(SheetRepository):
         except exceptions.DefaultCredentialsError:
             message_log = "Google sheet non accessible."
             self.client = None
-            raise AddAlbumError(message_log, None)
+            raise SheetError(message_log, None)
 
     def open(self, doc_name: str, sheet_name: str = None) -> None:
         if sheet_name is not None:
