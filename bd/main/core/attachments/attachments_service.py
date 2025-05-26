@@ -1,5 +1,6 @@
 from main.core.attachments.attachments_repository import AttachmentsRepository
-from main.core.common.data.data import SIGNED_COPY_PATH, EXLIBRIS_PATH, SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
+from main.infrastructure.persistence.file.paths import SIGNED_COPY_FOLDER, SIGNED_COPY_PATH, EXLIBRIS_FOLDER, \
+    EXLIBRIS_PATH
 
 
 class AttachmentsService:

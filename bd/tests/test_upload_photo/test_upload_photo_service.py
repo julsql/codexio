@@ -2,8 +2,8 @@ import unittest
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from main.core.common.data.data import EXLIBRIS_FOLDER, SIGNED_COPY_FOLDER
 from main.core.upload_photo.upload_photo_service import UploadPhotoService
+from main.infrastructure.persistence.file.paths import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
 from tests.test_upload_photo.internal.photo_in_memory import UploadPhotoInMemory
 
 

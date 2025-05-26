@@ -1,5 +1,7 @@
 from abc import abstractmethod, ABC
 
+from main.domain.model.bd import BD
+
 
 class DatabaseRepository(ABC):
 
@@ -8,5 +10,5 @@ class DatabaseRepository(ABC):
         pass
 
     @abstractmethod
-    def insert(self, value: list[dict[str, str]]) -> None:
+    def insert(self, value: list[BD]) -> None:
         pass

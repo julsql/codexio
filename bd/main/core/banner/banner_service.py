@@ -2,7 +2,7 @@ import os
 
 from config.settings import STATIC_URL
 from main.core.banner.banner_repository import BannerRepository
-from main.core.common.data.data import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
+from main.infrastructure.persistence.file.paths import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
 
 
 class BannerService:

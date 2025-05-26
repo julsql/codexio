@@ -1,7 +1,8 @@
 import unittest
 
 from main.core.common.sheet.internal.sheet_connexion import SheetConnexion
-from tests.album_data_set import FIRST_LINE, ASTERIX_LIST, ASTERIX_ISBN
+from test_add_album.album_large_data_set import ASTERIX_ISBN
+from tests.album_data_set import FIRST_LINE_SHEET, ASTERIX_LIST
 
 
 class TestSheetRepository(unittest.TestCase):
@@ -17,9 +18,9 @@ class TestSheetRepository(unittest.TestCase):
         self.conn_test.clear()
 
     def test_get_size(self) -> None:
-        self.conn_test.append(FIRST_LINE)
+        self.conn_test.append(FIRST_LINE_SHEET)
         self.conn_test.append(ASTERIX_LIST)
-        self.assertEqual((2, len(FIRST_LINE)), self.conn_test.get_size())
+        self.assertEqual((2, len(FIRST_LINE_SHEET)), self.conn_test.get_size())
 
     def test_add_cell_to_test_sheet(self) -> None:
         cell_value = "valeur test"
@@ -28,22 +29,22 @@ class TestSheetRepository(unittest.TestCase):
         self.assertEqual(cell_value, cell_content)
 
     def test_add_row_to_test_sheet(self) -> None:
-        self.conn_test.append(FIRST_LINE)
+        self.conn_test.append(FIRST_LINE_SHEET)
         line_content = self.conn_test.get_line(0)
-        self.assertEqual(FIRST_LINE, line_content)
+        self.assertEqual(FIRST_LINE_SHEET, line_content)
 
     def test_get_column_to_test_sheet(self) -> None:
-        self.conn_test.append(FIRST_LINE)
+        self.conn_test.append(FIRST_LINE_SHEET)
         self.conn_test.append(ASTERIX_LIST)
         column_index = 0
         column_content = self.conn_test.get_column(column_index)
         self.assertEqual(2, len(column_content))
-        self.assertEqual([str(FIRST_LINE[column_index]), str(ASTERIX_LIST[column_index])], column_content)
+        self.assertEqual([str(FIRST_LINE_SHEET[column_index]), str(ASTERIX_LIST[column_index])], column_content)
 
     def test_add_and_delete_row_to_test_sheet(self) -> None:
-        self.conn_test.append(FIRST_LINE)
+        self.conn_test.append(FIRST_LINE_SHEET)
         line_content = self.conn_test.get_line(0)
-        self.assertEqual(FIRST_LINE, line_content)
+        self.assertEqual(FIRST_LINE_SHEET, line_content)
 
         self.conn_test.delete_row(0)
         full_content = self.conn_test.get_all()
@@ -71,7 +72,7 @@ class TestSheetRepository(unittest.TestCase):
 
     def test_data_from_real_sheet(self) -> None:
         line_content = self.conn_real.get_line(0)
-        self.assertEqual(FIRST_LINE, line_content)
+        self.assertEqual(FIRST_LINE_SHEET, line_content)
 
 
 if __name__ == '__main__':

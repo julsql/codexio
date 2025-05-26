@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import Dict
 
 from main.domain.ports.repositories.database_repository import DatabaseRepository
 
@@ -11,7 +11,7 @@ class DatabaseInMemory(DatabaseRepository):
     def reset_table(self) -> None:
         self.database = []
 
-    def insert(self, value: List[Dict[str, str]]) -> None:
+    def insert(self, value: list[Dict[str, str]]) -> None:
         self.database = value
 
     def get_all(self) -> list:

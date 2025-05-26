@@ -1,8 +1,9 @@
 import unittest
 
-from main.core.common.sheet.internal.sheet_in_memory import SheetInMemory
+from test_add_album.album_large_data_set import ASTERIX_ISBN
+from test_common.sheet_in_memory import SheetInMemory
 from main.core.existing_album.existing_album_service import ExistingAlbumService
-from tests.album_data_set import ASTERIX_LIST, ASTERIX_ISBN
+from tests.album_data_set import ASTERIX_LIST
 
 
 class TestExistingAlbumService(unittest.TestCase):

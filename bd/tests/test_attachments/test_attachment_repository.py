@@ -10,9 +10,9 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from main.infrastructure.persistence.database.models import BD
-from main.core.common.data.data import SIGNED_COPY_PATH, EXLIBRIS_PATH
 from main.core.attachments.internal.attachments_connexion import AttachmentsConnexion
+from main.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
+from main.infrastructure.persistence.database.models import BD
 
 
 class TestAttachmentsConnexion(unittest.TestCase):
@@ -31,7 +31,7 @@ class TestAttachmentsConnexion(unittest.TestCase):
         os.makedirs(cls.EXLIBRIS_FOLDER, exist_ok=True)
 
         # Patch des chemins
-        cls.paths_patcher = patch.multiple('main.core.common.data.data',
+        cls.paths_patcher = patch.multiple('main.infrastructure.persistence.file.paths',
                                            SIGNED_COPY_FOLDER=cls.SIGNED_COPY_FOLDER,
                                            EXLIBRIS_FOLDER=cls.EXLIBRIS_FOLDER)
         cls.paths_patcher.start()

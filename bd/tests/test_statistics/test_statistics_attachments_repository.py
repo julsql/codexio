@@ -5,8 +5,8 @@ import unittest
 
 import django
 
-from main.core.common.data.data import SIGNED_COPY_PATH, EXLIBRIS_PATH
 from main.domain.model.statistics import Statistics
+from main.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
 from main.infrastructure.persistence.file.statistics_attachment_adapter import StatisticsAttachmentAdapter
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

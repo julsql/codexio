@@ -9,7 +9,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from main.core.common.data.data import SIGNED_COPY_PATH, EXLIBRIS_PATH
+from main.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
 from main.core.page_bd.internal.page_bd_attachments_connexion import PageBdAttachmentsConnexion
 
 
