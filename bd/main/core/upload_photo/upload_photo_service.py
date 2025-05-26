@@ -1,6 +1,6 @@
 from django.core.files.uploadedfile import UploadedFile
 
-from main.core.common.data.data import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
+from main.infrastructure.persistence.file.paths import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
 
 
 class UploadPhotoService:

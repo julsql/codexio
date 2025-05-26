@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 
 from main.core.banner.banner_service import BannerService
-from main.core.common.data.data import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
+from main.infrastructure.persistence.file.paths import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
 from test_banner.internal.banner_in_memory import BannerInMemory
 
 

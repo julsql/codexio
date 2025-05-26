@@ -25,10 +25,10 @@ from main.core.errors.internal.errors_view import error_500_view, error_404_view
 from main.core.existing_album.internal.existing_album_view import existing_album
 from main.core.home.internal.home_view import home
 from main.core.page_bd.internal.page_bd_view import page_bd
-from main.core.update_database.internal.update_database_view import update_database
 from main.core.upload_photo.internal.upload_photo_view import upload_dedicace, upload_exlibris
 from main.infrastructure.views.add_album_view import add_album
 from main.infrastructure.views.statistics_view import statistics_view
+from main.infrastructure.views.update_database_view import update_database
 
 handler500 = error_500_view
 handler404 = error_404_view

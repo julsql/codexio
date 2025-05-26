@@ -7,7 +7,8 @@ from common.internal.sheet_in_memory import SheetInMemory
 from main.application.usecases.add_album.add_album_service import AddAlbumService
 from main.domain.exceptions.album_exceptions import AlbumAlreadyExistsException, AlbumNotFoundException
 from main.domain.model.album import Album
-from tests.album_data_set import ASTERIX_ISBN, ASTERIX
+from test_add_album.album_large_data_set import ASTERIX_ISBN
+from tests.album_data_set import ASTERIX
 from tests.test_add_album.internal.bd_in_memory import BdInMemory
 
 

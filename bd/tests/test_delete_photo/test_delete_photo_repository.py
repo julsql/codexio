@@ -2,8 +2,8 @@ import os
 import tempfile
 import unittest
 
-from main.core.common.data.data import SIGNED_COPY_PATH, EXLIBRIS_PATH
 from main.core.delete_photo.internal.photo_connexion import PhotoConnexion
+from main.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
 
 
 class TestPhotoConnexion(unittest.TestCase):

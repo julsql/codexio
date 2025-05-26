@@ -2,14 +2,14 @@
 
 from django.db import migrations
 
-from main.core.common.database.internal.database_connexion import DatabaseConnexion
-from main.core.common.sheet.internal.sheet_connexion import SheetConnexion
-from main.core.update_database.update_database_service import UpdateDatabaseService
+from main.application.usecases.update_database.update_database_service import UpdateDatabaseService
+from main.infrastructure.persistence.database.database_adapter import DatabaseAdapter
+from main.infrastructure.persistence.sheet.sheet_adapter import SheetAdapter
 
 
 def insert_initial_data(apps, schema_editor) -> None:
-    sheet_repository = SheetConnexion()
-    database_repository = DatabaseConnexion()
+    sheet_repository = SheetAdapter()
+    database_repository = DatabaseAdapter()
     service = UpdateDatabaseService(sheet_repository, database_repository)
     service.main()
 

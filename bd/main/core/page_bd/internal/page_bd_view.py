@@ -1,10 +1,10 @@
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 
-from main.core.common.data.data import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
 from main.core.page_bd.internal.page_bd_attachments_connexion import PageBdAttachmentsConnexion
 from main.core.page_bd.internal.page_bd_database_connexion import PageBdDatabaseConnexion
 from main.core.page_bd.page_bd_service import PageBdService
+from main.infrastructure.persistence.file.paths import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
 
 
 def page_bd(request: HttpRequest, isbn: int) -> HttpResponse:

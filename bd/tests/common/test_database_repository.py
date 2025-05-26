@@ -8,16 +8,16 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
+from main.infrastructure.persistence.database.database_adapter import DatabaseAdapter
 from main.infrastructure.persistence.database.models import BD
-from main.core.common.database.internal.database_connexion import DatabaseConnexion
-from tests.album_data_set import ALBUM_EXEMPLE
+from tests.album_data_set import ALBUM_EXEMPLE, ALBUM_EXEMPLE_DICT
 
 
 class TestDatabaseRepository(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         # Before all
-        cls.database_repository = DatabaseConnexion()
+        cls.database_repository = DatabaseAdapter()
         BD.objects.all().delete()
 
     def tearDown(self) -> None:
@@ -46,12 +46,12 @@ class TestDatabaseRepository(unittest.TestCase):
                                   'localisation',
                                   'synopsis',
                                   'image',
-                                  ).get(isbn=value['isbn'])
+                                  ).get(isbn=value.isbn)
         self.assertEqual(BD.objects.count(), 1)
-        self.assertEqual(value, entry)
+        self.assertEqual(ALBUM_EXEMPLE_DICT, entry)
 
     def test_get_all_correctly(self) -> None:
-        value = ALBUM_EXEMPLE.copy()
+        value = ALBUM_EXEMPLE_DICT.copy()
         obj = BD.objects.create(**value)
         entry = self.database_repository.get_all()
         value['id'] = obj.id
@@ -59,7 +59,7 @@ class TestDatabaseRepository(unittest.TestCase):
         self.assertEqual(entry[0], value)
 
     def test_reset_table_correctly(self) -> None:
-        value = ALBUM_EXEMPLE.copy()
+        value = ALBUM_EXEMPLE_DICT
         BD.objects.create(**value)
         self.database_repository.reset_table()
         self.assertEqual(BD.objects.count(), 0)
