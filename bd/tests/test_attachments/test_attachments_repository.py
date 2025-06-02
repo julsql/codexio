@@ -6,11 +6,14 @@ from unittest.mock import patch
 
 import django
 
+from main.domain.model.attachment import Attachment
+from main.domain.model.attachments import Attachments
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from main.core.attachments.internal.attachments_connexion import AttachmentsConnexion
+from main.infrastructure.persistence.file.attachments_adapter import AttachmentsAdapter
 from main.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
 from main.infrastructure.persistence.database.models import BD
 
@@ -36,7 +39,7 @@ class TestAttachmentsConnexion(unittest.TestCase):
                                            EXLIBRIS_FOLDER=cls.EXLIBRIS_FOLDER)
         cls.paths_patcher.start()
 
-        cls.repository = AttachmentsConnexion()
+        cls.repository = AttachmentsAdapter()
 
     @classmethod
     def tearDownClass(cls) -> None:
@@ -57,7 +60,7 @@ class TestAttachmentsConnexion(unittest.TestCase):
                 for name in dirs:
                     os.rmdir(os.path.join(root, name))
 
-    def create_test_files(self, folder: str, isbn: str, nb_files: int) -> None:
+    def create_test_files(self, folder: str, isbn: int, nb_files: int) -> None:
         album_folder = os.path.join(folder, str(isbn))
         os.makedirs(album_folder, exist_ok=True)
         for i in range(1, nb_files + 1):
@@ -65,29 +68,23 @@ class TestAttachmentsConnexion(unittest.TestCase):
                 f.write("test content")
 
     def test_get_attachments_empty_folder(self) -> None:
-        attachments, total = self.repository.get_attachments(self.SIGNED_COPY_FOLDER)
-        self.assertEqual([], attachments)
-        self.assertEqual(0, total)
+        attachments = self.repository.get_attachments(self.SIGNED_COPY_FOLDER)
+        self.assertEqual(Attachments([]), attachments)
+        self.assertEqual(0, attachments.sum)
 
     def test_get_attachments_with_files_no_bd_entry(self) -> None:
-        test_isbn = "1234"
+        test_isbn = 1234
         self.create_test_files(self.SIGNED_COPY_FOLDER, test_isbn, 2)
 
-        attachments, total = self.repository.get_attachments(self.SIGNED_COPY_FOLDER)
+        attachments = self.repository.get_attachments(self.SIGNED_COPY_FOLDER)
 
-        self.assertEqual(1, len(attachments))
-        self.assertEqual(2, total)
-        self.assertEqual({
-            'isbn': test_isbn,
-            'album': "",
-            'number': "",
-            'series': "",
-            'range': range(1, 3),
-            'attachments': 2
-        }, attachments[0])
+        self.assertEqual(1, len(attachments.attachments_list))
+        self.assertEqual(2, attachments.sum)
+        self.assertEqual(Attachment(isbn=test_isbn, titre="", numero="", serie="", total=2),
+                         attachments.attachments_list[0])
 
     def test_get_attachments_with_files_and_bd_entry(self) -> None:
-        test_isbn = "5678"
+        test_isbn = 5678
         test_bd = {
             'isbn': test_isbn,
             'album': "Test Album",
@@ -98,43 +95,32 @@ class TestAttachmentsConnexion(unittest.TestCase):
         BD.objects.create(**test_bd)
         self.create_test_files(self.SIGNED_COPY_FOLDER, test_isbn, 3)
 
-        attachments, total = self.repository.get_attachments(self.SIGNED_COPY_FOLDER)
+        attachments = self.repository.get_attachments(self.SIGNED_COPY_FOLDER)
 
-        self.assertEqual(1, len(attachments))
-        self.assertEqual(3, total)
-        self.assertEqual({
-            'isbn': test_isbn,
-            'album': "Test Album",
-            'number': "1",
-            'series': "Test Series",
-            'range': range(1, 4),
-            'attachments': 3
-        }, attachments[0])
+        self.assertEqual(1, len(attachments.attachments_list))
+        self.assertEqual(3, attachments.sum)
+        self.assertEqual(Attachment(isbn=test_isbn, titre="Test Album", numero="1", serie="Test Series", total=3),
+                         attachments.attachments_list[0])
 
     def test_get_attachments_multiple_albums(self) -> None:
         test_data = [
-            {"isbn": "1111", "album": "Album 1", "number": "1", "series": "Series 1", "deluxe_edition": True},
-            {"isbn": "2222", "album": "Album 2", "number": "2", "series": "Series 2", "deluxe_edition": True}
+            {"isbn": 1111, "album": "Album 1", "number": "1", "series": "Series 1", "deluxe_edition": True},
+            {"isbn": 2222, "album": "Album 2", "number": "2", "series": "Series 2", "deluxe_edition": True}
         ]
 
         for data in test_data:
             BD.objects.create(**data)
             self.create_test_files(self.SIGNED_COPY_FOLDER, data['isbn'], 2)
 
-        attachments, total = self.repository.get_attachments(self.SIGNED_COPY_FOLDER)
+        attachments = self.repository.get_attachments(self.SIGNED_COPY_FOLDER)
 
-        self.assertEqual(2, len(attachments))
-        self.assertEqual(4, total)
+        self.assertEqual(2, len(attachments.attachments_list))
+        self.assertEqual(4, attachments.sum)
         for i, data in enumerate(test_data):
-            self.assertEqual({
-                'isbn': data['isbn'],
-                'album': data['album'],
-                'number': data['number'],
-                'series': data['series'],
-                'range': range(1, 3),
-                'attachments': 2
-            }, next((item for item in attachments if item["isbn"] == data['isbn']), None))
+            self.assertEqual(
+                Attachment(isbn=data['isbn'], titre=data['album'], numero=data['number'], serie=data['series'],
+                           total=2), next(
+                    (item for item in attachments.attachments_list if item.isbn == data['isbn']), None))
 
-
-if __name__ == '__main__':
-    unittest.main()
+        if __name__ == '__main__':
+            unittest.main()
