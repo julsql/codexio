@@ -1,8 +1,8 @@
 import unittest
 
+from common.internal.sheet_in_memory import SheetInMemory
+from main.application.usecases.existing_album.existing_album_service import ExistingAlbumService
 from test_add_album.album_large_data_set import ASTERIX_ISBN
-from test_common.sheet_in_memory import SheetInMemory
-from main.core.existing_album.existing_album_service import ExistingAlbumService
 from tests.album_data_set import ASTERIX_LIST
 
 
@@ -16,10 +16,10 @@ class TestExistingAlbumService(unittest.TestCase):
         cls.service = ExistingAlbumService(sheet_repository)
 
     def test_already_exists(self) -> None:
-        self.assertTrue(self.service.main(ASTERIX_ISBN))
+        self.assertTrue(self.service.execute(ASTERIX_ISBN))
 
-    def test_dont_exists(self) -> None:
-        self.assertFalse(self.service.main(self.INEXISTANT_ISBN))
+    def test_does_not_exists(self) -> None:
+        self.assertFalse(self.service.execute(self.INEXISTANT_ISBN))
 
 
 if __name__ == '__main__':
