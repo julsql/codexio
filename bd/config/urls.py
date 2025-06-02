@@ -20,7 +20,7 @@ from django.urls import path
 
 from main.core.bd_search.internal.bd_search_view import bd_search
 from main.core.delete_photo.internal.delete_photo_view import delete_dedicace, delete_exlibris
-from main.core.errors.internal.errors_view import error_500_view, error_404_view
+from main.infrastructure.views.errors_view import error_500_view, error_404_view
 from main.core.home.internal.home_view import home
 from main.core.page_bd.internal.page_bd_view import page_bd
 from main.core.upload_photo.internal.upload_photo_view import upload_dedicace, upload_exlibris
