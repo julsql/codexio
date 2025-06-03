@@ -7,7 +7,7 @@ from main.infrastructure.persistence.database.advanced_search_adapter import Adv
 
 
 @csrf_exempt
-def bd_search(request: HttpRequest) -> HttpResponse:
+def bd_search_view(request: HttpRequest) -> HttpResponse:
     repository = AdvancedSearchAdapter()
     service = AdvancedSearchService(repository)
     advanced_search = service.main(request)
