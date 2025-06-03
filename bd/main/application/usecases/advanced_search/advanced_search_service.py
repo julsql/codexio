@@ -1,0 +1,37 @@
+from main.domain.forms.forms import RechercheForm
+from main.domain.model.albums_from_form import AlbumsFromForm
+from main.domain.model.reduce_album import ReduceAlbum
+from main.domain.ports.repositories.advanced_search_repository import AdvancedSearchRepository
+
+
+class AdvancedSearchService:
+    def __init__(self, advanced_search_repository: AdvancedSearchRepository) -> None:
+        self.repository = advanced_search_repository
+
+    def main(self, request) -> AlbumsFromForm:
+        if request.method == 'POST':
+            form = RechercheForm(request.POST)
+            infos = self.form_search(form)
+            return AlbumsFromForm(form=form, albums=infos, form_send=True)
+        else:
+            form = RechercheForm()
+            infos = self.form_search()
+            return AlbumsFromForm(form=form, albums=infos, form_send=False)
+
+    def form_search(self, form=None) -> list[ReduceAlbum]:
+        queryset = self.repository.get_all()
+        if form and form.is_valid():
+            data = form.cleaned_data
+            queryset = self.repository.get_by_form(data, queryset)
+
+        return [
+            ReduceAlbum(
+                isbn=int(bd.isbn),
+                titre=bd.album,
+                numero=bd.number,
+                serie=bd.series,
+                scenariste=bd.writer,
+                dessinateur=bd.illustrator,
+            )
+            for bd in queryset
+        ]

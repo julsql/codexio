@@ -20,7 +20,7 @@ class RechercheForm(forms.Form):
         required=False,
         label='Tirage de tête',
         choices=[
-            ("", "Sélectionner une option"),  # Valeur vide pour None
+            ("", "Sélectionner une option"),
             ("True", "Oui"),
             ("False", "Non")
         ],

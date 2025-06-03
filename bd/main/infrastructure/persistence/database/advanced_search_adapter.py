@@ -8,11 +8,11 @@ from django.db.models import QuerySet, Q
 from django.db.models import Value, Func
 from django.db.models.functions import Lower
 
-from main.core.advanced_search.advanced_search_repository import AdvancedSearchRepository
+from main.domain.ports.repositories.advanced_search_repository import AdvancedSearchRepository
 from main.infrastructure.persistence.database.models import BD
 
 
-class AdvancedSearchConnexion(AdvancedSearchRepository, ABC):
+class AdvancedSearchAdapter(AdvancedSearchRepository, ABC):
 
     def get_all(self) -> QuerySet[BD, BD]:
         return BD.objects.all()
