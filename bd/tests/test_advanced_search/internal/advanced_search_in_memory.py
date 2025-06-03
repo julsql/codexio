@@ -2,7 +2,7 @@ from typing import Any
 
 from django.db.models import QuerySet
 
-from main.core.advanced_search.advanced_search_repository import AdvancedSearchRepository
+from main.domain.ports.repositories.advanced_search_repository import AdvancedSearchRepository
 from main.infrastructure.persistence.database.models import BD
 
 

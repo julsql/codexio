@@ -11,7 +11,7 @@ django.setup()
 
 from django.db.models import QuerySet
 
-from main.core.advanced_search.internal.advanced_search_connexion import AdvancedSearchConnexion
+from main.infrastructure.persistence.database.advanced_search_adapter import AdvancedSearchAdapter
 from main.infrastructure.persistence.database.models import BD
 
 
@@ -20,7 +20,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.repository = AdvancedSearchConnexion()
+        cls.repository = AdvancedSearchAdapter()
 
     def setUp(self):
         # Nettoyage de la base avant chaque test

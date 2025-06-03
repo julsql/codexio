@@ -10,8 +10,8 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
 from tests.test_advanced_search.internal.advanced_search_in_memory import InMemoryAdvancedSearchRepository
-from main.core.advanced_search.advanced_search_service import AdvancedSearchService
-from main.core.advanced_search.internal.forms import RechercheForm
+from main.application.usecases.advanced_search.advanced_search_service import AdvancedSearchService
+from main.domain.forms.forms import RechercheForm
 
 
 class TestAdvancedSearchService(unittest.TestCase):
@@ -32,16 +32,16 @@ class TestAdvancedSearchService(unittest.TestCase):
 
     def test_form_search_sans_form(self):
         # Exécution
-        resultat = self.service.form_search()
+        result = self.service.form_search()
 
         # Vérifications
-        self.assertEqual(len(resultat), 1)
-        self.assertEqual(resultat[0]['ISBN'], "123456789")
-        self.assertEqual(resultat[0]['Album'], "Album Test")
-        self.assertEqual(resultat[0]['Serie'], "Série Test")
-        self.assertEqual(resultat[0]['Numero'], "1")
-        self.assertEqual(resultat[0]['Scenariste'], "Auteur Test")
-        self.assertEqual(resultat[0]['Dessinateur'], "Illustrateur Test")
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].isbn, 123456789)
+        self.assertEqual(result[0].titre, "Album Test")
+        self.assertEqual(result[0].serie, "Série Test")
+        self.assertEqual(result[0].numero, "1")
+        self.assertEqual(result[0].scenariste, "Auteur Test")
+        self.assertEqual(result[0].dessinateur, "Illustrateur Test")
 
     def test_form_search_avec_form_valide(self):
         # Création d'un form avec des données valides
@@ -52,12 +52,12 @@ class TestAdvancedSearchService(unittest.TestCase):
         self.assertTrue(form.is_valid())
 
         # Exécution
-        resultat = self.service.form_search(form)
+        result = self.service.form_search(form)
 
         # Vérifications
-        self.assertEqual(len(resultat), 1)
-        self.assertEqual(resultat[0]['Serie'], "Série Test")
-        self.assertEqual(resultat[0]['Scenariste'], "Auteur Test")
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].serie, "Série Test")
+        self.assertEqual(result[0].scenariste, "Auteur Test")
 
     def test_form_search_avec_form_sans_resultats(self):
         # Création d'un form avec des données qui ne correspondent à aucune BD
@@ -78,14 +78,13 @@ class TestAdvancedSearchService(unittest.TestCase):
         mock_request.method = 'GET'
 
         # Exécution
-        form, infos, count, is_post = self.service.main(mock_request)
+        result = self.service.main(mock_request)
 
         # Vérifications
-        self.assertIsInstance(form, RechercheForm)
-        self.assertEqual(len(infos), 1)
-        self.assertEqual(count, 1)
-        self.assertFalse(is_post)
-        self.assertEqual(infos[0]['ISBN'], "123456789")
+        self.assertIsInstance(result.form, RechercheForm)
+        self.assertEqual(len(result.albums), 1)
+        self.assertFalse(result.form_send)
+        self.assertEqual(result.albums[0].isbn, 123456789)
 
     def test_main_methode_post(self):
         # Création d'une requête POST avec des données de recherche
@@ -96,14 +95,13 @@ class TestAdvancedSearchService(unittest.TestCase):
         }
 
         # Exécution
-        form, infos, count, is_post = self.service.main(mock_request)
+        result = self.service.main(mock_request)
 
         # Vérifications
-        self.assertIsInstance(form, RechercheForm)
-        self.assertEqual(len(infos), 1)
-        self.assertEqual(count, 1)
-        self.assertTrue(is_post)
-        self.assertEqual(infos[0]['Serie'], "Série Test")
+        self.assertIsInstance(result.form, RechercheForm)
+        self.assertEqual(len(result.albums), 1)
+        self.assertTrue(result.form_send)
+        self.assertEqual(result.albums[0].serie, "Série Test")
 
     def test_main_methode_post_sans_resultats(self):
         # Création d'une requête POST avec des données qui ne correspondent à aucune BD
@@ -114,13 +112,12 @@ class TestAdvancedSearchService(unittest.TestCase):
         }
 
         # Exécution
-        form, infos, count, is_post = self.service.main(mock_request)
+        result = self.service.main(mock_request)
 
         # Vérifications
-        self.assertIsInstance(form, RechercheForm)
-        self.assertEqual(len(infos), 0)
-        self.assertEqual(count, 0)
-        self.assertTrue(is_post)
+        self.assertIsInstance(result.form, RechercheForm)
+        self.assertEqual(len(result.albums), 0)
+        self.assertTrue(result.form_send)
 
 
 if __name__ == '__main__':
