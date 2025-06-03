@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
-from typing import Any
+
+from main.domain.model.album import Album
 
 
 class RandomAlbumRepository(ABC):
     @abstractmethod
-    def get_random_album(self) -> dict[str, Any] | None:
+    def get_random_album(self) -> Album:
         pass
