@@ -20,13 +20,13 @@ from django.urls import path
 
 from main.core.bd_search.internal.bd_search_view import bd_search
 from main.core.delete_photo.internal.delete_photo_view import delete_dedicace, delete_exlibris
-from main.infrastructure.views.errors_view import error_500_view, error_404_view
-from main.core.home.internal.home_view import home
 from main.core.page_bd.internal.page_bd_view import page_bd
 from main.core.upload_photo.internal.upload_photo_view import upload_dedicace, upload_exlibris
 from main.infrastructure.views.add_album_view import add_album
 from main.infrastructure.views.attachments_view import exlibris_view, signed_copies_view
+from main.infrastructure.views.errors_view import error_500_view, error_404_view
 from main.infrastructure.views.existing_album_view import existing_album
+from main.infrastructure.views.home_view import home_view
 from main.infrastructure.views.statistics_view import statistics_view
 from main.infrastructure.views.update_database_view import update_database
 
@@ -34,7 +34,7 @@ handler500 = error_500_view
 handler404 = error_404_view
 
 urlpatterns = [
-    path('', home, name='home'),
+    path('', home_view, name='home'),
     path('bdrecherche/', bd_search, name='bdrecherche'),
     path('dedicaces/', signed_copies_view, name='dedicaces'),
     path('exlibris/', exlibris_view, name='exlibris'),

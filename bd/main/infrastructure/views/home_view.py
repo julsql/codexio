@@ -2,15 +2,15 @@ from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 
 from main.application.usecases.advanced_search.advanced_search_service import AdvancedSearchService
-from main.application.usecases.random_attachment.random_attachment_service import RandomAttachmentService
-from main.infrastructure.persistence.database.random_album_adapter import RandomAlbumAdapter
 from main.application.usecases.random_album.random_album_service import RandomAlbumService
+from main.application.usecases.random_attachment.random_attachment_service import RandomAttachmentService
 from main.infrastructure.persistence.database.advanced_search_adapter import AdvancedSearchAdapter
+from main.infrastructure.persistence.database.random_album_adapter import RandomAlbumAdapter
 from main.infrastructure.persistence.file.random_attachment_adapter import RandomAttachmentAdapter
 from main.infrastructure.views.formatters import convert_price
 
 
-def home(request: HttpRequest) -> HttpResponse:
+def home_view(request: HttpRequest) -> HttpResponse:
     random_album_connexion = RandomAlbumAdapter()
     random_album_service = RandomAlbumService(random_album_connexion)
     random_album = random_album_service.main()
