@@ -32,7 +32,7 @@ ALBUM_EXEMPLE.place_of_purchase = "Lyon"
 
 # Formats de dictionnaire
 ALBUM_EXEMPLE_DICT = {'isbn': ALBUM_EXEMPLE.isbn,
-                      'album': ALBUM_EXEMPLE.album,
+                      'album': ALBUM_EXEMPLE.title,
                       'number': ALBUM_EXEMPLE.number,
                       'series': ALBUM_EXEMPLE.series,
                       'writer': ALBUM_EXEMPLE.writer,

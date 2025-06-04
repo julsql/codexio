@@ -15,10 +15,10 @@ class StatisticsAttachmentAdapter(StatisticsAttachmentRepository):
         nombre_exlibris = count_images_in_directory(self.exlibris_path)
 
         return Statistics(
-            nombre_albums=0,
-            nombre_pages=0,
-            prix_total=0,
-            nombre_editions_speciales=0,
-            nombre_dedicaces=nombre_dedicaces,
-            nombre_exlibris=nombre_exlibris
+            albums_count=0,
+            pages_count=0,
+            purchase_price_count=0,
+            deluxe_edition_count=0,
+            signed_copies_count=nombre_dedicaces,
+            ex_libris_count=nombre_exlibris
         )

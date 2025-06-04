@@ -31,4 +31,4 @@ class PageBdService:
             )
             return None
         attachments = self.attachments_repository.get_attachments(isbn)
-        return BdWithAttachment(album=album, attachment=attachments)
+        return BdWithAttachment(album=album, attachments=attachments)

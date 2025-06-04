@@ -99,7 +99,7 @@ class TestRandomAlbumConnexion(unittest.TestCase):
         result = self.repository.get_random_album()
 
         # Assert
-        self.assertEqual(25, result.prix)
+        self.assertEqual(25, result.purchase_price)
 
     def test_get_random_album_float_price(self):
         # Arrange
@@ -115,7 +115,7 @@ class TestRandomAlbumConnexion(unittest.TestCase):
         result = self.repository.get_random_album()
 
         # Assert
-        self.assertEqual(25.99, float(result.prix))
+        self.assertEqual(25.99, float(result.purchase_price))
 
     def test_get_random_album_returns_valid_data(self):
         # Act
@@ -128,15 +128,15 @@ class TestRandomAlbumConnexion(unittest.TestCase):
         else:
             bd = self.bd2
 
-        self.assertEqual(bd['album'], result.titre)
-        self.assertEqual(bd['number'], result.numero)
-        self.assertEqual(bd['series'], result.serie)
-        self.assertEqual(bd['writer'], result.scenariste)
-        self.assertEqual(bd['illustrator'], result.dessinateur)
-        self.assertEqual(bd['image'], result.image_url)
-        self.assertEqual(bd['publication_date'], result.date_publication)
-        self.assertEqual(bd['purchase_price'], float(result.prix))
-        self.assertEqual(bd['number_of_pages'], result.nombre_pages)
+        self.assertEqual(bd['album'], result.title)
+        self.assertEqual(bd['number'], result.number)
+        self.assertEqual(bd['series'], result.series)
+        self.assertEqual(bd['writer'], result.writer)
+        self.assertEqual(bd['illustrator'], result.illustrator)
+        self.assertEqual(bd['image'], result.image)
+        self.assertEqual(bd['publication_date'], result.publication_date)
+        self.assertEqual(bd['purchase_price'], float(result.purchase_price))
+        self.assertEqual(bd['number_of_pages'], result.number_of_pages)
         self.assertEqual(bd['edition'], result.edition)
         self.assertEqual(bd['synopsis'], result.synopsis)
 

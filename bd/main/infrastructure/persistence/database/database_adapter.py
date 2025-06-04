@@ -12,7 +12,7 @@ class DatabaseAdapter(DatabaseRepository):
         objects = [
             DATABASE_MODEL_BD(
                 isbn=row.isbn,
-                album=row.album,
+                album=row.title,
                 number=row.number,
                 series=row.series,
                 writer=row.writer,

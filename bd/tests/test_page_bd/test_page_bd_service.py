@@ -15,7 +15,7 @@ class TestPageBdService(unittest.TestCase):
         cls.TEST_ISBN = 1234
         cls.TEST_BD_INFO = BD(
             isbn=cls.TEST_ISBN,
-            album="Test Album",
+            title="Test Album",
             series="Test Series",
             number="1")
 
@@ -33,7 +33,7 @@ class TestPageBdService(unittest.TestCase):
         result = self.service.main(self.TEST_ISBN)
 
         # Assert
-        self.assertEqual(BdWithAttachment(album=self.TEST_BD_INFO, attachment=BdAttachment()), result)
+        self.assertEqual(BdWithAttachment(album=self.TEST_BD_INFO, attachments=BdAttachment()), result)
         self.assertEqual(self.TEST_ISBN, self.attachments_repository.last_isbn)
         self.assertEqual(1, len(self.attachments_repository.added_attachments))
 
@@ -64,9 +64,9 @@ class TestPageBdService(unittest.TestCase):
     def test_main_with_multiple_calls(self) -> None:
         # Arrange
         test_data = [
-            (1111, BD(isbn=1111, album="Album 1")),
-            (2222, BD(isbn=2222, album="Album 2")),
-            (3333, BD(isbn=3333, album="Album 3"))
+            (1111, BD(isbn=1111, title="Album 1")),
+            (2222, BD(isbn=2222, title="Album 2")),
+            (3333, BD(isbn=3333, title="Album 3"))
         ]
         for isbn, info in test_data:
             self.database_repository.add_bd(isbn, info)
@@ -74,7 +74,7 @@ class TestPageBdService(unittest.TestCase):
         # Act & Assert
         for isbn, expected_info in test_data:
             result = self.service.main(isbn)
-            self.assertEqual(BdWithAttachment(album=expected_info, attachment=BdAttachment()), result)
+            self.assertEqual(BdWithAttachment(album=expected_info, attachments=BdAttachment()), result)
             self.assertEqual(isbn, self.attachments_repository.last_isbn)
 
         self.assertEqual(len(test_data), len(self.attachments_repository.added_attachments))

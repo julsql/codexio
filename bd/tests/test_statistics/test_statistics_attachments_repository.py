@@ -75,8 +75,8 @@ class TestStatisticsAttachmentsConnexion(unittest.TestCase):
 
         # Assert
         expected = Statistics.empty()
-        expected.nombre_dedicaces = 5  # 2 + 3
-        expected.nombre_exlibris = 3  # 1 + 2
+        expected.signed_copies_count = 5  # 2 + 3
+        expected.ex_libris_count = 3  # 1 + 2
         self.assertEqual(expected, result)
 
     def test_get_information_with_zero_attachments(self) -> None:

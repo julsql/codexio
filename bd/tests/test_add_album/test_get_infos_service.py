@@ -17,19 +17,19 @@ class TestGetInfosService(unittest.TestCase):
         self.complete_repo = BdInMemory("complete", ASTERIX)
 
         partial_asterix1 = ASTERIX.copy()
-        partial_asterix1.coloriste = ""
+        partial_asterix1.colorist = ""
         partial_asterix1.edition = ""
-        partial_asterix1.date_publication = ""
+        partial_asterix1.publication_date = ""
         partial_asterix1.synopsis = ""
 
         # Repository avec informations partielles
         self.partial_repo_1 = BdInMemory("partial1", partial_asterix1)
 
         partial_asterix2 = ASTERIX.copy()
-        partial_asterix2.titre = ""
-        partial_asterix2.serie = ""
-        partial_asterix2.numero = ""
-        partial_asterix2.scenariste = ""
+        partial_asterix2.title = ""
+        partial_asterix2.series = ""
+        partial_asterix2.number = ""
+        partial_asterix2.writer = ""
 
         # Repository avec autres informations partielles
         self.partial_repo_2 = BdInMemory("partial2", partial_asterix2)
@@ -45,7 +45,7 @@ class TestGetInfosService(unittest.TestCase):
 
         self.assertIsNotNone(result)
         self.assertTrue(result.is_complete())
-        self.assertEqual(result.titre, ASTERIX.titre)
+        self.assertEqual(result.title, ASTERIX.title)
 
     def test_complementary_repositories(self):
         """Test avec deux repositories qui se complètent"""
@@ -54,8 +54,8 @@ class TestGetInfosService(unittest.TestCase):
 
         self.assertIsNotNone(result)
         self.assertTrue(result.is_complete())
-        self.assertEqual(result.titre, ASTERIX.titre)
-        self.assertEqual(result.coloriste, ASTERIX.coloriste)
+        self.assertEqual(result.title, ASTERIX.title)
+        self.assertEqual(result.colorist, ASTERIX.colorist)
         self.assertEqual(result.synopsis, ASTERIX.synopsis)
 
     def test_incomplete_repositories(self):
@@ -83,7 +83,7 @@ class TestGetInfosService(unittest.TestCase):
 
         self.assertIsNotNone(result)
         self.assertTrue(result.is_complete())
-        self.assertEqual(result.titre, ASTERIX.titre)
+        self.assertEqual(result.title, ASTERIX.title)
 
     def test_empty_repositories_list(self):
         """Test avec une liste vide de repositories"""
@@ -93,15 +93,15 @@ class TestGetInfosService(unittest.TestCase):
 
     def test_preserve_first_valid_value(self):
         """Test que les valeurs non vides ne sont pas écrasées"""
-        album1 = Album(titre="Premier titre", isbn=1)
-        album2 = Album(titre="Second titre", isbn=2)
+        album1 = Album(title="Premier titre", isbn=1)
+        album2 = Album(title="Second titre", isbn=2)
         repo1 = BdInMemory("repo1", album1)
         repo2 = BdInMemory("repo2", album2)
 
         service = GetInfosService([repo1, repo2], self.logging_repository)
         result = service.main(1)
 
-        self.assertEqual(result.titre, "Premier titre")
+        self.assertEqual(result.title, "Premier titre")
 
 
 if __name__ == '__main__':

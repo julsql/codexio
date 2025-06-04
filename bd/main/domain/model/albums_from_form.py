@@ -8,7 +8,7 @@ from main.domain.model.reduce_album import ReduceAlbum
 class AlbumsFromForm:
     form: RechercheForm
     albums: list[ReduceAlbum]
-    form_send: bool
+    is_form_send: bool
 
     def __str__(self) -> str:
-        return f"RandomAlbumsFromForm(form={self.form}, albums={', '.join(str(album) for album in self.albums)}, form_send={self.form_send})"
+        return f"RandomAlbumsFromForm(form={self.form}, albums={', '.join(str(album) for album in self.albums)}, is_form_send={self.is_form_send})"

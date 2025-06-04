@@ -14,7 +14,7 @@ class PageBdDatabaseAdapter(PageBdDatabaseRepository, ABC):
         if result:
             return INTERNAL_MODEL_BD(
                 isbn=int(result['isbn']),
-                album=result['album'],
+                title=result['album'],
                 number=result['number'],
                 series=result['series'],
                 writer=result['writer'],

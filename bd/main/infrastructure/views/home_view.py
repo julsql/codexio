@@ -23,7 +23,7 @@ def home_view(request: HttpRequest) -> HttpResponse:
     advanced_search_service = AdvancedSearchService(advanced_search_repository)
     advanced_search = advanced_search_service.main(request)
 
-    if advanced_search.form_send:
+    if advanced_search.is_form_send:
         return render(request, 'bd_search/module.html',
                       {"banner_path": random_attachment.path, "banner_isbn": random_attachment.isbn,
                        "banner_type": random_attachment.type})
@@ -42,17 +42,17 @@ def home_view(request: HttpRequest) -> HttpResponse:
                    "form": advanced_search.form,
                    "random_album": {
                        'isbn': random_album.isbn,
-                       'album': random_album.titre,
-                       'number': random_album.numero,
-                       'series': random_album.serie,
-                       'writer': random_album.scenariste,
-                       'illustrator': random_album.dessinateur,
-                       'colorist': random_album.coloriste,
-                       'editor': random_album.editeur,
-                       'publication_date': random_album.date_publication,
+                       'album': random_album.title,
+                       'number': random_album.number,
+                       'series': random_album.series,
+                       'writer': random_album.writer,
+                       'illustrator': random_album.illustrator,
+                       'colorist': random_album.colorist,
+                       'editor': random_album.publisher,
+                       'publication_date': random_album.publication_date,
                        'edition': random_album.edition,
-                       'number_of_pages': random_album.nombre_pages,
-                       'purchase_price': convert_price(random_album.prix),
+                       'number_of_pages': random_album.number_of_pages,
+                       'purchase_price': convert_price(random_album.purchase_price),
                        'synopsis': random_album.synopsis,
-                       'image': random_album.image_url}
+                       'image': random_album.image}
                    })

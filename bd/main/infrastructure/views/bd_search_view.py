@@ -14,10 +14,10 @@ def bd_search_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'bd_search/module.html',
                   {'form': advanced_search.form,
                    'infos': [{'ISBN': search_result.isbn,
-                              'Album': search_result.titre,
-                              'Numero': search_result.numero,
-                              'Serie': search_result.serie,
-                              'Scenariste': search_result.scenariste,
-                              'Dessinateur': search_result.dessinateur
+                              'Album': search_result.title,
+                              'Numero': search_result.number,
+                              'Serie': search_result.series,
+                              'Scenariste': search_result.writer,
+                              'Dessinateur': search_result.illustrator
                               } for search_result in advanced_search.albums],
                    'total': len(advanced_search.albums)})

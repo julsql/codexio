@@ -18,10 +18,10 @@ def statistics_view(request: HttpRequest) -> HttpResponse:
     statistics = service.execute()
 
     return render(request, 'statistics/module.html', {
-        'nombre': statistics.nombre_albums,
-        'pages': statistics.nombre_pages,
-        'prix': statistics.prix_total,
-        'tirage': statistics.nombre_editions_speciales,
-        'dedicaces': statistics.nombre_dedicaces,
-        'exlibris': statistics.nombre_exlibris
+        'nombre': statistics.albums_count,
+        'pages': statistics.pages_count,
+        'prix': statistics.purchase_price_count,
+        'tirage': statistics.deluxe_edition_count,
+        'dedicaces': statistics.signed_copies_count,
+        'exlibris': statistics.ex_libris_count
     })

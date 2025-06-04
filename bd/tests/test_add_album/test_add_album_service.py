@@ -34,19 +34,19 @@ class TestAddAlbumService(unittest.TestCase):
 
     def test_convert_list_from_dict_successfully(self) -> None:
         album = Album(isbn=0)
-        album.titre = "a"
-        album.numero = "a"
-        album.serie = "a"
-        album.scenariste = "a"
-        album.dessinateur = "a"
-        album.coloriste = "a"
-        album.editeur = "a"
-        album.date_publication = date(1900, 1, 1)
+        album.title = "a"
+        album.number = "a"
+        album.series = "a"
+        album.writer = "a"
+        album.illustrator = "a"
+        album.colorist = "a"
+        album.publisher = "a"
+        album.publication_date = date(1900, 1, 1)
         album.edition = "a"
-        album.nombre_pages = 10
-        album.prix = Decimal("10")
+        album.number_of_pages = 10
+        album.purchase_price = Decimal("10")
         album.synopsis = "a"
-        album.image_url = "a"
+        album.image = "a"
         liste = self.service.map_to_list(album)
         self.assertEqual(
             [0, "a", "a", "a", "a", "a", "a", "a", "1 janv. 1900", "a", 10, "", 10.0, "", "", "", "", "", "", "a", "a"],

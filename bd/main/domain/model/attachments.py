@@ -28,6 +28,6 @@ class Attachments:
 
     def __str__(self):
         return (
-            f"Attachments(attachments={', '.join(str(attachment) for attachment in self.attachments_list)}, "
+            f"Attachments(attachments_list={', '.join(str(attachment) for attachment in self.attachments_list)}, "
             f"sum={self.sum}, title={self.title}, subtitle={self.subtitle}, image_path={self.image_path})"
         )

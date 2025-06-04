@@ -13,7 +13,7 @@ class PageBdAttachmentsAdapter(PageBdAttachmentsRepository, ABC):
     def get_attachments(self, isbn) -> BdAttachment:
         dedicaces = sorted(self.attachment_album(isbn, self.SIGNED_COPY_FOLDER))
         ex_libris = sorted(self.attachment_album(isbn, self.EXLIBRIS_FOLDER))
-        return BdAttachment(dedicaces=dedicaces, ex_libris=ex_libris)
+        return BdAttachment(signed_copies=dedicaces, ex_libris=ex_libris)
 
     def attachment_album(self, isbn: int, path: str) -> list[str]:
         image_dir = os.path.join(path, str(isbn))

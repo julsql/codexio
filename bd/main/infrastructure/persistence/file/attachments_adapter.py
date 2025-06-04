@@ -27,15 +27,15 @@ class AttachmentsAdapter(AttachmentsRepository):
                 result = BD.objects.filter(isbn=isbn).values('album', 'number', 'series').first()
                 if result is None:
                     attachment = Attachment(
-                        isbn=int(isbn), titre="", numero="", serie="", total=nb_attachments
+                        isbn=int(isbn), title="", number="", series="", total=nb_attachments
                     )
                     infos.append(attachment)
                 else:
                     attachment = Attachment(
                         isbn=int(isbn),
-                        titre=result["album"],
-                        numero=result["number"],
-                        serie=result["series"],
+                        title=result["album"],
+                        number=result["number"],
+                        series=result["series"],
                         total=nb_attachments
                     )
                     infos.append(attachment)

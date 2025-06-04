@@ -27,7 +27,7 @@ class TestAttachmentsService(unittest.TestCase):
             Attachments(attachments_list=[], title="Ex-libris", subtitle="ex-libris", image_path=EXLIBRIS_PATH), result)
 
     def test_main_signed_copies_with_data(self) -> None:
-        test_data = [Attachment(isbn=0, titre="Titre de test", numero="1", serie="Série de test", total=2)]
+        test_data = [Attachment(isbn=0, title="Titre de test", number="1", series="Série de test", total=2)]
         self.repository.attachments[SIGNED_COPY_FOLDER] = test_data
 
         result = self.service.main_signed_copies()
@@ -36,7 +36,7 @@ class TestAttachmentsService(unittest.TestCase):
                         image_path=SIGNED_COPY_PATH), result)
 
     def test_main_ex_libris_with_data(self) -> None:
-        test_data = [Attachment(isbn=0, titre="Titre de test", numero="1", serie="Série de test", total=2)]
+        test_data = [Attachment(isbn=0, title="Titre de test", number="1", series="Série de test", total=2)]
         self.repository.attachments[EXLIBRIS_FOLDER] = test_data
 
         result = self.service.main_ex_libris()
