@@ -21,7 +21,7 @@ class TestPageBdDatabaseConnexion(unittest.TestCase):
         cls.repository = PageBdDatabaseAdapter()
         cls.EXPECTED_FIELDS = {
             'isbn': 'isbn',
-            'album': 'album',
+            'album': 'title',
             'number': 'number',
             'series': 'series',
             'writer': 'writer',

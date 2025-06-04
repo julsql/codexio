@@ -9,7 +9,7 @@ from main.domain.model.album import Album
 @dataclass
 class BD:
     isbn: int
-    album: str = ""
+    title: str = ""
     number: str = ""
     series: str = ""
     writer: str = ""
@@ -32,19 +32,19 @@ class BD:
     def from_album(cls, album: Album) -> 'BD':
         """Crée une instance de BD à partir d'un objet Album"""
         bd = cls(isbn=album.isbn)
-        bd.album = album.titre
-        bd.number = album.numero
-        bd.series = album.serie
-        bd.writer = album.scenariste
-        bd.illustrator = album.dessinateur
-        bd.colorist = album.coloriste
-        bd.publisher = album.editeur
-        bd.publication_date = album.date_publication
+        bd.title = album.title
+        bd.number = album.number
+        bd.series = album.series
+        bd.writer = album.writer
+        bd.illustrator = album.illustrator
+        bd.colorist = album.colorist
+        bd.publisher = album.publisher
+        bd.publication_date = album.publication_date
         bd.edition = album.edition
-        bd.number_of_pages = album.nombre_pages
-        bd.purchase_price = album.prix
+        bd.number_of_pages = album.number_of_pages
+        bd.purchase_price = album.purchase_price
         bd.synopsis = album.synopsis
-        bd.image = album.image_url
+        bd.image = album.image
         return bd
 
     def contains(self, key):
@@ -53,7 +53,7 @@ class BD:
     def copy(self):
         return BD(
             isbn=self.isbn,
-            album=self.album,
+            title=self.title,
             number=self.number,
             series=self.series,
             writer=self.writer,
@@ -77,7 +77,7 @@ class BD:
         """Convertit l'objet BD en dictionnaire"""
         return [
             self.isbn,
-            self.album,
+            self.title,
             self.number,
             self.series,
             self.writer,
@@ -98,3 +98,12 @@ class BD:
             self.synopsis,
             self.image
         ]
+
+    def __str__(self):
+        return f"BD(isbn={self.isbn}, title={self.title}, number={self.number}, series={self.series}, " \
+               f"writer={self.writer}, illustrator={self.illustrator}, colorist={self.colorist}, " \
+               f"publisher={self.publisher}, publication_date={self.publication_date}, edition={self.edition}, " \
+               f"number_of_pages={self.number_of_pages}, rating={self.rating}, purchase_price={self.purchase_price}, " \
+               f"year_of_purchase={self.year_of_purchase}, place_of_purchase={self.place_of_purchase}, " \
+               f"deluxe_edition={self.deluxe_edition}, localisation={self.localisation}, synopsis={self.synopsis}, " \
+               f"image={self.image})"

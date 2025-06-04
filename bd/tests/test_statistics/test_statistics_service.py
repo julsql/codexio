@@ -9,12 +9,12 @@ from test_statistics.internal.statistics_database_in_memory import StatisticsDat
 class TestStatisticsService(unittest.TestCase):
     def setUp(self) -> None:
         self.statistics = Statistics(
-            nombre_albums=100,
-            nombre_pages=20,
-            prix_total=80,
-            nombre_editions_speciales=80,
-            nombre_dedicaces=30,
-            nombre_exlibris=15,
+            albums_count=100,
+            pages_count=20,
+            purchase_price_count=80,
+            deluxe_edition_count=80,
+            signed_copies_count=30,
+            ex_libris_count=15,
         )
 
         self.attachments_repository = StatisticsAttachmentsInMemory(self.statistics)
@@ -47,8 +47,8 @@ class TestStatisticsService(unittest.TestCase):
 
         # Assert
         expected = Statistics.empty()
-        expected.nombre_dedicaces = self.statistics.nombre_dedicaces
-        expected.nombre_exlibris = self.statistics.nombre_exlibris
+        expected.signed_copies_count = self.statistics.signed_copies_count
+        expected.ex_libris_count = self.statistics.ex_libris_count
         self.assertEqual(expected, result)
 
     def test_main_with_empty_attachments_info(self) -> None:
@@ -61,29 +61,29 @@ class TestStatisticsService(unittest.TestCase):
 
         # Assert
         expected = Statistics.empty()
-        expected.nombre_albums = self.statistics.nombre_albums
-        expected.nombre_pages = self.statistics.nombre_pages
-        expected.prix_total = self.statistics.prix_total
-        expected.nombre_editions_speciales = self.statistics.nombre_editions_speciales
+        expected.albums_count = self.statistics.albums_count
+        expected.pages_count = self.statistics.pages_count
+        expected.purchase_price_count = self.statistics.purchase_price_count
+        expected.deluxe_edition_count = self.statistics.deluxe_edition_count
         self.assertEqual(expected, result)
 
     def test_main_with_overlapping_keys(self) -> None:
         # Arrange
         database_info = Statistics(
-            nombre_albums=100,
-            nombre_pages=20,
-            prix_total=80,
-            nombre_editions_speciales=80,
-            nombre_dedicaces=200,
-            nombre_exlibris=200,
+            albums_count=100,
+            pages_count=20,
+            purchase_price_count=80,
+            deluxe_edition_count=80,
+            signed_copies_count=200,
+            ex_libris_count=200,
         )
         attachments_info = Statistics(
-            nombre_albums=200,
-            nombre_pages=200,
-            prix_total=200,
-            nombre_editions_speciales=200,
-            nombre_dedicaces=30,
-            nombre_exlibris=15,
+            albums_count=200,
+            pages_count=200,
+            purchase_price_count=200,
+            deluxe_edition_count=200,
+            signed_copies_count=30,
+            ex_libris_count=15,
         )
 
         database_repository = StatisticsDatabaseInMemory(database_info)

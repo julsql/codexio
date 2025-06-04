@@ -11,17 +11,17 @@ class TestRandomAlbumService(unittest.TestCase):
     def setUp(self) -> None:
         self.test_album = Album(
             isbn=123456789,
-            titre='Test Album',
-            numero='1',
-            serie='Test Series',
-            scenariste='Test Writer',
-            dessinateur='Test Illustrator',
-            date_publication=date(2024, 1, 1),
-            prix=Decimal("15.0"),
-            nombre_pages=48,
+            title='Test Album',
+            number='1',
+            series='Test Series',
+            writer='Test Writer',
+            illustrator='Test Illustrator',
+            publication_date=date(2024, 1, 1),
+            purchase_price=Decimal("15.0"),
+            number_of_pages=48,
             edition='Standard',
             synopsis='Test Synopsis',
-            image_url='test.jpg'
+            image='test.jpg'
         )
 
     def test_main_returns_none_when_no_album(self) -> None:

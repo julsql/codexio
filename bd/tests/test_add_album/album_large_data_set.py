@@ -16,35 +16,35 @@ ASTERIX_URLS = {
 # Données par source
 ASTERIX_DATA = {
     'BDPHILE': Album(isbn=9782864976165,
-                     titre="L'empire du milieu",
-                     serie="Astérix (Albums des films)",
-                     numero="10",
-                     scenariste="Olivier Gay",
-                     dessinateur="Fabrice Tarrin",
-                     coloriste="Thierry Mébarki",
-                     editeur="Albert René",
+                     title="L'empire du milieu",
+                     series="Astérix (Albums des films)",
+                     number="10",
+                     writer="Olivier Gay",
+                     illustrator="Fabrice Tarrin",
+                     colorist="Thierry Mébarki",
+                     publisher="Albert René",
                      edition="Édition originale Noté : Impression en décembre 2022 - n° 616-5-01 Impression et reliure par Pollina - n°13651",
-                     date_publication=date(2023, 2, 8),
-                     nombre_pages=48,
-                     prix=Decimal('10.5'),
+                     publication_date=date(2023, 2, 8),
+                     number_of_pages=48,
+                     purchase_price=Decimal('10.5'),
                      synopsis="Nous sommes en 50 av J.-C. Loin, très loin du petit village d'Armorique que nous connaissons bien,"
                               " l'Impératrice de Chine est emprisonnée suite à coup d'état fomenté par l'infâme Deng Tsin Qin."
                               "<br/>La princesse Fu Yi, fille unique de l'Impératrice, aidée par sa fidèle guerrière Tat Han et"
                               " Graindemaïs, le neveu du marchand phénicien Epidemaïs, s'enfuit pour demander de l'aide aux"
                               " Irréductibles Gaulois.",
-                     image_url="https://static.bdphile.fr/images/media/cover/0160/160391.jpg"
+                     image="https://static.bdphile.fr/images/media/cover/0160/160391.jpg"
                      ),
     'BDGEST': Album(isbn=9782864976165,
-                    titre="L'Empire du Milieu",
-                    serie="Astérix (Hors Série)",
-                    numero="C14",
-                    scenariste="Olivier Gay",
-                    dessinateur="Fabrice Tarrin",
-                    coloriste="Thierry Mébarki",
-                    editeur="Les Éditions Albert René",
-                    date_publication=date(2023, 2, 8),
-                    nombre_pages=44,
-                    prix=Decimal('10.90'),
+                    title="L'Empire du Milieu",
+                    series="Astérix (Hors Série)",
+                    number="C14",
+                    writer="Olivier Gay",
+                    illustrator="Fabrice Tarrin",
+                    colorist="Thierry Mébarki",
+                    publisher="Les Éditions Albert René",
+                    publication_date=date(2023, 2, 8),
+                    number_of_pages=44,
+                    purchase_price=Decimal('10.90'),
                     synopsis='Nous sommes en 50 av J.-C. Loin, très loin du petit village '
                              "d'Armorique que nous connaissons bien, l'Impératrice de Chine "
                              "est emprisonnée suite à un coup d'état fomenté par l'infâme Deng "
@@ -55,18 +55,18 @@ ASTERIX_DATA = {
                              '<br />\n'
                              'Une histoire originale basée sur le scénario du film Astérix '
                              "&amp; Obélix, L'Empire du Milieu réalisé par Guillaume Canet.",
-                    image_url="https://www.bedetheque.com/media/Couvertures/Couv_467639.jpg"
+                    image="https://www.bedetheque.com/media/Couvertures/Couv_467639.jpg"
                     ),
     'BDFUGUE': Album(isbn=9782864976165,
-                     titre="L'empire du milieu (album illustré)",
-                     serie="Astérix",
-                     numero="1",
-                     scenariste="Olivier Gay",
-                     dessinateur="Fabrice Tarrin",
-                     editeur="ALBERT RENE",
-                     date_publication=date(2023, 2, 8),
-                     nombre_pages=48,
-                     prix=Decimal('10.90'),
+                     title="L'empire du milieu (album illustré)",
+                     series="Astérix",
+                     number="1",
+                     writer="Olivier Gay",
+                     illustrator="Fabrice Tarrin",
+                     publisher="ALBERT RENE",
+                     publication_date=date(2023, 2, 8),
+                     number_of_pages=48,
+                     purchase_price=Decimal('10.90'),
                      synopsis='NOUVEL ALBUM ILLUSTRÉ   Nous sommes en 50 av J.-C. Loin, très '
                               "loin du petit village d'Armorique que nous connaissons bien, "
                               "l'Impératrice de Chine est emprisonnée suite à coup d'état "
@@ -79,7 +79,7 @@ ASTERIX_DATA = {
                               '\r\n'
                               'Une histoire originale basée sur le scénario du film Astérix & '
                               "Obélix, L'Empire du Milieu réalisé par Guillaume Canet.",
-                     image_url="https://www.bdfugue.com/media/catalog/product/cache/0d950bd4d3aaddc02a824ea154d9c41e/9/7/9782864976165_1_75.jpg"
+                     image="https://www.bdfugue.com/media/catalog/product/cache/0d950bd4d3aaddc02a824ea154d9c41e/9/7/9782864976165_1_75.jpg"
                      )
 }
 
@@ -92,16 +92,16 @@ SAMBRE_ISBN = 9782754801096
 SAMBRE_DATA = {
     'BDPHILE': Album(
         isbn=SAMBRE_ISBN,
-        titre="Hiver 1831 - La Lune qui regarde",
-        serie="La Guerre des Sambre - Hugo & Iris",
-        numero="3",
-        scenariste="Yslaire (Bernard Hislaire)",
-        dessinateur="Jean Bastide,Vincent Mézil",
-        editeur="Futuropolis - Glénat",
+        title="Hiver 1831 - La Lune qui regarde",
+        series="La Guerre des Sambre - Hugo & Iris",
+        number="3",
+        writer="Yslaire (Bernard Hislaire)",
+        illustrator="Jean Bastide,Vincent Mézil",
+        publisher="Futuropolis - Glénat",
         edition="1 réédition",
-        date_publication=date(2009, 11, 25),
-        nombre_pages=56,
-        prix=Decimal('14.00'),
+        publication_date=date(2009, 11, 25),
+        number_of_pages=56,
+        purchase_price=Decimal('14.00'),
         synopsis='Hiver 1831. À la Bastide, la mort des parents Sambre laisse une '
                  "maison vide et ses occupants solitaires. Blanche, l'épouse "
                  "délaissée, s'échappe de cette atmosphère pesante en compagnie "
@@ -111,20 +111,20 @@ SAMBRE_DATA = {
                  "manuscrit de La guerre des yeux. L'annonce du retour d'Iris à "
                  "Paris, l'actrice aux yeux rouges qui l'a envoûté, décide Hugo à "
                  "quitter précipitamment la Bastide, dans l'espoir de la retrouver",
-        image_url="https://static.bdphile.fr/images/media/cover/0005/5175.jpg"
+        image="https://static.bdphile.fr/images/media/cover/0005/5175.jpg"
     ),
     'BDGEST': Album(
         isbn=SAMBRE_ISBN,
-        titre="Chapitre 3 - Hiver 1831 : la lune qui regarde",
-        serie="La guerre des Sambre - Hugo & Iris",
-        numero="3",
-        scenariste="Yslaire",
-        dessinateur="Jean Bastide,Vincent Mézil",
-        coloriste="Jean Bastide,Vincent Mézil",
-        editeur="Futuropolis / Glénat",
-        date_publication=date(2009, 11, 25),
-        nombre_pages=56,
-        prix=Decimal('15.50'),
+        title="Chapitre 3 - Hiver 1831 : la lune qui regarde",
+        series="La guerre des Sambre - Hugo & Iris",
+        number="3",
+        writer="Yslaire",
+        illustrator="Jean Bastide,Vincent Mézil",
+        colorist="Jean Bastide,Vincent Mézil",
+        publisher="Futuropolis / Glénat",
+        publication_date=date(2009, 11, 25),
+        number_of_pages=56,
+        purchase_price=Decimal('15.50'),
         synopsis="Avec Hugo et Iris, Yslaire, revient sur la jeunesse d'Hugo "
                  "Sambre, le père de Bernard Sambre, sur l'écriture de son "
                  'manuscrit La guerre des yeux, sur sa passion funeste pour Iris, '
@@ -141,20 +141,20 @@ SAMBRE_DATA = {
                  "Paris, l'actrice aux yeux rouges qui l'a envoûté, décide Hugo à "
                  'quitter précipitamment la Bastide, dans l?espoir de la '
                  'retrouver?<br />\n',
-        image_url="https://www.bedetheque.com/media/Couvertures/Couv_98900.jpg"
+        image="https://www.bedetheque.com/media/Couvertures/Couv_98900.jpg"
     ),
     'BDFUGUE': Album(
         isbn=SAMBRE_ISBN,
-        titre="hiver 1931",
-        serie="La guerre des sambre - Hugo et Iris",
-        numero="3",
-        scenariste="Yslaire",
-        dessinateur="Jean Bastide,Vincent Mézil",
-        coloriste="Jean Bastide,Vincent Mézil",
-        editeur="GLENAT",
-        date_publication=date(2009, 11, 25),
-        nombre_pages=58,
-        prix=Decimal('13.90'),
+        title="hiver 1931",
+        series="La guerre des sambre - Hugo et Iris",
+        number="3",
+        writer="Yslaire",
+        illustrator="Jean Bastide,Vincent Mézil",
+        colorist="Jean Bastide,Vincent Mézil",
+        publisher="GLENAT",
+        publication_date=date(2009, 11, 25),
+        number_of_pages=58,
+        purchase_price=Decimal('13.90'),
         synopsis="Avec Hugo et Iris, Yslaire, revient sur la jeunesse d'Hugo "
                  "Sambre, le père de Bernard Sambre, sur l'écriture de son "
                  'manuscrit La guerre des yeux, sur sa passion funeste pour Iris, '
@@ -170,7 +170,7 @@ SAMBRE_DATA = {
                  "Paris, l'actrice aux yeux rouges qui l'a envoûté, décide Hugo à "
                  "quitter précipitamment la Bastide, dans l'espoir de la "
                  'retrouver...',
-        image_url="https://www.bdfugue.com/media/catalog/product/cache/0d950bd4d3aaddc02a824ea154d9c41e/9/7/9782754801096_1_75.jpg"
+        image="https://www.bdfugue.com/media/catalog/product/cache/0d950bd4d3aaddc02a824ea154d9c41e/9/7/9782754801096_1_75.jpg"
     )
 }
 
@@ -183,16 +183,16 @@ THORGAL_ISBN = 9782803603589
 THORGAL_DATA = {
     'BDPHILE': Album(
         isbn=THORGAL_ISBN,
-        titre="La Magicienne trahie",
-        serie="Thorgal",
-        numero="1",
-        scenariste="Jean Van Hamme",
-        dessinateur="Grzegorz Rosinski",
-        editeur="Le Lombard",
+        title="La Magicienne trahie",
+        series="Thorgal",
+        number="1",
+        writer="Jean Van Hamme",
+        illustrator="Grzegorz Rosinski",
+        publisher="Le Lombard",
         edition='Édition originale - 18 rééditions Les 2 premiers tomes sont parus en même temps. Tome 3 à paraître au 4e plat',
-        date_publication=date(1980, 1, 1),
-        nombre_pages=48,
-        prix=Decimal('10.00'),
+        publication_date=date(1980, 1, 1),
+        number_of_pages=48,
+        purchase_price=Decimal('10.00'),
         synopsis='Prise dans une tempête en pleine mer, une expédition Viking '
                  "découvre un bébé dans une mystérieuse embarcation. L'enfant est "
                  "baptisé du nom de Thorgal. Prodige du tir à l'arc, épris de "
@@ -200,20 +200,20 @@ THORGAL_DATA = {
                  "et d'aspirer à une vie paisible. Son histoire est celle d'un "
                  "homme que les Dieux ont décidé de mettre à l'épreuve et qui "
                  'percera, au fil de ses aventures, le mystère de ses origines.',
-        image_url="https://static.bdphile.fr/images/media/cover/0098/98648.jpg"
+        image="https://static.bdphile.fr/images/media/cover/0098/98648.jpg"
     ),
     'BDGEST': Album(
         isbn=THORGAL_ISBN,
-        titre="La Magicienne trahie",
-        serie="Thorgal",
-        numero="1",
-        scenariste="Jean Van Hamme",
-        dessinateur="Grzegorz Rosinski",
-        coloriste="<Quadrichromie>",
-        editeur="Lombard",
-        date_publication=date(1980, 1, 1),
-        nombre_pages=46,
-        prix=Decimal('13.95'),
+        title="La Magicienne trahie",
+        series="Thorgal",
+        number="1",
+        writer="Jean Van Hamme",
+        illustrator="Grzegorz Rosinski",
+        colorist="<Quadrichromie>",
+        publisher="Lombard",
+        publication_date=date(1980, 1, 1),
+        number_of_pages=46,
+        purchase_price=Decimal('13.95'),
         synopsis='Prépublication dans Tintin édition française n° 106, 107, 116, '
                  '129, 130, du 20.09.1977 au 07.03.0978. La magicienne trahie : '
                  'Thorgal n’a qu’un tort : aimer Aaricia la fille de '
@@ -226,26 +226,26 @@ THORGAL_DATA = {
                  'une crevasse profonde. Il se réveille dans un éden où vivent '
                  'trois sœurs et où le temps semble ne pas avoir d’empreintes sur '
                  'elles...',
-        image_url="https://www.bedetheque.com/media/Couvertures/Couv_398.jpg"
+        image="https://www.bedetheque.com/media/Couvertures/Couv_398.jpg"
     ),
     'BDFUGUE': Album(
         isbn=THORGAL_ISBN,
-        titre="la magicienne trahie",
-        serie="Thorgal",
-        numero="1",
-        scenariste="Jean Van Hamme",
-        dessinateur="Grzegorz Rosinski",
-        editeur="LOMBARD",
-        date_publication=date(1996, 6, 7),
-        nombre_pages=48,
-        prix=Decimal('6.00'),
+        title="la magicienne trahie",
+        series="Thorgal",
+        number="1",
+        writer="Jean Van Hamme",
+        illustrator="Grzegorz Rosinski",
+        publisher="LOMBARD",
+        publication_date=date(1996, 6, 7),
+        number_of_pages=48,
+        purchase_price=Decimal('6.00'),
         synopsis="Dès le début de l'histoire, Thorgal Aegirson est en mauvaise "
                  'posture : il est enchaîné à un rocher et est condamné à mourir, '
                  "noyé par la marée montante. Son crime est d'avoir osé aimer "
                  'Aaricia, la fille du roi des Vikings du Nord, lui, le bâtard né '
                  "d'on ne sait qui et on ne sait où. Il doit son salut à une "
                  'magicienne qui le sauve en échange de son obéissance...',
-        image_url="https://www.bdfugue.com/media/catalog/product/cache/0d950bd4d3aaddc02a824ea154d9c41e/9/7/9782803603589_1_75.jpg"
+        image="https://www.bdfugue.com/media/catalog/product/cache/0d950bd4d3aaddc02a824ea154d9c41e/9/7/9782803603589_1_75.jpg"
     )
 }
 
@@ -259,16 +259,16 @@ SAULE_ISBN = 9782840551072
 SAULE_DATA = {
     'BDPHILE': Album(
         isbn=SAULE_ISBN,
-        titre="Le bois sauvage",
-        serie="Le Vent dans les saules",
-        numero="1",
-        scenariste="Michel Plessix",
-        dessinateur="Michel Plessix",
-        editeur="Delcourt",
+        title="Le bois sauvage",
+        series="Le Vent dans les saules",
+        number="1",
+        writer="Michel Plessix",
+        illustrator="Michel Plessix",
+        publisher="Delcourt",
         edition='6 rééditions',
-        date_publication=date(1996, 10, 1),
-        nombre_pages=30,
-        prix=Decimal('10.00'),
+        publication_date=date(1996, 10, 1),
+        number_of_pages=30,
+        purchase_price=Decimal('10.00'),
         synopsis="Qu'est ce qui lui prend à Taupe ? Les premiers rayons du soleil "
                  'lui auraient-ils tapé sur la tête ? Le voilà qui quitte, '
                  'guilleret, son trou empoussiéré pour musarder au bord de la '
@@ -288,20 +288,20 @@ SAULE_DATA = {
                  'passe, vivace, entre nos orteils fripés et engourdis. La vie est '
                  'belle, le dépaysement garanti. Le Bois Sauvage est le premier '
                  'tome de la série.',
-        image_url="https://static.bdphile.fr/images/media/cover/0007/7799.jpg"
+        image="https://static.bdphile.fr/images/media/cover/0007/7799.jpg"
     ),
     'BDGEST': Album(
         isbn=SAULE_ISBN,
-        titre="Le Bois Sauvage",
-        serie="Le vent dans les Saules",
-        numero="1",
-        scenariste="Michel Plessix",
-        dessinateur="Michel Plessix",
-        coloriste="Michel Plessix",
-        editeur="Delcourt",
-        date_publication=date(1996, 10, 1),
-        nombre_pages=31,
-        prix=Decimal('12.99'),
+        title="Le Bois Sauvage",
+        series="Le vent dans les Saules",
+        number="1",
+        writer="Michel Plessix",
+        illustrator="Michel Plessix",
+        colorist="Michel Plessix",
+        publisher="Delcourt",
+        publication_date=date(1996, 10, 1),
+        number_of_pages=31,
+        purchase_price=Decimal('12.99'),
         synopsis="Qu'est ce qui lui prend à Taupe ? Les premiers rayons du soleil "
                  'lui auraient-ils tapé sur la tête ? Le voilà qui quitte, '
                  'guilleret, son trou empoussiéré pour musarder au bord de la '
@@ -320,21 +320,21 @@ SAULE_DATA = {
                  "Notre barque file au gré du courant. Un filet d'eau passe, "
                  'vivace, entre nos orteils fripés et engourdis. La vie est belle, '
                  'le dépaysement garanti.',
-        image_url="https://www.bedetheque.com/media/Couvertures/Couv_931.jpg"
+        image="https://www.bedetheque.com/media/Couvertures/Couv_931.jpg"
     ),
     'BDFUGUE': Album(
         isbn=SAULE_ISBN,
-        titre="le bois sauvage",
-        serie="Le vent dans les saules",
-        numero="1",
-        scenariste="Michel Plessix",
-        dessinateur="Michel Plessix",
-        coloriste="Michel Plessix",
-        editeur="DELCOURT",
-        date_publication=date(2004, 1, 1),
-        nombre_pages=0,
+        title="le bois sauvage",
+        series="Le vent dans les saules",
+        number="1",
+        writer="Michel Plessix",
+        illustrator="Michel Plessix",
+        colorist="Michel Plessix",
+        publisher="DELCOURT",
+        publication_date=date(2004, 1, 1),
+        number_of_pages=0,
         synopsis="",
-        prix=Decimal('25.00'),
-        image_url="https://www.bdfugue.com/media/catalog/product/cache/0d950bd4d3aaddc02a824ea154d9c41e/9/7/9782840551072_1_75.JPG"
+        purchase_price=Decimal('25.00'),
+        image="https://www.bdfugue.com/media/catalog/product/cache/0d950bd4d3aaddc02a824ea154d9c41e/9/7/9782840551072_1_75.JPG"
     )
 }

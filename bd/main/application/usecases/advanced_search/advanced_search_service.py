@@ -12,11 +12,11 @@ class AdvancedSearchService:
         if request.method == 'POST':
             form = RechercheForm(request.POST)
             infos = self.form_search(form)
-            return AlbumsFromForm(form=form, albums=infos, form_send=True)
+            return AlbumsFromForm(form=form, albums=infos, is_form_send=True)
         else:
             form = RechercheForm()
             infos = self.form_search()
-            return AlbumsFromForm(form=form, albums=infos, form_send=False)
+            return AlbumsFromForm(form=form, albums=infos, is_form_send=False)
 
     def form_search(self, form=None) -> list[ReduceAlbum]:
         queryset = self.repository.get_all()
@@ -27,11 +27,11 @@ class AdvancedSearchService:
         return [
             ReduceAlbum(
                 isbn=int(bd.isbn),
-                titre=bd.album,
-                numero=bd.number,
-                serie=bd.series,
-                scenariste=bd.writer,
-                dessinateur=bd.illustrator,
+                title=bd.album,
+                number=bd.number,
+                series=bd.series,
+                writer=bd.writer,
+                illustrator=bd.illustrator,
             )
             for bd in queryset
         ]

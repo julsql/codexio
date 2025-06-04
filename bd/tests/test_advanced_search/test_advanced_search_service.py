@@ -37,11 +37,11 @@ class TestAdvancedSearchService(unittest.TestCase):
         # Vérifications
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].isbn, 123456789)
-        self.assertEqual(result[0].titre, "Album Test")
-        self.assertEqual(result[0].serie, "Série Test")
-        self.assertEqual(result[0].numero, "1")
-        self.assertEqual(result[0].scenariste, "Auteur Test")
-        self.assertEqual(result[0].dessinateur, "Illustrateur Test")
+        self.assertEqual(result[0].title, "Album Test")
+        self.assertEqual(result[0].series, "Série Test")
+        self.assertEqual(result[0].number, "1")
+        self.assertEqual(result[0].writer, "Auteur Test")
+        self.assertEqual(result[0].illustrator, "Illustrateur Test")
 
     def test_form_search_avec_form_valide(self):
         # Création d'un form avec des données valides
@@ -56,8 +56,8 @@ class TestAdvancedSearchService(unittest.TestCase):
 
         # Vérifications
         self.assertEqual(len(result), 1)
-        self.assertEqual(result[0].serie, "Série Test")
-        self.assertEqual(result[0].scenariste, "Auteur Test")
+        self.assertEqual(result[0].series, "Série Test")
+        self.assertEqual(result[0].writer, "Auteur Test")
 
     def test_form_search_avec_form_sans_resultats(self):
         # Création d'un form avec des données qui ne correspondent à aucune BD
@@ -83,7 +83,7 @@ class TestAdvancedSearchService(unittest.TestCase):
         # Vérifications
         self.assertIsInstance(result.form, RechercheForm)
         self.assertEqual(len(result.albums), 1)
-        self.assertFalse(result.form_send)
+        self.assertFalse(result.is_form_send)
         self.assertEqual(result.albums[0].isbn, 123456789)
 
     def test_main_methode_post(self):
@@ -100,8 +100,8 @@ class TestAdvancedSearchService(unittest.TestCase):
         # Vérifications
         self.assertIsInstance(result.form, RechercheForm)
         self.assertEqual(len(result.albums), 1)
-        self.assertTrue(result.form_send)
-        self.assertEqual(result.albums[0].serie, "Série Test")
+        self.assertTrue(result.is_form_send)
+        self.assertEqual(result.albums[0].series, "Série Test")
 
     def test_main_methode_post_sans_resultats(self):
         # Création d'une requête POST avec des données qui ne correspondent à aucune BD
@@ -117,7 +117,7 @@ class TestAdvancedSearchService(unittest.TestCase):
         # Vérifications
         self.assertIsInstance(result.form, RechercheForm)
         self.assertEqual(len(result.albums), 0)
-        self.assertTrue(result.form_send)
+        self.assertTrue(result.is_form_send)
 
 
 if __name__ == '__main__':

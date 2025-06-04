@@ -39,7 +39,7 @@ class InMemoryAdvancedSearchRepository(AdvancedSearchRepository):
             if 'isbn' in data and data['isbn']:
                 matches = matches and data['isbn'].lower() in bd.isbn.lower()
             if 'album' in data and data['album']:
-                matches = matches and data['album'].lower() in bd.album.lower()
+                matches = matches and data['album'].lower() in bd.title.lower()
             if 'number' in data and data['number']:
                 matches = matches and data['number'].lower() in bd.number.lower()
             if 'series' in data and data['series']:

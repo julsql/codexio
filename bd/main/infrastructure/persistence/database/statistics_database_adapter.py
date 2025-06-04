@@ -24,10 +24,10 @@ class StatisticsDatabaseAdapter(StatisticsDatabaseRepository):
         )
 
         return Statistics(
-            nombre_albums=stats['nombre'],
-            nombre_pages=stats['pages'],
-            prix_total=stats['prix'],
-            nombre_editions_speciales=stats['tirage'],
-            nombre_dedicaces=0,
-            nombre_exlibris=0
+            albums_count=stats['nombre'],
+            pages_count=stats['pages'],
+            purchase_price_count=stats['prix'],
+            deluxe_edition_count=stats['tirage'],
+            signed_copies_count=0,
+            ex_libris_count=0
         )

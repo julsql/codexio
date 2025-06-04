@@ -51,7 +51,7 @@ class UpdateDatabaseService:
             case "isbn":
                 bd.isbn = isbn
             case "album":
-                bd.album = value
+                bd.title = value
             case "number":
                 bd.number = value
             case "series":

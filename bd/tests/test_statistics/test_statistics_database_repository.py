@@ -56,12 +56,12 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
         result = self.repository.get_database_statistics()
 
         # Assert
-        expected = Statistics(nombre_albums=2,
-                              nombre_pages=120,
-                              prix_total=30,
-                              nombre_editions_speciales=1,
-                              nombre_dedicaces=0,
-                              nombre_exlibris=0)
+        expected = Statistics(albums_count=2,
+                              pages_count=120,
+                              purchase_price_count=30,
+                              deluxe_edition_count=1,
+                              signed_copies_count=0,
+                              ex_libris_count=0)
         self.assertEqual(expected, result)
 
     def test_get_information_all_deluxe(self) -> None:
@@ -87,12 +87,12 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
         result = self.repository.get_database_statistics()
 
         # Assert
-        expected = Statistics(nombre_albums=2,
-                              nombre_pages=140,
-                              prix_total=40,
-                              nombre_editions_speciales=2,
-                              nombre_dedicaces=0,
-                              nombre_exlibris=0)
+        expected = Statistics(albums_count=2,
+                              pages_count=140,
+                              purchase_price_count=40,
+                              deluxe_edition_count=2,
+                              signed_copies_count=0,
+                              ex_libris_count=0)
         self.assertEqual(expected, result)
 
     def test_get_information_with_null_values(self) -> None:
@@ -108,12 +108,12 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
         result = self.repository.get_database_statistics()
 
         # Assert
-        expected = Statistics(nombre_albums=1,
-                              nombre_pages=0,
-                              prix_total=0,
-                              nombre_editions_speciales=0,
-                              nombre_dedicaces=0,
-                              nombre_exlibris=0)
+        expected = Statistics(albums_count=1,
+                              pages_count=0,
+                              purchase_price_count=0,
+                              deluxe_edition_count=0,
+                              signed_copies_count=0,
+                              ex_libris_count=0)
 
         self.assertEqual(expected, result)
 
@@ -132,7 +132,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
         result = self.repository.get_database_statistics()
 
         # Assert
-        self.assertEqual(15.0, result.prix_total)
+        self.assertEqual(15.0, result.purchase_price_count)
 
 
 if __name__ == '__main__':

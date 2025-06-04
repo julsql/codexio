@@ -14,7 +14,7 @@ class PageBdAttachmentsInMemory(PageBdAttachmentsRepository):
     def get_attachments(self, isbn) -> BdAttachment:
         self.last_isbn = isbn
         self.added_attachments.append(isbn)
-        return BdAttachment(dedicaces=[], ex_libris=[])
+        return BdAttachment(signed_copies=[], ex_libris=[])
 
 
 class PageBdDatabaseInMemory(PageBdDatabaseRepository):

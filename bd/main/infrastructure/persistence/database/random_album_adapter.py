@@ -20,15 +20,15 @@ class RandomAlbumAdapter(RandomAlbumRepository, ABC):
         if result:
             random_album = Album(
                 isbn=int(result['isbn']),
-                titre=result['album'],
-                numero=result['number'],
-                serie=result['series'],
-                image_url=result['image'],
-                scenariste=result['writer'],
-                dessinateur=result['illustrator'],
-                date_publication=result['publication_date'],
+                title=result['album'],
+                number=result['number'],
+                series=result['series'],
+                image=result['image'],
+                writer=result['writer'],
+                illustrator=result['illustrator'],
+                publication_date=result['publication_date'],
                 purchase_price=Decimal(str(result['purchase_price'])) if result['purchase_price'] is not None else None,
-                nombre_pages=result['number_of_pages'],
+                number_of_pages=result['number_of_pages'],
                 edition=result['edition'],
                 synopsis=result['synopsis'],
             )

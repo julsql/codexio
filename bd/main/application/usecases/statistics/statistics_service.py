@@ -14,10 +14,10 @@ class StatisticsService:
         attachment_stats = self._attachment_repository.get_attachment_statistics()
 
         return Statistics(
-            nombre_albums=db_stats.nombre_albums,
-            nombre_pages=db_stats.nombre_pages,
-            prix_total=db_stats.prix_total,
-            nombre_editions_speciales=db_stats.nombre_editions_speciales,
-            nombre_dedicaces=attachment_stats.nombre_dedicaces,
-            nombre_exlibris=attachment_stats.nombre_exlibris
+            albums_count=db_stats.albums_count,
+            pages_count=db_stats.pages_count,
+            purchase_price_count=db_stats.purchase_price_count,
+            deluxe_edition_count=db_stats.deluxe_edition_count,
+            signed_copies_count=attachment_stats.signed_copies_count,
+            ex_libris_count=attachment_stats.ex_libris_count
         )

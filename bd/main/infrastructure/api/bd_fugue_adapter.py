@@ -55,7 +55,7 @@ class BdFugueAdapter(BaseAlbumAdapter):
             if len(parts) == 2:
                 series = parts[0].strip()
                 titre = parts[1].strip()
-                album.serie = series
+                album.series = series
                 album.title = titre
             else:
                 # Si pas de "-", on considère que c'est le nom de l'album
@@ -73,13 +73,13 @@ class BdFugueAdapter(BaseAlbumAdapter):
             if label == "Auteur(s)":
                 self._handle_authors(value, album)
             elif label == "Format narratif" and value in ["Intégrale", "Histoires complètes"]:
-                album.numero = "1"
+                album.number = "1"
             elif label in self.header.keys():
                 self._handle_labels(label, value, album)
 
         # Remplir l'album avec la série si nécessaire
-        if album.title != "" and album.serie != "":
-            album.title = album.serie
+        if album.title != "" and album.series != "":
+            album.title = album.series
 
         # Extraction du prix
         self._extract_price(soup, album)
@@ -113,42 +113,42 @@ class BdFugueAdapter(BaseAlbumAdapter):
         """ Traiter les labels généraux """
         match fonction:
             case "Album":
-                if value not in album.titre:
-                    album.titre = album.titre + ("," if album.titre != "" else "") + value
+                if value not in album.title:
+                    album.title = album.title + ("," if album.title != "" else "") + value
             case "Numéro":
-                if value not in album.numero:
-                    album.numero = album.numero + ("," if album.numero != "" else "") + value
+                if value not in album.number:
+                    album.number = album.number + ("," if album.number != "" else "") + value
             case "Série":
-                if value not in album.serie:
-                    album.serie = album.serie + ("," if album.serie != "" else "") + value
+                if value not in album.series:
+                    album.series = album.series + ("," if album.series != "" else "") + value
             case "Scénario":
-                if value not in album.scenariste:
-                    album.scenariste = album.scenariste + ("," if album.scenariste != "" else "") + value
+                if value not in album.writer:
+                    album.writer = album.writer + ("," if album.writer != "" else "") + value
             case "Dessin":
-                if value not in album.dessinateur:
-                    album.dessinateur = album.dessinateur + ("," if album.dessinateur != "" else "") + value
+                if value not in album.illustrator:
+                    album.illustrator = album.illustrator + ("," if album.illustrator != "" else "") + value
             case "Couleurs":
-                if value not in album.coloriste:
-                    album.coloriste = album.coloriste + ("," if album.coloriste != "" else "") + value
+                if value not in album.colorist:
+                    album.colorist = album.colorist + ("," if album.colorist != "" else "") + value
             case "Éditeur":
-                if value not in album.editeur:
-                    album.editeur = album.editeur + ("," if album.editeur != "" else "") + value
+                if value not in album.publisher:
+                    album.publisher = album.publisher + ("," if album.publisher != "" else "") + value
             case "Date de publication":
-                if value not in album.date_publication:
-                    album.date_publication = self._parse_publication_date(value, self.isbn)
+                if value not in album.publication_date:
+                    album.publication_date = self._parse_publication_date(value, self.isbn)
             case "Édition":
                 if value not in album.edition:
                     album.edition = album.edition + ("," if album.edition != "" else "") + value
             case "Pages":
-                if value not in album.nombre_pages:
-                    album.nombre_pages = int(value)
+                if value not in album.number_of_pages:
+                    album.number_of_pages = int(value)
 
     def _extract_price(self, soup: BeautifulSoup, album: Album) -> None:
         """ Extraire le prix d'un album """
         price_meta = soup.find("meta", {"property": "product:price:amount"}) or soup.find("meta", {"itemprop": "price"})
         if price_meta:
             try:
-                album.prix = Decimal(price_meta.get("content"))
+                album.purchase_price = Decimal(price_meta.get("content"))
             except ValueError:
                 self.logging_repository.warning("Pas de prix correct trouvé", extra={"isbn": self.isbn})
         else:
@@ -159,7 +159,7 @@ class BdFugueAdapter(BaseAlbumAdapter):
         pattern = re.compile(r'https://www\.bdfugue\.com/media/catalog/product/cache/.*')
         image_element = soup.find('img', {'src': pattern})
         if image_element:
-            album.image_url = image_element.get('src')
+            album.image = image_element.get('src')
         else:
             self.logging_repository.warning("Pas d'image trouvée", extra={"isbn": self.isbn})
 

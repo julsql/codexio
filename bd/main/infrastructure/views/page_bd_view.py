@@ -22,7 +22,7 @@ class PageBdView:
             return render(request, 'page_bd/not_found.html', {"isbn": isbn})
         return render(request, 'page_bd/module.html', {
             'isbn': infos.album.isbn,
-            'album': infos.album.album,
+            'album': infos.album.title,
             'number': infos.album.number,
             'series': infos.album.series,
             'writer': infos.album.writer,
@@ -40,10 +40,10 @@ class PageBdView:
             'localisation': infos.album.localisation,
             'synopsis': infos.album.synopsis,
             'image': infos.album.image,
-            "dedicaces": infos.attachment.dedicaces,
-            "nb_dedicace": len(infos.attachment.dedicaces),
-            "ex_libris": infos.attachment.ex_libris,
-            "nb_exlibris": len(infos.attachment.ex_libris),
+            "dedicaces": infos.attachments.signed_copies,
+            "nb_dedicace": len(infos.attachments.signed_copies),
+            "ex_libris": infos.attachments.ex_libris,
+            "nb_exlibris": len(infos.attachments.ex_libris),
         })
 
 

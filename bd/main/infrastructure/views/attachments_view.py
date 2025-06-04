@@ -25,9 +25,9 @@ def attachment_view(request: HttpRequest, attachment_type: Literal["SIGNED_COPY"
 
     return render(request, 'attachments/module.html', {
         'attachments': [{'isbn': attachment.isbn,
-                         'album': attachment.titre,
-                         'number': attachment.numero,
-                         'series': attachment.serie,
+                         'album': attachment.title,
+                         'number': attachment.number,
+                         'series': attachment.series,
                          'range': attachment.range_attachment,
                          'attachments': attachment.total}
                         for attachment in attachments.attachments_list],

@@ -80,7 +80,7 @@ class TestAttachmentsConnexion(unittest.TestCase):
 
         self.assertEqual(1, len(attachments.attachments_list))
         self.assertEqual(2, attachments.sum)
-        self.assertEqual(Attachment(isbn=test_isbn, titre="", numero="", serie="", total=2),
+        self.assertEqual(Attachment(isbn=test_isbn, title="", number="", series="", total=2),
                          attachments.attachments_list[0])
 
     def test_get_attachments_with_files_and_bd_entry(self) -> None:
@@ -99,7 +99,7 @@ class TestAttachmentsConnexion(unittest.TestCase):
 
         self.assertEqual(1, len(attachments.attachments_list))
         self.assertEqual(3, attachments.sum)
-        self.assertEqual(Attachment(isbn=test_isbn, titre="Test Album", numero="1", serie="Test Series", total=3),
+        self.assertEqual(Attachment(isbn=test_isbn, title="Test Album", number="1", series="Test Series", total=3),
                          attachments.attachments_list[0])
 
     def test_get_attachments_multiple_albums(self) -> None:
@@ -118,7 +118,7 @@ class TestAttachmentsConnexion(unittest.TestCase):
         self.assertEqual(4, attachments.sum)
         for i, data in enumerate(test_data):
             self.assertEqual(
-                Attachment(isbn=data['isbn'], titre=data['album'], numero=data['number'], serie=data['series'],
+                Attachment(isbn=data['isbn'], title=data['album'], number=data['number'], series=data['series'],
                            total=2), next(
                     (item for item in attachments.attachments_list if item.isbn == data['isbn']), None))
 

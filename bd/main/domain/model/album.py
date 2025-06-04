@@ -7,78 +7,78 @@ from typing import Optional
 @dataclass
 class Album:
     isbn: int
-    titre: str = ""
-    numero: str = ""
-    serie: str = ""
-    scenariste: str = ""
-    dessinateur: str = ""
-    coloriste: str = ""
-    editeur: str = ""
-    date_publication: Optional[date] = None
+    title: str = ""
+    number: str = ""
+    series: str = ""
+    writer: str = ""
+    illustrator: str = ""
+    colorist: str = ""
+    publisher: str = ""
+    publication_date: Optional[date] = None
     edition: str = ""
-    nombre_pages: int = 0
-    prix: Optional[Decimal] = None
+    number_of_pages: int = 0
+    purchase_price: Optional[Decimal] = None
     synopsis: str = ""
-    image_url: str = ""
+    image: str = ""
 
     def is_complete(self) -> bool:
         return all([
-            self.titre != "",
-            self.numero != "",
-            self.serie != "",
-            self.scenariste != "",
-            self.dessinateur != "",
-            self.coloriste != "",
-            self.editeur != "",
-            self.date_publication is not None,
+            self.title != "",
+            self.number != "",
+            self.series != "",
+            self.writer != "",
+            self.illustrator != "",
+            self.colorist != "",
+            self.publisher != "",
+            self.publication_date is not None,
             self.edition != "",
-            self.nombre_pages > 0,
-            self.prix is not None,
+            self.number_of_pages > 0,
+            self.purchase_price is not None,
             self.synopsis != "",
-            self.image_url != ""
+            self.image != ""
         ])
 
     def is_empty(self) -> bool:
         return all([
-            self.titre == "",
-            self.numero == "",
-            self.serie == "",
-            self.scenariste == "",
-            self.dessinateur == "",
-            self.coloriste == "",
-            self.editeur == "",
-            self.date_publication is None,
+            self.title == "",
+            self.number == "",
+            self.series == "",
+            self.writer == "",
+            self.illustrator == "",
+            self.colorist == "",
+            self.publisher == "",
+            self.publication_date is None,
             self.edition == "",
-            self.nombre_pages == 0,
-            self.prix is None,
+            self.number_of_pages == 0,
+            self.purchase_price is None,
             self.synopsis == "",
-            self.image_url == ""
+            self.image == ""
         ])
 
     def copy(self):
         return Album(
             isbn=self.isbn,
-            titre=self.titre,
-            numero=self.numero,
-            serie=self.serie,
-            scenariste=self.scenariste,
-            dessinateur=self.dessinateur,
-            coloriste=self.coloriste,
-            editeur=self.editeur,
-            date_publication=self.date_publication,
+            title=self.title,
+            number=self.number,
+            series=self.series,
+            writer=self.writer,
+            illustrator=self.illustrator,
+            colorist=self.colorist,
+            publisher=self.publisher,
+            publication_date=self.publication_date,
             edition=self.edition,
-            nombre_pages=self.nombre_pages,
-            prix=self.prix,
+            number_of_pages=self.number_of_pages,
+            purchase_price=self.purchase_price,
             synopsis=self.synopsis,
-            image_url=self.image_url,
+            image=self.image,
         )
 
     def contains(self, key):
         return key in self.__dict__
 
     def __str__(self) -> str:
-        return f"Album(isbn={self.isbn}, titre={self.titre}, numero={self.numero}, serie={self.serie}, " \
-               f"scenariste={self.scenariste}, dessinateur={self.dessinateur}, coloriste={self.coloriste}, " \
-               f"editeur={self.editeur}, date_publication={self.date_publication}, edition={self.edition}, " \
-               f"nombre_pages={self.nombre_pages}, prix={self.prix}, synopsis={self.synopsis}, " \
-               f"image_url={self.image_url})"
+        return f"Album(isbn={self.isbn}, title={self.title}, number={self.number}, series={self.series}, " \
+               f"writer={self.writer}, illustrator={self.illustrator}, colorist={self.colorist}, " \
+               f"publisher={self.publisher}, publication_date={self.publication_date}, edition={self.edition}, " \
+               f"number_of_pages={self.number_of_pages}, purchase_price={self.purchase_price}, synopsis={self.synopsis}, " \
+               f"image={self.image})"

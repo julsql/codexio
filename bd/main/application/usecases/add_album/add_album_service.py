@@ -53,20 +53,20 @@ class AddAlbumService:
         """Convertit un objet Album en liste de valeurs pour le stockage"""
         mapping = {
             "ISBN": album.isbn,  # Garder comme int
-            "Album": album.titre,
-            "Numéro": album.numero,
-            "Série": album.serie,
-            "Scénario": album.scenariste,
-            "Dessin": album.dessinateur,
-            "Couleurs": album.coloriste,
-            "Éditeur": album.editeur,
-            "Date de publication": format_date(album.date_publication, format="d MMM y",
-                                               locale="fr_FR") if album.date_publication else "",
+            "Album": album.title,
+            "Numéro": album.number,
+            "Série": album.series,
+            "Scénario": album.writer,
+            "Dessin": album.illustrator,
+            "Couleurs": album.colorist,
+            "Éditeur": album.publisher,
+            "Date de publication": format_date(album.publication_date, format="d MMM y",
+                                               locale="fr_FR") if album.publication_date else "",
             "Édition": album.edition,
-            "Pages": album.nombre_pages if album.nombre_pages else "",
-            "Prix": float(album.prix) if album.prix else "",
+            "Pages": album.number_of_pages if album.number_of_pages else "",
+            "Prix": float(album.purchase_price) if album.purchase_price else "",
             "Synopsis": album.synopsis,
-            "Image": album.image_url
+            "Image": album.image
         }
 
         titles = ["ISBN", "Album", "Numéro", "Série", "Scénario", "Dessin", "Couleurs",

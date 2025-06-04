@@ -64,14 +64,14 @@ class BdGestAdapter(BaseAlbumAdapter):
 
             # Découpe aux positions trouvées
             tome = match.group(1)
-            serie = full_title[:match.start()].strip()
+            series = full_title[:match.start()].strip()
             titre = full_title[match.end():].strip()
             if tome:
-                album.numero = tome
-            if serie:
-                album.serie = serie
+                album.number = tome
+            if series:
+                album.series = series
             if album:
-                album.titre = titre
+                album.title = titre
         else:
             self.logging_repository.warning("Impossible d'extraire le titre", extra={"isbn": self.isbn})
         return None
@@ -91,7 +91,7 @@ class BdGestAdapter(BaseAlbumAdapter):
         if not editor_tag:
             self.logging_repository.warning("Éditeur non trouvé", extra={"isbn": self.isbn})
             return
-        album.editeur = editor_tag.get_text()
+        album.publisher = editor_tag.get_text()
 
         auteur_tag = album_tag.find("div", class_="liste-auteurs")
         if not editor_tag:
@@ -111,11 +111,11 @@ class BdGestAdapter(BaseAlbumAdapter):
             categories = metier.text.strip("()")
             match categories:
                 case "Scénario":
-                    album.scenariste = album.scenariste + ("," if album.scenariste != "" else "") + nom
+                    album.writer = album.writer + ("," if album.writer != "" else "") + nom
                 case "Dessin":
-                    album.dessinateur = album.dessinateur + ("," if album.dessinateur != "" else "") + nom
+                    album.illustrator = album.illustrator + ("," if album.illustrator != "" else "") + nom
                 case "Couleurs":
-                    album.coloriste = album.coloriste + ("," if album.coloriste != "" else "") + nom
+                    album.colorist = album.colorist + ("," if album.colorist != "" else "") + nom
 
     def _extract_additional_info(self, soup: BeautifulSoup, album: Album) -> None:
         """ Extraire les informations supplémentaires """
@@ -138,13 +138,13 @@ class BdGestAdapter(BaseAlbumAdapter):
             jour = "01"  # On met par défaut le premier jour du mois
 
         date = f"{annee}-{mois_fr}-{jour}"
-        album.date_publication = self._parse_publication_date(date, self.isbn)
+        album.publication_date = self._parse_publication_date(date, self.isbn)
 
         page = info_tag.find('span', {"itemprop": "numberOfPages"})
         if page:
             page_tag = page.get_text()
             try:
-                album.nombre_pages = int(page_tag)
+                album.number_of_pages = int(page_tag)
             except ValueError:
                 self.logging_repository.warning(f"{page_tag} est un nombre de planches incorrect",
                                                 extra={"isbn": self.isbn})
@@ -169,7 +169,7 @@ class BdGestAdapter(BaseAlbumAdapter):
             if response.status_code == 200:
                 result = response.json()
                 if 'price' in result:
-                    album.prix = Decimal(result['price'])
+                    album.purchase_price = Decimal(result['price'])
         else:
             self.logging_repository.warning("Impossible d'extraire le prix", extra={"isbn": self.isbn})
         return None
@@ -184,7 +184,7 @@ class BdGestAdapter(BaseAlbumAdapter):
         if not a_tag:
             self.logging_repository.warning("Image non trouvée", extra={"isbn": self.isbn})
             return
-        album.image_url = a_tag.get('href')
+        album.image = a_tag.get('href')
 
     def _extract_synopsis(self, soup: BeautifulSoup, album: Album) -> None:
         """ Extraire le synopsis """

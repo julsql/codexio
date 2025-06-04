@@ -46,11 +46,11 @@ class BdPhileAdapter(BaseAlbumAdapter):
         if not album_tag:
             self.logging_repository.warning("Informations sur le titre non trouvées", extra={"isbn": self.isbn})
             return
-        serie_tag = album_tag.find("h1").find("a")
-        if not serie_tag:
+        series_tag = album_tag.find("h1").find("a")
+        if not series_tag:
             self.logging_repository.warning("Informations sur la série non trouvées", extra={"isbn": self.isbn})
-        serie = serie_tag.get_text()
-        album.serie = serie
+        series = series_tag.get_text()
+        album.series = series
 
         title_tag = album_tag.find("h2")
         if not title_tag:
@@ -61,15 +61,15 @@ class BdPhileAdapter(BaseAlbumAdapter):
         if match:
             numero = match.group(1)
             titre = title[match.end():].strip()
-            album.numero = numero
-            album.titre = titre
+            album.number = numero
+            album.title = titre
         else:
             # Pas de numéro de tome trouvé
             self.logging_repository.debug(
                 f"Pas de numéro de tome trouvé dans le titre: '{title}'",
                 extra={"isbn": self.isbn}
             )
-            album.titre = title.strip()
+            album.title = title.strip()
         return None
 
     def _extract_additional_info(self, soup: BeautifulSoup, album: Album) -> None:
@@ -87,15 +87,15 @@ class BdPhileAdapter(BaseAlbumAdapter):
                 dd_text = " ".join(tag.stripped_strings)
                 match current_key:
                     case "Scénario":
-                        album.scenariste = album.scenariste + ("," if album.scenariste != "" else "") + dd_text
+                        album.writer = album.writer + ("," if album.writer != "" else "") + dd_text
                     case "Dessin":
-                        album.dessinateur = album.dessinateur + ("," if album.dessinateur != "" else "") + dd_text
+                        album.illustrator = album.illustrator + ("," if album.illustrator != "" else "") + dd_text
                     case "Couleurs":
-                        album.coloriste = album.coloriste + ("," if album.coloriste != "" else "") + dd_text
+                        album.colorist = album.colorist + ("," if album.colorist != "" else "") + dd_text
                     case "Éditeur":
-                        album.editeur = album.editeur + ("," if album.editeur != "" else "") + dd_text
+                        album.publisher = album.publisher + ("," if album.publisher != "" else "") + dd_text
                     case "Date de publication":
-                        album.date_publication = self._parse_publication_date(dd_text, self.isbn)
+                        album.publication_date = self._parse_publication_date(dd_text, self.isbn)
                     case "Édition":
                         if dd_text not in album.edition:
                             album.edition = album.edition + ("," if album.edition != "" else "") + dd_text
@@ -115,14 +115,14 @@ class BdPhileAdapter(BaseAlbumAdapter):
     def _extract_pages(self, value: str, album: Album) -> None:
         """ Extraire le nombre de planches """
         try:
-            album.nombre_pages = int(value.replace("pages", "").strip())
+            album.number_of_pages = int(value.replace("pages", "").strip())
         except ValueError:
             self.logging_repository.warning(f"{value} est un nombre de planches incorrect", extra={"isbn": self.isbn})
 
     def _extract_price(self, value: str, album: Album) -> None:
         """ Extraire le prix """
         try:
-            album.prix = Decimal(value.replace("€", "").strip())
+            album.purchase_price = Decimal(value.replace("€", "").strip())
         except ValueError:
             self.logging_repository.warning(f"{value} est un prix incorrect", extra={"isbn": self.isbn})
 
@@ -132,7 +132,7 @@ class BdPhileAdapter(BaseAlbumAdapter):
         if not meta_tag:
             self.logging_repository.warning("Image non trouvée", extra={"isbn": self.isbn})
             return
-        album.image_url = meta_tag['content']
+        album.image = meta_tag['content']
 
     def _extract_synopsis(self, soup: BeautifulSoup, album: Album) -> None:
         """ Extraire le synopsis """
