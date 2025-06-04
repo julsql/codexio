@@ -60,7 +60,7 @@ class TestPageBdAttachmentsConnexion(unittest.TestCase):
         self.assertEqual([], result.signed_copies)
         self.assertEqual([], result.ex_libris)
 
-    def test_add_attachments_with_dedicaces_only(self) -> None:
+    def test_add_attachments_with_signed_copy_only(self) -> None:
         test_isbn = 1234
         test_files = ["1.jpeg", "2.jpeg", "3.jpeg"]
 
@@ -83,15 +83,15 @@ class TestPageBdAttachmentsConnexion(unittest.TestCase):
 
     def test_add_attachments_with_both_types(self) -> None:
         test_isbn = 1234
-        dedicace_files = ["1.jpeg", "2.jpeg"]
+        signed_copy_files = ["1.jpeg", "2.jpeg"]
         exlibris_files = ["1.jpeg", "2.jpeg", "3.jpeg"]
 
-        self.create_test_files(self.SIGNED_COPY_FOLDER, test_isbn, dedicace_files)
+        self.create_test_files(self.SIGNED_COPY_FOLDER, test_isbn, signed_copy_files)
         self.create_test_files(self.EXLIBRIS_FOLDER, test_isbn, exlibris_files)
 
         result = self.repository.get_attachments(test_isbn)
 
-        self.assertEqual(sorted(dedicace_files), result.signed_copies)
+        self.assertEqual(sorted(signed_copy_files), result.signed_copies)
         self.assertEqual(sorted(exlibris_files), result.ex_libris)
 
     def test_add_attachments_ignore_non_jpeg(self) -> None:

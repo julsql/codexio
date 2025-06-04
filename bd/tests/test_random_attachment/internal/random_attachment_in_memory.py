@@ -19,5 +19,5 @@ class RandomAttachmentInMemory(RandomAttachmentRepository):
     def get_random_attachment(self, images_files: list[str]) -> RandomAttachment:
         self.get_random_attachment_called = True
         self.last_images_param = images_files
-        return self.return_random_attachment if self.return_random_attachment else RandomAttachment(path="", isbn=0,
-                                                                                                    type="")
+        return self.return_random_attachment if self.return_random_attachment else (
+            RandomAttachment(path="", isbn=0,type=None))

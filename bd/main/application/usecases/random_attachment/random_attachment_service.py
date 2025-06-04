@@ -14,7 +14,7 @@ class RandomAttachmentService:
     def main(self) -> RandomAttachment:
         image_files = self.repository.get_all_images_path([SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER])
         default_image_path = os.path.join(STATIC_URL, "main/images/random_attachment.jpg")
-        banner = RandomAttachment(isbn=0, type="", path=default_image_path)
+        banner = RandomAttachment(isbn=0, type=None, path=default_image_path)
         if image_files and len(image_files) > 0:
             banner = self.repository.get_random_attachment(image_files)
         return banner

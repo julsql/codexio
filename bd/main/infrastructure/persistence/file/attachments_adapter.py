@@ -9,9 +9,9 @@ from main.infrastructure.persistence.file.paths import SIGNED_COPY_FOLDER, EXLIB
 
 
 class AttachmentsAdapter(AttachmentsRepository):
-    def __init__(self, dedicaces_path: str = SIGNED_COPY_FOLDER,
+    def __init__(self, signed_copy_path: str = SIGNED_COPY_FOLDER,
                  exlibris_path: str = EXLIBRIS_FOLDER):
-        self.dedicaces_path = dedicaces_path
+        self.signed_copy_path = signed_copy_path
         self.exlibris_path = exlibris_path
 
     def get_attachments(self, path: str) -> Attachments:
