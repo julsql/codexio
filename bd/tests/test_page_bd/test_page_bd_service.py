@@ -1,6 +1,10 @@
 import unittest
 
-from main.core.page_bd.page_bd_service import PageBdService
+from common.internal.logger_in_memory import LoggerInMemory
+from main.application.usecases.page_bd.page_bd_service import PageBdService
+from main.domain.model.bd import BD
+from main.domain.model.bd_attachment import BdAttachment
+from main.domain.model.bd_with_attachment import BdWithAttachment
 from tests.test_page_bd.internal.page_bd_in_memory import PageBdAttachmentsInMemory, PageBdDatabaseInMemory
 
 
@@ -9,17 +13,17 @@ class TestPageBdService(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.TEST_ISBN = 1234
-        cls.TEST_BD_INFO = {
-            "isbn": str(cls.TEST_ISBN),
-            "title": "Test Album",
-            "series": "Test Series",
-            "number": "1"
-        }
+        cls.TEST_BD_INFO = BD(
+            isbn=cls.TEST_ISBN,
+            album="Test Album",
+            series="Test Series",
+            number="1")
 
     def setUp(self) -> None:
         self.attachments_repository = PageBdAttachmentsInMemory()
         self.database_repository = PageBdDatabaseInMemory()
-        self.service = PageBdService(self.attachments_repository, self.database_repository)
+        self.logging_repository = LoggerInMemory()
+        self.service = PageBdService(self.attachments_repository, self.database_repository, self.logging_repository)
 
     def test_main_with_existing_bd(self) -> None:
         # Arrange
@@ -29,9 +33,8 @@ class TestPageBdService(unittest.TestCase):
         result = self.service.main(self.TEST_ISBN)
 
         # Assert
-        self.assertEqual(self.TEST_BD_INFO, result)
+        self.assertEqual(BdWithAttachment(album=self.TEST_BD_INFO, attachment=BdAttachment()), result)
         self.assertEqual(self.TEST_ISBN, self.attachments_repository.last_isbn)
-        self.assertEqual(self.TEST_BD_INFO, self.attachments_repository.last_infos)
         self.assertEqual(1, len(self.attachments_repository.added_attachments))
 
     def test_main_with_non_existing_bd(self) -> None:
@@ -42,9 +45,8 @@ class TestPageBdService(unittest.TestCase):
         result = self.service.main(non_existing_isbn)
 
         # Assert
-        self.assertEqual({"isbn": str(non_existing_isbn)}, result)
+        self.assertIsNone(result)
         self.assertIsNone(self.attachments_repository.last_isbn)
-        self.assertIsNone(self.attachments_repository.last_infos)
         self.assertEqual(0, len(self.attachments_repository.added_attachments))
 
     def test_main_with_database_error(self) -> None:
@@ -55,17 +57,16 @@ class TestPageBdService(unittest.TestCase):
         result = self.service.main(self.TEST_ISBN)
 
         # Assert
-        self.assertEqual({"isbn": str(self.TEST_ISBN)}, result)
+        self.assertIsNone(result)
         self.assertIsNone(self.attachments_repository.last_isbn)
-        self.assertIsNone(self.attachments_repository.last_infos)
         self.assertEqual(0, len(self.attachments_repository.added_attachments))
 
     def test_main_with_multiple_calls(self) -> None:
         # Arrange
         test_data = [
-            (1111, {"isbn": "1111", "title": "Album 1"}),
-            (2222, {"isbn": "2222", "title": "Album 2"}),
-            (3333, {"isbn": "3333", "title": "Album 3"})
+            (1111, BD(isbn=1111, album="Album 1")),
+            (2222, BD(isbn=2222, album="Album 2")),
+            (3333, BD(isbn=3333, album="Album 3"))
         ]
         for isbn, info in test_data:
             self.database_repository.add_bd(isbn, info)
@@ -73,9 +74,8 @@ class TestPageBdService(unittest.TestCase):
         # Act & Assert
         for isbn, expected_info in test_data:
             result = self.service.main(isbn)
-            self.assertEqual(expected_info, result)
+            self.assertEqual(BdWithAttachment(album=expected_info, attachment=BdAttachment()), result)
             self.assertEqual(isbn, self.attachments_repository.last_isbn)
-            self.assertEqual(expected_info, self.attachments_repository.last_infos)
 
         self.assertEqual(len(test_data), len(self.attachments_repository.added_attachments))
 
