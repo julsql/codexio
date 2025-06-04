@@ -19,7 +19,6 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from main.core.delete_photo.internal.delete_photo_view import delete_dedicace, delete_exlibris
-from main.core.page_bd.internal.page_bd_view import page_bd
 from main.core.upload_photo.internal.upload_photo_view import upload_dedicace, upload_exlibris
 from main.infrastructure.views.add_album_view import add_album
 from main.infrastructure.views.attachments_view import exlibris_view, signed_copies_view
@@ -27,6 +26,7 @@ from main.infrastructure.views.bd_search_view import bd_search_view
 from main.infrastructure.views.errors_view import error_500_view, error_404_view
 from main.infrastructure.views.existing_album_view import existing_album
 from main.infrastructure.views.home_view import home_view
+from main.infrastructure.views.page_bd_view import page_bd_view
 from main.infrastructure.views.statistics_view import statistics_view
 from main.infrastructure.views.update_database_view import update_database
 
@@ -38,7 +38,7 @@ urlpatterns = [
     path('bdrecherche/', bd_search_view, name='bdrecherche'),
     path('dedicaces/', signed_copies_view, name='dedicaces'),
     path('exlibris/', exlibris_view, name='exlibris'),
-    path('pagebd/<int:isbn>/', page_bd, name='pagebd'),
+    path('pagebd/<int:isbn>/', page_bd_view, name='pagebd'),
     path('statistiques/', statistics_view, name='statistiques'),
 
     path('update/', update_database, name='update'),

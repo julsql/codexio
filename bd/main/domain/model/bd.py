@@ -47,6 +47,9 @@ class BD:
         bd.image = album.image_url
         return bd
 
+    def contains(self, key):
+        return key in self.__dict__
+
     def copy(self):
         return BD(
             isbn=self.isbn,
