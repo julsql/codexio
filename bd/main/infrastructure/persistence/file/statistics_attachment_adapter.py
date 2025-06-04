@@ -5,20 +5,20 @@ from main.infrastructure.persistence.file.paths import SIGNED_COPY_FOLDER, EXLIB
 
 
 class StatisticsAttachmentAdapter(StatisticsAttachmentRepository):
-    def __init__(self, dedicaces_path: str = SIGNED_COPY_FOLDER,
+    def __init__(self, signed_copy_path: str = SIGNED_COPY_FOLDER,
                  exlibris_path: str = EXLIBRIS_FOLDER):
-        self.dedicaces_path = dedicaces_path
+        self.signed_copy_path = signed_copy_path
         self.exlibris_path = exlibris_path
 
     def get_attachment_statistics(self) -> Statistics:
-        nombre_dedicaces = count_images_in_directory(self.dedicaces_path)
-        nombre_exlibris = count_images_in_directory(self.exlibris_path)
+        signed_copy_count = count_images_in_directory(self.signed_copy_path)
+        ex_libris_count = count_images_in_directory(self.exlibris_path)
 
         return Statistics(
             albums_count=0,
             pages_count=0,
             purchase_price_count=0,
             deluxe_edition_count=0,
-            signed_copies_count=nombre_dedicaces,
-            ex_libris_count=nombre_exlibris
+            signed_copies_count=signed_copy_count,
+            ex_libris_count=ex_libris_count
         )

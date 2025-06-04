@@ -5,6 +5,7 @@ import unittest
 
 import django
 
+from main.domain.model.attachment_type import AttachmentType
 from main.infrastructure.persistence.file.random_attachment_adapter import RandomAttachmentAdapter
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -103,7 +104,7 @@ class TestRandomAttachmentRepository(unittest.TestCase):
 
     def test_get_random_attachment_single_image(self):
         # Arrange
-        image_path = "signed_copy/12345/test.jpg"
+        image_path = "dedicaces/12345/test.jpg"
 
         # Act
         banner = self.repository.get_random_attachment([image_path])
@@ -111,12 +112,12 @@ class TestRandomAttachmentRepository(unittest.TestCase):
         # Assert
         self.assertTrue(banner.path.endswith(image_path))
         self.assertEqual(12345, banner.isbn)
-        self.assertEqual("signed_copy", banner.type)
+        self.assertEqual(AttachmentType.SIGNED_COPY, banner.type)
 
     def test_get_random_attachment_maintains_structure(self):
         # Arrange
         test_images = [
-            "signed_copy/12345/test1.jpg",
+            "dedicaces/12345/test1.jpg",
             "exlibris/67890/test2.jpg"
         ]
 
@@ -131,7 +132,7 @@ class TestRandomAttachmentRepository(unittest.TestCase):
         for banner in results:
             self.assertTrue(any(banner.path.endswith(img) for img in test_images))
             self.assertIn(banner.isbn, [12345, 67890])
-            self.assertIn(banner.type, ["signed_copy", "exlibris"])
+            self.assertIn(banner.type, [AttachmentType.SIGNED_COPY, AttachmentType.EXLIBRIS])
 
     def test_list_files_in_subdirectories_valid_extensions(self):
         # Arrange

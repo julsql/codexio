@@ -1,24 +1,23 @@
-from typing import Literal
-
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
 from main.application.usecases.attachments.attachments_service import AttachmentsService
+from main.domain.model.attachment_type import AttachmentType
 from main.infrastructure.persistence.file.attachments_adapter import AttachmentsAdapter
 
 
 def signed_copies_view(request: HttpRequest) -> HttpResponse:
-    return attachment_view(request, "SIGNED_COPY")
+    return attachment_view(request, AttachmentType.SIGNED_COPY)
 
 
 def exlibris_view(request: HttpRequest) -> HttpResponse:
-    return attachment_view(request, "EXLIBRIS")
+    return attachment_view(request, AttachmentType.EXLIBRIS)
 
 
-def attachment_view(request: HttpRequest, attachment_type: Literal["SIGNED_COPY", "EXLIBRIS"]) -> HttpResponse:
+def attachment_view(request: HttpRequest, attachment_type: AttachmentType) -> HttpResponse:
     repository = AttachmentsAdapter()
     service = AttachmentsService(repository)
-    if attachment_type == "SIGNED_COPY":
+    if attachment_type == AttachmentType.SIGNED_COPY:
         attachments = service.main_signed_copies()
     else:
         attachments = service.main_ex_libris()

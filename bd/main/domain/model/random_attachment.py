@@ -1,11 +1,14 @@
 from dataclasses import dataclass
+from typing import Optional
+
+from main.domain.model.attachment_type import AttachmentType
 
 
 @dataclass
 class RandomAttachment:
     isbn: int
     path: str
-    type: str
+    type: Optional[AttachmentType]
 
     def __hash__(self):
         return hash((self.isbn, self.path, self.type))
