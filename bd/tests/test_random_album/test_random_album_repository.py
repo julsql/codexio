@@ -5,26 +5,28 @@ from datetime import date
 
 import django
 
+from main.domain.model.album import Album
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from main.core.common.database.internal.bd_model import BD
-from main.core.random_album.internal.random_album_connexion import RandomAlbumConnexion
+from main.infrastructure.persistence.database.models import BD
+from main.infrastructure.persistence.database.random_album_adapter import RandomAlbumAdapter
 
 
 class TestRandomAlbumConnexion(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.repository = RandomAlbumConnexion()
+        cls.repository = RandomAlbumAdapter()
 
     def setUp(self):
         # Nettoyage de la base avant chaque test
         BD.objects.all().delete()
 
         self.bd1 = {
-            'isbn': "123456789",
+            'isbn': 123456789,
             'album': "Astérix le Gaulois",
             'number': "1",
             'series': "Astérix",
@@ -39,7 +41,7 @@ class TestRandomAlbumConnexion(unittest.TestCase):
             'deluxe_edition': False
         }
         self.bd2 = {
-            'isbn': "987654321",
+            'isbn': 987654321,
             'album': "Tintin au Tibet",
             'number': "20",
             'series': "Les aventures de Tintin",
@@ -74,20 +76,14 @@ class TestRandomAlbumConnexion(unittest.TestCase):
         result = self.repository.get_random_album()
 
         # Assert
-        self.assertIsNone(result)
+        self.assertTrue(result.is_empty())
 
     def test_get_random_album_returns_dict_with_correct_fields(self):
         # Act
         result = self.repository.get_random_album()
 
         # Assert
-        self.assertIsInstance(result, dict)
-        expected_fields = {
-            'isbn', 'album', 'number', 'series', 'image', 'writer',
-            'illustrator', 'publication_date', 'purchase_price',
-            'number_of_pages', 'edition', 'synopsis'
-        }
-        self.assertEqual(expected_fields, set(result.keys()))
+        self.assertIsInstance(result, Album)
 
     def test_get_random_album_integer_price(self):
         # Arrange
@@ -103,7 +99,7 @@ class TestRandomAlbumConnexion(unittest.TestCase):
         result = self.repository.get_random_album()
 
         # Assert
-        self.assertEqual(25, result['purchase_price'])
+        self.assertEqual(25, result.purchase_price)
 
     def test_get_random_album_float_price(self):
         # Arrange
@@ -119,30 +115,30 @@ class TestRandomAlbumConnexion(unittest.TestCase):
         result = self.repository.get_random_album()
 
         # Assert
-        self.assertEqual(25.99, result['purchase_price'])
+        self.assertEqual(25.99, float(result.purchase_price))
 
     def test_get_random_album_returns_valid_data(self):
         # Act
         result = self.repository.get_random_album()
 
         # Assert
-        self.assertIn(str(result['isbn']), ["123456789", "987654321"])
-        if str(result['isbn']) == self.bd1['isbn']:
+        self.assertIn(result.isbn, [123456789, 987654321])
+        if result.isbn == self.bd1['isbn']:
             bd = self.bd1
         else:
             bd = self.bd2
 
-        self.assertEqual(bd['album'], result['album'])
-        self.assertEqual(bd['number'], result['number'])
-        self.assertEqual(bd['series'], result['series'])
-        self.assertEqual(bd['writer'], result['writer'])
-        self.assertEqual(bd['illustrator'], result['illustrator'])
-        self.assertEqual(bd['image'], result['image'])
-        self.assertEqual(bd['publication_date'], result['publication_date'])
-        self.assertEqual(bd['purchase_price'], result['purchase_price'])
-        self.assertEqual(bd['number_of_pages'], result['number_of_pages'])
-        self.assertEqual(bd['edition'], result['edition'])
-        self.assertEqual(bd['synopsis'], result['synopsis'])
+        self.assertEqual(bd['album'], result.title)
+        self.assertEqual(bd['number'], result.number)
+        self.assertEqual(bd['series'], result.series)
+        self.assertEqual(bd['writer'], result.writer)
+        self.assertEqual(bd['illustrator'], result.illustrator)
+        self.assertEqual(bd['image'], result.image)
+        self.assertEqual(bd['publication_date'], result.publication_date)
+        self.assertEqual(bd['purchase_price'], float(result.purchase_price))
+        self.assertEqual(bd['number_of_pages'], result.number_of_pages)
+        self.assertEqual(bd['edition'], result.edition)
+        self.assertEqual(bd['synopsis'], result.synopsis)
 
 
 if __name__ == '__main__':

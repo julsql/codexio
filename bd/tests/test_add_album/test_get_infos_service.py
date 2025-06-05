@@ -1,112 +1,107 @@
 import unittest
 
-from main.core.add_album.add_album_error import AddAlbumError
-from main.core.add_album.get_infos_service import GetInfosService
-from tests.album_data_set import ASTERIX, ASTERIX_ISBN
+from common.internal.logger_in_memory import LoggerInMemory
+from main.application.usecases.add_album.get_infos_service import GetInfosService
+from main.domain.exceptions.album_exceptions import AlbumNotFoundException
+from main.domain.model.album import Album
+from test_add_album.album_large_data_set import ASTERIX_ISBN
+from tests.album_data_set import ASTERIX
 from tests.test_add_album.internal.bd_in_memory import BdInMemory
 from tests.test_add_album.internal.bd_in_memory_error import BdInMemoryError
 
 
 class TestGetInfosService(unittest.TestCase):
     def setUp(self):
+        self.logging_repository = LoggerInMemory()
         # Repository avec informations complètes
         self.complete_repo = BdInMemory("complete", ASTERIX)
 
         partial_asterix1 = ASTERIX.copy()
-        partial_asterix1["Couleurs"] = ""
-        partial_asterix1["Édition"] = ""
-        partial_asterix1["Date de publication"] = ""
-        partial_asterix1["Synopsis"] = ""
+        partial_asterix1.colorist = ""
+        partial_asterix1.edition = ""
+        partial_asterix1.publication_date = ""
+        partial_asterix1.synopsis = ""
 
         # Repository avec informations partielles
         self.partial_repo_1 = BdInMemory("partial1", partial_asterix1)
 
         partial_asterix2 = ASTERIX.copy()
-        partial_asterix2["Album"] = ""
-        partial_asterix2["Série"] = ""
-        partial_asterix2["Numéro"] = ""
-        partial_asterix2["Scénario"] = ""
+        partial_asterix2.title = ""
+        partial_asterix2.series = ""
+        partial_asterix2.number = ""
+        partial_asterix2.writer = ""
 
         # Repository avec autres informations partielles
         self.partial_repo_2 = BdInMemory("partial2", partial_asterix2)
 
         # Repository qui lève une exception
-        self.empty_repo = BdInMemory("error", {})
+        self.empty_repo = BdInMemory("error", Album(isbn=0))
         self.error_repo = BdInMemoryError("error")
-
-    def test_get_correct_info_successfully(self) -> None:
-        self.service = GetInfosService([])
-        self.service.isbn = 0
-        info = self.service.corriger_info({})
-        self.assertEqual({
-            'Album': '', 'Couleurs': '', 'Date de publication': '',
-            'Dessin': '', 'Édition': '', 'ISBN': '', 'Image': '',
-            'Numéro': '', 'Pages': '', 'Prix': '', 'Scénario': '',
-            'Synopsis': '', 'Série': '', 'Éditeur': ''},
-            info)
 
     def test_complete_repository(self):
         """Test avec un repository contenant toutes les informations"""
-        service = GetInfosService([self.complete_repo])
+        service = GetInfosService([self.complete_repo], self.logging_repository)
         result = service.main(ASTERIX_ISBN)
 
         self.assertIsNotNone(result)
-        self.assertTrue(service.is_complete(result))
-        self.assertEqual(result["Album"], ASTERIX["Album"])
+        self.assertTrue(result.is_complete())
+        self.assertEqual(result.title, ASTERIX.title)
 
     def test_complementary_repositories(self):
         """Test avec deux repositories qui se complètent"""
-        service = GetInfosService([self.partial_repo_1, self.partial_repo_2])
+        service = GetInfosService([self.partial_repo_1, self.partial_repo_2], self.logging_repository)
         result = service.main(ASTERIX_ISBN)
 
         self.assertIsNotNone(result)
-        self.assertTrue(service.is_complete(result))
-        self.assertEqual(result["Album"], ASTERIX["Album"])
-        self.assertEqual(result["Couleurs"], ASTERIX["Couleurs"])
-        self.assertEqual(result["Synopsis"], ASTERIX["Synopsis"])
+        self.assertTrue(result.is_complete())
+        self.assertEqual(result.title, ASTERIX.title)
+        self.assertEqual(result.colorist, ASTERIX.colorist)
+        self.assertEqual(result.synopsis, ASTERIX.synopsis)
 
     def test_incomplete_repositories(self):
         """Test avec des repositories qui ne peuvent pas compléter toutes les informations"""
-        service = GetInfosService([self.partial_repo_1])
+        service = GetInfosService([self.partial_repo_1], self.logging_repository)
         result = service.main(ASTERIX_ISBN)
 
         self.assertIsNotNone(result)
-        self.assertFalse(service.is_complete(result))
-        self.assertEqual(result["Synopsis"], "")
+        self.assertFalse(result.is_complete())
+        self.assertEqual(result.synopsis, "")
 
     def test_incomplete_repositories_on_error(self):
         """Test avec des repositories qui ne peuvent pas compléter toutes les informations dont un en erreur"""
-        service = GetInfosService([self.partial_repo_1, self.error_repo])
+        service = GetInfosService([self.partial_repo_1, self.error_repo], self.logging_repository)
         result = service.main(ASTERIX_ISBN)
 
         self.assertIsNotNone(result)
-        self.assertFalse(service.is_complete(result))
-        self.assertEqual(result["Synopsis"], "")
+        self.assertFalse(result.is_complete())
+        self.assertEqual(result.synopsis, "")
 
     def test_error_handling(self):
         """Test de la gestion des erreurs"""
-        service = GetInfosService([self.empty_repo, self.complete_repo])
+        service = GetInfosService([self.empty_repo, self.complete_repo], self.logging_repository)
         result = service.main(ASTERIX_ISBN)
 
         self.assertIsNotNone(result)
-        self.assertTrue(service.is_complete(result))
-        self.assertEqual(result["Album"], ASTERIX["Album"])
+        self.assertTrue(result.is_complete())
+        self.assertEqual(result.title, ASTERIX.title)
 
     def test_empty_repositories_list(self):
         """Test avec une liste vide de repositories"""
-        service = GetInfosService([])
-        with self.assertRaises(AddAlbumError):
+        service = GetInfosService([], self.logging_repository)
+        with self.assertRaises(AlbumNotFoundException):
             service.main(ASTERIX_ISBN)
 
     def test_preserve_first_valid_value(self):
         """Test que les valeurs non vides ne sont pas écrasées"""
-        repo1 = BdInMemory("repo1", {"Album": "Premier titre", 'ISBN': 1})
-        repo2 = BdInMemory("repo2", {"Album": "Second titre", 'ISBN': 2})
+        album1 = Album(title="Premier titre", isbn=1)
+        album2 = Album(title="Second titre", isbn=2)
+        repo1 = BdInMemory("repo1", album1)
+        repo2 = BdInMemory("repo2", album2)
 
-        service = GetInfosService([repo1, repo2])
+        service = GetInfosService([repo1, repo2], self.logging_repository)
         result = service.main(1)
 
-        self.assertEqual(result["Album"], "Premier titre")
+        self.assertEqual(result.title, "Premier titre")
 
 
 if __name__ == '__main__':
