@@ -10,8 +10,8 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
 from tests.test_advanced_search.internal.advanced_search_in_memory import InMemoryAdvancedSearchRepository
-from main.application.usecases.advanced_search.advanced_search_service import AdvancedSearchService
-from main.domain.forms.forms import RechercheForm
+from main.core.application.usecases.advanced_search.advanced_search_service import AdvancedSearchService
+from main.core.domain.forms.forms import RechercheForm
 
 
 class TestAdvancedSearchService(unittest.TestCase):

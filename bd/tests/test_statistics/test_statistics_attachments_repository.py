@@ -5,9 +5,9 @@ import unittest
 
 import django
 
-from main.domain.model.statistics import Statistics
-from main.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
-from main.infrastructure.persistence.file.statistics_attachment_adapter import StatisticsAttachmentAdapter
+from main.core.domain.model.statistics import Statistics
+from main.core.infrastructure.persistence.file import SIGNED_COPY_PATH, EXLIBRIS_PATH
+from main.core.infrastructure.persistence.file.statistics_attachment_adapter import StatisticsAttachmentAdapter
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")

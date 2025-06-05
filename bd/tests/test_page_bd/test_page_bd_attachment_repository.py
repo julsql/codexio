@@ -9,8 +9,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from main.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
-from main.infrastructure.persistence.file.page_bd_attachments_adapter import PageBdAttachmentsAdapter
+from main.core.infrastructure.persistence.file import SIGNED_COPY_PATH, EXLIBRIS_PATH
+from main.core.infrastructure.persistence.file import PageBdAttachmentsAdapter
 
 
 class TestPageBdAttachmentsConnexion(unittest.TestCase):

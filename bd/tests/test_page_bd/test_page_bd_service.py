@@ -1,10 +1,10 @@
 import unittest
 
 from common.internal.logger_in_memory import LoggerInMemory
-from main.application.usecases.page_bd.page_bd_service import PageBdService
-from main.domain.model.bd import BD
-from main.domain.model.bd_attachment import BdAttachment
-from main.domain.model.bd_with_attachment import BdWithAttachment
+from main.core.application.usecases.page_bd import PageBdService
+from main.core.domain import BdWithAttachment
+from main.core.domain.model.bd import BD
+from main.core.domain.model.bd_attachment import BdAttachment
 from tests.test_page_bd.internal.page_bd_in_memory import PageBdAttachmentsInMemory, PageBdDatabaseInMemory
 
 

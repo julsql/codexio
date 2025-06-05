@@ -1,9 +1,9 @@
 import unittest
 
 from common.internal.logger_in_memory import LoggerInMemory
-from main.application.usecases.add_album.get_infos_service import GetInfosService
-from main.domain.exceptions.album_exceptions import AlbumNotFoundException
-from main.domain.model.album import Album
+from main.core.application import GetInfosService
+from main.core.domain import Album
+from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException
 from test_add_album.album_large_data_set import ASTERIX_ISBN
 from tests.album_data_set import ASTERIX
 from tests.test_add_album.internal.bd_in_memory import BdInMemory

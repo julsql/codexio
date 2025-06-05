@@ -8,8 +8,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from main.infrastructure.persistence.database.database_adapter import DatabaseAdapter
-from main.infrastructure.persistence.database.models import BD
+from main.core.infrastructure.persistence.database import DatabaseAdapter
+from main.core.infrastructure.persistence.database.models import BD
 from tests.album_data_set import ALBUM_EXEMPLE, ALBUM_EXEMPLE_DICT
 
 

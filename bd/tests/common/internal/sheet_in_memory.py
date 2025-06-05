@@ -1,6 +1,6 @@
 from typing import Union
 
-from main.domain.ports.repositories.sheet_repository import SheetRepository
+from main.core.domain.ports.repositories.sheet_repository import SheetRepository
 
 
 class SheetInMemory(SheetRepository):

@@ -1,6 +1,6 @@
 from typing import Dict
 
-from main.domain.ports.repositories.database_repository import DatabaseRepository
+from main.core.domain import DatabaseRepository
 
 
 class DatabaseInMemory(DatabaseRepository):

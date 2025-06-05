@@ -2,8 +2,8 @@ from typing import Any
 
 from django.db.models import QuerySet
 
-from main.domain.ports.repositories.advanced_search_repository import AdvancedSearchRepository
-from main.infrastructure.persistence.database.models import BD
+from main.core.domain.ports.repositories.advanced_search_repository import AdvancedSearchRepository
+from main.core.infrastructure.persistence.database.models import BD
 
 
 class InMemoryAdvancedSearchRepository(AdvancedSearchRepository):

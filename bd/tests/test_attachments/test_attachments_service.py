@@ -1,9 +1,9 @@
 import unittest
 
-from main.application.usecases.attachments.attachments_service import AttachmentsService
-from main.domain.model.attachment import Attachment
-from main.domain.model.attachments import Attachments
-from main.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH, SIGNED_COPY_FOLDER, \
+from main.core.application.usecases.attachments.attachments_service import AttachmentsService
+from main.core.domain.model.attachment import Attachment
+from main.core.domain.model.attachments import Attachments
+from main.core.infrastructure.persistence.file import SIGNED_COPY_PATH, EXLIBRIS_PATH, SIGNED_COPY_FOLDER, \
     EXLIBRIS_FOLDER
 from tests.test_attachments.internal.attachments_in_memory import AttachmentsInMemory
 

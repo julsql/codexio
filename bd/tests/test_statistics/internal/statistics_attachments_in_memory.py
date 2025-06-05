@@ -1,7 +1,7 @@
 from abc import ABC
 
-from main.domain.model.statistics import Statistics
-from main.domain.ports.repositories.statistics_attachment_repository import StatisticsAttachmentRepository
+from main.core.domain import StatisticsAttachmentRepository
+from main.core.domain.model.statistics import Statistics
 
 
 class StatisticsAttachmentsInMemory(StatisticsAttachmentRepository, ABC):

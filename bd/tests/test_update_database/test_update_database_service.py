@@ -2,7 +2,7 @@ import unittest
 
 from common.internal.database_in_memory import DatabaseInMemory
 from common.internal.sheet_in_memory import SheetInMemory
-from main.application.usecases.update_database.update_database_service import UpdateDatabaseService
+from main.core.application.usecases.update_database.update_database_service import UpdateDatabaseService
 from tests.album_data_set import FIRST_LINE_SHEET, ASTERIX_LIST, ASTERIX_ALBUM
 
 
