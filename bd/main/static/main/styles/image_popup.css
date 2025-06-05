@@ -38,11 +38,12 @@
 
 #popup-img {
     max-width: 100%;
-    max-height: 75vh;
+    max-height: calc(-65px + 100vh);
     height: auto;
     width: auto;
     object-fit: contain;
     border-radius: 0 0 7px 7px;
+
 }
 
 #image-title {
@@ -53,6 +54,7 @@
     max-width: 100%;
     padding-right: 10px;
     padding-left: 10px;
+    height: 25px;
 }
 
 #image-info {
