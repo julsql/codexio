@@ -1,6 +1,6 @@
-from main.domain.exceptions.album_exceptions import AlbumNotFoundException
-from main.domain.model.album import Album
-from main.domain.ports.repositories.album_repository import AlbumRepository
+from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException
+from main.core.domain.model.album import Album
+from main.core.domain.ports.repositories.album_repository import AlbumRepository
 
 
 class BdInMemory(AlbumRepository):

@@ -1,9 +1,9 @@
 import unittest
 from datetime import datetime
 
-from common.internal.logger_in_memory import LoggerInMemory
-from main.infrastructure.api.bd_gest_adapter import BdGestAdapter
-from main.infrastructure.api.internal.date_parser_service import DateParserService
+from main.core.infrastructure.api.bd_gest_adapter import BdGestAdapter
+from main.core.infrastructure.api.internal.date_parser_service import DateParserService
+from tests.test_common.internal.logger_in_memory import LoggerInMemory
 
 
 class TestDateParsing(unittest.TestCase):

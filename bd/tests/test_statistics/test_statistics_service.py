@@ -1,9 +1,9 @@
 import unittest
 
-from main.application.usecases.statistics.statistics_service import StatisticsService
-from main.domain.model.statistics import Statistics
-from test_statistics.internal.statistics_attachments_in_memory import StatisticsAttachmentsInMemory
-from test_statistics.internal.statistics_database_in_memory import StatisticsDatabaseInMemory
+from main.core.application.usecases.statistics.statistics_service import StatisticsService
+from main.core.domain.model.statistics import Statistics
+from tests.test_statistics.internal.statistics_attachments_in_memory import StatisticsAttachmentsInMemory
+from tests.test_statistics.internal.statistics_database_in_memory import StatisticsDatabaseInMemory
 
 
 class TestStatisticsService(unittest.TestCase):
