@@ -9,8 +9,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from main.core.common.data.data import SIGNED_COPY_PATH, EXLIBRIS_PATH
-from main.core.page_bd.internal.page_bd_attachments_connexion import PageBdAttachmentsConnexion
+from main.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
+from main.infrastructure.persistence.file.page_bd_attachments_adapter import PageBdAttachmentsAdapter
 
 
 class TestPageBdAttachmentsConnexion(unittest.TestCase):
@@ -28,7 +28,7 @@ class TestPageBdAttachmentsConnexion(unittest.TestCase):
         os.makedirs(cls.SIGNED_COPY_FOLDER, exist_ok=True)
         os.makedirs(cls.EXLIBRIS_FOLDER, exist_ok=True)
 
-        cls.repository = PageBdAttachmentsConnexion(cls.SIGNED_COPY_FOLDER, cls.EXLIBRIS_FOLDER)
+        cls.repository = PageBdAttachmentsAdapter(cls.SIGNED_COPY_FOLDER, cls.EXLIBRIS_FOLDER)
 
     @classmethod
     def tearDownClass(cls) -> None:
@@ -45,7 +45,7 @@ class TestPageBdAttachmentsConnexion(unittest.TestCase):
                 for name in dirs:
                     os.rmdir(os.path.join(root, name))
 
-    def create_test_files(self, folder: str, isbn: str, filenames: list[str]) -> None:
+    def create_test_files(self, folder: str, isbn: int, filenames: list[str]) -> None:
         album_folder = os.path.join(folder, str(isbn))
         os.makedirs(album_folder, exist_ok=True)
         for filename in filenames:
@@ -54,70 +54,56 @@ class TestPageBdAttachmentsConnexion(unittest.TestCase):
 
     def test_add_attachments_empty_folders(self) -> None:
         test_isbn = 1234
-        infos = {"title": "Test Album"}
 
-        self.repository.get_attachments(infos, test_isbn)
+        result = self.repository.get_attachments(test_isbn)
 
-        self.assertEqual([], infos["dedicaces"])
-        self.assertEqual(0, infos["nb_dedicace"])
-        self.assertEqual([], infos["ex_libris"])
-        self.assertEqual(0, infos["nb_exlibris"])
+        self.assertEqual([], result.signed_copies)
+        self.assertEqual([], result.ex_libris)
 
-    def test_add_attachments_with_dedicaces_only(self) -> None:
+    def test_add_attachments_with_signed_copy_only(self) -> None:
         test_isbn = 1234
         test_files = ["1.jpeg", "2.jpeg", "3.jpeg"]
-        infos = {"title": "Test Album"}
 
-        self.create_test_files(self.SIGNED_COPY_FOLDER, str(test_isbn), test_files)
-        self.repository.get_attachments(infos, test_isbn)
+        self.create_test_files(self.SIGNED_COPY_FOLDER, test_isbn, test_files)
+        result = self.repository.get_attachments(test_isbn)
 
-        self.assertEqual(sorted(test_files), infos["dedicaces"])
-        self.assertEqual(3, infos["nb_dedicace"])
-        self.assertEqual([], infos["ex_libris"])
-        self.assertEqual(0, infos["nb_exlibris"])
+        self.assertEqual(sorted(test_files), result.signed_copies)
+        self.assertEqual([], result.ex_libris)
 
     def test_add_attachments_with_exlibris_only(self) -> None:
         test_isbn = 1234
         test_files = ["1.jpeg", "2.jpeg"]
-        infos = {"title": "Test Album"}
 
         self.create_test_files(self.EXLIBRIS_FOLDER, test_isbn, test_files)
 
-        self.repository.get_attachments(infos, test_isbn)
+        result = self.repository.get_attachments(test_isbn)
 
-        self.assertEqual([], infos["dedicaces"])
-        self.assertEqual(0, infos["nb_dedicace"])
-        self.assertEqual(sorted(test_files), infos["ex_libris"])
-        self.assertEqual(2, infos["nb_exlibris"])
+        self.assertEqual([], result.signed_copies)
+        self.assertEqual(sorted(test_files), result.ex_libris)
 
     def test_add_attachments_with_both_types(self) -> None:
         test_isbn = 1234
-        dedicace_files = ["1.jpeg", "2.jpeg"]
+        signed_copy_files = ["1.jpeg", "2.jpeg"]
         exlibris_files = ["1.jpeg", "2.jpeg", "3.jpeg"]
-        infos = {"title": "Test Album"}
 
-        self.create_test_files(self.SIGNED_COPY_FOLDER, test_isbn, dedicace_files)
+        self.create_test_files(self.SIGNED_COPY_FOLDER, test_isbn, signed_copy_files)
         self.create_test_files(self.EXLIBRIS_FOLDER, test_isbn, exlibris_files)
 
-        self.repository.get_attachments(infos, test_isbn)
+        result = self.repository.get_attachments(test_isbn)
 
-        self.assertEqual(sorted(dedicace_files), infos["dedicaces"])
-        self.assertEqual(2, infos["nb_dedicace"])
-        self.assertEqual(sorted(exlibris_files), infos["ex_libris"])
-        self.assertEqual(3, infos["nb_exlibris"])
+        self.assertEqual(sorted(signed_copy_files), result.signed_copies)
+        self.assertEqual(sorted(exlibris_files), result.ex_libris)
 
     def test_add_attachments_ignore_non_jpeg(self) -> None:
         test_isbn = 1234
         test_files = ["1.jpeg", "2.txt", "3.png", "4.jpeg"]
-        infos = {"title": "Test Album"}
 
-        self.create_test_files(self.SIGNED_COPY_FOLDER, str(test_isbn), test_files)
+        self.create_test_files(self.SIGNED_COPY_FOLDER, test_isbn, test_files)
 
-        self.repository.get_attachments(infos, test_isbn)
+        result = self.repository.get_attachments(test_isbn)
 
         expected_files = ["1.jpeg", "4.jpeg"]
-        self.assertEqual(expected_files, infos["dedicaces"])
-        self.assertEqual(2, infos["nb_dedicace"])
+        self.assertEqual(expected_files, result.signed_copies)
 
     def test_attachment_album_non_existent_folder(self) -> None:
         test_isbn = 1234

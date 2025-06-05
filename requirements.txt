@@ -1,4 +1,5 @@
 asgiref==3.8.1
+babel==2.17.0
 beautifulsoup4==4.13.4
 bs4==0.0.2
 cachetools==5.5.2

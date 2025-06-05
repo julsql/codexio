@@ -1,16 +1,16 @@
 from abc import ABC
-from typing import Any, Optional
 
-from main.core.random_album.random_album_repository import RandomAlbumRepository
+from main.domain.model.album import Album
+from main.domain.ports.repositories.random_album_repository import RandomAlbumRepository
 
 
 class RandomAlbumInMemory(RandomAlbumRepository, ABC):
-    def __init__(self, data: list[dict[str, Any]]) -> None:
-        self.database: list[dict[str, Any]] = data
+    def __init__(self, data: list[Album]) -> None:
+        self.database: list[Album] = data
         self.get_random_album_called = False
 
-    def get_random_album(self) -> Optional[dict[str, Any]]:
+    def get_random_album(self) -> Album:
         self.get_random_album_called = True
         if not self.database:
-            return None
+            return Album(0)
         return self.database[0]

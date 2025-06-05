@@ -5,13 +5,13 @@ import unittest
 
 import django
 
-from main.core.common.data.data import SIGNED_COPY_PATH, EXLIBRIS_PATH
+from main.domain.model.statistics import Statistics
+from main.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
+from main.infrastructure.persistence.file.statistics_attachment_adapter import StatisticsAttachmentAdapter
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
-
-from main.core.statistics.internal.statistics_attachments_connexion import StatisticsAttachmentsConnexion
 
 
 class TestStatisticsAttachmentsConnexion(unittest.TestCase):
@@ -29,7 +29,7 @@ class TestStatisticsAttachmentsConnexion(unittest.TestCase):
         os.makedirs(cls.SIGNED_COPY_FOLDER, exist_ok=True)
         os.makedirs(cls.EXLIBRIS_FOLDER, exist_ok=True)
 
-        cls.repository = StatisticsAttachmentsConnexion(cls.SIGNED_COPY_FOLDER, cls.EXLIBRIS_FOLDER)
+        cls.repository = StatisticsAttachmentAdapter(cls.SIGNED_COPY_FOLDER, cls.EXLIBRIS_FOLDER)
 
     @classmethod
     def tearDownClass(cls) -> None:
@@ -55,11 +55,12 @@ class TestStatisticsAttachmentsConnexion(unittest.TestCase):
 
     def test_get_information_empty_database(self) -> None:
         # Act
-        result = self.repository.get_information()
+        result = self.repository.get_attachment_statistics()
 
         # Assert
-        self.assertIsInstance(result, dict)
-        self.assertEqual({'dedicaces': 0, 'exlibris': 0}, result)
+        self.assertIsInstance(result, Statistics)
+        expected = Statistics.empty()
+        self.assertEqual(expected, result)
 
     def test_get_information_with_data(self) -> None:
         # Arrange
@@ -70,26 +71,24 @@ class TestStatisticsAttachmentsConnexion(unittest.TestCase):
         self.create_test_files(self.EXLIBRIS_FOLDER, "987654321", ["1.jpeg", "2.jpeg"])
 
         # Act
-        result = self.repository.get_information()
+        result = self.repository.get_attachment_statistics()
 
         # Assert
-        self.assertEqual({
-            'dedicaces': 5,  # 2 + 3
-            'exlibris': 3,  # 1 + 2
-        }, result)
+        expected = Statistics.empty()
+        expected.signed_copies_count = 5  # 2 + 3
+        expected.ex_libris_count = 3  # 1 + 2
+        self.assertEqual(expected, result)
 
     def test_get_information_with_zero_attachments(self) -> None:
         # Arrange
         self.create_test_files(self.SIGNED_COPY_FOLDER, "123456789", [])
 
         # Act
-        result = self.repository.get_information()
+        result = self.repository.get_attachment_statistics()
 
         # Assert
-        self.assertEqual({
-            'dedicaces': 0,
-            'exlibris': 0
-        }, result)
+        expected = Statistics.empty()
+        self.assertEqual(expected, result)
 
 
 if __name__ == '__main__':

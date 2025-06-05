@@ -1,13 +1,14 @@
-from main.core.attachments.attachments_repository import AttachmentsRepository
+from main.domain.model.attachments import Attachments
+from main.domain.ports.repositories.attachments_repository import AttachmentsRepository
 
 
 class AttachmentsInMemory(AttachmentsRepository):
     def __init__(self) -> None:
         self.attachments = {}
 
-    def get_attachments(self, path: str) -> (list[dict[str, str]], int):
+    def get_attachments(self, path: str) -> Attachments:
         if path not in self.attachments:
-            return [], 0
+            return Attachments(attachments_list=[])
 
         attachments = self.attachments[path]
-        return attachments, len(attachments)
+        return Attachments(attachments_list=attachments)

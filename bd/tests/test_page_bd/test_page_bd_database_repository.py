@@ -9,8 +9,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from main.core.common.database.internal.bd_model import BD
-from main.core.page_bd.internal.page_bd_database_connexion import PageBdDatabaseConnexion
+from main.infrastructure.persistence.database.models import BD as DATABASE_MODEL_BD
+from main.infrastructure.persistence.database.page_bd_database_adapter import PageBdDatabaseAdapter
 
 
 class TestPageBdDatabaseConnexion(unittest.TestCase):
@@ -18,16 +18,28 @@ class TestPageBdDatabaseConnexion(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
-        cls.repository = PageBdDatabaseConnexion()
+        cls.repository = PageBdDatabaseAdapter()
         cls.EXPECTED_FIELDS = {
-            'isbn', 'album', 'number', 'series', 'writer', 'illustrator', 'colorist',
-            'publisher', 'publication_date', 'edition', 'number_of_pages',
-            'purchase_price', 'year_of_purchase', 'place_of_purchase',
-            'synopsis', 'image'
+            'isbn': 'isbn',
+            'album': 'title',
+            'number': 'number',
+            'series': 'series',
+            'writer': 'writer',
+            'illustrator': 'illustrator',
+            'colorist': 'colorist',
+            'publisher': 'publisher',
+            'publication_date': 'publication_date',
+            'edition': 'edition',
+            'number_of_pages': 'number_of_pages',
+            'purchase_price': 'purchase_price',
+            'year_of_purchase': 'year_of_purchase',
+            'place_of_purchase': 'place_of_purchase',
+            'synopsis': 'synopsis',
+            'image': 'image',
         }
 
     def setUp(self) -> None:
-        BD.objects.all().delete()
+        DATABASE_MODEL_BD.objects.all().delete()
 
     def test_page_with_non_existing_isbn(self) -> None:
         # Act
@@ -36,43 +48,7 @@ class TestPageBdDatabaseConnexion(unittest.TestCase):
         # Assert
         self.assertIsNone(result)
 
-    def test_page_with_existing_bd_integer_price(self) -> None:
-        # Arrange
-        test_data = {
-            'isbn': 1234,
-            'album': 'Test Album',
-            'number': '1',
-            'series': 'Test Series',
-            'writer': 'Test Writer',
-            'illustrator': 'Test Illustrator',
-            'colorist': 'Test Colorist',
-            'publisher': 'Test Publisher',
-            'publication_date': datetime.date(2025, 1, 1),
-            'edition': '1',
-            'number_of_pages': 48,
-            'purchase_price': 15.0,
-            'year_of_purchase': 2023,
-            'place_of_purchase': 'Test Store',
-            'synopsis': 'Test Synopsis',
-            'image': 'test.jpg',
-            'deluxe_edition': True,
-        }
-        BD.objects.create(**test_data)
-
-        # Act
-        result = self.repository.page(1234)
-
-        # Assert
-        self.assertIsNotNone(result)
-        # Vérifie que tous les champs attendus sont présents
-        self.assertEqual(self.EXPECTED_FIELDS, set(result.keys()))
-        # Vérifie que le prix a été converti en entier
-        self.assertEqual(15, result['purchase_price'])
-        # Vérifie que tous les autres champs correspondent
-        for field in self.EXPECTED_FIELDS - {'purchase_price'}:
-            self.assertEqual(test_data[field], result[field])
-
-    def test_page_with_existing_bd_decimal_price(self) -> None:
+    def test_page_with_existing_bd(self) -> None:
         # Arrange
         test_data = {
             'isbn': 5678,
@@ -93,7 +69,7 @@ class TestPageBdDatabaseConnexion(unittest.TestCase):
             'image': 'test2.jpg',
             'deluxe_edition': False,
         }
-        BD.objects.create(**test_data)
+        DATABASE_MODEL_BD.objects.create(**test_data)
 
         # Act
         result = self.repository.page(5678)
@@ -101,10 +77,13 @@ class TestPageBdDatabaseConnexion(unittest.TestCase):
         # Assert
         self.assertIsNotNone(result)
         # Vérifie que le prix est resté décimal
-        self.assertEqual(15.99, result['purchase_price'])
+        self.assertEqual(15.99, float(result.purchase_price))
         # Vérifie tous les autres champs
-        for field in self.EXPECTED_FIELDS - {'purchase_price'}:
-            self.assertEqual(test_data[field], result[field])
+        filtered_fields = {
+            k: v for k, v in self.EXPECTED_FIELDS.items() if k != 'purchase_price'
+        }
+        for key, value in filtered_fields.items():
+            self.assertEqual(test_data[key], getattr(result, value))
 
     def test_page_with_null_fields(self) -> None:
         # Arrange
@@ -114,19 +93,18 @@ class TestPageBdDatabaseConnexion(unittest.TestCase):
             'deluxe_edition': False,
         }
 
-        BD.objects.create(**test_data)
+        DATABASE_MODEL_BD.objects.create(**test_data)
 
         # Act
         result = self.repository.page(9012)
 
         # Assert
         self.assertIsNotNone(result)
-        self.assertEqual(self.EXPECTED_FIELDS, set(result.keys()))
-        for field in self.EXPECTED_FIELDS:
-            if field in ['isbn', 'album', 'deluxe_edition']:
-                self.assertEqual(test_data[field], result[field])
+        for key, value in self.EXPECTED_FIELDS.items():
+            if key in ['isbn', 'album', 'deluxe_edition']:
+                self.assertEqual(test_data[key], getattr(result, value))
             else:
-                self.assertIn(result[field], [None, ''])
+                self.assertIn(getattr(result, value), [None, ''])
 
     def test_page_with_multiple_bds(self) -> None:
         # Arrange
@@ -145,18 +123,18 @@ class TestPageBdDatabaseConnexion(unittest.TestCase):
             },
         ]
         for data in test_data_list:
-            BD.objects.create(**data)
+            DATABASE_MODEL_BD.objects.create(**data)
 
         # Act & Assert
         for test_data in test_data_list:
             result = self.repository.page(int(test_data['isbn']))
             self.assertIsNotNone(result)
-            self.assertEqual(test_data['album'], result['album'])
-            self.assertEqual(test_data['isbn'], result['isbn'])
+            self.assertEqual(test_data['album'], result.title)
+            self.assertEqual(test_data['isbn'], result.isbn)
             if test_data['purchase_price'].is_integer():
-                self.assertEqual(int(test_data['purchase_price']), result['purchase_price'])
+                self.assertEqual(int(test_data['purchase_price']), result.purchase_price)
             else:
-                self.assertEqual(test_data['purchase_price'], result['purchase_price'])
+                self.assertEqual(test_data['purchase_price'], result.purchase_price)
 
 
 if __name__ == '__main__':

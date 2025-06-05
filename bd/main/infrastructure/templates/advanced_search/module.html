@@ -1,0 +1,123 @@
+{% load static %}
+
+<section>
+    <header>
+        <h2>Rechercher dans les BD</h2>
+    </header>
+    <form method="post" action="{% url 'bdrecherche' %}">
+        <div class="clear-all" id="clear-all">Tout vider&nbsp;&nbsp;&nbsp;&#x2715;</div>
+        {% csrf_token %}
+        <div class="formulaire">
+            <div class="row">
+                <div class="col-md-4" data-see="{{ form.series.field.widget.attrs.data_see|default:'false' }}">
+                    <p>{{ form.series.label }}</p>
+                    <div class="input-container">
+                        {{ form.series }}
+                        <span class="clear-btn">&#x2715;</span>
+                    </div>
+                </div>
+                <div class="col-md-4" data-see="{{ form.album.field.widget.attrs.data_see|default:'true' }}">
+                    <p>{{ form.album.label }}</p>
+                    <div class="input-container">
+                        {{ form.album }}
+                        <span class="clear-btn">&#x2715;</span>
+                    </div>
+                </div>
+                <div class="col-md-4" data-see="{{ form.writer.field.widget.attrs.data_see|default:'true' }}">
+                    <p>{{ form.writer.label }}</p>
+                    <div class="input-container">
+                        {{ form.writer }}
+                        <span class="clear-btn">&#x2715;</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4" data-see="{{ form.illustrator.field.widget.attrs.data_see|default:'true' }}">
+                    <p>{{ form.illustrator.label }}</p>
+                    <div class="input-container">
+                        {{ form.illustrator }}
+                        <span class="clear-btn">&#x2715;</span>
+                    </div>
+                </div>
+                <div class="col-md-4" data-see="{{ form.publisher.field.widget.attrs.data_see|default:'true' }}">
+                    <p>{{ form.publisher.label }}</p>
+                    <div class="input-container">
+                        {{ form.publisher }}
+                        <span class="clear-btn">&#x2715;</span>
+                    </div>
+                </div>
+                <div class="col-md-4" data-see="{{ form.start_date.field.widget.attrs.data_see|default:'true' }}">
+                    <p>{{ form.start_date.label }}</p>
+                    <div class="date">
+                        <div class="input-container">
+                            {{ form.start_date }}
+                            <span class="clear-btn" id="clear-start-date">&#x2715;</span>
+                        </div>
+                        <div class="input-container">
+                            {{ form.end_date }}
+                            <span class="clear-btn" id="clear-end-date">&#x2715;</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4" data-see="{{ form.year_of_purchase.field.widget.attrs.data_see|default:'true' }}">
+                    <p>{{ form.year_of_purchase.label }}</p>
+                    <div class="input-container">
+                        {{ form.year_of_purchase }}
+                        <span class="clear-btn">&#x2715;</span>
+                    </div>
+                </div>
+                <div class="col-md-4" data-see="{{ form.edition.field.widget.attrs.data_see|default:'true' }}">
+                    <p>{{ form.edition.label }}</p>
+                    <div class="input-container">
+                        {{ form.edition }}
+                        <span class="clear-btn">&#x2715;</span>
+                    </div>
+                </div>
+                <div class="col-md-4" data-see="{{ form.deluxe_edition.field.widget.attrs.data_see|default:'true' }}">
+                    <p>{{ form.deluxe_edition.label }}</p>
+                    <div class="input-container">
+                        {{ form.deluxe_edition }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4" data-see="{{ form.isbn.field.widget.attrs.data_see|default:'true' }}">
+                    <p>{{ form.isbn.label }}</p>
+                    <div class="input-container">
+                        {{ form.isbn }}
+                        <span class="clear-btn">&#x2715;</span>
+                    </div>
+                </div>
+                <div class="col-md-4" data-see="{{ form.number.field.widget.attrs.data_see|default:'true' }}">
+                    <p>{{ form.number.label }}</p>
+                    <div class="input-container">
+                        {{ form.number }}
+                        <span class="clear-btn">&#x2715;</span>
+                    </div>
+                </div>
+                <div class="col-md-4" data-see="{{ form.synopsis.field.widget.attrs.data_see|default:'true' }}">
+                    <p>{{ form.synopsis.label }}</p>
+                    <div class="input-container">
+                        {{ form.synopsis }}
+                        <span class="clear-btn">&#x2715;</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div id="see-more" class="see-more">
+            <span class="line" id="upper-line"></span>
+            <span class="arrow">&#x25B2;</span>
+            <span class="line" id="lower-line"></span>
+        </div>
+        <input class="button-large" type="submit" value="Rechercher" title="Rechercher la BD"/>
+    </form>
+</section>
+
+{% block javascript %}
+    <script src="{% static 'main/scripts/form.js' %}"></script>
+{% endblock %}
