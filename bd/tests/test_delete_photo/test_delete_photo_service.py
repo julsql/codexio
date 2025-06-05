@@ -2,9 +2,9 @@ import unittest
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from main.application.usecases.delete_photo.delete_photo_service import DeletePhotoService
-from main.domain.model.attachment_type import AttachmentType
-from main.infrastructure.persistence.file.paths import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
+from main.core.application.usecases.delete_photo import DeletePhotoService
+from main.core.domain.model.attachment_type import AttachmentType
+from main.core.infrastructure.persistence.file import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
 from tests.test_delete_photo.internal.photo_in_memory import DeletePhotoInMemory
 
 

@@ -1,7 +1,7 @@
 from abc import ABC
 
-from main.domain.model.statistics import Statistics
-from main.domain.ports.repositories.statistics_database_repository import StatisticsDatabaseRepository
+from main.core.domain import StatisticsDatabaseRepository
+from main.core.domain.model.statistics import Statistics
 
 
 class StatisticsDatabaseInMemory(StatisticsDatabaseRepository, ABC):

@@ -1,6 +1,6 @@
 import unittest
 
-from main.infrastructure.persistence.sheet.sheet_adapter import SheetAdapter
+from main.core.infrastructure.persistence.sheet.sheet_adapter import SheetAdapter
 from test_add_album.album_large_data_set import ASTERIX_ISBN
 from tests.album_data_set import FIRST_LINE_SHEET, ASTERIX_LIST
 

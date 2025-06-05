@@ -9,9 +9,9 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from main.domain.model.statistics import Statistics
-from main.infrastructure.persistence.database.models import BD
-from main.infrastructure.persistence.database.statistics_database_adapter import StatisticsDatabaseAdapter
+from main.core.domain.model.statistics import Statistics
+from main.core.infrastructure.persistence.database.models import BD
+from main.core.infrastructure.persistence.database.statistics_database_adapter import StatisticsDatabaseAdapter
 
 
 class TestStatisticsDatabaseConnexion(unittest.TestCase):

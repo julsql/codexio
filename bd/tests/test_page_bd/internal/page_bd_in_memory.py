@@ -1,9 +1,9 @@
 from typing import Optional
 
-from main.domain.model.bd import BD
-from main.domain.model.bd_attachment import BdAttachment
-from main.domain.ports.repositories.page_bd_attachments_repository import PageBdAttachmentsRepository
-from main.domain.ports.repositories.page_bd_database_repository import PageBdDatabaseRepository
+from main.core.domain.model.bd import BD
+from main.core.domain.model.bd_attachment import BdAttachment
+from main.core.domain.ports.repositories.page_bd_attachments_repository import PageBdAttachmentsRepository
+from main.core.domain.ports.repositories.page_bd_database_repository import PageBdDatabaseRepository
 
 
 class PageBdAttachmentsInMemory(PageBdAttachmentsRepository):

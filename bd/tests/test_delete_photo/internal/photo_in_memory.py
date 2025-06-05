@@ -1,6 +1,6 @@
 from abc import ABC
 
-from main.domain.ports.repositories.delete_photo_repository import DeletePhotoRepository
+from main.core.domain import DeletePhotoRepository
 
 
 class DeletePhotoInMemory(DeletePhotoRepository, ABC):

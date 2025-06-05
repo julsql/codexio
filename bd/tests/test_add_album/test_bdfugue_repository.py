@@ -1,8 +1,8 @@
 import unittest
 
 from common.internal.logger_in_memory import LoggerInMemory
-from main.domain.exceptions.album_exceptions import AlbumNotFoundException
-from main.infrastructure.api.bd_fugue_adapter import BdFugueAdapter
+from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException
+from main.core.infrastructure.api.bd_fugue_adapter import BdFugueAdapter
 from tests.test_add_album.album_large_data_set import ASTERIX_ISBN, ASTERIX_URLS, ASTERIX_DATA, SAMBRE_ISBN, \
     SAMBRE_DATA, THORGAL_ISBN, THORGAL_DATA, SAULE_ISBN, SAULE_DATA
 

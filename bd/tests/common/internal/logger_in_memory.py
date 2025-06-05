@@ -1,6 +1,6 @@
 from typing import Any
 
-from main.domain.ports.repositories.logger_repository import LoggerRepository
+from main.core.domain import LoggerRepository
 
 
 class LoggerInMemory(LoggerRepository):

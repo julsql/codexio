@@ -1,4 +1,4 @@
-from main.domain.model.bd import BD
+from main.core.domain.model.bd import BD
 from tests.test_add_album.album_large_data_set import ASTERIX_DATA
 
 # Structures de données communes

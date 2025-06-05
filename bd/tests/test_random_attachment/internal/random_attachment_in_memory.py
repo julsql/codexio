@@ -1,5 +1,5 @@
-from main.domain.model.random_attachment import RandomAttachment
-from main.domain.ports.repositories.random_attachment_repository import RandomAttachmentRepository
+from main.core.domain import RandomAttachmentRepository
+from main.core.domain.model.random_attachment import RandomAttachment
 
 
 class RandomAttachmentInMemory(RandomAttachmentRepository):
@@ -20,4 +20,4 @@ class RandomAttachmentInMemory(RandomAttachmentRepository):
         self.get_random_attachment_called = True
         self.last_images_param = images_files
         return self.return_random_attachment if self.return_random_attachment else (
-            RandomAttachment(path="", isbn=0,type=None))
+            RandomAttachment(path="", isbn=0, type=None))

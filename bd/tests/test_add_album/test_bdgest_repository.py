@@ -1,8 +1,8 @@
 import unittest
 
 from common.internal.logger_in_memory import LoggerInMemory
-from main.domain.exceptions.api_exceptions import ApiConnexionDataNotFound
-from main.infrastructure.api.bd_gest_adapter import BdGestAdapter
+from main.core.domain import ApiConnexionDataNotFound
+from main.core.infrastructure.api.bd_gest_adapter import BdGestAdapter
 from tests.test_add_album.album_large_data_set import ASTERIX_ISBN, ASTERIX_URLS, ASTERIX_DATA, SAMBRE_DATA, \
     SAMBRE_ISBN, \
     THORGAL_DATA, THORGAL_ISBN, SAULE_ISBN, SAULE_DATA

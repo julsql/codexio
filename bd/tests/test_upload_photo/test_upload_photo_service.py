@@ -2,9 +2,9 @@ import unittest
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from main.application.usecases.upload_photo.upload_photo_service import UploadPhotoService
-from main.domain.model.attachment_type import AttachmentType
-from main.infrastructure.persistence.file.paths import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
+from main.core.application.usecases.upload_photo.upload_photo_service import UploadPhotoService
+from main.core.domain.model.attachment_type import AttachmentType
+from main.core.infrastructure.persistence.file import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
 from tests.test_upload_photo.internal.photo_in_memory import UploadPhotoInMemory
 
 
