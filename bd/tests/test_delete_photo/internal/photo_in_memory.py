@@ -1,9 +1,9 @@
 from abc import ABC
 
-from main.core.delete_photo.photo_repository import PhotoRepository
+from main.core.domain.ports.repositories.delete_photo_repository import DeletePhotoRepository
 
 
-class PhotoInMemory(PhotoRepository, ABC):
+class DeletePhotoInMemory(DeletePhotoRepository, ABC):
     type = ""
 
     def delete_photo(self, isbn: int, photo_id: int, folder: str) -> bool:

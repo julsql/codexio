@@ -1,5 +1,5 @@
-from main.domain.model.attachments import Attachments
-from main.domain.ports.repositories.attachments_repository import AttachmentsRepository
+from main.core.domain.model.attachments import Attachments
+from main.core.domain.ports.repositories.attachments_repository import AttachmentsRepository
 
 
 class AttachmentsInMemory(AttachmentsRepository):

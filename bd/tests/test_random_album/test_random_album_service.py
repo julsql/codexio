@@ -2,9 +2,9 @@ import unittest
 from datetime import date
 from decimal import Decimal
 
-from main.application.usecases.random_album.random_album_service import RandomAlbumService
-from main.domain.model.album import Album
-from test_random_album.internal.random_album_in_memory import RandomAlbumInMemory
+from main.core.application.usecases.random_album.random_album_service import RandomAlbumService
+from main.core.domain.model.album import Album
+from tests.test_random_album.internal.random_album_in_memory import RandomAlbumInMemory
 
 
 class TestRandomAlbumService(unittest.TestCase):

@@ -2,14 +2,14 @@ import unittest
 from datetime import date
 from decimal import Decimal
 
-from common.internal.logger_in_memory import LoggerInMemory
-from common.internal.sheet_in_memory import SheetInMemory
-from main.application.usecases.add_album.add_album_service import AddAlbumService
-from main.domain.exceptions.album_exceptions import AlbumAlreadyExistsException, AlbumNotFoundException
-from main.domain.model.album import Album
-from test_add_album.album_large_data_set import ASTERIX_ISBN
+from main.core.application.usecases.add_album.add_album_service import AddAlbumService
+from main.core.domain.exceptions.album_exceptions import AlbumAlreadyExistsException, AlbumNotFoundException
+from main.core.domain.model.album import Album
 from tests.album_data_set import ASTERIX
+from tests.test_add_album.album_large_data_set import ASTERIX_ISBN
 from tests.test_add_album.internal.bd_in_memory import BdInMemory
+from tests.test_common.internal.logger_in_memory import LoggerInMemory
+from tests.test_common.internal.sheet_in_memory import SheetInMemory
 
 
 class TestAddAlbumService(unittest.TestCase):

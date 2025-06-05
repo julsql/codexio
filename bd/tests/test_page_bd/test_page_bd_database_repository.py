@@ -9,8 +9,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from main.infrastructure.persistence.database.models import BD as DATABASE_MODEL_BD
-from main.infrastructure.persistence.database.page_bd_database_adapter import PageBdDatabaseAdapter
+from main.core.infrastructure.persistence.database.models import BD as DATABASE_MODEL_BD
+from main.core.infrastructure.persistence.database.page_bd_database_adapter import PageBdDatabaseAdapter
 
 
 class TestPageBdDatabaseConnexion(unittest.TestCase):
