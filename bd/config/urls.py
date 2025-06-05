@@ -19,7 +19,6 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from main.core.delete_photo.internal.delete_photo_view import delete_dedicace, delete_exlibris
-from main.core.upload_photo.internal.upload_photo_view import upload_dedicace, upload_exlibris
 from main.infrastructure.views.add_album_view import add_album
 from main.infrastructure.views.attachments_view import exlibris_view, signed_copies_view
 from main.infrastructure.views.bd_search_view import bd_search_view
@@ -29,6 +28,7 @@ from main.infrastructure.views.home_view import home_view
 from main.infrastructure.views.page_bd_view import page_bd_view
 from main.infrastructure.views.statistics_view import statistics_view
 from main.infrastructure.views.update_database_view import update_database
+from main.infrastructure.views.upload_photo_view import upload_dedicace_view, upload_exlibris_view
 
 handler500 = error_500_view
 handler404 = error_404_view
@@ -42,8 +42,8 @@ urlpatterns = [
     path('statistiques/', statistics_view, name='statistiques'),
 
     path('update/', update_database, name='update'),
-    path('upload/dedicace/<int:isbn>/', upload_dedicace, name='upload_dedicace'),
-    path('upload/exlibris/<int:isbn>/', upload_exlibris, name='upload_exlibris'),
+    path('upload/dedicace/<int:isbn>/', upload_dedicace_view, name='upload_dedicace'),
+    path('upload/exlibris/<int:isbn>/', upload_exlibris_view, name='upload_exlibris'),
     path('delete/dedicace/<int:isbn>/<int:photo_id>', delete_dedicace, name='delete_dedicace'),
     path('delete/exlibris/<int:isbn>/<int:photo_id>', delete_exlibris, name='delete_exlibris'),
     path('add/<int:isbn>/', add_album, name='add_album'),

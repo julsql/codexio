@@ -13,12 +13,12 @@ from main.infrastructure.responses.django_response_adapter import DjangoResponse
 
 class ExistingAlbumView:
     def __init__(self):
-        self.auth_service = AuthorizationService(
-            BearerTokenAdapter(POST_TOKEN)
-        )
-        self.request_method_service = RequestMethodService(RequestMethodAdapter())
         self.logger_adapter = PythonLoggerAdapter()
         self.response_adapter = DjangoResponseAdapter()
+        self.request_method_service = RequestMethodService(RequestMethodAdapter(self.response_adapter))
+        self.auth_service = AuthorizationService(
+            BearerTokenAdapter(self.response_adapter, POST_TOKEN)
+        )
 
     def handle_request(self, request: HttpRequest,
                        isbn: int) -> HttpResponse | HttpResponseServerError:

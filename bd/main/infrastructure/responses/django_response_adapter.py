@@ -1,4 +1,3 @@
-# infrastructure/adapters/responses/django_response_adapter.py
 from typing import Optional, Sequence
 
 from django.http import (

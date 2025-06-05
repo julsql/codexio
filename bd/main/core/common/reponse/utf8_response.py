@@ -1,5 +1,4 @@
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotAllowed, HttpResponseNotFound, \
-    HttpResponseBadRequest, HttpResponseServerError
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotAllowed, HttpResponseNotFound
 
 CONTENT_TYPE = "text/plain; charset=utf-8"
 
@@ -20,15 +19,5 @@ class UTF8ResponseNotAllowed(HttpResponseNotAllowed):
 
 
 class UTF8ResponseNotFound(HttpResponseNotFound):
-    def __init__(self, content=None, *args, **kwargs):
-        super().__init__(content, content_type=CONTENT_TYPE, *args, **kwargs)
-
-
-class UTF8ResponseBadRequest(HttpResponseBadRequest):
-    def __init__(self, content=None, *args, **kwargs):
-        super().__init__(content, content_type=CONTENT_TYPE, *args, **kwargs)
-
-
-class UTF8ResponseServerError(HttpResponseServerError):
     def __init__(self, content=None, *args, **kwargs):
         super().__init__(content, content_type=CONTENT_TYPE, *args, **kwargs)

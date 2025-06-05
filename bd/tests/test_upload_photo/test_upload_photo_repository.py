@@ -7,8 +7,8 @@ from unittest.mock import patch
 import django
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from main.core.upload_photo.internal.upload_photo_connexion import UploadPhotoConnexion
 from main.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
+from main.infrastructure.persistence.file.upload_photo_adapter import UploadPhotoAdapter
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'config.settings'
 django.setup()
@@ -25,7 +25,7 @@ class TestUpdateDatabaseRepository(unittest.TestCase):
         cls.SIGNED_COPY_FOLDER = os.path.join(cls.temp_dir.name, SIGNED_COPY_PATH)
         cls.EXLIBRIS_FOLDER = os.path.join(cls.temp_dir.name, EXLIBRIS_PATH)
 
-        cls.repository = UploadPhotoConnexion()
+        cls.repository = UploadPhotoAdapter()
         cls.file_content = b"Contenu du fichier exemple"
         cls.uploaded_file = SimpleUploadedFile(cls.file_name, cls.file_content, content_type="text/plain")
 
