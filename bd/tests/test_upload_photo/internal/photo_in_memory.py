@@ -2,7 +2,7 @@ from abc import ABC
 
 from django.core.files.uploadedfile import UploadedFile
 
-from main.core.upload_photo.upload_photo_repository import UploadPhotoRepository
+from main.domain.ports.repositories.upload_photo_repository import UploadPhotoRepository
 
 
 class UploadPhotoInMemory(UploadPhotoRepository, ABC):
