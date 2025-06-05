@@ -1,5 +1,5 @@
-from main.core.domain import RandomAttachmentRepository
 from main.core.domain.model.random_attachment import RandomAttachment
+from main.core.domain.ports.repositories.random_attachment_repository import RandomAttachmentRepository
 
 
 class RandomAttachmentInMemory(RandomAttachmentRepository):

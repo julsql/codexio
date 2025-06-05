@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from main.core.domain.forms.forms import RechercheForm
+from main.core.application.forms.forms import RechercheForm
 from main.core.domain.model.reduce_album import ReduceAlbum
 
 

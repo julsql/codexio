@@ -1,5 +1,5 @@
-from main.core.domain import AlbumRepository
 from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException
+from main.core.domain.ports.repositories.album_repository import AlbumRepository
 
 
 class BdInMemoryError(AlbumRepository):

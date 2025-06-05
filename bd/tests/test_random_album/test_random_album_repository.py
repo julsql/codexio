@@ -5,14 +5,14 @@ from datetime import date
 
 import django
 
-from main.core.domain import Album
+from main.core.domain.model.album import Album
+from main.core.infrastructure.persistence.database.random_album_adapter import RandomAlbumAdapter
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
 from main.core.infrastructure.persistence.database.models import BD
-from main.core.infrastructure.persistence.database import RandomAlbumAdapter
 
 
 class TestRandomAlbumConnexion(unittest.TestCase):

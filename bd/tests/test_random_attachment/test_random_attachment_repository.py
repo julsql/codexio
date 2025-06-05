@@ -6,13 +6,12 @@ import unittest
 import django
 
 from main.core.domain.model.attachment_type import AttachmentType
+from main.core.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
 from main.core.infrastructure.persistence.file.random_attachment_adapter import RandomAttachmentAdapter
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
-
-from main.core.infrastructure.persistence.file import SIGNED_COPY_PATH, EXLIBRIS_PATH
 
 
 class TestRandomAttachmentRepository(unittest.TestCase):
