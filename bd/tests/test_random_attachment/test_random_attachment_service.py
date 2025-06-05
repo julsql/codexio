@@ -1,10 +1,10 @@
 import unittest
 
-from main.application.usecases.random_attachment.random_attachment_service import RandomAttachmentService
-from main.domain.model.attachment_type import AttachmentType
-from main.domain.model.random_attachment import RandomAttachment
-from main.infrastructure.persistence.file.paths import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
-from test_random_attachment.internal.random_attachment_in_memory import RandomAttachmentInMemory
+from main.core.application.usecases.random_attachment.random_attachment_service import RandomAttachmentService
+from main.core.domain.model.attachment_type import AttachmentType
+from main.core.domain.model.random_attachment import RandomAttachment
+from main.core.infrastructure.persistence.file.paths import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
+from tests.test_random_attachment.internal.random_attachment_in_memory import RandomAttachmentInMemory
 
 
 class TestRandomAttachmentService(unittest.TestCase):

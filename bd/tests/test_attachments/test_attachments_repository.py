@@ -6,16 +6,16 @@ from unittest.mock import patch
 
 import django
 
-from main.domain.model.attachment import Attachment
-from main.domain.model.attachments import Attachments
+from main.core.domain.model.attachment import Attachment
+from main.core.domain.model.attachments import Attachments
+from main.core.infrastructure.persistence.file.attachments_adapter import AttachmentsAdapter
+from main.core.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from main.infrastructure.persistence.file.attachments_adapter import AttachmentsAdapter
-from main.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
-from main.infrastructure.persistence.database.models import BD
+from main.core.infrastructure.persistence.database.models import BD
 
 
 class TestAttachmentsConnexion(unittest.TestCase):
@@ -34,7 +34,7 @@ class TestAttachmentsConnexion(unittest.TestCase):
         os.makedirs(cls.EXLIBRIS_FOLDER, exist_ok=True)
 
         # Patch des chemins
-        cls.paths_patcher = patch.multiple('main.infrastructure.persistence.file.paths',
+        cls.paths_patcher = patch.multiple('main.core.infrastructure.persistence.file.paths',
                                            SIGNED_COPY_FOLDER=cls.SIGNED_COPY_FOLDER,
                                            EXLIBRIS_FOLDER=cls.EXLIBRIS_FOLDER)
         cls.paths_patcher.start()
