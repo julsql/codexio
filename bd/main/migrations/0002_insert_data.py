@@ -3,7 +3,7 @@
 from django.db import migrations
 
 from main.core.application.usecases.update_database.update_database_service import UpdateDatabaseService
-from main.core.infrastructure.persistence.database import DatabaseAdapter
+from main.core.infrastructure.persistence.database.database_adapter import DatabaseAdapter
 from main.core.infrastructure.persistence.sheet.sheet_adapter import SheetAdapter
 
 

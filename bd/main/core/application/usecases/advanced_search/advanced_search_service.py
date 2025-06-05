@@ -1,4 +1,4 @@
-from main.core.domain.forms.forms import RechercheForm
+from main.core.application.forms.forms import RechercheForm
 from main.core.domain.model.albums_from_form import AlbumsFromForm
 from main.core.domain.model.reduce_album import ReduceAlbum
 from main.core.domain.ports.repositories.advanced_search_repository import AdvancedSearchRepository

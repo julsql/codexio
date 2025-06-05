@@ -18,17 +18,18 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 
-from main.core.infrastructure.views import bd_search_view
-from main.core.infrastructure.views import home_view
-from main.core.infrastructure.views import page_bd_view
-from main.core.infrastructure.views.add_album_view import add_album
-from main.core.infrastructure.views.attachments_view import exlibris_view, signed_copies_view
-from main.core.infrastructure.views.delete_photo_view import delete_dedicace, delete_exlibris
-from main.core.infrastructure.views.errors_view import error_500_view, error_404_view
-from main.core.infrastructure.views.existing_album_view import existing_album
-from main.core.infrastructure.views.statistics_view import statistics_view
-from main.core.infrastructure.views.update_database_view import update_database
-from main.core.infrastructure.views.upload_photo_view import upload_dedicace_view, upload_exlibris_view
+from main.core.infrastructure.interface_adapters.views.add_album_view import add_album
+from main.core.infrastructure.interface_adapters.views.attachments_view import exlibris_view, signed_copies_view
+from main.core.infrastructure.interface_adapters.views.bd_search_view import bd_search_view
+from main.core.infrastructure.interface_adapters.views.delete_photo_view import delete_dedicace, delete_exlibris
+from main.core.infrastructure.interface_adapters.views.errors_view import error_500_view, error_404_view
+from main.core.infrastructure.interface_adapters.views.existing_album_view import existing_album
+from main.core.infrastructure.interface_adapters.views.home_view import home_view
+from main.core.infrastructure.interface_adapters.views.page_bd_view import page_bd_view
+from main.core.infrastructure.interface_adapters.views.statistics_view import statistics_view
+from main.core.infrastructure.interface_adapters.views.update_database_view import update_database
+from main.core.infrastructure.interface_adapters.views.upload_photo_view import upload_dedicace_view, \
+    upload_exlibris_view
 
 handler500 = error_500_view
 handler404 = error_404_view

@@ -1,7 +1,7 @@
 from abc import ABC
 
-from main.core.domain import Album
-from main.core.domain import RandomAlbumRepository
+from main.core.domain.model.album import Album
+from main.core.domain.ports.repositories.random_album_repository import RandomAlbumRepository
 
 
 class RandomAlbumInMemory(RandomAlbumRepository, ABC):

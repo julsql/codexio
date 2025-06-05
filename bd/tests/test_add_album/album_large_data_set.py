@@ -1,7 +1,7 @@
 from datetime import date
 from decimal import Decimal
 
-from main.core.domain import Album
+from main.core.domain.model.album import Album
 
 # ASTÉRIX
 
