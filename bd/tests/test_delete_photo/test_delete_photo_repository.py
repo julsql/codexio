@@ -2,7 +2,7 @@ import os
 import tempfile
 import unittest
 
-from main.core.delete_photo.internal.photo_connexion import PhotoConnexion
+from main.infrastructure.persistence.file.delete_photo_adapter import DeleteDeletePhotoAdapter
 from main.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
 
 
@@ -17,7 +17,7 @@ class TestPhotoConnexion(unittest.TestCase):
         os.makedirs(cls.SIGNED_COPY_FOLDER, exist_ok=True)
         os.makedirs(cls.EXLIBRIS_FOLDER, exist_ok=True)
 
-        cls.photo_connexion = PhotoConnexion()
+        cls.photo_connexion = DeleteDeletePhotoAdapter()
 
     def tearDown(self):
         self.temp_dir.cleanup()

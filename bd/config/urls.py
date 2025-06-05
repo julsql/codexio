@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 
-from main.core.delete_photo.internal.delete_photo_view import delete_dedicace, delete_exlibris
+from main.infrastructure.views.delete_photo_view import delete_dedicace, delete_exlibris
 from main.infrastructure.views.add_album_view import add_album
 from main.infrastructure.views.attachments_view import exlibris_view, signed_copies_view
 from main.infrastructure.views.bd_search_view import bd_search_view

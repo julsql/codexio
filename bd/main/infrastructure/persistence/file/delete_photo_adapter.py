@@ -1,10 +1,10 @@
 import os
 from abc import ABC
 
-from main.core.delete_photo.photo_repository import PhotoRepository
+from main.domain.ports.repositories.delete_photo_repository import DeletePhotoRepository
 
 
-class PhotoConnexion(PhotoRepository, ABC):
+class DeleteDeletePhotoAdapter(DeletePhotoRepository, ABC):
 
     def __init__(self):
         self.allowed_extensions = '.jpeg'
