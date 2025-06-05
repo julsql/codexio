@@ -17,11 +17,11 @@ It's a Django project that displays my collection of comics.
 
 - [static/](bd/main/static): The files used by the website (images, documents, css & javascript…)
 - [templates/](bd/main/templates): The main html templates
-- [core/](bd/main/core): The core of the project, divide by service with
-    - internal/view: the endpoint
-    - internal/connexion: the implementation of the repository
-    - service: the service
-    - repository: the interface of the connexion the remote service
+- [core/](bd/main/core): The core of the project, using an hexagonal architecture:
+    - application: Application use cases (business logic orchestration)
+    - domain: Domain layer: models, business rules, interfaces
+    - infrastructure: Adapters for APIs, database, file system, views
+- [clean_data](main/clean_data): The script to clean the data
 - [bd/](bd/config): the settings files (urls, wsgi, settings) used by Django
 - [manage.py](bd/manage.py): the main file that runs the website
 
