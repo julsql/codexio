@@ -11,6 +11,7 @@ class Attachments:
     sum: int = field(init=False)
     title: str = ""
     subtitle: str = ""
+    type: str = ""
     image_path: str = ""
 
     def __post_init__(self):
@@ -19,11 +20,13 @@ class Attachments:
     def set_type(self, attachment_type: AttachmentType):
         if attachment_type == AttachmentType.SIGNED_COPY:
             self.title = 'dédicaces'
-            self.subtitle = 'dédicaces'
+            self.subtitle = 'Toutes les dédicaces'
+            self.type = 'dédicace'
             self.image_path = SIGNED_COPY_PATH
         if attachment_type == AttachmentType.EXLIBRIS:
             self.title = 'Ex-libris'
-            self.subtitle = 'ex-libris'
+            self.subtitle = 'Tous les ex-libris'
+            self.type = 'ex-libris'
             self.image_path = EXLIBRIS_PATH
 
     def __str__(self):

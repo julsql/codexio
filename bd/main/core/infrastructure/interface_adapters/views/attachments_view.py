@@ -28,10 +28,11 @@ def attachment_view(request: HttpRequest, attachment_type: AttachmentType) -> Ht
                          'number': attachment.number,
                          'series': attachment.series,
                          'range': attachment.range_attachment,
-                         'attachments': attachment.total}
+                         'total': attachment.total}
                         for attachment in attachments.attachments_list],
         'attachments_sum': attachments.sum,
         'title': attachments.title,
         'subtitle': attachments.subtitle,
+        'type': attachments.type,
         'image_path': attachments.image_path,
     })

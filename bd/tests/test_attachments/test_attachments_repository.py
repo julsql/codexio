@@ -6,14 +6,15 @@ from unittest.mock import patch
 
 import django
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+django.setup()
+
 from main.core.domain.model.attachment import Attachment
 from main.core.domain.model.attachments import Attachments
 from main.core.infrastructure.persistence.file.attachments_adapter import AttachmentsAdapter
 from main.core.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
-django.setup()
 
 from main.core.infrastructure.persistence.database.models import BD
 

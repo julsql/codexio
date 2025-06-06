@@ -18,13 +18,21 @@ class TestAttachmentsService(unittest.TestCase):
     def test_main_signed_copies_empty(self) -> None:
         result = self.service.main_signed_copies()
         self.assertEqual(
-            Attachments(attachments_list=[], title="dédicaces", subtitle="dédicaces", image_path=SIGNED_COPY_PATH),
+            Attachments(attachments_list=[],
+                        title="dédicaces",
+                        subtitle="Toutes les dédicaces",
+                        type="dédicace",
+                        image_path=SIGNED_COPY_PATH),
             result)
 
     def test_main_ex_libris_empty(self) -> None:
         result = self.service.main_ex_libris()
         self.assertEqual(
-            Attachments(attachments_list=[], title="Ex-libris", subtitle="ex-libris", image_path=EXLIBRIS_PATH), result)
+            Attachments(attachments_list=[],
+                        title="Ex-libris",
+                        subtitle="Tous les ex-libris",
+                        type="ex-libris",
+                        image_path=EXLIBRIS_PATH), result)
 
     def test_main_signed_copies_with_data(self) -> None:
         test_data = [Attachment(isbn=0, title="Titre de test", number="1", series="Série de test", total=2)]
@@ -32,7 +40,10 @@ class TestAttachmentsService(unittest.TestCase):
 
         result = self.service.main_signed_copies()
         self.assertEqual(
-            Attachments(attachments_list=test_data, title="dédicaces", subtitle="dédicaces",
+            Attachments(attachments_list=test_data,
+                        title="dédicaces",
+                        subtitle="Toutes les dédicaces",
+                        type="dédicace",
                         image_path=SIGNED_COPY_PATH), result)
 
     def test_main_ex_libris_with_data(self) -> None:
@@ -41,7 +52,11 @@ class TestAttachmentsService(unittest.TestCase):
 
         result = self.service.main_ex_libris()
         self.assertEqual(
-            Attachments(attachments_list=test_data, title="Ex-libris", subtitle="ex-libris", image_path=EXLIBRIS_PATH),
+            Attachments(attachments_list=test_data,
+                        title="Ex-libris",
+                        subtitle="Tous les ex-libris",
+                        type="ex-libris",
+                        image_path=EXLIBRIS_PATH),
             result)
 
 
