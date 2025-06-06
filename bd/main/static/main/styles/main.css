@@ -113,7 +113,11 @@ input, select, textarea {
     font-weight: 300;
 }
 
-input:is([type="submit"]) {
+#logout-button:hover {
+    background-color: transparent;
+}
+
+input:is([type="submit"]), button:is([type="submit"]) {
     align-items: flex-start;
     text-align: center;
     cursor: pointer;

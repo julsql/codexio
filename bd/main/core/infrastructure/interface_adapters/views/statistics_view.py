@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
@@ -6,6 +7,7 @@ from main.core.infrastructure.persistence.database.statistics_database_adapter i
 from main.core.infrastructure.persistence.file.statistics_attachment_adapter import StatisticsAttachmentAdapter
 
 
+@login_required
 def statistics_view(request: HttpRequest) -> HttpResponse:
     database_repository = StatisticsDatabaseAdapter()
     attachment_repository = StatisticsAttachmentAdapter()

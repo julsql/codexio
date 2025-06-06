@@ -38,6 +38,10 @@
     color: #f6f8f8;
 }
 
+.logout {
+    margin: auto 0;
+}
+
 /* Bouton Menu */
 #menu-toggle {
     display: none;

@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 
@@ -47,6 +48,7 @@ class PageBdView:
         })
 
 
+@login_required
 def page_bd_view(request: HttpRequest, isbn: int) -> HttpResponse:
     view = PageBdView()
     return view.handle_request(request, isbn)

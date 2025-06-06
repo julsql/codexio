@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
@@ -6,10 +7,12 @@ from main.core.domain.model.attachment_type import AttachmentType
 from main.core.infrastructure.persistence.file.attachments_adapter import AttachmentsAdapter
 
 
+@login_required
 def signed_copies_view(request: HttpRequest) -> HttpResponse:
     return attachment_view(request, AttachmentType.SIGNED_COPY)
 
 
+@login_required
 def exlibris_view(request: HttpRequest) -> HttpResponse:
     return attachment_view(request, AttachmentType.EXLIBRIS)
 

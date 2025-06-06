@@ -9,7 +9,7 @@ from django.db.models import Value, Func
 from django.db.models.functions import Lower
 
 from main.core.domain.ports.repositories.advanced_search_repository import AdvancedSearchRepository
-from main.core.infrastructure.persistence.database.models import BD
+from main.core.infrastructure.persistence.database.models.bd import BD
 
 
 class AdvancedSearchAdapter(AdvancedSearchRepository, ABC):

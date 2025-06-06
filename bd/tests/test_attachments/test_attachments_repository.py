@@ -16,7 +16,7 @@ from main.core.infrastructure.persistence.file.attachments_adapter import Attach
 from main.core.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
 
 
-from main.core.infrastructure.persistence.database.models import BD
+from main.core.infrastructure.persistence.database.models.bd import BD
 
 
 class TestAttachmentsConnexion(unittest.TestCase):

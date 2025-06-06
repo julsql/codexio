@@ -1,7 +1,7 @@
 from main.core.domain.model.bd import BD as INTERNAL_MODEL_BD
 from main.core.domain.ports.repositories.database_repository import DatabaseRepository
 
-from main.core.infrastructure.persistence.database.models import BD as DATABASE_MODEL_BD
+from main.core.infrastructure.persistence.database.models.bd import BD as DATABASE_MODEL_BD
 
 
 class DatabaseAdapter(DatabaseRepository):

@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 
@@ -8,6 +9,7 @@ from main.core.infrastructure.persistence.database.advanced_search_adapter impor
 from main.core.infrastructure.persistence.database.random_album_adapter import RandomAlbumAdapter
 
 
+@login_required
 def home_view(request: HttpRequest) -> HttpResponse:
     random_album_connexion = RandomAlbumAdapter()
     random_album_service = RandomAlbumService(random_album_connexion)

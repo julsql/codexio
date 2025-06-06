@@ -1,6 +1,6 @@
 from time import sleep
 
-from main.core.infrastructure.persistence.database.models import BD
+from main.core.infrastructure.persistence.database.models.bd import BD
 from main.core.infrastructure.persistence.sheet.sheet_adapter import SheetAdapter
 
 result_isbn = list(BD.objects.values("isbn").filter(edition__icontains="Tirage de tête"))
