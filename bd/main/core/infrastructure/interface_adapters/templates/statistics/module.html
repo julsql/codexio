@@ -13,8 +13,7 @@
                 </header>
                 <div class="list">
                     <ul>
-                        <li>{{ nombre }} bande{% if nombre > 1 %}s{% endif %} dessinée{% if nombre > 1 %}
-                            s{% endif %}</li>
+                        <li>{{ nombre }} bande{% if nombre > 1 %}s{% endif %} dessinée{% if nombre > 1 %}s{% endif %}</li>
                         <li>{{ pages }} page{% if pages > 1 %}s{% endif %}</li>
                         <li>{{ dedicaces }} dédicace{% if dedicaces > 1 %}s{% endif %}</li>
                         <li>{{ exlibris }} ex-libris</li>
@@ -51,7 +50,7 @@
             },
 
             tooltip: {
-                valueSuffix: '%'
+                valueSuffix: ''
             },
             plotOptions: {
                 pie: {
@@ -65,7 +64,7 @@
                         distance: -40,
                         format: '{point.percentage:.1f}%',
                         style: {
-                            fontSize: '1.2em',
+                            fontSize: '1em',
                             textOutline: 'none',
                             opacity: 0.7
                         },
@@ -80,7 +79,7 @@
 
             series: [
                 {
-                    name: 'Percentage',
+                    name: '',
                     colorByPoint: true,
                     data: [
                         {% for place_name, place_count in places %}

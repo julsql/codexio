@@ -1,5 +1,6 @@
 {% extends 'main/base.html' %}
 {% load static %}
+{% load custom_tags %}
 
 {% block body %}
 
@@ -12,7 +13,7 @@
             <div class="title">
                 <header>
                     <h2>Les {{ title }}</h2>
-                    <h3>Tous les {{ subtitle }} ({{ attachments_sum }})</h3>
+                    <h3>{{ subtitle }} ({{ attachments_sum }})</h3>
                 </header>
             </div>
 
@@ -40,8 +41,9 @@
                             {% if bd.series and bd.series != "" %}
                                 <h2>{{ bd.series }}</h2>
                             {% endif %}
-
-                            <p>{{ bd.attachments }} {{ subtitle }}</p>
+                            <p>
+                                {{ bd.total }} {% pluralize_type type bd.total %}
+                            </p>
                         </header>
                         <div class="image_group carousel-container">
                             <div class="prev-carousel" id="prev-{{ bd.isbn }}">&lt;</div>
