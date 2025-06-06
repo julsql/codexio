@@ -41,7 +41,8 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             rating=10.0,
             number_of_pages=48,
             deluxe_edition=False,
-            publication_date=date(2024, 1, 1)
+            publication_date=date(2024, 1, 1),
+            place_of_purchase="Lyon",
         )
         BD.objects.create(
             isbn="987654321",
@@ -49,7 +50,8 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             rating=20.0,
             number_of_pages=72,
             deluxe_edition=True,
-            publication_date=date(2024, 1, 1)
+            publication_date=date(2024, 1, 1),
+            place_of_purchase="Lyon",
         )
 
         # Act
@@ -61,7 +63,8 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
                               purchase_price_count=30,
                               deluxe_edition_count=1,
                               signed_copies_count=0,
-                              ex_libris_count=0)
+                              ex_libris_count=0,
+                              place_of_purchase_pie=[('Lyon', 2)])
         self.assertEqual(expected, result)
 
     def test_get_information_all_deluxe(self) -> None:
@@ -72,7 +75,8 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             deluxe_edition=True,
             rating=15.0,
             number_of_pages=60,
-            publication_date=date(2024, 1, 1)
+            publication_date=date(2024, 1, 1),
+            place_of_purchase="Lyon",
         )
         BD.objects.create(
             isbn="987654321",
@@ -80,7 +84,8 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             deluxe_edition=True,
             rating=25.0,
             number_of_pages=80,
-            publication_date=date(2024, 1, 1)
+            publication_date=date(2024, 1, 1),
+            place_of_purchase="Lyon",
         )
 
         # Act
@@ -92,7 +97,153 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
                               purchase_price_count=40,
                               deluxe_edition_count=2,
                               signed_copies_count=0,
-                              ex_libris_count=0)
+                              ex_libris_count=0,
+                              place_of_purchase_pie=[('Lyon', 2)])
+        self.assertEqual(expected, result)
+
+    def test_get_information_all_pruchase_price(self) -> None:
+        # Arrange
+        BD.objects.create(
+            isbn="123456789",
+            album="Deluxe 1",
+            deluxe_edition=True,
+            rating=15.0,
+            number_of_pages=60,
+            publication_date=date(2024, 1, 1),
+            place_of_purchase="Lyon",
+        )
+        BD.objects.create(
+            isbn="987654321",
+            album="Deluxe 2",
+            deluxe_edition=True,
+            rating=25.0,
+            number_of_pages=80,
+            publication_date=date(2024, 1, 1),
+            place_of_purchase="Paris",
+        )
+
+        # Act
+        result = self.repository.get_database_statistics()
+
+        # Assert
+        expected = Statistics(albums_count=2,
+                              pages_count=140,
+                              purchase_price_count=40,
+                              deluxe_edition_count=2,
+                              signed_copies_count=0,
+                              ex_libris_count=0,
+                              place_of_purchase_pie=[("Lyon", 1), ('Paris', 1)])
+        self.assertEqual(expected, result)
+
+    def test_get_information_all_multiple_pruchase_price(self) -> None:
+        # Arrange
+        BD.objects.create(
+            isbn="123456789",
+            album="Deluxe 1",
+            deluxe_edition=True,
+            rating=15.0,
+            number_of_pages=60,
+            publication_date=date(2024, 1, 1),
+            place_of_purchase="Lyon",
+        )
+        BD.objects.create(
+            isbn="123456788",
+            album="Deluxe 2",
+            deluxe_edition=True,
+            rating=15.0,
+            number_of_pages=60,
+            publication_date=date(2024, 1, 1),
+            place_of_purchase="Lyon",
+        )
+        BD.objects.create(
+            isbn="123456787",
+            album="Deluxe 3",
+            deluxe_edition=False,
+            rating=15.0,
+            number_of_pages=80,
+            publication_date=date(2024, 1, 1),
+            place_of_purchase="Paris",
+        )
+        BD.objects.create(
+            isbn="123456786",
+            album="Deluxe 4",
+            deluxe_edition=False,
+            rating=15.0,
+            number_of_pages=80,
+            publication_date=date(2024, 1, 1),
+            place_of_purchase="Paris",
+        )
+        BD.objects.create(
+            isbn="123456785",
+            album="Deluxe 5",
+            deluxe_edition=False,
+            rating=15.0,
+            number_of_pages=80,
+            publication_date=date(2024, 1, 1),
+            place_of_purchase="Le Mans",
+        )
+        BD.objects.create(
+            isbn="123456784",
+            album="Deluxe 6",
+            deluxe_edition=False,
+            rating=15.0,
+            number_of_pages=80,
+            publication_date=date(2024, 1, 1),
+            place_of_purchase="Le Mans",
+        )
+        BD.objects.create(
+            isbn="123456783",
+            album="Deluxe 7",
+            deluxe_edition=False,
+            rating=15.0,
+            number_of_pages=80,
+            publication_date=date(2024, 1, 1),
+            place_of_purchase="Bordeaux",
+        )
+        BD.objects.create(
+            isbn="123456782",
+            album="Deluxe 8",
+            deluxe_edition=False,
+            rating=15.0,
+            number_of_pages=80,
+            publication_date=date(2024, 1, 1),
+            place_of_purchase="Bordeaux",
+        )
+        BD.objects.create(
+            isbn="123456781",
+            album="Deluxe 9",
+            deluxe_edition=False,
+            rating=15.0,
+            number_of_pages=80,
+            publication_date=date(2024, 1, 1),
+            place_of_purchase="Marseille",
+        )
+        BD.objects.create(
+            isbn="1234567880",
+            album="Deluxe 10",
+            deluxe_edition=False,
+            rating=15.0,
+            number_of_pages=80,
+            publication_date=date(2024, 1, 1),
+            place_of_purchase="Toulouse",
+        )
+
+        # Act
+        result = self.repository.get_database_statistics()
+
+        # Assert
+        expected = Statistics(albums_count=10,
+                              pages_count=760,
+                              purchase_price_count=150,
+                              deluxe_edition_count=2,
+                              signed_copies_count=0,
+                              ex_libris_count=0,
+                              place_of_purchase_pie=[("Bordeaux", 2),
+                                                     ('Le Mans', 2),
+                                                     ('Lyon', 2),
+                                                     ('Paris', 2),
+                                                     ('AUTRE', 2),
+                                                     ])
         self.assertEqual(expected, result)
 
     def test_get_information_with_null_values(self) -> None:
@@ -101,7 +252,8 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             isbn="123456789",
             album="Test BD2",
             deluxe_edition=False,
-            publication_date=date(2024, 1, 1)
+            publication_date=date(2024, 1, 1),
+            place_of_purchase="Lyon",
         )
 
         # Act
@@ -113,7 +265,8 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
                               purchase_price_count=0,
                               deluxe_edition_count=0,
                               signed_copies_count=0,
-                              ex_libris_count=0)
+                              ex_libris_count=0,
+                              place_of_purchase_pie=[('Lyon', 1)])
 
         self.assertEqual(expected, result)
 
@@ -125,7 +278,8 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             rating=15,
             number_of_pages=48,
             deluxe_edition=False,
-            publication_date=date(2024, 1, 1)
+            publication_date=date(2024, 1, 1),
+            place_of_purchase="Lyon",
         )
 
         # Act

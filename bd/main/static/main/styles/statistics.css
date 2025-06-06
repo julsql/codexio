@@ -1,0 +1,9 @@
+#statistics_section {
+    display: flex;
+    height: 300px
+}
+
+#pie_container {
+    margin-right: 0;
+    margin-left: auto;
+}

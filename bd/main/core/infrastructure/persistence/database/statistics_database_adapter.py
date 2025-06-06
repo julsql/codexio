@@ -1,9 +1,23 @@
-from django.db.models import Count, Sum, IntegerField, FloatField
+from django.db.models import Count, Sum, IntegerField, FloatField, QuerySet
 from django.db.models.functions import Cast, Coalesce, Round
 
 from main.core.domain.model.statistics import Statistics
 from main.core.domain.ports.repositories.statistics_database_repository import StatisticsDatabaseRepository
 from main.core.infrastructure.persistence.database.models import BD
+
+
+def map_place_of_purchase(place_of_purchase_query: QuerySet) -> list[tuple[str, int]]:
+    all_results = list(place_of_purchase_query)
+    first_to_show = 4
+
+    top_4 = all_results[:first_to_show]
+    others = all_results[first_to_show:]
+
+    place_of_purchase_stats = [(item['place_of_purchase'], item['count']) for item in top_4]
+    other_total = sum(item['count'] for item in others)
+    if other_total > 0:
+        place_of_purchase_stats.append(("AUTRE", other_total))
+    return place_of_purchase_stats
 
 
 class StatisticsDatabaseAdapter(StatisticsDatabaseRepository):
@@ -23,11 +37,17 @@ class StatisticsDatabaseAdapter(StatisticsDatabaseRepository):
             tirage=Coalesce(Sum(Cast('deluxe_edition', output_field=IntegerField())), 0),
         )
 
+        place_of_purchase_query = BD.objects.values('place_of_purchase').annotate(
+            count=Count('place_of_purchase')).order_by('-count', 'place_of_purchase')
+
+        place_of_purchase_stats = map_place_of_purchase(place_of_purchase_query)
+
         return Statistics(
             albums_count=stats['nombre'],
             pages_count=stats['pages'],
             purchase_price_count=stats['prix'],
             deluxe_edition_count=stats['tirage'],
             signed_copies_count=0,
-            ex_libris_count=0
+            ex_libris_count=0,
+            place_of_purchase_pie=place_of_purchase_stats,
         )

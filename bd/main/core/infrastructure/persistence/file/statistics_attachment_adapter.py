@@ -20,5 +20,6 @@ class StatisticsAttachmentAdapter(StatisticsAttachmentRepository):
             purchase_price_count=0,
             deluxe_edition_count=0,
             signed_copies_count=signed_copy_count,
-            ex_libris_count=ex_libris_count
+            ex_libris_count=ex_libris_count,
+            place_of_purchase_pie=[]
         )
