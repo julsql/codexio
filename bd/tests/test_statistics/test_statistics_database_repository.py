@@ -12,21 +12,25 @@ django.setup()
 from main.core.domain.model.statistics import Statistics
 from main.core.infrastructure.persistence.database.models.bd import BD
 from main.core.infrastructure.persistence.database.statistics_database_adapter import StatisticsDatabaseAdapter
+from main.models import AppUser
+from main.core.infrastructure.persistence.database.models.collection import Collection
 
 
 class TestStatisticsDatabaseConnexion(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        cls.user = AppUser.objects.get(username="admin")
+        cls.collection = Collection.objects.get(accounts=cls.user)
         cls.repository = StatisticsDatabaseAdapter()
-        BD.objects.all().delete()
+        BD.objects.filter(collection__accounts=cls.user).delete()
 
     def tearDown(self):
-        BD.objects.all().delete()
+        BD.objects.filter(collection__accounts=self.user).delete()
 
     def test_get_information_empty_database(self) -> None:
         # Act
-        result = self.repository.get_database_statistics()
+        result = self.repository.get_database_statistics(self.user)
 
         # Assert
         self.assertIsInstance(result, Statistics)
@@ -43,6 +47,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             deluxe_edition=False,
             publication_date=date(2024, 1, 1),
             place_of_purchase="Lyon",
+            collection=self.collection,
         )
         BD.objects.create(
             isbn="987654321",
@@ -52,10 +57,11 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             deluxe_edition=True,
             publication_date=date(2024, 1, 1),
             place_of_purchase="Lyon",
+            collection=self.collection,
         )
 
         # Act
-        result = self.repository.get_database_statistics()
+        result = self.repository.get_database_statistics(self.user)
 
         # Assert
         expected = Statistics(albums_count=2,
@@ -77,6 +83,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             number_of_pages=60,
             publication_date=date(2024, 1, 1),
             place_of_purchase="Lyon",
+            collection=self.collection,
         )
         BD.objects.create(
             isbn="987654321",
@@ -86,10 +93,11 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             number_of_pages=80,
             publication_date=date(2024, 1, 1),
             place_of_purchase="Lyon",
+            collection=self.collection,
         )
 
         # Act
-        result = self.repository.get_database_statistics()
+        result = self.repository.get_database_statistics(self.user)
 
         # Assert
         expected = Statistics(albums_count=2,
@@ -111,6 +119,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             number_of_pages=60,
             publication_date=date(2024, 1, 1),
             place_of_purchase="Lyon",
+            collection=self.collection,
         )
         BD.objects.create(
             isbn="987654321",
@@ -120,10 +129,11 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             number_of_pages=80,
             publication_date=date(2024, 1, 1),
             place_of_purchase="Paris",
+            collection=self.collection,
         )
 
         # Act
-        result = self.repository.get_database_statistics()
+        result = self.repository.get_database_statistics(self.user)
 
         # Assert
         expected = Statistics(albums_count=2,
@@ -145,6 +155,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             number_of_pages=60,
             publication_date=date(2024, 1, 1),
             place_of_purchase="Lyon",
+            collection=self.collection,
         )
         BD.objects.create(
             isbn="123456788",
@@ -154,6 +165,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             number_of_pages=60,
             publication_date=date(2024, 1, 1),
             place_of_purchase="Lyon",
+            collection=self.collection,
         )
         BD.objects.create(
             isbn="123456787",
@@ -163,6 +175,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             number_of_pages=80,
             publication_date=date(2024, 1, 1),
             place_of_purchase="Paris",
+            collection=self.collection,
         )
         BD.objects.create(
             isbn="123456786",
@@ -172,6 +185,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             number_of_pages=80,
             publication_date=date(2024, 1, 1),
             place_of_purchase="Paris",
+            collection=self.collection,
         )
         BD.objects.create(
             isbn="123456785",
@@ -181,6 +195,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             number_of_pages=80,
             publication_date=date(2024, 1, 1),
             place_of_purchase="Le Mans",
+            collection=self.collection,
         )
         BD.objects.create(
             isbn="123456784",
@@ -190,6 +205,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             number_of_pages=80,
             publication_date=date(2024, 1, 1),
             place_of_purchase="Le Mans",
+            collection=self.collection,
         )
         BD.objects.create(
             isbn="123456783",
@@ -199,6 +215,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             number_of_pages=80,
             publication_date=date(2024, 1, 1),
             place_of_purchase="Bordeaux",
+            collection=self.collection,
         )
         BD.objects.create(
             isbn="123456782",
@@ -208,6 +225,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             number_of_pages=80,
             publication_date=date(2024, 1, 1),
             place_of_purchase="Bordeaux",
+            collection=self.collection,
         )
         BD.objects.create(
             isbn="123456781",
@@ -217,6 +235,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             number_of_pages=80,
             publication_date=date(2024, 1, 1),
             place_of_purchase="Marseille",
+            collection=self.collection,
         )
         BD.objects.create(
             isbn="1234567880",
@@ -226,10 +245,11 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             number_of_pages=80,
             publication_date=date(2024, 1, 1),
             place_of_purchase="Toulouse",
+            collection=self.collection,
         )
 
         # Act
-        result = self.repository.get_database_statistics()
+        result = self.repository.get_database_statistics(self.user)
 
         # Assert
         expected = Statistics(albums_count=10,
@@ -254,10 +274,11 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             deluxe_edition=False,
             publication_date=date(2024, 1, 1),
             place_of_purchase="Lyon",
+            collection=self.collection,
         )
 
         # Act
-        result = self.repository.get_database_statistics()
+        result = self.repository.get_database_statistics(self.user)
 
         # Assert
         expected = Statistics(albums_count=1,
@@ -280,10 +301,11 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
             deluxe_edition=False,
             publication_date=date(2024, 1, 1),
             place_of_purchase="Lyon",
+            collection=self.collection,
         )
 
         # Act
-        result = self.repository.get_database_statistics()
+        result = self.repository.get_database_statistics(self.user)
 
         # Assert
         self.assertEqual(15.0, result.purchase_price_count)

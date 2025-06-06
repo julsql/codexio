@@ -12,9 +12,17 @@ django.setup()
 from tests.test_advanced_search.internal.advanced_search_in_memory import InMemoryAdvancedSearchRepository
 from main.core.application.usecases.advanced_search.advanced_search_service import AdvancedSearchService
 from main.core.application.forms.forms import RechercheForm
+from main.core.infrastructure.persistence.database.models.collection import Collection
+from main.models import AppUser
 
 
 class TestAdvancedSearchService(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        # Before all
+        cls.user = AppUser.objects.get(username="admin")
+        cls.collection = Collection.objects.get(accounts=cls.user)
+
     def setUp(self):
         # Utilisation du repository en mémoire
         self.repository = InMemoryAdvancedSearchRepository()
@@ -32,7 +40,7 @@ class TestAdvancedSearchService(unittest.TestCase):
 
     def test_form_search_sans_form(self):
         # Exécution
-        result = self.service.form_search()
+        result = self.service.form_search(self.user)
 
         # Vérifications
         self.assertEqual(len(result), 1)
@@ -52,7 +60,7 @@ class TestAdvancedSearchService(unittest.TestCase):
         self.assertTrue(form.is_valid())
 
         # Exécution
-        result = self.service.form_search(form)
+        result = self.service.form_search(self.user, form)
 
         # Vérifications
         self.assertEqual(len(result), 1)
@@ -67,7 +75,7 @@ class TestAdvancedSearchService(unittest.TestCase):
         self.assertTrue(form.is_valid())
 
         # Exécution
-        resultat = self.service.form_search(form)
+        resultat = self.service.form_search(self.user, form)
 
         # Vérifications
         self.assertEqual(len(resultat), 0)

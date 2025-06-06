@@ -2,6 +2,8 @@ from abc import ABC
 from decimal import Decimal
 from typing import Optional
 
+from django.contrib.auth.base_user import AbstractBaseUser
+
 from main.core.domain.model.album import Album
 from main.core.domain.ports.repositories.random_album_repository import RandomAlbumRepository
 from main.core.infrastructure.persistence.database.models.bd import BD
@@ -9,8 +11,8 @@ from main.core.infrastructure.persistence.database.models.bd import BD
 
 class RandomAlbumAdapter(RandomAlbumRepository, ABC):
 
-    def get_random_album(self) -> Optional[Album]:
-        result = BD.objects.values(
+    def get_random_album(self, user: AbstractBaseUser) -> Optional[Album]:
+        result = BD.objects.filter(collection__accounts=user).values(
             'isbn', 'album', 'number', 'series', 'image', 'writer', 'illustrator',
             'publication_date', 'purchase_price', 'number_of_pages', 'edition', 'synopsis'
         ).order_by('?').first()

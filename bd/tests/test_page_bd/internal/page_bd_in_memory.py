@@ -1,5 +1,7 @@
 from typing import Optional
 
+from django.contrib.auth.base_user import AbstractBaseUser
+
 from main.core.domain.model.bd import BD
 from main.core.domain.model.bd_attachment import BdAttachment
 from main.core.domain.ports.repositories.page_bd_attachments_repository import PageBdAttachmentsRepository
@@ -28,7 +30,7 @@ class PageBdDatabaseInMemory(PageBdDatabaseRepository):
     def set_error(self, should_raise: bool):
         self.should_raise_error = should_raise
 
-    def page(self, isbn: int) -> Optional[BD]:
+    def page(self, isbn: int, user: AbstractBaseUser) -> Optional[BD]:
         if self.should_raise_error:
             raise Exception("Test database error")
         if isbn not in self.data:

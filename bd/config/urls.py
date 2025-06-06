@@ -16,8 +16,8 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from django.urls import path, include
 
 from main.core.infrastructure.interface_adapters.views.add_album_view import add_album
 from main.core.infrastructure.interface_adapters.views.attachments_view import exlibris_view, signed_copies_view

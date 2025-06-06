@@ -1,23 +1,22 @@
 from django.db import models
 from django.db.models import Manager
 
+from main.core.infrastructure.persistence.database.models.collection import Collection
+
 
 class BD(models.Model):
-    class Meta:
-        db_table = 'BD'
-
     objects: Manager
 
     isbn = models.BigIntegerField()
-    album = models.CharField(max_length=255)
+    album = models.TextField()
     number = models.CharField(max_length=50)
-    series = models.CharField(max_length=255)
-    writer = models.CharField(max_length=255)
-    illustrator = models.CharField(max_length=255)
-    colorist = models.CharField(max_length=255)
-    publisher = models.CharField(max_length=255)
+    series = models.TextField()
+    writer = models.TextField()
+    illustrator = models.TextField()
+    colorist = models.TextField()
+    publisher = models.TextField()
     publication_date = models.DateField(null=True)
-    edition = models.CharField(max_length=100)
+    edition = models.TextField()
     number_of_pages = models.IntegerField(null=True)
     rating = models.FloatField(null=True)
     purchase_price = models.FloatField(null=True)
@@ -27,6 +26,7 @@ class BD(models.Model):
     localisation = models.TextField()
     synopsis = models.TextField()
     image = models.URLField()
+    collection = models.ForeignKey(Collection, on_delete=models.CASCADE, related_name='rows')
 
     def __str__(self) -> str:
         return self.album

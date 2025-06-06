@@ -2,9 +2,11 @@ from datetime import date
 from decimal import Decimal
 from typing import Optional
 
+from django.contrib.auth.base_user import AbstractBaseUser
+
 from main.core.domain.model.bd import BD
-from main.core.domain.ports.repositories.database_repository import DatabaseRepository
 from main.core.domain.ports.repositories.sheet_repository import SheetRepository
+from main.core.domain.ports.repositories.table_bd_repository import DatabaseRepository
 from main.core.infrastructure.api.internal.date_parser_service import DateParserService
 
 
@@ -16,14 +18,14 @@ class UpdateDatabaseService:
         self.sheet.open(doc_name, sheet_name)
         self.database = database_repository
 
-    def main(self) -> None:
+    def main(self, user: AbstractBaseUser) -> None:
         rows = self.sheet.get_all()
         titles = self.map_sheet_titles_to_database_columns(rows[0])
 
         data = self._process_rows(rows[1:], rows[0], titles)
 
-        self.database.reset_table()
-        self.database.insert(data)
+        self.database.reset_table(user)
+        self.database.insert(data, user)
 
     def _process_rows(self, rows: list[list[str]], column_titles: list[str], titles: list[str]) -> list[BD]:
         data = []

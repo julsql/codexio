@@ -1,5 +1,7 @@
 from typing import Optional
 
+from django.contrib.auth.base_user import AbstractBaseUser
+
 from main.core.domain.model.bd_with_attachment import BdWithAttachment
 from main.core.domain.ports.repositories.logger_repository import LoggerRepository
 from main.core.domain.ports.repositories.page_bd_attachments_repository import PageBdAttachmentsRepository
@@ -15,9 +17,9 @@ class PageBdService:
         self.attachments_repository = attachments_repository
         self.database_repository = database_repository
 
-    def main(self, isbn: int) -> Optional[BdWithAttachment]:
+    def main(self, isbn: int, user: AbstractBaseUser) -> Optional[BdWithAttachment]:
         try:
-            album = self.database_repository.page(isbn)
+            album = self.database_repository.page(isbn, user)
         except Exception as e:
             self.logging_repository.error(
                 str(e),

@@ -3,20 +3,24 @@
 from django.db import migrations
 
 from main.core.application.usecases.update_database.update_database_service import UpdateDatabaseService
-from main.core.infrastructure.persistence.database.database_adapter import DatabaseAdapter
+from main.core.infrastructure.persistence.database.table_bd_adapter import TableBdAdapter
 from main.core.infrastructure.persistence.sheet.sheet_adapter import SheetAdapter
+from main.models import AppUser
 
 
 def insert_initial_data(apps, schema_editor) -> None:
     sheet_repository = SheetAdapter()
-    database_repository = DatabaseAdapter()
+    database_repository = TableBdAdapter()
     service = UpdateDatabaseService(sheet_repository, database_repository)
-    service.main()
+    user = AppUser.objects.exclude(username='admin').filter(is_active=True).first()
+    if user:
+        service.main(user)
 
 
 class Migration(migrations.Migration):
     dependencies = [
         ('main', '0001_initial'),
+        ('main', '0002_create_users_and_collection'),
     ]
 
     operations = [

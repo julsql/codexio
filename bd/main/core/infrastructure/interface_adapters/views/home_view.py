@@ -13,7 +13,7 @@ from main.core.infrastructure.persistence.database.random_album_adapter import R
 def home_view(request: HttpRequest) -> HttpResponse:
     random_album_connexion = RandomAlbumAdapter()
     random_album_service = RandomAlbumService(random_album_connexion)
-    random_album = random_album_service.main()
+    random_album = random_album_service.main(request.user)
 
     # Banner
     # random_attachment_repository = RandomAttachmentAdapter()

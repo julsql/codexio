@@ -2,14 +2,16 @@ from abc import ABC
 from decimal import Decimal
 from typing import Optional
 
+from django.contrib.auth.base_user import AbstractBaseUser
+
 from main.core.domain.model.bd import BD as INTERNAL_MODEL_BD
 from main.core.domain.ports.repositories.page_bd_database_repository import PageBdDatabaseRepository
 from main.core.infrastructure.persistence.database.models.bd import BD as DATABASE_MODEL_BD
 
 
 class PageBdDatabaseAdapter(PageBdDatabaseRepository, ABC):
-    def page(self, isbn: int) -> Optional[INTERNAL_MODEL_BD]:
-        result = DATABASE_MODEL_BD.objects.filter(isbn=isbn).values().first()
+    def page(self, isbn: int, user: AbstractBaseUser) -> Optional[INTERNAL_MODEL_BD]:
+        result = DATABASE_MODEL_BD.objects.filter(collection__accounts=user).filter(isbn=isbn).values().first()
 
         if result:
             return INTERNAL_MODEL_BD(

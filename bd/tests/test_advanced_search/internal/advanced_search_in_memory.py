@@ -1,5 +1,6 @@
 from typing import Any
 
+from django.contrib.auth.base_user import AbstractBaseUser
 from django.db.models import QuerySet
 
 from main.core.domain.ports.repositories.advanced_search_repository import AdvancedSearchRepository
@@ -23,7 +24,7 @@ class InMemoryAdvancedSearchRepository(AdvancedSearchRepository):
         bd.illustrator = illustrator
         self.bds.append(bd)
 
-    def get_all(self) -> QuerySet[BD, BD]:
+    def get_all(self, user: AbstractBaseUser) -> QuerySet[BD, BD]:
         """Simule QuerySet.all()"""
         # Convertit la liste en un mock de QuerySet
         self._mock_queryset = MockQuerySet(self.bds)
