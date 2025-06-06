@@ -15,6 +15,7 @@ class TestStatisticsService(unittest.TestCase):
             deluxe_edition_count=80,
             signed_copies_count=30,
             ex_libris_count=15,
+            place_of_purchase_pie=[],
         )
 
         self.attachments_repository = StatisticsAttachmentsInMemory(self.statistics)
@@ -76,6 +77,7 @@ class TestStatisticsService(unittest.TestCase):
             deluxe_edition_count=80,
             signed_copies_count=200,
             ex_libris_count=200,
+            place_of_purchase_pie=[],
         )
         attachments_info = Statistics(
             albums_count=200,
@@ -84,6 +86,7 @@ class TestStatisticsService(unittest.TestCase):
             deluxe_edition_count=200,
             signed_copies_count=30,
             ex_libris_count=15,
+            place_of_purchase_pie=[],
         )
 
         database_repository = StatisticsDatabaseInMemory(database_info)

@@ -5,23 +5,93 @@
     <div class="col-12">
 
         <!-- Main Content -->
-        <section>
-            <header>
-                <h2>Statistiques</h2>
-                <h3>État de la collection de bandes dessinées</h3>
-            </header>
+        <section id="statistics_section">
+            <div id="statistics_content">
+                <header>
+                    <h2>Statistiques</h2>
+                    <h3>État de la collection de bandes dessinées</h3>
+                </header>
+                <div class="list">
+                    <ul>
+                        <li>{{ nombre }} bande{% if nombre > 1 %}s{% endif %} dessinée{% if nombre > 1 %}
+                            s{% endif %}</li>
+                        <li>{{ pages }} page{% if pages > 1 %}s{% endif %}</li>
+                        <li>{{ dedicaces }} dédicace{% if dedicaces > 1 %}s{% endif %}</li>
+                        <li>{{ exlibris }} ex-libris</li>
+                        <li>{{ tirage }} tirage{% if tirage > 1 %}s{% endif %} de tête</li>
+                    </ul>
+                </div>
 
-            <div class="list">
-                <ul>
-                    <li>{{ nombre }} bande{% if nombre > 1 %}s{% endif %} dessinée{% if nombre > 1 %}s{% endif %}</li>
-                    <li>{{ pages }} page{% if pages > 1 %}s{% endif %}</li>
-                    <li>{{ dedicaces }} dédicace{% if dedicaces > 1 %}s{% endif %}</li>
-                    <li>{{ exlibris }} ex-libris</li>
-                    <li>{{ tirage }} tirage{% if tirage > 1 %}s{% endif %} de tête</li>
-                </ul>
             </div>
+            <div id='pie_container'></div>
         </section>
-
     </div>
 
+{% endblock %}
+
+
+{% block javascript %}
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+
+    <script>
+        Highcharts.chart('pie_container', {
+            chart: {
+                type: 'pie',
+                zooming: {
+                    type: 'xy'
+                },
+                panning: {
+                    enabled: true,
+                    type: 'xy'
+                },
+                panKey: 'shift'
+            },
+            title: {
+                text: "{{ title }}"
+            },
+
+            tooltip: {
+                valueSuffix: '%'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: [{
+                        enabled: true,
+                        distance: 20
+                    }, {
+                        enabled: true,
+                        distance: -40,
+                        format: '{point.percentage:.1f}%',
+                        style: {
+                            fontSize: '1.2em',
+                            textOutline: 'none',
+                            opacity: 0.7
+                        },
+                        filter: {
+                            operator: '>',
+                            property: 'percentage',
+                            value: 10
+                        }
+                    }]
+                }
+            },
+
+            series: [
+                {
+                    name: 'Percentage',
+                    colorByPoint: true,
+                    data: [
+                        {% for place_name, place_count in places %}
+                            {
+                                name: '{{ place_name }}',
+                                y: {{ place_count }}
+                            }
+                            {% if not forloop.last %},{% endif %}
+                        {% endfor %}]
+                }]
+
+        });
+    </script>
 {% endblock %}

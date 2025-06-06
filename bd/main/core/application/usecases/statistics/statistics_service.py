@@ -19,5 +19,6 @@ class StatisticsService:
             purchase_price_count=db_stats.purchase_price_count,
             deluxe_edition_count=db_stats.deluxe_edition_count,
             signed_copies_count=attachment_stats.signed_copies_count,
-            ex_libris_count=attachment_stats.ex_libris_count
+            ex_libris_count=attachment_stats.ex_libris_count,
+            place_of_purchase_pie=db_stats.place_of_purchase_pie,
         )

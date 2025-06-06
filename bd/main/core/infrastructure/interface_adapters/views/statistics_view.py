@@ -23,5 +23,7 @@ def statistics_view(request: HttpRequest) -> HttpResponse:
         'prix': statistics.purchase_price_count,
         'tirage': statistics.deluxe_edition_count,
         'dedicaces': statistics.signed_copies_count,
-        'exlibris': statistics.ex_libris_count
+        'exlibris': statistics.ex_libris_count,
+        'title': "Lieu d'achat des albums",
+        'places': statistics.place_of_purchase_pie,
     })
