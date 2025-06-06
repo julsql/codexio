@@ -1,13 +1,28 @@
+import os
+import sys
 import unittest
 from datetime import date
 from decimal import Decimal
 
+import django
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+django.setup()
+
 from main.core.application.usecases.random_album.random_album_service import RandomAlbumService
 from main.core.domain.model.album import Album
+from main.core.infrastructure.persistence.database.models.collection import Collection
+from main.models import AppUser
 from tests.test_random_album.internal.random_album_in_memory import RandomAlbumInMemory
 
 
 class TestRandomAlbumService(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.user = AppUser.objects.get(username="admin")
+        cls.collection = Collection.objects.get(accounts=cls.user)
+
     def setUp(self) -> None:
         self.test_album = Album(
             isbn=123456789,
@@ -30,7 +45,7 @@ class TestRandomAlbumService(unittest.TestCase):
         service = RandomAlbumService(repository)
 
         # Act
-        result = service.main()
+        result = service.main(self.user)
 
         # Assert
         self.assertTrue(result.is_empty())
@@ -42,7 +57,7 @@ class TestRandomAlbumService(unittest.TestCase):
         service = RandomAlbumService(repository)
 
         # Act
-        result = service.main()
+        result = service.main(self.user)
 
         # Assert
         self.assertEqual(self.test_album, result)

@@ -11,6 +11,8 @@ django.setup()
 
 from main.core.infrastructure.persistence.database.models.bd import BD as DATABASE_MODEL_BD
 from main.core.infrastructure.persistence.database.page_bd_database_adapter import PageBdDatabaseAdapter
+from main.core.infrastructure.persistence.database.models.collection import Collection
+from main.models import AppUser
 
 
 class TestPageBdDatabaseConnexion(unittest.TestCase):
@@ -37,13 +39,15 @@ class TestPageBdDatabaseConnexion(unittest.TestCase):
             'synopsis': 'synopsis',
             'image': 'image',
         }
+        cls.user = AppUser.objects.get(username="admin")
+        cls.collection = Collection.objects.get(accounts=cls.user)
 
     def setUp(self) -> None:
-        DATABASE_MODEL_BD.objects.all().delete()
+        DATABASE_MODEL_BD.objects.filter(collection__accounts=self.user).delete()
 
     def test_page_with_non_existing_isbn(self) -> None:
         # Act
-        result = self.repository.page(1234)
+        result = self.repository.page(1234, self.user)
 
         # Assert
         self.assertIsNone(result)
@@ -69,10 +73,11 @@ class TestPageBdDatabaseConnexion(unittest.TestCase):
             'image': 'test2.jpg',
             'deluxe_edition': False,
         }
-        DATABASE_MODEL_BD.objects.create(**test_data)
+        DATABASE_MODEL_BD.objects.create(**test_data,
+                                         collection=self.collection)
 
         # Act
-        result = self.repository.page(5678)
+        result = self.repository.page(5678, self.user)
 
         # Assert
         self.assertIsNotNone(result)
@@ -93,10 +98,11 @@ class TestPageBdDatabaseConnexion(unittest.TestCase):
             'deluxe_edition': False,
         }
 
-        DATABASE_MODEL_BD.objects.create(**test_data)
+        DATABASE_MODEL_BD.objects.create(**test_data,
+                                         collection=self.collection)
 
         # Act
-        result = self.repository.page(9012)
+        result = self.repository.page(9012, self.user)
 
         # Assert
         self.assertIsNotNone(result)
@@ -123,11 +129,12 @@ class TestPageBdDatabaseConnexion(unittest.TestCase):
             },
         ]
         for data in test_data_list:
-            DATABASE_MODEL_BD.objects.create(**data)
+            DATABASE_MODEL_BD.objects.create(**data,
+                                             collection=self.collection)
 
         # Act & Assert
         for test_data in test_data_list:
-            result = self.repository.page(int(test_data['isbn']))
+            result = self.repository.page(int(test_data['isbn']), self.user)
             self.assertIsNotNone(result)
             self.assertEqual(test_data['album'], result.title)
             self.assertEqual(test_data['isbn'], result.isbn)

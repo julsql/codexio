@@ -1,4 +1,15 @@
+import os
+import sys
 import unittest
+
+import django
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+django.setup()
+
+from main.core.infrastructure.persistence.database.models.collection import Collection
+from main.models import AppUser
 
 from main.core.application.usecases.page_bd.page_bd_service import PageBdService
 from main.core.domain.model.bd import BD
@@ -19,6 +30,9 @@ class TestPageBdService(unittest.TestCase):
             series="Test Series",
             number="1")
 
+        cls.user = AppUser.objects.get(username="admin")
+        cls.collection = Collection.objects.get(accounts=cls.user)
+
     def setUp(self) -> None:
         self.attachments_repository = PageBdAttachmentsInMemory()
         self.database_repository = PageBdDatabaseInMemory()
@@ -30,7 +44,7 @@ class TestPageBdService(unittest.TestCase):
         self.database_repository.add_bd(self.TEST_ISBN, self.TEST_BD_INFO)
 
         # Act
-        result = self.service.main(self.TEST_ISBN)
+        result = self.service.main(self.TEST_ISBN, self.user)
 
         # Assert
         self.assertEqual(BdWithAttachment(album=self.TEST_BD_INFO, attachments=BdAttachment()), result)
@@ -42,7 +56,7 @@ class TestPageBdService(unittest.TestCase):
         non_existing_isbn = 5678
 
         # Act
-        result = self.service.main(non_existing_isbn)
+        result = self.service.main(non_existing_isbn, self.user)
 
         # Assert
         self.assertIsNone(result)
@@ -54,7 +68,7 @@ class TestPageBdService(unittest.TestCase):
         self.database_repository.set_error(True)
 
         # Act
-        result = self.service.main(self.TEST_ISBN)
+        result = self.service.main(self.TEST_ISBN, self.user)
 
         # Assert
         self.assertIsNone(result)
@@ -73,7 +87,7 @@ class TestPageBdService(unittest.TestCase):
 
         # Act & Assert
         for isbn, expected_info in test_data:
-            result = self.service.main(isbn)
+            result = self.service.main(isbn, self.user)
             self.assertEqual(BdWithAttachment(album=expected_info, attachments=BdAttachment()), result)
             self.assertEqual(isbn, self.attachments_repository.last_isbn)
 

@@ -18,7 +18,7 @@ class PageBdView:
         attachments_repository = PageBdAttachmentsAdapter(SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER)
         database_repository = PageBdDatabaseAdapter()
         service = PageBdService(attachments_repository, database_repository, self.logger_adapter)
-        infos = service.main(isbn)
+        infos = service.main(isbn, request.user)
         if not infos:
             return render(request, 'page_bd/not_found.html', {"isbn": isbn})
         return render(request, 'page_bd/module.html', {

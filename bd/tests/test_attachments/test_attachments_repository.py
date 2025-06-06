@@ -14,7 +14,8 @@ from main.core.domain.model.attachment import Attachment
 from main.core.domain.model.attachments import Attachments
 from main.core.infrastructure.persistence.file.attachments_adapter import AttachmentsAdapter
 from main.core.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
-
+from main.core.infrastructure.persistence.database.models.collection import Collection
+from main.models import AppUser
 
 from main.core.infrastructure.persistence.database.models.bd import BD
 
@@ -24,6 +25,9 @@ class TestAttachmentsConnexion(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
+        cls.user = AppUser.objects.get(username="admin")
+        cls.collection = Collection.objects.get(accounts=cls.user)
+
         cls.temp_dir = tempfile.TemporaryDirectory()
 
         # Création des chemins temporaires
@@ -51,7 +55,7 @@ class TestAttachmentsConnexion(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
         # Nettoyage de la base de données avant chaque test
-        BD.objects.all().delete()
+        BD.objects.filter(collection__accounts=self.user).delete()
 
         # Nettoyage des dossiers temporaires
         for folder in [self.SIGNED_COPY_FOLDER, self.EXLIBRIS_FOLDER]:
@@ -93,7 +97,8 @@ class TestAttachmentsConnexion(unittest.TestCase):
             'series': "Test Series",
             "deluxe_edition": True
         }
-        BD.objects.create(**test_bd)
+        BD.objects.create(**test_bd,
+                          collection=self.collection)
         self.create_test_files(self.SIGNED_COPY_FOLDER, test_isbn, 3)
 
         attachments = self.repository.get_attachments(self.SIGNED_COPY_FOLDER)
@@ -110,7 +115,7 @@ class TestAttachmentsConnexion(unittest.TestCase):
         ]
 
         for data in test_data:
-            BD.objects.create(**data)
+            BD.objects.create(**data, collection=self.collection)
             self.create_test_files(self.SIGNED_COPY_FOLDER, data['isbn'], 2)
 
         attachments = self.repository.get_attachments(self.SIGNED_COPY_FOLDER)

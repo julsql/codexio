@@ -17,7 +17,7 @@ def statistics_view(request: HttpRequest) -> HttpResponse:
         attachment_repository=attachment_repository
     )
 
-    statistics = service.execute()
+    statistics = service.execute(request.user)
 
     return render(request, 'statistics/module.html', {
         'nombre': statistics.albums_count,

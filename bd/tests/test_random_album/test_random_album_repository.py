@@ -12,7 +12,9 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
+from main.models import AppUser
 from main.core.infrastructure.persistence.database.models.bd import BD
+from main.core.infrastructure.persistence.database.models.collection import Collection
 
 
 class TestRandomAlbumConnexion(unittest.TestCase):
@@ -21,9 +23,12 @@ class TestRandomAlbumConnexion(unittest.TestCase):
         super().setUpClass()
         cls.repository = RandomAlbumAdapter()
 
+        cls.user = AppUser.objects.get(username="admin")
+        cls.collection = Collection.objects.get(accounts=cls.user)
+
     def setUp(self):
         # Nettoyage de la base avant chaque test
-        BD.objects.all().delete()
+        BD.objects.filter(collection__accounts=self.user).delete()
 
         self.bd1 = {
             'isbn': 123456789,
@@ -58,68 +63,72 @@ class TestRandomAlbumConnexion(unittest.TestCase):
 
         # Création de données de test
         BD.objects.create(
-            **self.bd1
+            **self.bd1,
+            collection=self.collection
         )
 
         BD.objects.create(
-            **self.bd2
+            **self.bd2,
+            collection=self.collection
         )
 
     def tearDown(self):
-        BD.objects.all().delete()
+        BD.objects.filter(collection__accounts=self.user).delete()
 
     def test_get_random_album_empty_database(self):
         # Arrange
-        BD.objects.all().delete()
+        BD.objects.filter(collection__accounts=self.user).delete()
 
         # Act
-        result = self.repository.get_random_album()
+        result = self.repository.get_random_album(self.user)
 
         # Assert
         self.assertTrue(result.is_empty())
 
     def test_get_random_album_returns_dict_with_correct_fields(self):
         # Act
-        result = self.repository.get_random_album()
+        result = self.repository.get_random_album(self.user)
 
         # Assert
         self.assertIsInstance(result, Album)
 
     def test_get_random_album_integer_price(self):
         # Arrange
-        BD.objects.all().delete()
+        BD.objects.filter(collection__accounts=self.user).delete()
         BD.objects.create(
             isbn="111111111",
             album="Test Album",
             purchase_price=25.0,
-            deluxe_edition=False
+            deluxe_edition=False,
+            collection=self.collection
         )
 
         # Act
-        result = self.repository.get_random_album()
+        result = self.repository.get_random_album(self.user)
 
         # Assert
         self.assertEqual(25, result.purchase_price)
 
     def test_get_random_album_float_price(self):
         # Arrange
-        BD.objects.all().delete()
+        BD.objects.filter(collection__accounts=self.user).delete()
         BD.objects.create(
             isbn="111111111",
             album="Test Album",
             purchase_price=25.99,
-            deluxe_edition=False
+            deluxe_edition=False,
+            collection=self.collection
         )
 
         # Act
-        result = self.repository.get_random_album()
+        result = self.repository.get_random_album(self.user)
 
         # Assert
         self.assertEqual(25.99, float(result.purchase_price))
 
     def test_get_random_album_returns_valid_data(self):
         # Act
-        result = self.repository.get_random_album()
+        result = self.repository.get_random_album(self.user)
 
         # Assert
         self.assertIn(result.isbn, [123456789, 987654321])

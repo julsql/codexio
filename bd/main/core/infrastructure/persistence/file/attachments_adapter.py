@@ -4,7 +4,6 @@ from main.core.domain.model.attachment import Attachment
 from main.core.domain.model.attachments import Attachments
 from main.core.domain.ports.repositories.attachments_repository import AttachmentsRepository
 from main.core.infrastructure.persistence.database.models.bd import BD
-
 from main.core.infrastructure.persistence.file.filesystem_adapter import count_images_in_directory
 from main.core.infrastructure.persistence.file.paths import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
 

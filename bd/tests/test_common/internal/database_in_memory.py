@@ -1,6 +1,9 @@
 from typing import Dict
 
-from main.core.domain.ports.repositories.database_repository import DatabaseRepository
+from django.contrib.auth.base_user import AbstractBaseUser
+
+from main.core.domain.ports.repositories.table_bd_repository import DatabaseRepository
+from main.models import AppUser
 
 
 class DatabaseInMemory(DatabaseRepository):
@@ -8,10 +11,10 @@ class DatabaseInMemory(DatabaseRepository):
         self.database = None
         self.column_names = None
 
-    def reset_table(self) -> None:
+    def reset_table(self, user: AbstractBaseUser) -> None:
         self.database = []
 
-    def insert(self, value: list[Dict[str, str]]) -> None:
+    def insert(self, value: list[Dict[str, str]], user: AppUser) -> None:
         self.database = value
 
     def get_all(self) -> list:

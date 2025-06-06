@@ -8,7 +8,7 @@ from main.core.infrastructure.interface_adapters.bearer_token.bearer_token_adapt
 from main.core.infrastructure.interface_adapters.request_methods.request_method_adapter import RequestMethodAdapter
 from main.core.infrastructure.interface_adapters.responses.django_response_adapter import DjangoResponseAdapter
 from main.core.infrastructure.logging.python_logger_adapter import PythonLoggerAdapter
-from main.core.infrastructure.persistence.database.database_adapter import DatabaseAdapter
+from main.core.infrastructure.persistence.database.table_bd_adapter import TableBdAdapter
 from main.core.infrastructure.persistence.sheet.sheet_adapter import SheetAdapter
 
 
@@ -32,9 +32,9 @@ class UpdateDatabaseView:
 
         try:
             sheet_repository = SheetAdapter()
-            database_repository = DatabaseAdapter()
+            database_repository = TableBdAdapter()
             service = UpdateDatabaseService(sheet_repository, database_repository)
-            service.main()
+            service.main(request.user)
             return self.response_adapter.success('Site web mis à jour correctement')
 
         except Exception as e:

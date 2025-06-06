@@ -3,6 +3,7 @@ from abc import ABC
 from typing import Any
 from typing import Set
 
+from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.db.models import QuerySet, Q
 from django.db.models import Value, Func
@@ -14,8 +15,8 @@ from main.core.infrastructure.persistence.database.models.bd import BD
 
 class AdvancedSearchAdapter(AdvancedSearchRepository, ABC):
 
-    def get_all(self) -> QuerySet[BD, BD]:
-        return BD.objects.all()
+    def get_all(self, user: AbstractBaseUser) -> QuerySet[BD, BD]:
+        return BD.objects.filter(collection__accounts=user)
 
     def get_by_form(self, data: dict[str, Any], queryset: QuerySet[BD, BD]) -> QuerySet[BD, BD]:
         queryset = self.filter_contains(data, queryset)
