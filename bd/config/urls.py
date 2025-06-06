@@ -16,7 +16,8 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path
+from django.urls import path, include
+from django.contrib.auth import views as auth_views
 
 from main.core.infrastructure.interface_adapters.views.add_album_view import add_album
 from main.core.infrastructure.interface_adapters.views.attachments_view import exlibris_view, signed_copies_view
@@ -25,6 +26,7 @@ from main.core.infrastructure.interface_adapters.views.delete_photo_view import 
 from main.core.infrastructure.interface_adapters.views.errors_view import error_500_view, error_404_view
 from main.core.infrastructure.interface_adapters.views.existing_album_view import existing_album
 from main.core.infrastructure.interface_adapters.views.home_view import home_view
+from main.core.infrastructure.interface_adapters.views.login_view import login_view
 from main.core.infrastructure.interface_adapters.views.page_bd_view import page_bd_view
 from main.core.infrastructure.interface_adapters.views.statistics_view import statistics_view
 from main.core.infrastructure.interface_adapters.views.update_database_view import update_database
@@ -35,6 +37,10 @@ handler500 = error_500_view
 handler404 = error_404_view
 
 urlpatterns = [
+    path('accounts/login/', login_view, name='login'),
+    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('accounts/', include('django.contrib.auth.urls')),
+
     path('', home_view, name='home'),
     path('bdrecherche/', bd_search_view, name='bdrecherche'),
     path('dedicaces/', signed_copies_view, name='dedicaces'),

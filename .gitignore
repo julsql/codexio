@@ -1,4 +1,5 @@
 bd/media/
+bd/main/migrations/0003_create_users.py
 
 # ide
 .idea/

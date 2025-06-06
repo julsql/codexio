@@ -1,7 +1,7 @@
 from main.core.domain import ApiConnexionDataNotFound
 from main.core.infrastructure.api.bd_gest_adapter import BdGestAdapter
 from main.core.infrastructure.logging.python_logger_adapter import PythonLoggerAdapter
-from main.core.infrastructure.persistence.database.models import BD
+from main.core.infrastructure.persistence.database.models.bd import BD
 from main.core.infrastructure.persistence.sheet.sheet_adapter import SheetAdapter
 
 result_isbn = list(BD.objects.values("isbn").filter(synopsis__icontains="Le synopsis de cet album est manquant"))

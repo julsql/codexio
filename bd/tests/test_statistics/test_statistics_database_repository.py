@@ -10,7 +10,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
 from main.core.domain.model.statistics import Statistics
-from main.core.infrastructure.persistence.database.models import BD
+from main.core.infrastructure.persistence.database.models.bd import BD
 from main.core.infrastructure.persistence.database.statistics_database_adapter import StatisticsDatabaseAdapter
 
 

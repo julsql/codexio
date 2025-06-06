@@ -4,7 +4,7 @@ from typing import Optional
 
 from main.core.domain.model.album import Album
 from main.core.domain.ports.repositories.random_album_repository import RandomAlbumRepository
-from main.core.infrastructure.persistence.database.models import BD
+from main.core.infrastructure.persistence.database.models.bd import BD
 
 
 class RandomAlbumAdapter(RandomAlbumRepository, ABC):

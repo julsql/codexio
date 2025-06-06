@@ -4,7 +4,7 @@ from typing import Optional
 
 from main.core.domain.model.bd import BD as INTERNAL_MODEL_BD
 from main.core.domain.ports.repositories.page_bd_database_repository import PageBdDatabaseRepository
-from main.core.infrastructure.persistence.database.models import BD as DATABASE_MODEL_BD
+from main.core.infrastructure.persistence.database.models.bd import BD as DATABASE_MODEL_BD
 
 
 class PageBdDatabaseAdapter(PageBdDatabaseRepository, ABC):

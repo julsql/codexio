@@ -29,3 +29,7 @@ class RechercheForm(forms.Form):
     isbn = forms.IntegerField(required=False, label='ISBN', widget=forms.NumberInput(attrs={"data_see": "false"}))
     number = forms.CharField(required=False, label='Numéro', widget=forms.TextInput(attrs={"data_see": "false"}))
     synopsis = forms.CharField(required=False, label='Synopsis', widget=forms.TextInput(attrs={"data_see": "false"}))
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=150, label='Nom d\'utilisateur')
+    password = forms.CharField(widget=forms.PasswordInput, label='Mot de passe')

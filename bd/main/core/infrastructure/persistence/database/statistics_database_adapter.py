@@ -3,7 +3,7 @@ from django.db.models.functions import Cast, Coalesce, Round
 
 from main.core.domain.model.statistics import Statistics
 from main.core.domain.ports.repositories.statistics_database_repository import StatisticsDatabaseRepository
-from main.core.infrastructure.persistence.database.models import BD
+from main.core.infrastructure.persistence.database.models.bd import BD
 
 
 def map_place_of_purchase(place_of_purchase_query: QuerySet) -> list[tuple[str, int]]:
