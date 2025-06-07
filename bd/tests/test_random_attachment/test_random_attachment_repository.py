@@ -20,9 +20,10 @@ class TestRandomAttachmentRepository(unittest.TestCase):
         super().setUpClass()
         cls.temp_dir = tempfile.TemporaryDirectory()
 
+        collection_id = 1
         # Création des chemins temporaires
-        cls.SIGNED_COPY_FOLDER = os.path.join(cls.temp_dir.name, SIGNED_COPY_PATH)
-        cls.EXLIBRIS_FOLDER = os.path.join(cls.temp_dir.name, EXLIBRIS_PATH)
+        cls.SIGNED_COPY_FOLDER = os.path.join(cls.temp_dir.name, SIGNED_COPY_PATH(collection_id))
+        cls.EXLIBRIS_FOLDER = os.path.join(cls.temp_dir.name, EXLIBRIS_PATH(collection_id))
 
         # Création des dossiers nécessaires
         os.makedirs(cls.SIGNED_COPY_FOLDER, exist_ok=True)

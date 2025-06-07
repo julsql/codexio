@@ -17,17 +17,17 @@ class Attachments:
     def __post_init__(self):
         self.sum = sum([attachment.total for attachment in self.attachments_list])
 
-    def set_type(self, attachment_type: AttachmentType):
+    def set_type(self, attachment_type: AttachmentType, collection_id: int):
         if attachment_type == AttachmentType.SIGNED_COPY:
             self.title = 'dédicaces'
             self.subtitle = 'Toutes les dédicaces'
             self.type = 'dédicace'
-            self.image_path = SIGNED_COPY_PATH
+            self.image_path = SIGNED_COPY_PATH(collection_id)
         if attachment_type == AttachmentType.EXLIBRIS:
             self.title = 'Ex-libris'
             self.subtitle = 'Tous les ex-libris'
             self.type = 'ex-libris'
-            self.image_path = EXLIBRIS_PATH
+            self.image_path = EXLIBRIS_PATH(collection_id)
 
     def __str__(self):
         return (
