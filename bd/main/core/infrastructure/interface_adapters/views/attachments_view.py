@@ -21,9 +21,9 @@ def attachment_view(request: HttpRequest, attachment_type: AttachmentType) -> Ht
     repository = AttachmentsAdapter()
     service = AttachmentsService(repository)
     if attachment_type == AttachmentType.SIGNED_COPY:
-        attachments = service.main_signed_copies()
+        attachments = service.main_signed_copies(request.user)
     else:
-        attachments = service.main_ex_libris()
+        attachments = service.main_ex_libris(request.user)
 
     return render(request, 'attachments/module.html', {
         'attachments': [{'isbn': attachment.isbn,

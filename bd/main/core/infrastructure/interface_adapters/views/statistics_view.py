@@ -4,13 +4,17 @@ from django.shortcuts import render
 
 from main.core.application.usecases.statistics.statistics_service import StatisticsService
 from main.core.infrastructure.persistence.database.statistics_database_adapter import StatisticsDatabaseAdapter
+from main.core.infrastructure.persistence.file.paths import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
 from main.core.infrastructure.persistence.file.statistics_attachment_adapter import StatisticsAttachmentAdapter
 
 
 @login_required
 def statistics_view(request: HttpRequest) -> HttpResponse:
     database_repository = StatisticsDatabaseAdapter()
-    attachment_repository = StatisticsAttachmentAdapter()
+    collection_id = request.user.collections.values('id').first()['id']
+
+    attachment_repository = StatisticsAttachmentAdapter(SIGNED_COPY_FOLDER(collection_id),
+                                                        EXLIBRIS_FOLDER(collection_id))
 
     service = StatisticsService(
         database_repository=database_repository,

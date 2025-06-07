@@ -1,12 +1,11 @@
 from main.core.domain.model.statistics import Statistics
 from main.core.domain.ports.repositories.statistics_attachment_repository import StatisticsAttachmentRepository
 from main.core.infrastructure.persistence.file.filesystem_adapter import count_images_in_directory
-from main.core.infrastructure.persistence.file.paths import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
 
 
 class StatisticsAttachmentAdapter(StatisticsAttachmentRepository):
-    def __init__(self, signed_copy_path: str = SIGNED_COPY_FOLDER,
-                 exlibris_path: str = EXLIBRIS_FOLDER):
+    def __init__(self, signed_copy_path: str,
+                 exlibris_path: str):
         self.signed_copy_path = signed_copy_path
         self.exlibris_path = exlibris_path
 

@@ -15,7 +15,8 @@ class PageBdView:
         self.logger_adapter = PythonLoggerAdapter()
 
     def handle_request(self, request: HttpRequest, isbn: int) -> HttpResponse:
-        attachments_repository = PageBdAttachmentsAdapter(SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER)
+        collection_id = request.user.collections.values('id').first()['id']
+        attachments_repository = PageBdAttachmentsAdapter(SIGNED_COPY_FOLDER(collection_id), EXLIBRIS_FOLDER(collection_id))
         database_repository = PageBdDatabaseAdapter()
         service = PageBdService(attachments_repository, database_repository, self.logger_adapter)
         infos = service.main(isbn, request.user)
@@ -45,6 +46,7 @@ class PageBdView:
             "nb_dedicace": len(infos.attachments.signed_copies),
             "ex_libris": infos.attachments.ex_libris,
             "nb_exlibris": len(infos.attachments.ex_libris),
+            "collection_id": collection_id,
         })
 
 

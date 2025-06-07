@@ -1,4 +1,12 @@
+import os
+import sys
 import unittest
+
+import django
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+django.setup()
 
 from main.core.application.usecases.update_database.update_database_service import UpdateDatabaseService
 from main.core.infrastructure.persistence.database.models.collection import Collection

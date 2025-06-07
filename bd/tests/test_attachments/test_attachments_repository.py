@@ -31,8 +31,8 @@ class TestAttachmentsConnexion(unittest.TestCase):
         cls.temp_dir = tempfile.TemporaryDirectory()
 
         # Création des chemins temporaires
-        cls.SIGNED_COPY_FOLDER = os.path.join(cls.temp_dir.name, SIGNED_COPY_PATH)
-        cls.EXLIBRIS_FOLDER = os.path.join(cls.temp_dir.name, EXLIBRIS_PATH)
+        cls.SIGNED_COPY_FOLDER = os.path.join(cls.temp_dir.name, SIGNED_COPY_PATH(cls.collection.id))
+        cls.EXLIBRIS_FOLDER = os.path.join(cls.temp_dir.name, EXLIBRIS_PATH(cls.collection.id))
 
         # Création des dossiers nécessaires
         os.makedirs(cls.SIGNED_COPY_FOLDER, exist_ok=True)

@@ -1,17 +1,10 @@
 import os
-import sys
 import tempfile
 import unittest
-
-import django
 
 from main.core.domain.model.statistics import Statistics
 from main.core.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
 from main.core.infrastructure.persistence.file.statistics_attachment_adapter import StatisticsAttachmentAdapter
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
-django.setup()
 
 
 class TestStatisticsAttachmentsConnexion(unittest.TestCase):
@@ -21,9 +14,11 @@ class TestStatisticsAttachmentsConnexion(unittest.TestCase):
         super().setUpClass()
         cls.temp_dir = tempfile.TemporaryDirectory()
 
+        collection_id = 1
+
         # Création des chemins temporaires
-        cls.SIGNED_COPY_FOLDER = os.path.join(cls.temp_dir.name, SIGNED_COPY_PATH)
-        cls.EXLIBRIS_FOLDER = os.path.join(cls.temp_dir.name, EXLIBRIS_PATH)
+        cls.SIGNED_COPY_FOLDER = os.path.join(cls.temp_dir.name, SIGNED_COPY_PATH(collection_id))
+        cls.EXLIBRIS_FOLDER = os.path.join(cls.temp_dir.name, EXLIBRIS_PATH(collection_id))
 
         # Création des dossiers nécessaires
         os.makedirs(cls.SIGNED_COPY_FOLDER, exist_ok=True)
