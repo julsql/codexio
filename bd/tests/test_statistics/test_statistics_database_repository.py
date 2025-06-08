@@ -23,14 +23,14 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
         cls.user = AppUser.objects.get(username="admin")
         cls.collection = Collection.objects.get(accounts=cls.user)
         cls.repository = StatisticsDatabaseAdapter()
-        BD.objects.filter(collection__accounts=cls.user).delete()
+        BD.objects.filter(collection=cls.collection).delete()
 
     def tearDown(self):
-        BD.objects.filter(collection__accounts=self.user).delete()
+        BD.objects.filter(collection=self.collection).delete()
 
     def test_get_information_empty_database(self) -> None:
         # Act
-        result = self.repository.get_database_statistics(self.user)
+        result = self.repository.get_database_statistics(self.collection)
 
         # Assert
         self.assertIsInstance(result, Statistics)
@@ -61,7 +61,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
         )
 
         # Act
-        result = self.repository.get_database_statistics(self.user)
+        result = self.repository.get_database_statistics(self.collection)
 
         # Assert
         expected = Statistics(albums_count=2,
@@ -97,7 +97,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
         )
 
         # Act
-        result = self.repository.get_database_statistics(self.user)
+        result = self.repository.get_database_statistics(self.collection)
 
         # Assert
         expected = Statistics(albums_count=2,
@@ -133,7 +133,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
         )
 
         # Act
-        result = self.repository.get_database_statistics(self.user)
+        result = self.repository.get_database_statistics(self.collection)
 
         # Assert
         expected = Statistics(albums_count=2,
@@ -249,7 +249,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
         )
 
         # Act
-        result = self.repository.get_database_statistics(self.user)
+        result = self.repository.get_database_statistics(self.collection)
 
         # Assert
         expected = Statistics(albums_count=10,
@@ -278,7 +278,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
         )
 
         # Act
-        result = self.repository.get_database_statistics(self.user)
+        result = self.repository.get_database_statistics(self.collection)
 
         # Assert
         expected = Statistics(albums_count=1,
@@ -305,7 +305,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
         )
 
         # Act
-        result = self.repository.get_database_statistics(self.user)
+        result = self.repository.get_database_statistics(self.collection)
 
         # Assert
         self.assertEqual(15.0, result.purchase_price_count)

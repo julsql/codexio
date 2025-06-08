@@ -6,6 +6,7 @@ from main.core.domain.model.bd_with_attachment import BdWithAttachment
 from main.core.domain.ports.repositories.logger_repository import LoggerRepository
 from main.core.domain.ports.repositories.page_bd_attachments_repository import PageBdAttachmentsRepository
 from main.core.domain.ports.repositories.page_bd_database_repository import PageBdDatabaseRepository
+from main.core.infrastructure.persistence.database.models import Collection
 
 
 class PageBdService:
@@ -17,9 +18,9 @@ class PageBdService:
         self.attachments_repository = attachments_repository
         self.database_repository = database_repository
 
-    def main(self, isbn: int, user: AbstractBaseUser) -> Optional[BdWithAttachment]:
+    def main(self, isbn: int, collection: Collection) -> Optional[BdWithAttachment]:
         try:
-            album = self.database_repository.page(isbn, user)
+            album = self.database_repository.page(isbn, collection)
         except Exception as e:
             self.logging_repository.error(
                 str(e),

@@ -1,12 +1,11 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from django.contrib.auth.base_user import AbstractBaseUser
-
 from main.core.domain.model.album import Album
+from main.core.infrastructure.persistence.database.models import Collection
 
 
 class RandomAlbumRepository(ABC):
     @abstractmethod
-    def get_random_album(self, user: AbstractBaseUser) -> Optional[Album]:
+    def get_random_album(self, collection: Collection) -> Optional[Album]:
         pass

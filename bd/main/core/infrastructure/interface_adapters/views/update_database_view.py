@@ -30,11 +30,16 @@ class UpdateDatabaseView:
         if token_invalid := self.auth_service.verify_token(request.headers.get('Authorization')):
             return token_invalid
 
+        if request.user.current_collection:
+            collection = request.user.current_collection
+        else:
+            collection = request.user.collections.all().first()
+
         try:
             sheet_repository = SheetAdapter()
             database_repository = TableBdAdapter()
             service = UpdateDatabaseService(sheet_repository, database_repository)
-            service.main(request.user)
+            service.main(collection)
             return self.response_adapter.success('Site web mis à jour correctement')
 
         except Exception as e:

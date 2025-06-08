@@ -1,18 +1,14 @@
-from django.contrib.auth.base_user import AbstractBaseUser
-
 from main.core.domain.model.bd import BD as INTERNAL_MODEL_BD
 from main.core.domain.ports.repositories.table_bd_repository import DatabaseRepository
+from main.core.infrastructure.persistence.database.models import Collection
 from main.core.infrastructure.persistence.database.models.bd import BD as DATABASE_MODEL_BD
-from main.models import AppUser
 
 
 class TableBdAdapter(DatabaseRepository):
-    def reset_table(self, user: AbstractBaseUser) -> None:
-        DATABASE_MODEL_BD.objects.filter(collection__accounts=user).delete()
+    def reset_table(self, collection: Collection) -> None:
+        DATABASE_MODEL_BD.objects.filter(collection=collection).delete()
 
-    def insert(self, value: list[INTERNAL_MODEL_BD], user: AppUser) -> None:
-        collection = user.collections.first()
-
+    def insert(self, value: list[INTERNAL_MODEL_BD], collection: Collection) -> None:
         objects = [
             DATABASE_MODEL_BD(
                 isbn=row.isbn,
@@ -41,5 +37,5 @@ class TableBdAdapter(DatabaseRepository):
 
         DATABASE_MODEL_BD.objects.bulk_create(objects)
 
-    def get_all(self, user: AbstractBaseUser) -> list[dict[str, str]]:
-        return list(DATABASE_MODEL_BD.objects.filter(collection__accounts=user).values())
+    def get_all(self, collection: Collection) -> list[dict[str, str]]:
+        return list(DATABASE_MODEL_BD.objects.filter(collection=collection).values())

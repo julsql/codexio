@@ -24,16 +24,16 @@ class TestDatabaseRepository(unittest.TestCase):
         cls.user = AppUser.objects.get(username="admin")
         cls.collection = Collection.objects.get(accounts=cls.user)
 
-        BD.objects.filter(collection__accounts=cls.user).delete()
+        BD.objects.filter(collection=cls.collection).delete()
 
     def tearDown(self) -> None:
         # After each
-        BD.objects.filter(collection__accounts=self.user).delete()
+        BD.objects.filter(collection=self.collection).delete()
 
     def test_insert_correctly(self) -> None:
         value = ALBUM_EXEMPLE
-        self.database_repository.insert([value], self.user)
-        entry = (BD.objects.filter(collection__accounts=self.user)
+        self.database_repository.insert([value], self.collection)
+        entry = (BD.objects.filter(collection=self.collection)
                  .values('isbn',
                          'album',
                          'number',
@@ -54,13 +54,13 @@ class TestDatabaseRepository(unittest.TestCase):
                          'synopsis',
                          'image',
                          ).get(isbn=value.isbn))
-        self.assertEqual(BD.objects.filter(collection__accounts=self.user).count(), 1)
+        self.assertEqual(BD.objects.filter(collection=self.collection).count(), 1)
         self.assertEqual(ALBUM_EXEMPLE_DICT, entry)
 
     def test_get_all_correctly(self) -> None:
         value = ALBUM_EXEMPLE_DICT.copy()
         obj = BD.objects.create(**value, collection=self.collection)
-        entry = self.database_repository.get_all(self.user)
+        entry = self.database_repository.get_all(self.collection)
         value['id'] = obj.id
         value['collection_id'] = 1
         self.assertEqual(len(entry), 1)
@@ -69,9 +69,8 @@ class TestDatabaseRepository(unittest.TestCase):
     def test_reset_table_correctly(self) -> None:
         value = ALBUM_EXEMPLE_DICT
         BD.objects.create(**value, collection=self.collection)
-        user = AppUser.objects.get(username='admin')
-        self.database_repository.reset_table(user)
-        self.assertEqual(BD.objects.filter(collection__accounts=self.user).count(), 0)
+        self.database_repository.reset_table(self.collection)
+        self.assertEqual(BD.objects.filter(collection=self.collection).count(), 0)
 
 
 if __name__ == '__main__':

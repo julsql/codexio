@@ -11,9 +11,14 @@ from main.core.infrastructure.persistence.database.random_album_adapter import R
 
 @login_required
 def home_view(request: HttpRequest) -> HttpResponse:
+    if request.user.current_collection:
+        collection = request.user.current_collection
+    else:
+        collection = request.user.collections.all().first()
+
     random_album_connexion = RandomAlbumAdapter()
     random_album_service = RandomAlbumService(random_album_connexion)
-    random_album = random_album_service.main(request.user)
+    random_album = random_album_service.main(collection)
 
     # Banner
     # random_attachment_repository = RandomAttachmentAdapter()

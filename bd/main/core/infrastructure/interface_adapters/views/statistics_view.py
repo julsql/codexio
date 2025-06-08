@@ -11,17 +11,20 @@ from main.core.infrastructure.persistence.file.statistics_attachment_adapter imp
 @login_required
 def statistics_view(request: HttpRequest) -> HttpResponse:
     database_repository = StatisticsDatabaseAdapter()
-    collection_id = request.user.collections.values('id').first()['id']
+    if request.user.current_collection:
+        collection = request.user.current_collection
+    else:
+        collection = request.user.collections.all().first()
 
-    attachment_repository = StatisticsAttachmentAdapter(SIGNED_COPY_FOLDER(collection_id),
-                                                        EXLIBRIS_FOLDER(collection_id))
+    attachment_repository = StatisticsAttachmentAdapter(SIGNED_COPY_FOLDER(collection.id),
+                                                        EXLIBRIS_FOLDER(collection.id))
 
     service = StatisticsService(
         database_repository=database_repository,
         attachment_repository=attachment_repository
     )
 
-    statistics = service.execute(request.user)
+    statistics = service.execute(collection)
 
     return render(request, 'statistics/module.html', {
         'nombre': statistics.albums_count,

@@ -28,6 +28,7 @@ from main.core.infrastructure.interface_adapters.views.existing_album_view impor
 from main.core.infrastructure.interface_adapters.views.home_view import home_view
 from main.core.infrastructure.interface_adapters.views.login_view import login_view
 from main.core.infrastructure.interface_adapters.views.page_bd_view import page_bd_view
+from main.core.infrastructure.interface_adapters.views.profile_view import profile_view, change_collection_view
 from main.core.infrastructure.interface_adapters.views.statistics_view import statistics_view
 from main.core.infrastructure.interface_adapters.views.update_database_view import update_database
 from main.core.infrastructure.interface_adapters.views.upload_photo_view import upload_dedicace_view, \
@@ -42,6 +43,8 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
 
     path('', home_view, name='home'),
+    path('profile', profile_view, name='profile'),
+    path('change-collection/<int:collection_id>/', change_collection_view, name='change_collection'),
     path('bdrecherche/', bd_search_view, name='bdrecherche'),
     path('dedicaces/', signed_copies_view, name='dedicaces'),
     path('exlibris/', exlibris_view, name='exlibris'),
