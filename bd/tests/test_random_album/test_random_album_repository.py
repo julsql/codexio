@@ -27,7 +27,7 @@ class TestRandomAlbumConnexion(unittest.TestCase):
 
     def setUp(self):
         # Nettoyage de la base avant chaque test
-        BD.objects.filter(collection__accounts=self.user).delete()
+        BD.objects.filter(collection=self.collection).delete()
 
         self.bd1 = {
             'isbn': 123456789,
@@ -72,28 +72,28 @@ class TestRandomAlbumConnexion(unittest.TestCase):
         )
 
     def tearDown(self):
-        BD.objects.filter(collection__accounts=self.user).delete()
+        BD.objects.filter(collection=self.collection).delete()
 
     def test_get_random_album_empty_database(self):
         # Arrange
-        BD.objects.filter(collection__accounts=self.user).delete()
+        BD.objects.filter(collection=self.collection).delete()
 
         # Act
-        result = self.repository.get_random_album(self.user)
+        result = self.repository.get_random_album(self.collection)
 
         # Assert
         self.assertTrue(result.is_empty())
 
     def test_get_random_album_returns_dict_with_correct_fields(self):
         # Act
-        result = self.repository.get_random_album(self.user)
+        result = self.repository.get_random_album(self.collection)
 
         # Assert
         self.assertIsInstance(result, Album)
 
     def test_get_random_album_integer_price(self):
         # Arrange
-        BD.objects.filter(collection__accounts=self.user).delete()
+        BD.objects.filter(collection=self.collection).delete()
         BD.objects.create(
             isbn="111111111",
             album="Test Album",
@@ -103,14 +103,14 @@ class TestRandomAlbumConnexion(unittest.TestCase):
         )
 
         # Act
-        result = self.repository.get_random_album(self.user)
+        result = self.repository.get_random_album(self.collection)
 
         # Assert
         self.assertEqual(25, result.purchase_price)
 
     def test_get_random_album_float_price(self):
         # Arrange
-        BD.objects.filter(collection__accounts=self.user).delete()
+        BD.objects.filter(collection=self.collection).delete()
         BD.objects.create(
             isbn="111111111",
             album="Test Album",
@@ -120,14 +120,14 @@ class TestRandomAlbumConnexion(unittest.TestCase):
         )
 
         # Act
-        result = self.repository.get_random_album(self.user)
+        result = self.repository.get_random_album(self.collection)
 
         # Assert
         self.assertEqual(25.99, float(result.purchase_price))
 
     def test_get_random_album_returns_valid_data(self):
         # Act
-        result = self.repository.get_random_album(self.user)
+        result = self.repository.get_random_album(self.collection)
 
         # Assert
         self.assertIn(result.isbn, [123456789, 987654321])

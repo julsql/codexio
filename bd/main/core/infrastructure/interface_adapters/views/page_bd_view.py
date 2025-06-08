@@ -15,11 +15,16 @@ class PageBdView:
         self.logger_adapter = PythonLoggerAdapter()
 
     def handle_request(self, request: HttpRequest, isbn: int) -> HttpResponse:
-        collection_id = request.user.collections.values('id').first()['id']
-        attachments_repository = PageBdAttachmentsAdapter(SIGNED_COPY_FOLDER(collection_id), EXLIBRIS_FOLDER(collection_id))
+        if request.user.current_collection:
+            collection = request.user.current_collection
+        else:
+            collection = request.user.collections.all().first()
+
+        attachments_repository = PageBdAttachmentsAdapter(SIGNED_COPY_FOLDER(collection.id),
+                                                          EXLIBRIS_FOLDER(collection.id))
         database_repository = PageBdDatabaseAdapter()
         service = PageBdService(attachments_repository, database_repository, self.logger_adapter)
-        infos = service.main(isbn, request.user)
+        infos = service.main(isbn, collection)
         if not infos:
             return render(request, 'page_bd/not_found.html', {"isbn": isbn})
         return render(request, 'page_bd/module.html', {

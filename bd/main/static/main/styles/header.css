@@ -38,6 +38,71 @@
     color: #f6f8f8;
 }
 
+.user-container {
+    display: flex;
+    position: absolute; /*150px*/
+    top: 43px;
+    left: 0;
+}
+
+.user-menu {
+    position: relative;
+    display: inline-block;
+    margin: auto;
+}
+
+.user-button {
+    background-color: transparent;
+    color: white;
+    padding: 10px 0;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.user-icon {
+    height: 40px;
+    width: 40px;
+    fill: white;
+}
+
+.logout-button {
+    all: unset !important;
+}
+
+.user-button:hover {
+    background-color: rgba(10, 10, 10, 0.2);
+}
+
+.user-menu:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 10px 16px;
+    text-decoration: none;
+    display: block;
+    text-shadow: none;
+    left: unset;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+
 .logout {
     margin: auto 0;
 }
@@ -60,6 +125,28 @@
 
     #header {
         display: none;
+    }
+
+    .user-container {
+        display: flex;
+        position: absolute;
+        left: auto;
+        right: 0;
+        top: 0;
+        z-index: 100000;
+    }
+
+    .user-button {
+        padding: 10px 16px 0 16px;
+    }
+
+    .user-icon {
+        height: 25px;
+        width: 25px;
+    }
+
+    .dropdown-content {
+        right: 0;
     }
 
     /* Nav */

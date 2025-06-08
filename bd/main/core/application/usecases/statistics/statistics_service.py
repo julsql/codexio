@@ -1,8 +1,7 @@
-from django.contrib.auth.base_user import AbstractBaseUser
-
 from main.core.domain.model.statistics import Statistics
 from main.core.domain.ports.repositories.statistics_attachment_repository import StatisticsAttachmentRepository
 from main.core.domain.ports.repositories.statistics_database_repository import StatisticsDatabaseRepository
+from main.core.infrastructure.persistence.database.models import Collection
 
 
 class StatisticsService:
@@ -11,8 +10,8 @@ class StatisticsService:
         self._database_repository = database_repository
         self._attachment_repository = attachment_repository
 
-    def execute(self, user: AbstractBaseUser) -> Statistics:
-        db_stats = self._database_repository.get_database_statistics(user)
+    def execute(self, collection: Collection) -> Statistics:
+        db_stats = self._database_repository.get_database_statistics(collection)
         attachment_stats = self._attachment_repository.get_attachment_statistics()
 
         return Statistics(

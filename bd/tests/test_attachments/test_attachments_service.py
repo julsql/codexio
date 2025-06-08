@@ -33,7 +33,7 @@ class TestAttachmentsService(unittest.TestCase):
         cls.EXLIBRIS_FOLDER = EXLIBRIS_PATH(cls.collection.id)
 
     def test_main_signed_copies_empty(self) -> None:
-        result = self.service.main_signed_copies(self.user)
+        result = self.service.main_signed_copies(self.collection.id)
         self.assertEqual(
             Attachments(attachments_list=[],
                         title="dédicaces",
@@ -43,7 +43,7 @@ class TestAttachmentsService(unittest.TestCase):
             result)
 
     def test_main_ex_libris_empty(self) -> None:
-        result = self.service.main_ex_libris(self.user)
+        result = self.service.main_ex_libris(self.collection.id)
         self.assertEqual(
             Attachments(attachments_list=[],
                         title="Ex-libris",
@@ -56,7 +56,7 @@ class TestAttachmentsService(unittest.TestCase):
         test_data = [Attachment(isbn=0, title="Titre de test", number="1", series="Série de test", total=2)]
         self.repository.attachments[SIGNED_COPY_FOLDER(self.collection.id)] = test_data
 
-        result = self.service.main_signed_copies(self.user)
+        result = self.service.main_signed_copies(self.collection.id)
         self.assertEqual(
             Attachments(attachments_list=test_data,
                         title="dédicaces",
@@ -69,7 +69,7 @@ class TestAttachmentsService(unittest.TestCase):
         test_data = [Attachment(isbn=0, title="Titre de test", number="1", series="Série de test", total=2)]
         self.repository.attachments[EXLIBRIS_FOLDER(self.collection.id)] = test_data
 
-        result = self.service.main_ex_libris(self.user)
+        result = self.service.main_ex_libris(self.collection.id)
         self.assertEqual(
             Attachments(attachments_list=test_data,
                         title="Ex-libris",

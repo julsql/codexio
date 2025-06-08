@@ -1,17 +1,15 @@
 from abc import abstractmethod, ABC
 
-from django.contrib.auth.base_user import AbstractBaseUser
-
 from main.core.domain.model.bd import BD
-from main.models import AppUser
+from main.core.infrastructure.persistence.database.models import Collection
 
 
 class DatabaseRepository(ABC):
 
     @abstractmethod
-    def reset_table(self, user: AbstractBaseUser) -> None:
+    def reset_table(self, collection: Collection) -> None:
         pass
 
     @abstractmethod
-    def insert(self, value: list[BD], user: AppUser) -> None:
+    def insert(self, value: list[BD], collection: Collection) -> None:
         pass

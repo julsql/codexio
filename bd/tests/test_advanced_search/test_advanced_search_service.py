@@ -1,27 +1,16 @@
-import os
-import sys
 import unittest
 from unittest.mock import Mock
 
-import django
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
-django.setup()
-
-from tests.test_advanced_search.internal.advanced_search_in_memory import InMemoryAdvancedSearchRepository
-from main.core.application.usecases.advanced_search.advanced_search_service import AdvancedSearchService
 from main.core.application.forms.forms import RechercheForm
-from main.core.infrastructure.persistence.database.models.collection import Collection
-from main.models import AppUser
+from main.core.application.usecases.advanced_search.advanced_search_service import AdvancedSearchService
+from tests.test_advanced_search.internal.advanced_search_in_memory import InMemoryAdvancedSearchRepository
 
 
 class TestAdvancedSearchService(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         # Before all
-        cls.user = AppUser.objects.get(username="admin")
-        cls.collection = Collection.objects.get(accounts=cls.user)
+        cls.collection = 1
 
     def setUp(self):
         # Utilisation du repository en mémoire
@@ -40,7 +29,7 @@ class TestAdvancedSearchService(unittest.TestCase):
 
     def test_form_search_sans_form(self):
         # Exécution
-        result = self.service.form_search(self.user)
+        result = self.service.form_search(self.collection)
 
         # Vérifications
         self.assertEqual(len(result), 1)
@@ -60,7 +49,7 @@ class TestAdvancedSearchService(unittest.TestCase):
         self.assertTrue(form.is_valid())
 
         # Exécution
-        result = self.service.form_search(self.user, form)
+        result = self.service.form_search(self.collection, form)
 
         # Vérifications
         self.assertEqual(len(result), 1)
@@ -75,7 +64,7 @@ class TestAdvancedSearchService(unittest.TestCase):
         self.assertTrue(form.is_valid())
 
         # Exécution
-        resultat = self.service.form_search(self.user, form)
+        resultat = self.service.form_search(self.collection, form)
 
         # Vérifications
         self.assertEqual(len(resultat), 0)

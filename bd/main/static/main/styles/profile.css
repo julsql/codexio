@@ -1,0 +1,8 @@
+.current_collection {
+    font-style: italic;
+    color: darkgray;
+}
+
+.unselected_collection a {
+    margin-left: 10px;
+}

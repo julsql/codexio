@@ -55,7 +55,7 @@ class TestAttachmentsConnexion(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
         # Nettoyage de la base de données avant chaque test
-        BD.objects.filter(collection__accounts=self.user).delete()
+        BD.objects.filter(collection=self.collection).delete()
 
         # Nettoyage des dossiers temporaires
         for folder in [self.SIGNED_COPY_FOLDER, self.EXLIBRIS_FOLDER]:

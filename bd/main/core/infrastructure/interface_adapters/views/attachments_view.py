@@ -20,10 +20,15 @@ def exlibris_view(request: HttpRequest) -> HttpResponse:
 def attachment_view(request: HttpRequest, attachment_type: AttachmentType) -> HttpResponse:
     repository = AttachmentsAdapter()
     service = AttachmentsService(repository)
-    if attachment_type == AttachmentType.SIGNED_COPY:
-        attachments = service.main_signed_copies(request.user)
+    if request.user.current_collection:
+        collection = request.user.current_collection
     else:
-        attachments = service.main_ex_libris(request.user)
+        collection = request.user.collections.all().first()
+
+    if attachment_type == AttachmentType.SIGNED_COPY:
+        attachments = service.main_signed_copies(collection.id)
+    else:
+        attachments = service.main_ex_libris(collection.id)
 
     return render(request, 'attachments/module.html', {
         'attachments': [{'isbn': attachment.isbn,

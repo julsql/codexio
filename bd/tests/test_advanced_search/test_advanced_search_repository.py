@@ -27,7 +27,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
 
     def setUp(self):
         # Nettoyage de la base avant chaque test
-        BD.objects.filter(collection__accounts=self.user).delete()
+        BD.objects.filter(collection=self.collection).delete()
 
         # Création de données de test plus complètes
         self.bd1 = BD.objects.create(
@@ -65,10 +65,10 @@ class TestAdvancedSearchRepository(unittest.TestCase):
         self.total_row = 2
 
     def tearDown(self):
-        BD.objects.filter(collection__accounts=self.user).delete()
+        BD.objects.filter(collection=self.collection).delete()
 
     def test_get_all(self):
-        result = self.repository.get_all(self.user)
+        result = self.repository.get_all(self.collection)
         self.assertIsInstance(result, QuerySet)
         self.assertEqual(self.total_row, result.count())
         self.assertIn(self.bd1, result)
@@ -77,7 +77,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
     def test_filter_contains_case_diacritique_insensitive(self):
         result = self.repository.get_by_form(
             {'series': 'asterix'},
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(1, result.count())
         self.assertEqual(self.bd1, result.first())
@@ -85,7 +85,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
     def test_filter_contains_partial_match(self):
         result = self.repository.get_by_form(
             {'album': 'Gaulois'},
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(1, result.count())
         self.assertEqual(self.bd1, result.first())
@@ -93,7 +93,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
     def test_filter_contains_multiple_words(self):
         result = self.repository.get_by_form(
             {'album': 'aventures Tintin Tibet'},
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(1, result.count())
         self.assertEqual(self.bd2, result.first())
@@ -101,7 +101,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
     def test_filter_equals_exact_match(self):
         result = self.repository.get_by_form(
             {'isbn': '123456789'},
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(1, result.count())
         self.assertEqual(self.bd1, result.first())
@@ -112,14 +112,14 @@ class TestAdvancedSearchRepository(unittest.TestCase):
                 'start_date': date(1960, 1, 1),
                 'end_date': date(1961, 12, 31)
             },
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(self.total_row, result.count())
 
     def test_filter_date_start_only(self):
         result = self.repository.get_by_form(
             {'start_date': date(1961, 1, 1)},
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(1, result.count())
         self.assertEqual(self.bd1, result.first())
@@ -127,7 +127,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
     def test_filter_date_end_only(self):
         result = self.repository.get_by_form(
             {'end_date': date(1960, 12, 31)},
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(1, result.count())
         self.assertEqual(self.bd2, result.first())
@@ -136,7 +136,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
         """Test que la recherche avec uniquement des mots vides renvoie un queryset vide"""
         result = self.repository.get_by_form(
             {'synopsis': 'le et au de'},
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(self.EMPTY, result.count())
 
@@ -144,7 +144,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
         """Test que la recherche avec uniquement des mots courts renvoie un queryset vide"""
         result = self.repository.get_by_form(
             {'synopsis': 'il va du'},
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(self.EMPTY, result.count())
 
@@ -152,7 +152,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
         """Test que la recherche avec uniquement des mots exclus renvoie un résultat"""
         result = self.repository.get_by_form(
             {'synopsis': 'un son'},
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(self.total_row, result.count())
 
@@ -160,7 +160,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
         """Test que la recherche fonctionne avec un mélange de mots vides et significatifs"""
         result = self.repository.get_by_form(
             {'synopsis': 'l\'aventure de Tintin'},
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(1, result.count())
         self.assertEqual(self.bd2, result.first())
@@ -169,7 +169,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
         """Test que la recherche est insensible aux accents"""
         result = self.repository.get_by_form(
             {'synopsis': 'asterix'},  # Sans accent
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(1, result.count())
         self.assertEqual(self.bd1, result.first())
@@ -178,7 +178,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
         """Test que la recherche est insensible à la casse"""
         result = self.repository.get_by_form(
             {'synopsis': 'TINTIN'},
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(1, result.count())
         self.assertEqual(self.bd2, result.first())
@@ -187,7 +187,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
         """Test que la recherche fonctionne avec des mots partiels"""
         result = self.repository.get_by_form(
             {'synopsis': 'aventur'},  # Devrait matcher 'aventures'
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(self.total_row, result.count())
 
@@ -195,7 +195,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
         """Test que tous les mots de recherche doivent être présents"""
         result = self.repository.get_by_form(
             {'synopsis': 'Tintin Tibet recherche'},
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(1, result.count())
         self.assertEqual(self.bd2, result.first())
@@ -204,7 +204,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
         """Test avec une chaîne vide"""
         result = self.repository.get_by_form(
             {'synopsis': ''},
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(self.total_row, result.count())
 
@@ -212,7 +212,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
         """Test avec uniquement des espaces"""
         result = self.repository.get_by_form(
             {'synopsis': '   '},
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(self.total_row, result.count())
 
@@ -220,7 +220,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
         """Test avec des caractères spéciaux"""
         result = self.repository.get_by_form(
             {'synopsis': 'recherche!@#$%^&*()'},
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(1, result.count())
         self.assertEqual(self.bd2, result.first())
@@ -238,7 +238,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
 
         result = self.repository.get_by_form(
             {'synopsis': 'puis donc'},  # Ces mots sont dans STOP_WORDS
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(1, result.count())
         self.assertEqual(bd3, result.first())
@@ -246,7 +246,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
     def test_search_synopsis_accents(self):
         result = self.repository.get_by_form(
             {'synopsis': 'asterix et son ami'},
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(1, result.count())
         self.assertEqual(self.bd1, result.first())
@@ -258,7 +258,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
                 'deluxe_edition': True,
                 'publisher': 'Casterman'
             },
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(1, result.count())
         self.assertEqual(self.bd2, result.first())
@@ -266,7 +266,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
     def test_empty_form_returns_all(self):
         result = self.repository.get_by_form(
             {},
-            self.repository.get_all(self.user)
+            self.repository.get_all(self.collection)
         )
         self.assertEqual(self.total_row, result.count())
 

@@ -1,9 +1,9 @@
-from django.contrib.auth.base_user import AbstractBaseUser
 from django.db.models import Count, Sum, IntegerField, FloatField, QuerySet
 from django.db.models.functions import Cast, Coalesce, Round
 
 from main.core.domain.model.statistics import Statistics
 from main.core.domain.ports.repositories.statistics_database_repository import StatisticsDatabaseRepository
+from main.core.infrastructure.persistence.database.models import Collection
 from main.core.infrastructure.persistence.database.models.bd import BD
 
 
@@ -22,8 +22,8 @@ def map_place_of_purchase(place_of_purchase_query: QuerySet) -> list[tuple[str, 
 
 
 class StatisticsDatabaseAdapter(StatisticsDatabaseRepository):
-    def get_database_statistics(self, user: AbstractBaseUser) -> Statistics:
-        stats = BD.objects.filter(collection__accounts=user).aggregate(
+    def get_database_statistics(self, collection: Collection) -> Statistics:
+        stats = BD.objects.filter(collection=collection).aggregate(
             nombre=Count('id'),
             pages=Coalesce(Sum(Cast('number_of_pages', output_field=IntegerField())), 0),
             prix=Coalesce(
@@ -38,7 +38,7 @@ class StatisticsDatabaseAdapter(StatisticsDatabaseRepository):
             tirage=Coalesce(Sum(Cast('deluxe_edition', output_field=IntegerField())), 0),
         )
 
-        place_of_purchase_query = BD.objects.filter(collection__accounts=user).values('place_of_purchase').annotate(
+        place_of_purchase_query = BD.objects.filter(collection=collection).values('place_of_purchase').annotate(
             count=Count('place_of_purchase')).order_by('-count', 'place_of_purchase')
 
         place_of_purchase_stats = map_place_of_purchase(place_of_purchase_query)
