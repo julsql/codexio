@@ -18,21 +18,21 @@ class TestDeletePhotoService(unittest.TestCase):
         cls.file_name = "1.jpeg"
         cls.file_content = b"Contenu du fichier exemple"
         cls.uploaded_file = SimpleUploadedFile(cls.file_name, cls.file_content, content_type="text/plain")
-        cls.collection_id = 1
+        cls.collection = 1
 
     def test_correctly_delete_dedicace(self) -> None:
-        is_uploaded = self.service.main(self.ISBN, 1, AttachmentType.SIGNED_COPY, self.collection_id)
+        is_uploaded = self.service.main(self.ISBN, 1, AttachmentType.SIGNED_COPY, self.collection)
         self.assertTrue(is_uploaded)
-        self.assertEqual(SIGNED_COPY_FOLDER(self.collection_id), self.repository.type)
+        self.assertEqual(SIGNED_COPY_FOLDER(self.collection), self.repository.type)
 
     def test_correctly_delete_exlibris(self) -> None:
-        is_uploaded = self.service.main(self.ISBN, 1, AttachmentType.EXLIBRIS, self.collection_id)
+        is_uploaded = self.service.main(self.ISBN, 1, AttachmentType.EXLIBRIS, self.collection)
         self.assertTrue(is_uploaded)
-        self.assertEqual(EXLIBRIS_FOLDER(self.collection_id), self.repository.type)
+        self.assertEqual(EXLIBRIS_FOLDER(self.collection), self.repository.type)
 
     def test_incorrect_type(self) -> None:
         with self.assertRaises(ValueError):
-            self.service.main(self.ISBN, 1, "incorrect type", self.collection_id)
+            self.service.main(self.ISBN, 1, "incorrect type", self.collection)
 
 
 if __name__ == '__main__':

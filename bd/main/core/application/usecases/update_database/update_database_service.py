@@ -21,7 +21,7 @@ class UpdateDatabaseService:
 
         data = self._process_rows(rows[1:], rows[0], titles)
 
-        self.database.reset_table(collection)
+        self.database.reset_table(collection.id)
         self.database.insert(data, collection)
 
     def _process_rows(self, rows: list[list[str]], column_titles: list[str], titles: list[str]) -> list[BD]:

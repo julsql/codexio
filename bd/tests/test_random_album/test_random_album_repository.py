@@ -22,8 +22,9 @@ class TestRandomAlbumConnexion(unittest.TestCase):
         super().setUpClass()
         cls.repository = RandomAlbumAdapter()
 
-        cls.user = AppUser.objects.get(username="admin")
-        cls.collection = Collection.objects.get(accounts=cls.user)
+        user = AppUser.objects.get(username="admin")
+        cls.collection = Collection.objects.get(accounts=user)
+        cls.collection_id = cls.collection.id
 
     def setUp(self):
         # Nettoyage de la base avant chaque test
@@ -79,14 +80,14 @@ class TestRandomAlbumConnexion(unittest.TestCase):
         BD.objects.filter(collection=self.collection).delete()
 
         # Act
-        result = self.repository.get_random_album(self.collection)
+        result = self.repository.get_random_album(self.collection_id)
 
         # Assert
         self.assertTrue(result.is_empty())
 
     def test_get_random_album_returns_dict_with_correct_fields(self):
         # Act
-        result = self.repository.get_random_album(self.collection)
+        result = self.repository.get_random_album(self.collection_id)
 
         # Assert
         self.assertIsInstance(result, Album)
@@ -103,7 +104,7 @@ class TestRandomAlbumConnexion(unittest.TestCase):
         )
 
         # Act
-        result = self.repository.get_random_album(self.collection)
+        result = self.repository.get_random_album(self.collection_id)
 
         # Assert
         self.assertEqual(25, result.purchase_price)
@@ -120,14 +121,14 @@ class TestRandomAlbumConnexion(unittest.TestCase):
         )
 
         # Act
-        result = self.repository.get_random_album(self.collection)
+        result = self.repository.get_random_album(self.collection_id)
 
         # Assert
         self.assertEqual(25.99, float(result.purchase_price))
 
     def test_get_random_album_returns_valid_data(self):
         # Act
-        result = self.repository.get_random_album(self.collection)
+        result = self.repository.get_random_album(self.collection_id)
 
         # Assert
         self.assertIn(result.isbn, [123456789, 987654321])

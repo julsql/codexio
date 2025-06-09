@@ -20,8 +20,7 @@ from tests.test_random_album.internal.random_album_in_memory import RandomAlbumI
 class TestRandomAlbumService(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.user = AppUser.objects.get(username="admin")
-        cls.collection = Collection.objects.get(accounts=cls.user)
+        cls.collection = 1
 
     def setUp(self) -> None:
         self.test_album = Album(
@@ -45,7 +44,7 @@ class TestRandomAlbumService(unittest.TestCase):
         service = RandomAlbumService(repository)
 
         # Act
-        result = service.main(self.user)
+        result = service.main(self.collection)
 
         # Assert
         self.assertTrue(result.is_empty())
@@ -57,7 +56,7 @@ class TestRandomAlbumService(unittest.TestCase):
         service = RandomAlbumService(repository)
 
         # Act
-        result = service.main(self.user)
+        result = service.main(self.collection)
 
         # Assert
         self.assertEqual(self.test_album, result)

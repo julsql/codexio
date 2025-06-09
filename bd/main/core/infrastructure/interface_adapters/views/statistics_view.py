@@ -32,7 +32,7 @@ class StatisticsView:
             attachment_repository=attachment_repository
         )
 
-        statistics = service.execute(collection)
+        statistics = service.execute(collection.id)
 
         signed_copies = statistics.signed_copies_count
         exlibris = statistics.ex_libris_count

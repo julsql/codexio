@@ -31,7 +31,7 @@ class HomeView:
 
             random_album_connexion = RandomAlbumAdapter()
             random_album_service = RandomAlbumService(random_album_connexion)
-            random_album = random_album_service.main(collection)
+            random_album = random_album_service.main(collection.id)
 
             advanced_search_repository = AdvancedSearchAdapter()
             advanced_search_service = AdvancedSearchService(advanced_search_repository)
