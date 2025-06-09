@@ -12,15 +12,12 @@ from main.core.application.usecases.statistics.statistics_service import Statist
 from main.core.domain.model.statistics import Statistics
 from tests.test_statistics.internal.statistics_attachments_in_memory import StatisticsAttachmentsInMemory
 from tests.test_statistics.internal.statistics_database_in_memory import StatisticsDatabaseInMemory
-from main.models import AppUser
-from main.core.infrastructure.persistence.database.models.collection import Collection
 
 
 class TestStatisticsService(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.user = AppUser.objects.get(username="admin")
-        cls.collection = Collection.objects.get(accounts=cls.user)
+        cls.collection = 1
 
     def setUp(self) -> None:
         self.statistics = Statistics(
@@ -39,7 +36,7 @@ class TestStatisticsService(unittest.TestCase):
 
     def test_main_calls_both_repositories(self) -> None:
         # Act
-        self.service.execute(self.user)
+        self.service.execute(self.collection)
 
         # Assert
         self.assertTrue(self.attachments_repository.get_information_called)
@@ -47,7 +44,7 @@ class TestStatisticsService(unittest.TestCase):
 
     def test_main_merges_repository_results(self) -> None:
         # Act
-        result = self.service.execute(self.user)
+        result = self.service.execute(self.collection)
 
         # Assert
         expected = self.statistics
@@ -59,7 +56,7 @@ class TestStatisticsService(unittest.TestCase):
 
         # Act
         service = StatisticsService(database_repository, self.attachments_repository)
-        result = service.execute(self.user)
+        result = service.execute(self.collection)
 
         # Assert
         expected = Statistics.empty()
@@ -73,7 +70,7 @@ class TestStatisticsService(unittest.TestCase):
 
         # Act
         service = StatisticsService(self.database_repository, attachments_repository)
-        result = service.execute(self.user)
+        result = service.execute(self.collection)
 
         # Assert
         expected = Statistics.empty()
@@ -109,7 +106,7 @@ class TestStatisticsService(unittest.TestCase):
         service = StatisticsService(database_repository, attachments_repository)
 
         # Act
-        result = service.execute(self.user)
+        result = service.execute(self.collection)
 
         # Assert
         self.assertEqual(self.statistics, result)
@@ -121,7 +118,7 @@ class TestStatisticsService(unittest.TestCase):
         service = StatisticsService(database_repository, attachments_repository)
 
         # Act
-        result = service.execute(self.user)
+        result = service.execute(self.collection)
 
         # Assert
         self.assertEqual(Statistics.empty(), result)

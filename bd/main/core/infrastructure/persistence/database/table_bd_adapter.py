@@ -5,8 +5,8 @@ from main.core.infrastructure.persistence.database.models.bd import BD as DATABA
 
 
 class TableBdAdapter(DatabaseRepository):
-    def reset_table(self, collection: Collection) -> None:
-        DATABASE_MODEL_BD.objects.filter(collection=collection).delete()
+    def reset_table(self, collection_id: int) -> None:
+        DATABASE_MODEL_BD.objects.filter(collection=collection_id).delete()
 
     def insert(self, value: list[INTERNAL_MODEL_BD], collection: Collection) -> None:
         objects = [
@@ -37,5 +37,5 @@ class TableBdAdapter(DatabaseRepository):
 
         DATABASE_MODEL_BD.objects.bulk_create(objects)
 
-    def get_all(self, collection: Collection) -> list[dict[str, str]]:
-        return list(DATABASE_MODEL_BD.objects.filter(collection=collection).values())
+    def get_all(self, collection_id: int) -> list[dict[str, str]]:
+        return list(DATABASE_MODEL_BD.objects.filter(collection=collection_id).values())

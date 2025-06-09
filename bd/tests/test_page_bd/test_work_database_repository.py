@@ -39,15 +39,16 @@ class TestWorkDatabaseConnexion(unittest.TestCase):
             'synopsis': 'synopsis',
             'image': 'image',
         }
-        cls.user = AppUser.objects.get(username="admin")
-        cls.collection = Collection.objects.get(accounts=cls.user)
+        user = AppUser.objects.get(username="admin")
+        cls.collection = Collection.objects.get(accounts=user)
+        cls.collection_id = cls.collection.id
 
     def setUp(self) -> None:
         DATABASE_MODEL_BD.objects.filter(collection=self.collection).delete()
 
     def test_page_with_non_existing_isbn(self) -> None:
         # Act
-        result = self.repository.page(1234, self.collection)
+        result = self.repository.page(1234, self.collection_id)
 
         # Assert
         self.assertIsNone(result)
@@ -77,7 +78,7 @@ class TestWorkDatabaseConnexion(unittest.TestCase):
                                          collection=self.collection)
 
         # Act
-        result = self.repository.page(5678, self.collection)
+        result = self.repository.page(5678, self.collection_id)
 
         # Assert
         self.assertIsNotNone(result)
@@ -102,7 +103,7 @@ class TestWorkDatabaseConnexion(unittest.TestCase):
                                          collection=self.collection)
 
         # Act
-        result = self.repository.page(9012, self.collection)
+        result = self.repository.page(9012, self.collection_id)
 
         # Assert
         self.assertIsNotNone(result)
@@ -134,7 +135,7 @@ class TestWorkDatabaseConnexion(unittest.TestCase):
 
         # Act & Assert
         for test_data in test_data_list:
-            result = self.repository.page(int(test_data['isbn']), self.collection)
+            result = self.repository.page(int(test_data['isbn']), self.collection_id)
             self.assertIsNotNone(result)
             self.assertEqual(test_data['album'], result.title)
             self.assertEqual(test_data['isbn'], result.isbn)

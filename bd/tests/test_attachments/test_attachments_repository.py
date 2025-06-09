@@ -25,8 +25,8 @@ class TestAttachmentsConnexion(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
-        cls.user = AppUser.objects.get(username="admin")
-        cls.collection = Collection.objects.get(accounts=cls.user)
+        user = AppUser.objects.get(username="admin")
+        cls.collection = Collection.objects.get(accounts=user)
 
         cls.temp_dir = tempfile.TemporaryDirectory()
 

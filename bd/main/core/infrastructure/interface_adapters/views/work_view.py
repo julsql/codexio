@@ -34,7 +34,7 @@ class WorkView:
                                                             EXLIBRIS_FOLDER(collection.id))
             database_repository = WorkDatabaseAdapter()
             service = WorkService(attachments_repository, database_repository, self.logger_adapter)
-            infos = service.main(isbn, collection)
+            infos = service.main(isbn, collection.id)
             if not infos:
                 return render(request, 'page_bd/not_found.html', {"isbn": isbn})
             return render(request, 'page_bd/module.html', {

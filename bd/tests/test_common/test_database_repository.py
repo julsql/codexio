@@ -21,8 +21,9 @@ class TestDatabaseRepository(unittest.TestCase):
     def setUpClass(cls) -> None:
         # Before all
         cls.database_repository = TableBdAdapter()
-        cls.user = AppUser.objects.get(username="admin")
-        cls.collection = Collection.objects.get(accounts=cls.user)
+        user = AppUser.objects.get(username="admin")
+        cls.collection = Collection.objects.get(accounts=user)
+        cls.collection_id = cls.collection.id
 
         BD.objects.filter(collection=cls.collection).delete()
 
@@ -60,7 +61,7 @@ class TestDatabaseRepository(unittest.TestCase):
     def test_get_all_correctly(self) -> None:
         value = ALBUM_EXEMPLE_DICT.copy()
         obj = BD.objects.create(**value, collection=self.collection)
-        entry = self.database_repository.get_all(self.collection)
+        entry = self.database_repository.get_all(self.collection_id)
         value['id'] = obj.id
         value['collection_id'] = 1
         self.assertEqual(len(entry), 1)
@@ -69,7 +70,7 @@ class TestDatabaseRepository(unittest.TestCase):
     def test_reset_table_correctly(self) -> None:
         value = ALBUM_EXEMPLE_DICT
         BD.objects.create(**value, collection=self.collection)
-        self.database_repository.reset_table(self.collection)
+        self.database_repository.reset_table(self.collection_id)
         self.assertEqual(BD.objects.filter(collection=self.collection).count(), 0)
 
 

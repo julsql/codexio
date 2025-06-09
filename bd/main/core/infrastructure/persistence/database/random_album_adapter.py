@@ -4,14 +4,13 @@ from typing import Optional
 
 from main.core.domain.model.album import Album
 from main.core.domain.ports.repositories.random_album_repository import RandomAlbumRepository
-from main.core.infrastructure.persistence.database.models import Collection
 from main.core.infrastructure.persistence.database.models.bd import BD
 
 
 class RandomAlbumAdapter(RandomAlbumRepository, ABC):
 
-    def get_random_album(self, collection: Collection) -> Optional[Album]:
-        result = BD.objects.filter(collection=collection).values(
+    def get_random_album(self, collection_id: int) -> Optional[Album]:
+        result = BD.objects.filter(collection=collection_id).values(
             'isbn', 'album', 'number', 'series', 'image', 'writer', 'illustrator',
             'publication_date', 'purchase_price', 'number_of_pages', 'edition', 'synopsis'
         ).order_by('?').first()
