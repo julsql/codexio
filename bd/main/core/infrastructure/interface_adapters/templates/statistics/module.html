@@ -2,29 +2,35 @@
 {% load static %}
 {% block body %}
 
-    <div class="col-12">
+    <div id="body">
+        <div class="col-30">
 
-        <!-- Main Content -->
-        <section id="statistics_section">
-            <div id="statistics_content">
-                <header>
-                    <h2>Statistiques</h2>
-                    <h3>État de la collection de bandes dessinées</h3>
-                </header>
-                <div class="list">
-                    <ul>
-                        <li>{{ nombre }} bande{% if nombre > 1 %}s{% endif %} dessinée{% if nombre > 1 %}
-                            s{% endif %}</li>
-                        <li>{{ pages }} page{% if pages > 1 %}s{% endif %}</li>
-                        <li>{{ dedicaces }} dédicace{% if dedicaces > 1 %}s{% endif %}</li>
-                        <li>{{ exlibris }} ex-libris</li>
-                        <li>{{ tirage }} tirage{% if tirage > 1 %}s{% endif %} de tête</li>
-                    </ul>
+            <!-- Main Content -->
+            <section id="statistics_section">
+                <div id="statistics_content">
+                    <header>
+                        <h2>Statistiques</h2>
+                        <h3>État de la collection de bandes dessinées</h3>
+                    </header>
+                    <div class="list">
+                        <ul>
+                            <li>{{ nombre }} bande{% if nombre > 1 %}s{% endif %} dessinée{% if nombre > 1 %}s{% endif %}</li>
+                            <li>{{ pages }} page{% if pages > 1 %}s{% endif %}</li>
+                            <li>{{ dedicaces }} dédicace{% if dedicaces > 1 %}s{% endif %}</li>
+                            <li>{{ exlibris }} ex-libris</li>
+                            <li>{{ tirage }} tirage{% if tirage > 1 %}s{% endif %} de tête</li>
+                        </ul>
+                    </div>
+
                 </div>
+            </section>
+        </div>
+        <div class="col-70">
+            <section>
 
-            </div>
             <div id='pie_container'></div>
-        </section>
+            </section>
+        </div>
     </div>
 
 {% endblock %}
