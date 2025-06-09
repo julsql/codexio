@@ -8,31 +8,37 @@ from main.core.infrastructure.persistence.file.paths import SIGNED_COPY_FOLDER, 
 from main.core.infrastructure.persistence.file.statistics_attachment_adapter import StatisticsAttachmentAdapter
 
 
+class StatisticsView:
+    def handle_request(self, request: HttpRequest) -> HttpResponse:
+        database_repository = StatisticsDatabaseAdapter()
+        if request.user.current_collection:
+            collection = request.user.current_collection
+        else:
+            collection = request.user.collections.all().first()
+
+        attachment_repository = StatisticsAttachmentAdapter(SIGNED_COPY_FOLDER(collection.id),
+                                                            EXLIBRIS_FOLDER(collection.id))
+
+        service = StatisticsService(
+            database_repository=database_repository,
+            attachment_repository=attachment_repository
+        )
+
+        statistics = service.execute(collection)
+
+        return render(request, 'statistics/module.html', {
+            'nombre': statistics.albums_count,
+            'pages': statistics.pages_count,
+            'prix': statistics.purchase_price_count,
+            'tirage': statistics.deluxe_edition_count,
+            'dedicaces': statistics.signed_copies_count,
+            'exlibris': statistics.ex_libris_count,
+            'title': "Lieu d'achat des albums",
+            'places': statistics.place_of_purchase_pie,
+        })
+
+
 @login_required
 def statistics_view(request: HttpRequest) -> HttpResponse:
-    database_repository = StatisticsDatabaseAdapter()
-    if request.user.current_collection:
-        collection = request.user.current_collection
-    else:
-        collection = request.user.collections.all().first()
-
-    attachment_repository = StatisticsAttachmentAdapter(SIGNED_COPY_FOLDER(collection.id),
-                                                        EXLIBRIS_FOLDER(collection.id))
-
-    service = StatisticsService(
-        database_repository=database_repository,
-        attachment_repository=attachment_repository
-    )
-
-    statistics = service.execute(collection)
-
-    return render(request, 'statistics/module.html', {
-        'nombre': statistics.albums_count,
-        'pages': statistics.pages_count,
-        'prix': statistics.purchase_price_count,
-        'tirage': statistics.deluxe_edition_count,
-        'dedicaces': statistics.signed_copies_count,
-        'exlibris': statistics.ex_libris_count,
-        'title': "Lieu d'achat des albums",
-        'places': statistics.place_of_purchase_pie,
-    })
+    view = StatisticsView()
+    return view.handle_request(request)
