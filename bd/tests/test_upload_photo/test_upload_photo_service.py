@@ -18,20 +18,21 @@ class TestUpdateDatabaseService(unittest.TestCase):
         cls.file_name = "test_file.jpeg"
         cls.file_content = b"Contenu du fichier exemple"
         cls.uploaded_file = SimpleUploadedFile(cls.file_name, cls.file_content, content_type="text/plain")
+        cls.collection_id = 1
 
     def test_correctly_upload_dedicace(self) -> None:
-        is_uploaded = self.service.main(self.ISBN, self.uploaded_file, AttachmentType.SIGNED_COPY)
+        is_uploaded = self.service.main(self.ISBN, self.uploaded_file, AttachmentType.SIGNED_COPY, self.collection_id)
         self.assertTrue(is_uploaded)
-        self.assertEqual(SIGNED_COPY_FOLDER, self.repository.type)
+        self.assertEqual(SIGNED_COPY_FOLDER(self.collection_id), self.repository.type)
 
     def test_correctly_upload_exlibris(self) -> None:
-        is_uploaded = self.service.main(self.ISBN, self.uploaded_file, AttachmentType.EXLIBRIS)
+        is_uploaded = self.service.main(self.ISBN, self.uploaded_file, AttachmentType.EXLIBRIS, self.collection_id)
         self.assertTrue(is_uploaded)
-        self.assertEqual(EXLIBRIS_FOLDER, self.repository.type)
+        self.assertEqual(EXLIBRIS_FOLDER(self.collection_id), self.repository.type)
 
     def test_incorrect_type(self) -> None:
         with self.assertRaises(ValueError):
-            self.service.main(self.ISBN, self.uploaded_file, "incorrect type")
+            self.service.main(self.ISBN, self.uploaded_file, "incorrect type", self.collection_id)
 
 
 if __name__ == '__main__':

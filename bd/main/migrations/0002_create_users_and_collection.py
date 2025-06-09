@@ -21,7 +21,11 @@ def insert_initial_data(apps, schema_editor) -> None:
     admin_internal = AppUser(username="admin", password="admin", first_name="Admin",
                              email="admin@email.com")
     admin = user_repository.create(admin_internal)
-    collection_internal = Collection(title="Collection de Test", accounts=[admin])
+    collection_internal = Collection(title="Collection de Test",
+                                     accounts=[admin],
+                                     token="XIWzYF4RFb77U4obBcfBF2UfVFE0hK2Aq43UV9e8d1EpLye7wXxGPHFwCVmMExb8",
+                                     doc_name="bd",
+                                     sheet_name="Test", )
     collection_repository.create(collection_internal)
     create_local_users()
 

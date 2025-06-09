@@ -1,6 +1,7 @@
 import os
 import re
 from abc import ABC
+from typing import Callable
 
 from django.core.files.storage import FileSystemStorage
 from django.core.files.uploadedfile import UploadedFile

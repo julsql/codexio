@@ -51,7 +51,7 @@ class PageBdView:
             "nb_dedicace": len(infos.attachments.signed_copies),
             "ex_libris": infos.attachments.ex_libris,
             "nb_exlibris": len(infos.attachments.ex_libris),
-            "collection_id": collection_id,
+            "collection_id": collection.id,
         })
 
 

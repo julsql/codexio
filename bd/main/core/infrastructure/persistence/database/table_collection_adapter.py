@@ -6,7 +6,10 @@ from main.core.infrastructure.persistence.database.models.collection import Coll
 class TableCollectionAdapter(CreateDatabaseRepository):
     def create(self,
                value: INTERNAL_MODEL_COLLECTION) -> DATABASE_MODEL_COLLECTION:
-        collection = DATABASE_MODEL_COLLECTION.objects.create(title=value.title)
+        collection = DATABASE_MODEL_COLLECTION.objects.create(title=value.title,
+                                                              token=value.token,
+                                                              doc_name=value.doc_name,
+                                                              sheet_name=value.sheet_name, )
         collection.accounts.add(*value.accounts)
         collection.save()
         return collection

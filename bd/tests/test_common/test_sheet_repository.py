@@ -9,10 +9,10 @@ class TestSheetRepository(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.conn_test = SheetAdapter()
-        cls.conn_test.open("bd", "Test")
-        cls.conn_real = SheetAdapter()
-        cls.conn_real.open("bd")
+        cls.conn_test = SheetAdapter("bd", "Test")
+        cls.conn_test.open()
+        cls.conn_real = SheetAdapter("bd", 'BD')
+        cls.conn_real.open()
 
     def tearDown(self) -> None:
         self.conn_test.clear()

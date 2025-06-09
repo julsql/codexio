@@ -15,11 +15,9 @@ class AddAlbumService:
                  bd_repositories: list[AlbumRepository],
                  sheet_repository: SheetRepository,
                  logging_repository: LoggerRepository) -> None:
-        doc_name = "bd"
-        sheet_name = "BD"
         self.isbn = None
         self.connexion = sheet_repository
-        self.connexion.open(doc_name, sheet_name)
+        self.connexion.open()
         self.get_infos_service = GetInfosService(bd_repositories, logging_repository)
         self.logging_repository = logging_repository
 

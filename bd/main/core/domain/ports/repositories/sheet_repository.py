@@ -4,7 +4,7 @@ from typing import Union
 
 class SheetRepository(ABC):
     @abstractmethod
-    def open(self, doc_name: str, sheet_name: str = None) -> None:
+    def open(self) -> None:
         pass
 
     @abstractmethod

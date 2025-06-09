@@ -7,3 +7,6 @@ from main.models import AppUser
 class Collection:
     title: str
     accounts: list[AppUser]
+    token: str
+    doc_name: str
+    sheet_name: str
