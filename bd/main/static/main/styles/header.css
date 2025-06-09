@@ -42,7 +42,7 @@
     display: flex;
     position: absolute; /*150px*/
     top: 43px;
-    left: 0;
+    left: 20px;
 }
 
 .user-menu {
@@ -118,7 +118,7 @@
 }
 
 /* Cacher le menu par défaut sur mobile */
-@media (max-width: 800px) {
+@media (max-width: 1070px) {
     #menu-toggle {
         display: block;
     }

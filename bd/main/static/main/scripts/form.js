@@ -25,7 +25,7 @@ function isAllHiddenInputEmpty() {
 let seeMore = !isAllHiddenInputEmpty();
 
 function displayHiddenInput() {
-    const smallScreen = window.innerWidth < 800;
+    const smallScreen = window.innerWidth < 1070;
 
     hiddenCells.forEach(function (element) {
         if (smallScreen) {

@@ -9,7 +9,6 @@
         </header>
         <div>
             <p>Nom d'utilisateur : {{ username }}</p>
-            <p>Email : {{ email }}</p>
         </div>
         <div>
             <br/>
@@ -27,6 +26,7 @@
                 </ul>
             </div>
         </div>
+        <br/>
         <form action="{% url 'logout' %}" method="post">
             {% csrf_token %}
             <button type="submit" class="button-large">
