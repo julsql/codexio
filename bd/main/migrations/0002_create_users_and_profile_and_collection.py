@@ -36,7 +36,9 @@ def insert_initial_data(apps, schema_editor) -> None:
                                      doc_name="bd",
                                      sheet_name="Test",
                                      profile=profile_bd)
-    collection_repository.create(collection_internal)
+    collection = collection_repository.create(collection_internal)
+    admin.current_collection = collection
+    admin.save()
     create_local_users({ProfileType.BD: profile_bd, ProfileType.BOOK: profile_book})
 
 

@@ -10,17 +10,17 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
 from main.core.infrastructure.persistence.database.models.bd import BD as DATABASE_MODEL_BD
-from main.core.infrastructure.persistence.database.page_bd_database_adapter import PageBdDatabaseAdapter
+from main.core.infrastructure.persistence.database.page_bd_database_adapter import WorkDatabaseAdapter
 from main.core.infrastructure.persistence.database.models.collection import Collection
 from main.models import AppUser
 
 
-class TestPageBdDatabaseConnexion(unittest.TestCase):
+class TestWorkDatabaseConnexion(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
-        cls.repository = PageBdDatabaseAdapter()
+        cls.repository = WorkDatabaseAdapter()
         cls.EXPECTED_FIELDS = {
             'isbn': 'isbn',
             'album': 'title',

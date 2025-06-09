@@ -1,5 +1,13 @@
+import os
+import sys
 import unittest
 from unittest.mock import Mock
+
+import django
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+django.setup()
 
 from main.core.application.forms.forms import RechercheForm
 from main.core.application.usecases.advanced_search.advanced_search_service import AdvancedSearchService
@@ -75,7 +83,7 @@ class TestAdvancedSearchService(unittest.TestCase):
         mock_request.method = 'GET'
 
         # Exécution
-        result = self.service.main(mock_request)
+        result = self.service.main(mock_request, self.collection)
 
         # Vérifications
         self.assertIsInstance(result.form, RechercheForm)
@@ -92,7 +100,7 @@ class TestAdvancedSearchService(unittest.TestCase):
         }
 
         # Exécution
-        result = self.service.main(mock_request)
+        result = self.service.main(mock_request, self.collection)
 
         # Vérifications
         self.assertIsInstance(result.form, RechercheForm)
@@ -109,7 +117,7 @@ class TestAdvancedSearchService(unittest.TestCase):
         }
 
         # Exécution
-        result = self.service.main(mock_request)
+        result = self.service.main(mock_request, self.collection)
 
         # Vérifications
         self.assertIsInstance(result.form, RechercheForm)

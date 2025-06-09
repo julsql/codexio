@@ -4,11 +4,11 @@ from django.contrib.auth.base_user import AbstractBaseUser
 
 from main.core.domain.model.bd import BD
 from main.core.domain.model.bd_attachment import BdAttachment
-from main.core.domain.ports.repositories.page_bd_attachments_repository import PageBdAttachmentsRepository
-from main.core.domain.ports.repositories.page_bd_database_repository import PageBdDatabaseRepository
+from main.core.domain.ports.repositories.page_bd_attachments_repository import WorkAttachmentsRepository
+from main.core.domain.ports.repositories.page_bd_database_repository import WorkDatabaseRepository
 
 
-class PageBdAttachmentsInMemory(PageBdAttachmentsRepository):
+class WorkAttachmentsInMemory(WorkAttachmentsRepository):
     def __init__(self):
         self.added_attachments = []
         self.last_isbn = None
@@ -19,7 +19,7 @@ class PageBdAttachmentsInMemory(PageBdAttachmentsRepository):
         return BdAttachment(signed_copies=[], ex_libris=[])
 
 
-class PageBdDatabaseInMemory(PageBdDatabaseRepository):
+class WorkDatabaseInMemory(WorkDatabaseRepository):
     def __init__(self):
         self.data = {}
         self.should_raise_error = False
