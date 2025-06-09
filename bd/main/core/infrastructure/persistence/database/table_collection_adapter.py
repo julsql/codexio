@@ -9,7 +9,8 @@ class TableCollectionAdapter(CreateDatabaseRepository):
         collection = DATABASE_MODEL_COLLECTION.objects.create(title=value.title,
                                                               token=value.token,
                                                               doc_name=value.doc_name,
-                                                              sheet_name=value.sheet_name, )
+                                                              sheet_name=value.sheet_name,
+                                                              profile=value.profile,)
         collection.accounts.add(*value.accounts)
         collection.save()
         return collection

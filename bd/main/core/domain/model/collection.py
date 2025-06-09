@@ -1,12 +1,14 @@
 from dataclasses import dataclass
 
-from main.models import AppUser
+from main.core.infrastructure.persistence.database.models import AppUser
+from main.core.infrastructure.persistence.database.models.profile import Profile
 
 
 @dataclass
 class Collection:
     title: str
-    accounts: list[AppUser]
     token: str
     doc_name: str
     sheet_name: str
+    accounts: list[AppUser]
+    profile: Profile
