@@ -96,14 +96,6 @@ th {
     text-align: inherit;
 }
 
-@media (min-width: 800px) {
-    .col-md-4 {
-        flex: 0 0 auto;
-        width: 32%;
-        margin-top: 10px;
-    }
-}
-
 .container .formulaire .form {
     position: absolute;
     background-color: #fff;
@@ -240,37 +232,6 @@ input label {
     margin-bottom: 0;
 }
 
-
-@media (max-width: 800px) {
-    html body [data-see="false"] {
-        display: none;
-    }
-
-    #see-more {
-        visibility: visible;
-    }
-
-    .row {
-        display: block;
-    }
-
-    .col-md-4 {
-        margin-top: 10px;
-    }
-
-    .see-more #upper-line {
-        display: none;
-    }
-
-    .see-more .arrow {
-        margin: 0;
-    }
-
-    .formulaire .fields input {
-        width: 100%;
-    }
-}
-
 .input-container {
     position: relative;
     display: inline-block;
@@ -316,4 +277,45 @@ input label {
 
 .clear-all:hover {
     color: #333;
+}
+
+@media (min-width: 1070px) {
+    .col-md-4 {
+        flex: 0 0 auto;
+        width: 32%;
+        margin-top: 10px;
+    }
+    [data-see="false"] {
+        display: block !important; /* remove line */
+    }
+}
+
+@media (max-width: 1070px) {
+    html body [data-see="false"] {
+        display: none;
+    }
+
+    #see-more {
+        visibility: visible;
+    }
+
+    .row {
+        display: block;
+    }
+
+    .col-md-4 {
+        margin-top: 10px;
+    }
+
+    .see-more #upper-line {
+        display: none;
+    }
+
+    .see-more .arrow {
+        margin: 0;
+    }
+
+    .formulaire .fields input {
+        width: 100%;
+    }
 }

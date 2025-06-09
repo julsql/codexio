@@ -38,7 +38,7 @@ strong {
 .container {
     max-width: 1200px;
     height: 100%;
-    width: 90%;
+    width: 85%;
     margin: 0 auto;
 }
 
@@ -147,7 +147,7 @@ input:is([type="submit"]), button:is([type="submit"]) {
     display: none;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1070px) {
     #content h2 {
         font-size: 1.20em;
         margin: 0 0 0 0;
