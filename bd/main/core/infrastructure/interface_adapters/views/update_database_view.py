@@ -3,7 +3,9 @@ from django.http import HttpRequest, HttpResponse, HttpResponseForbidden, HttpRe
 
 from main.core.application.usecases.authorization.authorization_service import AuthorizationService
 from main.core.application.usecases.update_database.update_database_service import UpdateDatabaseService
+from main.core.domain.model.profile_type import ProfileType
 from main.core.infrastructure.interface_adapters.bearer_token.bearer_token_adapter import BearerTokenAdapter
+from main.core.infrastructure.interface_adapters.profile_type.profile_type_adapter import ProfileTypeAdapter
 from main.core.infrastructure.interface_adapters.request_methods.request_method_adapter import RequestMethodAdapter
 from main.core.infrastructure.interface_adapters.responses.django_response_adapter import DjangoResponseAdapter
 from main.core.infrastructure.logging.python_logger_adapter import PythonLoggerAdapter
@@ -17,6 +19,7 @@ class UpdateDatabaseView:
         self.logger_adapter = PythonLoggerAdapter()
         self.response_adapter = DjangoResponseAdapter()
         self.request_method_adapter = RequestMethodAdapter(self.response_adapter)
+        self.profile_type_adapter = ProfileTypeAdapter(self.response_adapter)
         self.auth_service = AuthorizationService(
             BearerTokenAdapter(self.response_adapter)
         )
@@ -33,9 +36,20 @@ class UpdateDatabaseView:
 
         try:
             sheet_repository = SheetAdapter(collection.doc_name, collection.sheet_name)
-            database_repository = TableBdAdapter()
-            service = UpdateDatabaseService(sheet_repository, database_repository)
-            service.main(collection)
+
+            profile_type = self.profile_type_adapter.get_profile_type(collection)
+            if not isinstance(profile_type, ProfileType):
+                return profile_type
+
+            if profile_type == ProfileType.BD:
+                database_repository = TableBdAdapter()
+                service = UpdateDatabaseService(sheet_repository, database_repository)
+                service.main(collection)
+            elif profile_type == ProfileType.BOOK:
+                return self.response_adapter.technical_error("Impossible de mettre à jour les livres pour le moment")
+            else:
+                return self.response_adapter.technical_error("Erreur dans la recherche de profils")
+
             return self.response_adapter.success('Site web mis à jour correctement')
 
         except Exception as e:

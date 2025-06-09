@@ -32,3 +32,8 @@ class ResponseRepository(ABC):
     def server_error(self, content: str) -> Any:
         """Crée une réponse erreur serveur"""
         pass
+
+    @abstractmethod
+    def technical_error(self, content: str) -> Any:
+        """Crée une réponse erreur serveur technique"""
+        pass
