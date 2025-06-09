@@ -23,7 +23,7 @@
                     <div id="attachments_{{ bd.isbn }}" class="pagination-item sub-section">
                         <header>
                             <h2>
-                                <a href="{% url 'pagebd' bd.isbn %}">
+                                <a href="{% url 'ouvrage' bd.isbn %}">
                                     {% if bd.number and bd.number != "" %}
                                         Tome {{ bd.number }}
                                         {% if bd.album and bd.album != "" %}
@@ -42,7 +42,7 @@
                                 <h2>{{ bd.series }}</h2>
                             {% endif %}
                             <p>
-                                {{ bd.total }} {% pluralize_type type bd.total %}
+                                {{ bd.total }} {% pluralize_word type bd.total %}
                             </p>
                         </header>
                         <div class="image_group carousel-container">

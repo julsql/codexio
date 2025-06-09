@@ -11,15 +11,15 @@ django.setup()
 from main.core.infrastructure.persistence.database.models.collection import Collection
 from main.models import AppUser
 
-from main.core.application.usecases.page_bd.page_bd_service import PageBdService
+from main.core.application.usecases.page_bd.page_bd_service import WorkService
 from main.core.domain.model.bd import BD
 from main.core.domain.model.bd_attachment import BdAttachment
 from main.core.domain.model.bd_with_attachment import BdWithAttachment
 from tests.test_common.internal.logger_in_memory import LoggerInMemory
-from tests.test_page_bd.internal.page_bd_in_memory import PageBdAttachmentsInMemory, PageBdDatabaseInMemory
+from tests.test_page_bd.internal.page_bd_in_memory import WorkAttachmentsInMemory, WorkDatabaseInMemory
 
 
-class TestPageBdService(unittest.TestCase):
+class TestWorkService(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -34,10 +34,10 @@ class TestPageBdService(unittest.TestCase):
         cls.collection = Collection.objects.get(accounts=cls.user)
 
     def setUp(self) -> None:
-        self.attachments_repository = PageBdAttachmentsInMemory()
-        self.database_repository = PageBdDatabaseInMemory()
+        self.attachments_repository = WorkAttachmentsInMemory()
+        self.database_repository = WorkDatabaseInMemory()
         self.logging_repository = LoggerInMemory()
-        self.service = PageBdService(self.attachments_repository, self.database_repository, self.logging_repository)
+        self.service = WorkService(self.attachments_repository, self.database_repository, self.logging_repository)
 
     def test_main_with_existing_bd(self) -> None:
         # Arrange

@@ -23,7 +23,7 @@ class InMemoryAdvancedSearchRepository(AdvancedSearchRepository):
         bd.illustrator = illustrator
         self.bds.append(bd)
 
-    def get_all(self, collection: int) -> QuerySet[BD, BD]:
+    def get_all(self, collection_id: int) -> QuerySet[BD, BD]:
         """Simule QuerySet.all()"""
         # Convertit la liste en un mock de QuerySet
         self._mock_queryset = MockQuerySet(self.bds)

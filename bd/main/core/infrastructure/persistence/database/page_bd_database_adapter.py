@@ -3,12 +3,12 @@ from decimal import Decimal
 from typing import Optional
 
 from main.core.domain.model.bd import BD as INTERNAL_MODEL_BD
-from main.core.domain.ports.repositories.page_bd_database_repository import PageBdDatabaseRepository
+from main.core.domain.ports.repositories.page_bd_database_repository import WorkDatabaseRepository
 from main.core.infrastructure.persistence.database.models import Collection
 from main.core.infrastructure.persistence.database.models.bd import BD as DATABASE_MODEL_BD
 
 
-class PageBdDatabaseAdapter(PageBdDatabaseRepository, ABC):
+class WorkDatabaseAdapter(WorkDatabaseRepository, ABC):
     def page(self, isbn: int, collection: Collection) -> Optional[INTERNAL_MODEL_BD]:
         result = DATABASE_MODEL_BD.objects.filter(collection=collection).filter(isbn=isbn).values().first()
 

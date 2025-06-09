@@ -21,13 +21,13 @@ from django.urls import path, include
 
 from main.core.infrastructure.interface_adapters.views.add_album_view import add_album
 from main.core.infrastructure.interface_adapters.views.attachments_view import exlibris_view, signed_copies_view
-from main.core.infrastructure.interface_adapters.views.bd_search_view import bd_search_view
+from main.core.infrastructure.interface_adapters.views.search_view import search_view
 from main.core.infrastructure.interface_adapters.views.delete_photo_view import delete_dedicace, delete_exlibris
 from main.core.infrastructure.interface_adapters.views.errors_view import error_500_view, error_404_view
 from main.core.infrastructure.interface_adapters.views.existing_album_view import existing_album
 from main.core.infrastructure.interface_adapters.views.home_view import home_view
 from main.core.infrastructure.interface_adapters.views.login_view import login_view
-from main.core.infrastructure.interface_adapters.views.page_bd_view import page_bd_view
+from main.core.infrastructure.interface_adapters.views.work_view import work_view
 from main.core.infrastructure.interface_adapters.views.profile_view import profile_view, change_collection_view
 from main.core.infrastructure.interface_adapters.views.statistics_view import statistics_view
 from main.core.infrastructure.interface_adapters.views.update_database_view import update_database
@@ -45,10 +45,10 @@ urlpatterns = [
     path('', home_view, name='home'),
     path('profile', profile_view, name='profile'),
     path('change-collection/<int:collection_id>/', change_collection_view, name='change_collection'),
-    path('bdrecherche/', bd_search_view, name='bdrecherche'),
+    path('recherche/', search_view, name='recherche'),
     path('dedicaces/', signed_copies_view, name='dedicaces'),
     path('exlibris/', exlibris_view, name='exlibris'),
-    path('pagebd/<int:isbn>/', page_bd_view, name='pagebd'),
+    path('ouvrage/<int:isbn>/', work_view, name='ouvrage'),
     path('statistiques/', statistics_view, name='statistiques'),
 
     path('update/', update_database, name='update'),

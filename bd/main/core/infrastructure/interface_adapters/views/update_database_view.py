@@ -7,7 +7,7 @@ from main.core.domain.model.profile_type import ProfileType
 from main.core.infrastructure.interface_adapters.bearer_token.bearer_token_adapter import BearerTokenAdapter
 from main.core.infrastructure.interface_adapters.profile_type.profile_type_adapter import ProfileTypeAdapter
 from main.core.infrastructure.interface_adapters.request_methods.request_method_adapter import RequestMethodAdapter
-from main.core.infrastructure.interface_adapters.responses.django_response_adapter import DjangoResponseAdapter
+from main.core.infrastructure.interface_adapters.responses.api_response_adapter import ApiResponseAdapter
 from main.core.infrastructure.logging.python_logger_adapter import PythonLoggerAdapter
 from main.core.infrastructure.persistence.database.models import Collection
 from main.core.infrastructure.persistence.database.table_bd_adapter import TableBdAdapter
@@ -17,7 +17,7 @@ from main.core.infrastructure.persistence.sheet.sheet_adapter import SheetAdapte
 class UpdateDatabaseView:
     def __init__(self):
         self.logger_adapter = PythonLoggerAdapter()
-        self.response_adapter = DjangoResponseAdapter()
+        self.response_adapter = ApiResponseAdapter()
         self.request_method_adapter = RequestMethodAdapter(self.response_adapter)
         self.profile_type_adapter = ProfileTypeAdapter(self.response_adapter)
         self.auth_service = AuthorizationService(

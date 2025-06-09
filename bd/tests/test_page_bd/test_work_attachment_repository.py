@@ -9,11 +9,11 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from main.core.infrastructure.persistence.file.page_bd_attachments_adapter import PageBdAttachmentsAdapter
+from main.core.infrastructure.persistence.file.page_bd_attachments_adapter import WorkAttachmentsAdapter
 from main.core.infrastructure.persistence.file.paths import SIGNED_COPY_PATH, EXLIBRIS_PATH
 
 
-class TestPageBdAttachmentsConnexion(unittest.TestCase):
+class TestWorkAttachmentsConnexion(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -29,7 +29,7 @@ class TestPageBdAttachmentsConnexion(unittest.TestCase):
         os.makedirs(cls.SIGNED_COPY_FOLDER, exist_ok=True)
         os.makedirs(cls.EXLIBRIS_FOLDER, exist_ok=True)
 
-        cls.repository = PageBdAttachmentsAdapter(cls.SIGNED_COPY_FOLDER, cls.EXLIBRIS_FOLDER)
+        cls.repository = WorkAttachmentsAdapter(cls.SIGNED_COPY_FOLDER, cls.EXLIBRIS_FOLDER)
 
     @classmethod
     def tearDownClass(cls) -> None:

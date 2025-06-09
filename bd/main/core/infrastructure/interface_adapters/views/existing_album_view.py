@@ -4,7 +4,7 @@ from main.core.application.usecases.authorization.authorization_service import A
 from main.core.application.usecases.existing_album.existing_album_service import ExistingAlbumService
 from main.core.infrastructure.interface_adapters.bearer_token.bearer_token_adapter import BearerTokenAdapter
 from main.core.infrastructure.interface_adapters.request_methods.request_method_adapter import RequestMethodAdapter
-from main.core.infrastructure.interface_adapters.responses.django_response_adapter import DjangoResponseAdapter
+from main.core.infrastructure.interface_adapters.responses.api_response_adapter import ApiResponseAdapter
 from main.core.infrastructure.logging.python_logger_adapter import PythonLoggerAdapter
 from main.core.infrastructure.persistence.database.models import Collection
 from main.core.infrastructure.persistence.sheet.sheet_adapter import SheetAdapter
@@ -13,7 +13,7 @@ from main.core.infrastructure.persistence.sheet.sheet_adapter import SheetAdapte
 class ExistingAlbumView:
     def __init__(self):
         self.logger_adapter = PythonLoggerAdapter()
-        self.response_adapter = DjangoResponseAdapter()
+        self.response_adapter = ApiResponseAdapter()
         self.request_method_adapter = RequestMethodAdapter(self.response_adapter)
         self.auth_service = AuthorizationService(
             BearerTokenAdapter(self.response_adapter)

@@ -18,9 +18,9 @@
                 {% for album in infos %}
 
                     {% if not album.Album and album.Album == "" and not album.Numero and album.Numero == "" and not album.Serie and album.Serie == "" %}
-                        <a class="pagination-item" href="{% url 'pagebd' album.ISBN %}">Pas de titre</a>
+                        <a class="pagination-item" href="{% url 'ouvrage' album.ISBN %}">Pas de titre</a>
                     {% else %}
-                        <a class="pagination-item" href="{% url 'pagebd' album.ISBN %}">
+                        <a class="pagination-item" href="{% url 'ouvrage' album.ISBN %}">
                             {% if album.Album and album.Album != "" %}
                                 {{ album.Album }}
                             {% endif %}

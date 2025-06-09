@@ -1,6 +1,7 @@
 {% extends 'main/base.html' %}
 {% load static %}
 {% block body %}
+{% load custom_tags %}
 
     <div id="body">
         <div class="col-30">
@@ -10,14 +11,18 @@
                 <div id="statistics_content">
                     <header>
                         <h2>Statistiques</h2>
-                        <h3>État de la collection de bandes dessinées</h3>
+                        <h3>État de la collection</h3>
                     </header>
                     <div class="list">
                         <ul>
-                            <li>{{ nombre }} bande{% if nombre > 1 %}s{% endif %} dessinée{% if nombre > 1 %}s{% endif %}</li>
+                            <li>{{ nombre }} {% pluralize_word work_type nombre %}</li>
                             <li>{{ pages }} page{% if pages > 1 %}s{% endif %}</li>
-                            <li>{{ dedicaces }} dédicace{% if dedicaces > 1 %}s{% endif %}</li>
-                            <li>{{ exlibris }} ex-libris</li>
+                            {% if dedicaces is not None %}
+                                <li>{{ dedicaces }} dédicace{% if dedicaces > 1 %}s{% endif %}</li>
+                            {% endif %}
+                            {% if exlibris %}
+                                <li>{{ exlibris }} ex-libris</li>
+                            {% endif %}
                             <li>{{ tirage }} tirage{% if tirage > 1 %}s{% endif %} de tête</li>
                         </ul>
                     </div>
@@ -28,7 +33,7 @@
         <div class="col-70">
             <section>
 
-            <div id='pie_container'></div>
+                <div id='pie_container'></div>
             </section>
         </div>
     </div>

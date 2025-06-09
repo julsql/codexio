@@ -8,7 +8,7 @@ from django.http import (
 from main.core.domain.ports.repositories.response_repository import ResponseRepository
 
 
-class DjangoResponseAdapter(ResponseRepository):
+class ApiResponseAdapter(ResponseRepository):
     CONTENT_TYPE = "text/plain; charset=utf-8"
 
     def success(self, content: str, status: int = 200) -> HttpResponse:

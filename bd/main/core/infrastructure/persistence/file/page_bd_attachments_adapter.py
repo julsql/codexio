@@ -2,10 +2,10 @@ import os
 from abc import ABC
 
 from main.core.domain.model.bd_attachment import BdAttachment
-from main.core.domain.ports.repositories.page_bd_attachments_repository import PageBdAttachmentsRepository
+from main.core.domain.ports.repositories.page_bd_attachments_repository import WorkAttachmentsRepository
 
 
-class PageBdAttachmentsAdapter(PageBdAttachmentsRepository, ABC):
+class WorkAttachmentsAdapter(WorkAttachmentsRepository, ABC):
     def __init__(self, signer_copy_folder: str, exlibris_folder: str):
         self.SIGNED_COPY_FOLDER = signer_copy_folder
         self.EXLIBRIS_FOLDER = exlibris_folder
