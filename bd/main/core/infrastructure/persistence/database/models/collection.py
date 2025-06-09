@@ -9,6 +9,9 @@ class Collection(models.Model):
         settings.AUTH_USER_MODEL,
         related_name="collections"
     )
+    token = models.CharField(max_length=128, unique=True, editable=False)
+    doc_name = models.CharField(max_length=100)
+    sheet_name = models.CharField(max_length=100)
 
     def __str__(self) -> str:
         return self.title

@@ -2,7 +2,6 @@ from django.http import HttpRequest, HttpResponseBadRequest, HttpResponseNotAllo
     HttpResponse, HttpResponseServerError
 from django.views.decorators.csrf import csrf_exempt
 
-from config.settings import POST_TOKEN
 from main.core.application.usecases.authorization.authorization_service import AuthorizationService
 from main.core.application.usecases.upload_photo.upload_photo_service import UploadPhotoService
 from main.core.domain.model.attachment_type import AttachmentType
@@ -10,6 +9,7 @@ from main.core.infrastructure.interface_adapters.bearer_token.bearer_token_adapt
 from main.core.infrastructure.interface_adapters.request_methods.request_method_adapter import RequestMethodAdapter
 from main.core.infrastructure.interface_adapters.responses.django_response_adapter import DjangoResponseAdapter
 from main.core.infrastructure.logging.python_logger_adapter import PythonLoggerAdapter
+from main.core.infrastructure.persistence.database.models import Collection
 from main.core.infrastructure.persistence.file.upload_photo_adapter import UploadPhotoAdapter
 
 
@@ -19,7 +19,7 @@ class UploadPhotoView:
         self.response_adapter = DjangoResponseAdapter()
         self.request_method_adapter = RequestMethodAdapter(self.response_adapter)
         self.auth_service = AuthorizationService(
-            BearerTokenAdapter(self.response_adapter, POST_TOKEN)
+            BearerTokenAdapter(self.response_adapter)
         )
 
     def handle_request(self,
@@ -30,15 +30,16 @@ class UploadPhotoView:
         if method_not_allowed := self.request_method_adapter.method_not_allowed(request.method, "POST"):
             return method_not_allowed
 
-        if token_invalid := self.auth_service.verify_token(request.headers.get('Authorization')):
-            return token_invalid
+        collection = self.auth_service.verify_token(request.headers.get('Authorization'))
+        if not isinstance(collection, Collection):
+            return collection
 
         try:
             if 'file' in request.FILES:
                 uploaded_file = request.FILES['file']
                 photo_repository = UploadPhotoAdapter()
                 service = UploadPhotoService(photo_repository)
-                if service.main(isbn, uploaded_file, photo_type):
+                if service.main(isbn, uploaded_file, photo_type, collection.id):
                     return self.response_adapter.success(f"Photo {isbn} ajoutée avec succès")
                 else:
                     return self.response_adapter.bad_request("Le type du fichier est incorrect")

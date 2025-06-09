@@ -9,12 +9,13 @@ from main.models import AppUser
 
 
 def insert_initial_data(apps, schema_editor) -> None:
-    sheet_repository = SheetAdapter()
-    database_repository = TableBdAdapter()
-    service = UpdateDatabaseService(sheet_repository, database_repository)
-    user = AppUser.objects.exclude(username='admin').filter(is_active=True).first()
-    if user:
-        service.main(user)
+    users = AppUser.objects.exclude(username='admin').filter(is_active=True)
+    for user in users:
+        for collection in user.collections.all():
+            sheet_repository = SheetAdapter(collection.doc_name, collection.sheet_name)
+            database_repository = TableBdAdapter()
+            service = UpdateDatabaseService(sheet_repository, database_repository)
+            service.main(collection)
 
 
 class Migration(migrations.Migration):

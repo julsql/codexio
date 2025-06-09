@@ -6,14 +6,16 @@ from google.auth import exceptions
 from google.oauth2 import service_account
 
 from config.settings import GSHEET_CREDENTIALS
-from main.core.domain.exceptions.sheet_exceptions import SheetConnexionException
+from main.core.domain.exceptions.sheet_exceptions import SheetConnexionException, SheetNamesException
 from main.core.domain.ports.repositories.sheet_repository import SheetRepository
 
 
 class SheetAdapter(SheetRepository):
-    def __init__(self) -> None:
+    def __init__(self, doc_name, sheet_name) -> None:
         self.__OFFSET__ = 1
         self.worksheet = None
+        self.doc_name = doc_name
+        self.sheet_name = sheet_name
         __FILEPATH__ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         credentials_path = GSHEET_CREDENTIALS
         try:
@@ -29,11 +31,14 @@ class SheetAdapter(SheetRepository):
                 "Veuillez réessayer plus tard."
             )
 
-    def open(self, doc_name: str, sheet_name: str = None) -> None:
-        if sheet_name is not None:
-            self.worksheet = self.client.open(doc_name).worksheet(sheet_name)
+    def open(self) -> None:
+        if self.doc_name and self.sheet_name:
+            try:
+                self.worksheet = self.client.open(self.doc_name).worksheet(self.sheet_name)
+            except SheetNamesException as e:
+                raise SheetNamesException(f"{self.doc_name} ou {self.sheet_name} inexistant") from e
         else:
-            self.worksheet = self.client.open(doc_name).sheet1
+            raise SheetNamesException("Il manque le nom du doc ou de la feuille")
 
     def append(self, liste: list[Union[str, int, float]]) -> None:
         self.worksheet.append_row(liste)

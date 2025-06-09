@@ -10,7 +10,7 @@ class SheetInMemory(SheetRepository):
         self.client = {"bd": {"BD": [], "Test": []}}
         self.__OFFSET__ = 0
 
-    def open(self, doc_name: str, sheet_name: str = None) -> None:
+    def open(self) -> None:
         return None
 
     def append(self, liste: list[Union[str, int, float]]) -> None:

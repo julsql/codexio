@@ -11,10 +11,8 @@ from main.core.infrastructure.persistence.database.models import Collection
 
 class UpdateDatabaseService:
     def __init__(self, sheet_repository: SheetRepository, database_repository: DatabaseRepository) -> None:
-        doc_name = "bd"
-        sheet_name = "BD"
         self.sheet = sheet_repository
-        self.sheet.open(doc_name, sheet_name)
+        self.sheet.open()
         self.database = database_repository
 
     def main(self, collection: Collection) -> None:

@@ -11,3 +11,8 @@ class SheetException(DomainException):
 class SheetConnexionException(SheetException):
     """Google Sheets non accessible"""
     pass
+
+
+class SheetNamesException(SheetException):
+    """Nom du doc ou de la feuille non accessible"""
+    pass
