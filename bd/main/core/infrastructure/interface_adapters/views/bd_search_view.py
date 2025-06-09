@@ -16,8 +16,6 @@ def bd_search_view(request: HttpRequest) -> HttpResponse:
                    'infos': [{'ISBN': search_result.isbn,
                               'Album': search_result.title,
                               'Numero': search_result.number,
-                              'Serie': search_result.series,
-                              'Scenariste': search_result.writer,
-                              'Dessinateur': search_result.illustrator
+                              'Serie': search_result.series
                               } for search_result in advanced_search.albums],
                    'total': len(advanced_search.albums)})
