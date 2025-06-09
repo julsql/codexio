@@ -4,19 +4,28 @@ from django.db import migrations
 
 from main.core.domain.model.app_user import AppUser
 from main.core.domain.model.collection import Collection
+from main.core.domain.model.profile import Profile
+from main.core.domain.model.profile_type import ProfileType
 from main.core.infrastructure.persistence.database.table_collection_adapter import TableCollectionAdapter
+from main.core.infrastructure.persistence.database.table_profile_adapter import TableProfileAdapter
 from main.core.infrastructure.persistence.database.table_user_adapter import TableUserAdapter
 
 try:
     from main.core.application.create_users import create_local_users
 except ImportError:
-    def create_local_users():
-        pass
+    def create_local_users(profiles: dict[ProfileType, Profile]):
+        pass # Si aucun fichier d'initialisation est trouvé
 
 
 def insert_initial_data(apps, schema_editor) -> None:
+    profile_repository = TableProfileAdapter()
     user_repository = TableUserAdapter()
     collection_repository = TableCollectionAdapter()
+
+    profile_internal_bd = Profile(name="BD")
+    profile_internal_book = Profile(name="BOOK")
+    profile_bd = profile_repository.create(profile_internal_bd)
+    profile_book = profile_repository.create(profile_internal_book)
 
     admin_internal = AppUser(username="admin", password="admin", first_name="Admin",
                              email="admin@email.com")
@@ -25,9 +34,10 @@ def insert_initial_data(apps, schema_editor) -> None:
                                      accounts=[admin],
                                      token="XIWzYF4RFb77U4obBcfBF2UfVFE0hK2Aq43UV9e8d1EpLye7wXxGPHFwCVmMExb8",
                                      doc_name="bd",
-                                     sheet_name="Test", )
+                                     sheet_name="Test",
+                                     profile=profile_bd)
     collection_repository.create(collection_internal)
-    create_local_users()
+    create_local_users({ProfileType.BD: profile_bd, ProfileType.BOOK: profile_book})
 
 
 class Migration(migrations.Migration):
