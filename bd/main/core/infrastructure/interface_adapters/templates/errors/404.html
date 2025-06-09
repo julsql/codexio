@@ -8,7 +8,12 @@
         <section>
             <header>
                 <h2>Erreur 404 - Page non trouvée</h2>
-                <h3>La page que vous recherchez n'existe pas.</h3>
+                <h3>
+                    {% if message %}
+                        {{ message }}
+                    {% else %} La page que vous recherchez n'existe pas.
+                    {% endif %}
+                </h3>
                 <a href="/main/static">Retour à l'accueil</a>
             </header>
         </section>
