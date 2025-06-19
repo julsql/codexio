@@ -3,11 +3,9 @@ from django.db import models
 
 
 class AppUser(AbstractUser):
-    email = models.EmailField(max_length=254)
+    email = models.EmailField(max_length=254, unique=True)
     current_collection = models.ForeignKey(
         'main.Collection',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
+        on_delete=models.PROTECT,
         related_name='current_users'
     )
