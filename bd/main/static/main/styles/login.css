@@ -1,0 +1,17 @@
+.form-group {
+    margin: 10px 0;
+}
+
+.form-errors {
+    margin: 1em 0;
+    padding: 1em;
+    background-color: #ffe6e6;
+    border: 1px solid #ff9999;
+    border-radius: 8px;
+    color: #a94442;
+    display: table;
+}
+
+.errorlist li {
+    font-size: 14px;
+}
