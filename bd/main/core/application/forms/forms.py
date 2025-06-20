@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth import get_user_model
 
 
 class RechercheForm(forms.Form):
@@ -34,3 +35,6 @@ class RechercheForm(forms.Form):
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=150, label='Nom d\'utilisateur')
     password = forms.CharField(widget=forms.PasswordInput, label='Mot de passe')
+
+class EmailUpdateForm(forms.Form):
+    email = forms.EmailField(label="Nouvel email", max_length=254)

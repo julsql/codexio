@@ -2,37 +2,92 @@
 {% load static %}
 
 {% block body %}
-    <section>
-        <header>
-            <h2>Mes informations</h2>
-            <h3>{{ first_name }}</h3>
-        </header>
-        <div>
-            <p>Nom d'utilisateur : {{ username }}</p>
-        </div>
-        <div>
-            <br/>
-            <h4>Mes collections</h4>
-            <div class="list">
-                <ul>
-                    {% for collection_id, collection_title in collections %}
-                        {% if collection_id == current_collection_id %}
-                            <li class="current_collection">{{ collection_title }}</li>
-                        {% else %}
-                            <li class="unselected_collection">{{ collection_title }} <a
-                                    href="{% url 'change_collection' collection_id %}">Sélectionner</a></li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-        <br/>
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="button-large">
-                Se déconnecter
-            </button>
-        </form>
-    </section>
+    <div id="body">
+        <div class="col-50">
+            <section>
+                <header>
+                    <h2>Mes informations</h2>
+                    <h3>{{ first_name }}</h3>
+                </header>
+                <div>
+                    <p>Nom d'utilisateur : {{ username }}</p>
+                    <p>Email : {{ email }}</p>
+                </div>
 
+                <div>
+                    <br/>
+                    <h4>Mes collections</h4>
+                    <div class="list">
+                        <ul>
+                            {% for collection_id, collection_title in collections %}
+                                {% if collection_id == current_collection_id %}
+                                    <li class="current_collection">{{ collection_title }}</li>
+                                {% else %}
+                                    <li class="unselected_collection">{{ collection_title }} <a
+                                            href="{% url 'change_collection' collection_id %}">Sélectionner</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <br/>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="button-large">
+                        Se déconnecter
+                    </button>
+                </form>
+            </section>
+        </div>
+
+        <div class="col-50">
+            <section>
+            <h2>Paramètres du compte</h2>
+                <h3>Changer l'email associé au compte</h3>
+                <!-- Formulaire pour mettre à jour l'email -->
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ email_form.email.label_tag }}
+                        {{ email_form.email }}
+                    </div>
+                    <button type="submit" name="update_email" class="button-large">Mettre à jour l'email</button>
+                </form>
+
+                <br/>
+                <br/>
+
+                <h3>Changer son mot de passe</h3>
+                <!-- Formulaire pour changer le mot de passe -->
+                <form method="post" class="password-reset-form">
+                    {% csrf_token %}
+
+                    <div class="form-group">
+                        <label for="id_new_password1">Nouveau mot de passe :</label>
+                        {{ password_form.new_password1 }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_new_password2">Confirmation du mot de passe :</label>
+                        {{ password_form.new_password2 }}
+                    </div>
+
+                    {% if password_form.errors %}
+                        <div class="form-errors">
+                            {% for field in password_form %}
+                                {% for error in field.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in password_form.non_field_errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <button type="submit" class="button-large">Changer le mot de passe</button>
+                </form>
+            </section>
+        </div>
+    </div>
 {% endblock %}
