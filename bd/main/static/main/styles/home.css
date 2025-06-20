@@ -2,6 +2,11 @@
     width: 70%;
 }
 
+
+.col-50 {
+    width: 50%;
+}
+
 .col-30 {
     width: 30%;
 }
@@ -17,11 +22,7 @@
         display: block;
     }
 
-    .col-70 {
-        width: 100%;
-    }
-
-    .col-30 {
+    .col-70, .col-50, .col-30 {
         width: 100%;
     }
 }
