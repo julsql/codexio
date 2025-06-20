@@ -18,6 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
+from django.contrib import admin
 
 from main.core.infrastructure.interface_adapters.views.add_album_view import add_album
 from main.core.infrastructure.interface_adapters.views.attachments_view import exlibris_view, signed_copies_view
@@ -38,6 +39,7 @@ handler500 = error_500_view
 handler404 = error_404_view
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path('accounts/login/', login_view, name='login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('accounts/', include('django.contrib.auth.urls')),
