@@ -45,31 +45,35 @@ class BdPhileAdapter(BaseAlbumAdapter):
         album_tag = soup.find("section", id="page-title")
         if not album_tag:
             self.logging_repository.warning("Informations sur le titre non trouvées", extra={"isbn": self.isbn})
-            return
-        series_tag = album_tag.find("h1").find("a")
+            return None
+
+        series_tag = album_tag.find("h1")
         if not series_tag:
             self.logging_repository.warning("Informations sur la série non trouvées", extra={"isbn": self.isbn})
-        series = series_tag.get_text()
-        album.series = series
 
+        else:
+            series = series_tag.get_text()
+            series = series.strip().split("\n")[0]
+            album.series = series
         title_tag = album_tag.find("h2")
         if not title_tag:
             self.logging_repository.warning("Informations sur le titre non trouvées", extra={"isbn": self.isbn})
-        title = title_tag.get_text()
-        match = re.search(r"^Tome\s+(\d+)\s*:", title, re.IGNORECASE)
-
-        if match:
-            numero = match.group(1)
-            titre = title[match.end():].strip()
-            album.number = numero
-            album.title = titre
         else:
-            # Pas de numéro de tome trouvé
-            self.logging_repository.debug(
-                f"Pas de numéro de tome trouvé dans le titre: '{title}'",
-                extra={"isbn": self.isbn}
-            )
-            album.title = title.strip()
+            title = title_tag.get_text()
+            match = re.search(r"^Tome\s+(\d+)\s*:", title, re.IGNORECASE)
+
+            if match:
+                numero = match.group(1)
+                titre = title[match.end():].strip()
+                album.number = numero
+                album.title = titre
+            else:
+                # Pas de numéro de tome trouvé
+                self.logging_repository.debug(
+                    f"Pas de numéro de tome trouvé dans le titre: '{title}'",
+                    extra={"isbn": self.isbn}
+                )
+                album.title = title.strip()
         return None
 
     def _extract_additional_info(self, soup: BeautifulSoup, album: Album) -> None:
