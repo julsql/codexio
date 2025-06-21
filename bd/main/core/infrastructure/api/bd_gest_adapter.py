@@ -61,7 +61,9 @@ class BdGestAdapter(BaseAlbumAdapter):
             match = re.search(pattern, full_title)
 
             if not match:
-                raise ValueError("Format de titre invalide : le numéro de tome est introuvable")
+                album.series = full_title
+                self.logging_repository.warning("Informations sur la série et le tome non trouvées", extra={"isbn": self.isbn})
+                return None
 
             # Découpe aux positions trouvées
             tome = match.group(1)
@@ -250,7 +252,6 @@ class BdGestAdapter(BaseAlbumAdapter):
     def get_csrf_token(self, session):
         """Récupère dynamiquement le token CSRF depuis la page de recherche."""
         response = session.get(self.SEARCH_URL)
-        print(self.SEARCH_URL)
 
         if response.status_code != 200:
             raise ApiConnexionException(f"Erreur {response.status_code} lors de l'accès au site.", str(self))

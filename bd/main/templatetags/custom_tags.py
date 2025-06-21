@@ -11,5 +11,4 @@ def pluralize_word(words, total):
             value += word + 's' + " "
         else:
             value += word + " "
-    print(value)
     return value
