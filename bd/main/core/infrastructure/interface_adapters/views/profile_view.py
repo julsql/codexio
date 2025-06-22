@@ -30,6 +30,7 @@ class ProfileView:
                     user.save()
                     messages.success(request, "Email mis à jour avec succès.")
                     return redirect('profile')
+                password_form = PasswordChangeForm(user)
             elif "change_password" in request.POST:
                 password_form = PasswordChangeForm(user, request.POST)
                 if password_form.is_valid():
@@ -37,6 +38,7 @@ class ProfileView:
                     update_session_auth_hash(request, user)  # Important pour garder la session
                     messages.success(request, "Mot de passe mis à jour avec succès.")
                     return redirect('profile')
+                email_form = EmailUpdateForm(initial={'email': user.email})
         else:
             email_form = EmailUpdateForm(initial={'email': user.email})
             password_form = PasswordChangeForm(user)
