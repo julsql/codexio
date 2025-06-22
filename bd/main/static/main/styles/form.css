@@ -148,7 +148,7 @@ input label {
     color: #2e2e2e;
 }
 
-.formulaire input, .formulaire select {
+.formulaire input, .formulaire select, form input  {
     outline: none;
     font-weight: 400;
     color: #333;
@@ -157,8 +157,11 @@ input label {
     box-shadow: 0 0 5px lightgrey;
     padding: 0 5px;
     height: 30px;
-    width: 100%;
     margin: 3px 0;
+}
+
+.formulaire input, .formulaire select  {
+    width: 100%;
 }
 
 .formulaire select.default-option {
@@ -170,7 +173,8 @@ input label {
 }
 
 .formulaire input :focus,
-.formulaire input select:focus {
+.formulaire input select:focus,
+form input:focus{
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
 }
 

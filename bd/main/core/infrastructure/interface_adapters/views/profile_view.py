@@ -2,8 +2,14 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 
+from main.core.application.forms.forms import EmailUpdateForm
 from main.core.infrastructure.persistence.database.models import Collection
 
+
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
+from django.shortcuts import redirect
 
 class ProfileView:
     def handle_request(self, request: HttpRequest) -> HttpResponse:
@@ -14,15 +20,36 @@ class ProfileView:
         if current_collection:
             current_collection_id = current_collection.id
         else:
-            current_collection_id = collections[0].id
+            current_collection_id = collections[0].id if collections else None
 
-        return render(request, 'profile/module.html',
-                      {'username': user.username,
-                       'first_name': user.first_name,
-                       'email': user.email,
-                       'current_collection_id': current_collection_id,
-                       'collections': [(collection.id, collection.title) for collection in collections]
-                       })
+        if request.method == "POST":
+            if "update_email" in request.POST:
+                email_form = EmailUpdateForm(request.POST)
+                if email_form.is_valid():
+                    user.email = email_form.cleaned_data['email']
+                    user.save()
+                    messages.success(request, "Email mis à jour avec succès.")
+                    return redirect('profile')
+            elif "change_password" in request.POST:
+                password_form = PasswordChangeForm(user, request.POST)
+                if password_form.is_valid():
+                    user = password_form.save()
+                    update_session_auth_hash(request, user)  # Important pour garder la session
+                    messages.success(request, "Mot de passe mis à jour avec succès.")
+                    return redirect('profile')
+        else:
+            email_form = EmailUpdateForm(initial={'email': user.email})
+            password_form = PasswordChangeForm(user)
+
+        return render(request, 'profile/module.html', {
+            'username': user.username,
+            'first_name': user.first_name,
+            'email': user.email,
+            'current_collection_id': current_collection_id,
+            'collections': [(collection.id, collection.title) for collection in collections],
+            'email_form': email_form,
+            'password_form': password_form,
+        })
 
     def change_collection(self, request: HttpRequest, collection_id: int) -> HttpResponse:
         collection = get_object_or_404(Collection, id=collection_id, accounts=request.user)

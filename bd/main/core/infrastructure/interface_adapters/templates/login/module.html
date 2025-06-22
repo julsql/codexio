@@ -28,13 +28,12 @@
                     <label for="id_password">Mot de Passe :</label>
                     {{ form.password }}
                 </div>
+                <p style="margin-top: 1rem; text-align: center;">
+                    <a href="{% url 'password_reset' %}">Mot de passe oublié ?</a>
+                </p>
             </div>
             <div id="see-more" class="see-more"></div>
             <button class="button-large" type="submit">Connexion</button>
         </form>
     </section>
-{% endblock %}
-
-{% block style %}
-    <link rel="stylesheet" href="{% static 'main/assets/styles/login.css' %}"/>
 {% endblock %}

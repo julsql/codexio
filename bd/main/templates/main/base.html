@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{% static 'main/styles/attachments.css' %}"/>
     <link rel="stylesheet" href="{% static 'main/styles/statistics.css' %}"/>
     <link rel="stylesheet" href="{% static 'main/styles/profile.css' %}"/>
+    <link rel="stylesheet" href="{% static 'main/styles/login.css' %}"/>
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
 
     {% block head %}{% endblock %}
@@ -40,6 +41,9 @@
                 </a>
                 <div class="dropdown-content">
                     <a href="{% url 'profile' %}">Voir mon profil</a>
+                    {% if user.is_superuser and user.is_staff %}
+                        <a href="{% url 'admin:index' %}">Mode administrateur</a>
+                    {% endif %}
                     <a href="{% url 'logout' %}">
                         <form action="{% url 'logout' %}" method="post">
                             {% csrf_token %}
@@ -68,6 +72,8 @@
                         {% else %}
                             Mes ouvrages
                         {% endif %}
+                    {% else %}
+                        Mes ouvrages
                     {% endif %}
                 </a></h1>
 
