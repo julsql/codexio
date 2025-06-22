@@ -42,7 +42,7 @@
 
         <div class="col-50">
             <section>
-            <h2>Paramètres du compte</h2>
+                <h2>Paramètres du compte</h2>
                 <h3>Changer l'email associé au compte</h3>
                 <!-- Formulaire pour mettre à jour l'email -->
                 <form method="post" action="">
@@ -63,12 +63,12 @@
                     {% csrf_token %}
 
                     <div class="form-group">
-                        <label for="id_new_password1">Nouveau mot de passe :</label>
+                        <label for="id_new_password1">Nouveau mot de passe&nbsp;:</label>
                         {{ password_form.new_password1 }}
                     </div>
 
                     <div class="form-group">
-                        <label for="id_new_password2">Confirmation du mot de passe :</label>
+                        <label for="id_new_password2">Confirmation du mot de passe&nbsp;:</label>
                         {{ password_form.new_password2 }}
                     </div>
 
