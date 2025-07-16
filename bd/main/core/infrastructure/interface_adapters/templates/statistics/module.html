@@ -1,7 +1,7 @@
 {% extends 'main/base.html' %}
 {% load static %}
 {% block body %}
-{% load custom_tags %}
+    {% load custom_tags %}
 
     <div id="body">
         <div class="col-30">
@@ -45,64 +45,76 @@
     <script src="https://code.highcharts.com/highcharts.src.js"></script>
 
     <script>
-        Highcharts.chart('pie_container', {
-            chart: {
-                type: 'pie',
-                zooming: {
-                    type: 'xy'
-                },
-                panning: {
-                    enabled: true,
-                    type: 'xy'
-                },
-                panKey: 'shift'
-            },
-            title: {
-                text: "{{ title }}"
-            },
+        document.addEventListener('DOMContentLoaded', function () {
+            function renderChart() {
+                const isSmallScreen = window.innerWidth < 900;
 
-            tooltip: {
-                valueSuffix: ''
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: [{
-                        enabled: true,
-                        distance: 20
-                    }, {
-                        enabled: true,
-                        distance: -40,
-                        format: '{point.percentage:.1f}%',
-                        style: {
-                            fontSize: '1em',
-                            textOutline: 'none',
-                            opacity: 0.7
+                Highcharts.chart('pie_container', {
+                    chart: {
+                        type: 'pie',
+                        zooming: {
+                            type: 'xy'
                         },
-                        filter: {
-                            operator: '>',
-                            property: 'percentage',
-                            value: 10
+                        panning: {
+                            enabled: true,
+                            type: 'xy'
+                        },
+                        panKey: 'shift'
+                    },
+                    title: {
+                        text: "{{ title }}"
+                    },
+
+                    tooltip: {
+                        valueSuffix: ''
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: [{
+                                enabled: !isSmallScreen,
+                                distance: 20
+                            }, {
+                                enabled: true,
+                                distance: -40,
+                                format: '{point.percentage:.1f}%',
+                                style: {
+                                    fontSize: '1em',
+                                    textOutline: 'none',
+                                    opacity: 0.7
+                                },
+                                filter: {
+                                    operator: '>',
+                                    property: 'percentage',
+                                    value: 10
+                                }
+                            }]
                         }
-                    }]
-                }
-            },
+                    },
 
-            series: [
-                {
-                    name: '',
-                    colorByPoint: true,
-                    data: [
-                        {% for place_name, place_count in places %}
-                            {
-                                name: '{{ place_name }}',
-                                y: {{ place_count }}
-                            }
-                            {% if not forloop.last %},{% endif %}
-                        {% endfor %}]
-                }]
+                    series: [
+                        {
+                            name: '',
+                            colorByPoint: true,
+                            data: [
+                                {% for place_name, place_count in places %}
+                                    {
+                                        name: '{{ place_name }}',
+                                        y: {{ place_count }}
+                                    }
+                                    {% if not forloop.last %},{% endif %}
+                                {% endfor %}]
+                        }]
 
+                });
+            }
+
+            // Rendu initial du graphique
+            renderChart();
+
+            // Réagir aux changements de taille de la fenêtre
+            window.addEventListener('resize', renderChart);
         });
     </script>
 {% endblock %}
