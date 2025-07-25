@@ -124,7 +124,7 @@ SAMBRE_DATA = {
         publisher="Futuropolis / Glénat",
         publication_date=date(2009, 11, 25),
         number_of_pages=56,
-        purchase_price=Decimal('15.50'),
+        purchase_price=Decimal('16.00'),
         synopsis="Avec Hugo et Iris, Yslaire, revient sur la jeunesse d'Hugo "
                  "Sambre, le père de Bernard Sambre, sur l'écriture de son "
                  'manuscrit La guerre des yeux, sur sa passion funeste pour Iris, '
