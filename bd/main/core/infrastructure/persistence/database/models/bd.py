@@ -26,7 +26,7 @@ class BD(models.Model):
     localisation = models.TextField()
     synopsis = models.TextField()
     image = models.URLField()
-    collection = models.ForeignKey(Collection, on_delete=models.CASCADE, related_name='rows')
+    collection = models.ForeignKey(Collection, on_delete=models.CASCADE, related_name='bd_rows')
 
     def __str__(self) -> str:
         return self.album

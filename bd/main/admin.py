@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.html import format_html
 
 from main.core.infrastructure.persistence.database.models.bd import BD
+from main.core.infrastructure.persistence.database.models.book import Book
 from main.core.infrastructure.persistence.database.models.collection import Collection
 from main.core.infrastructure.persistence.database.models.profile import Profile
 from main.core.infrastructure.persistence.database.models.user import AppUser
@@ -29,6 +30,30 @@ class BDAdmin(admin.ModelAdmin):
         return format_html('<a href="/admin/main/collection/{}/change/">{}</a>', obj.collection.id, obj.collection.title)
     collection_link.short_description = "Collection"
 
+@admin.register(Book)
+class BookAdmin(admin.ModelAdmin):
+    list_display = (
+        'title', 'writer', 'translator', 'publisher', 'collection',
+        'style', 'origin_language', 'publication_date', 'collection_link', 'cover_preview'
+    )
+    search_fields = ('title', 'writer', 'publisher', 'style', 'origin_language', 'collection__title')
+    list_filter = ('publication_date', 'collection__title')
+    list_select_related = ('collection',)
+    readonly_fields = ('cover_preview',)
+
+    def cover_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="height:80px;"/>', obj.image)
+        return "-"
+    cover_preview.short_description = "Aperçu couverture"
+
+    def collection_link(self, obj):
+        return format_html(
+            '<a href="/admin/main/collection/{}/change/">{}</a>',
+            obj.collection.id,
+            obj.collection.title
+        )
+    collection_link.short_description = "Collection"
 
 @admin.register(Collection)
 class CollectionAdmin(admin.ModelAdmin):
