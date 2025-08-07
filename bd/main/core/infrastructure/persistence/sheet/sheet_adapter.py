@@ -4,6 +4,7 @@ from typing import Union
 import gspread
 from google.auth import exceptions
 from google.oauth2 import service_account
+from gspread.exceptions import APIError
 
 from config.settings import GSHEET_CREDENTIALS
 from main.core.domain.exceptions.sheet_exceptions import SheetConnexionException, SheetNamesException
@@ -37,6 +38,8 @@ class SheetAdapter(SheetRepository):
                 self.worksheet = self.client.open(self.doc_name).worksheet(self.sheet_name)
             except SheetNamesException as e:
                 raise SheetNamesException(f"{self.doc_name} ou {self.sheet_name} inexistant") from e
+            except APIError as e:
+                raise SheetConnexionException(str(e)) from e
         else:
             raise SheetNamesException("Il manque le nom du doc ou de la feuille")
 

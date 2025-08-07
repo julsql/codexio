@@ -7,7 +7,7 @@ class SheetInMemory(SheetRepository):
 
     def __init__(self) -> None:
         self.worksheet = []
-        self.client = {"bd": {"BD": [], "Test": []}}
+        self.client = {"codexio-collections": {"BD": [], "Test": []}}
         self.__OFFSET__ = 0
 
     def open(self) -> None:

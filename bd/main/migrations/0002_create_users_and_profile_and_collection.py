@@ -33,7 +33,7 @@ def insert_initial_data(apps, schema_editor) -> None:
     collection_internal = Collection(title="Collection de Test",
                                      accounts=[admin],
                                      token="XIWzYF4RFb77U4obBcfBF2UfVFE0hK2Aq43UV9e8d1EpLye7wXxGPHFwCVmMExb8",
-                                     doc_name="bd",
+                                     doc_name="codexio-collections",
                                      sheet_name="Test",
                                      profile=profile_bd)
     collection = collection_repository.create(collection_internal)

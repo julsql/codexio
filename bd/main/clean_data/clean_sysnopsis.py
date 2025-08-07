@@ -11,7 +11,7 @@ logging_repository = PythonLoggerAdapter()
 adapter = BdGestAdapter(logging_repository)
 
 sheet = SheetAdapter()
-sheet.open("bd", "BD")
+sheet.open("codexio-collections", "BD")
 donnees = sheet.get_all()
 
 j = 19
