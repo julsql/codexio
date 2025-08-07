@@ -58,13 +58,17 @@ Run tests in `bd/`
     ```
 
 2. Don't forget to add the .env file in `./bd/config/.env` and the Google sheet api keys file at
-   `./bd/config/bd-sheet-91.json`
+   `./bd/config/google-project.json`. You will need to create a new project in Google could console, and enable the API:
+- Google Drive API
+- Google Sheets API
+
+Think to give access to the client_email in your sheet.
 
     ```bash
     SECRET_KEY='django-key'
     DEBUG=False
     POST_TOKEN="TOKEN"
-    GSHEET_CREDENTIALS='config/bd-sheet-91.json'
+    GSHEET_CREDENTIALS='config/google-project.json'
     ```
 
 3. Configure the python virtual environment
@@ -88,7 +92,7 @@ Run tests in `bd/`
     cd bd
     
     nano config/.env
-    nano config/bd-sheet-91.json
+    nano config/google-project.json
     mkdir database
     chmod -R 755 database/
     sudo chown -R www-data:www-data database/

@@ -9,9 +9,9 @@ class TestSheetRepository(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.conn_test = SheetAdapter("bd", "Test")
+        cls.conn_test = SheetAdapter("codexio-collections", "Test")
         cls.conn_test.open()
-        cls.conn_real = SheetAdapter("bd", 'BD')
+        cls.conn_real = SheetAdapter("codexio-collections", 'BD')
         cls.conn_real.open()
 
     def tearDown(self) -> None:

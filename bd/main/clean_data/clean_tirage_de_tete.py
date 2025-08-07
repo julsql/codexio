@@ -10,7 +10,7 @@ result_isbn = [album['isbn'] for album in result_isbn] + [album['isbn'] for albu
 print(len(result_isbn))
 
 sheet = SheetAdapter()
-sheet.open("bd", "BD")
+sheet.open("codexio-collections", "BD")
 donnees = sheet.get_all()
 
 count = 0
