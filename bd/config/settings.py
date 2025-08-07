@@ -142,6 +142,7 @@ USE_TZ = True
 APPEND_SLASH = True
 
 GSHEET_CREDENTIALS = BASE_DIR / config('GSHEET_CREDENTIALS')
+GOOGLE_KEY = config('GOOGLE_KEY')
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',

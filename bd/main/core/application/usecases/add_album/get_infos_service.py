@@ -2,21 +2,22 @@ from decimal import Decimal
 
 from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException
 from main.core.domain.model.album import Album
-from main.core.domain.ports.repositories.album_repository import AlbumRepository
+from main.core.domain.model.book import Book
+from main.core.domain.ports.repositories.add_album_repository import AddAlbumRepository
 from main.core.domain.ports.repositories.logger_repository import LoggerRepository
 
 
 class GetInfosService:
     def __init__(self,
-                 bd_repositories: list[AlbumRepository],
+                 bd_repositories: list[AddAlbumRepository],
                  logging_repository: LoggerRepository) -> None:
         self.isbn = None
         self.repositories = bd_repositories
         self.logging_repository = logging_repository
 
-    def main(self, isbn: int) -> Album:
+    def main(self, isbn: int) -> Album | Book:
         self.isbn = isbn
-        album_complet = Album(isbn=isbn)
+        album_complet = None
 
         if not self.repositories:
             raise AlbumNotFoundException(f"Aucun repository disponible pour l'ISBN {isbn}", isbn)
@@ -25,7 +26,10 @@ class GetInfosService:
             try:
                 current_album = repository.get_infos(self.isbn)
                 # Fusion des informations
-                album_complet = self.fusionner_albums(album_complet, current_album)
+                if album_complet is None:
+                    album_complet = current_album
+                else:
+                    album_complet = self.fusionner_albums(album_complet, current_album)
 
                 # Si toutes les informations requises sont remplies, on peut arrêter
                 if album_complet.is_complete():
@@ -36,12 +40,12 @@ class GetInfosService:
                     f"Erreur lors de la récupération des informations depuis {str(repository)}: {str(e)}"
                 )
 
-        if album_complet.is_empty():
+        if album_complet is None or album_complet.is_empty():
             raise AlbumNotFoundException(f"Album {isbn} non trouvé", isbn)
 
         return album_complet
 
-    def fusionner_albums(self, album_base: Album, album_nouveau: Album) -> Album:
+    def fusionner_albums(self, album_base: Album | Book, album_nouveau: Album | Book) -> Album | Book:
         """Fusionne deux albums en ne remplaçant que les valeurs vides"""
         if not album_nouveau:
             return album_base

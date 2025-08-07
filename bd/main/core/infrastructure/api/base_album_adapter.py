@@ -2,12 +2,12 @@ from abc import ABC
 from datetime import date
 from typing import Optional
 
-from main.core.domain.ports.repositories.album_repository import AlbumRepository
+from main.core.domain.ports.repositories.add_album_repository import AddAlbumRepository
 from main.core.domain.ports.repositories.logger_repository import LoggerRepository
 from main.core.infrastructure.api.internal.date_parser_service import DateParserService
 
 
-class BaseAlbumAdapter(AlbumRepository, ABC):
+class BaseAlbumAdapter(AddAlbumRepository, ABC):
     def __init__(self, logging_repository: LoggerRepository):
         self.logging_repository = logging_repository
 

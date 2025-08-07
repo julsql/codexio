@@ -1,12 +1,14 @@
 from django.http import HttpRequest, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, HttpResponseBadRequest, \
     HttpResponseServerError
 
-from main.core.application.usecases.add_album.add_album_service import AddAlbumService
+from main.core.application.usecases.add_album.add_bd_service import AddBdService
+from main.core.application.usecases.add_album.add_book_service import AddBookService
 from main.core.application.usecases.authorization.authorization_service import AuthorizationService
 from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException, AlbumAlreadyExistsException
 from main.core.domain.model.profile_type import ProfileType
 from main.core.infrastructure.api.bd_gest_adapter import BdGestAdapter
 from main.core.infrastructure.api.bd_phile_adapter import BdPhileAdapter
+from main.core.infrastructure.api.book_adapter import BookAdapter
 from main.core.infrastructure.interface_adapters.bearer_token.bearer_token_adapter import BearerTokenAdapter
 from main.core.infrastructure.interface_adapters.profile_type.profile_type_adapter import ProfileTypeAdapter
 from main.core.infrastructure.interface_adapters.request_methods.request_method_adapter import RequestMethodAdapter
@@ -46,12 +48,16 @@ class AddAlbumView:
             if profile_type == ProfileType.BD:
                 bdphile_repository = BdPhileAdapter(self.logger_adapter)
                 bdgest_repository = BdGestAdapter(self.logger_adapter)
-                service = AddAlbumService([bdphile_repository, bdgest_repository],
+                service = AddBdService([bdphile_repository, bdgest_repository],
                                           sheet_repository,
                                           self.logger_adapter)
                 service.main(isbn)
             elif profile_type == ProfileType.BOOK:
-                return self.response_adapter.technical_error("Impossible d'ajouter des livres pour le moment")
+                book_repository = BookAdapter(self.logger_adapter)
+                service = AddBookService([book_repository],
+                                       sheet_repository,
+                                       self.logger_adapter)
+                service.main(isbn)
             else:
                 return self.response_adapter.technical_error("Erreur dans la recherche de profils")
 
@@ -67,7 +73,7 @@ class AddAlbumView:
 
         except Exception as e:
             self.logger_adapter.error(str(e))
-            return self.response_adapter.server_error("Erreur interne")
+            return self.response_adapter.server_error(f"{e} Erreur interne")
 
 
 def add_album(request: HttpRequest,

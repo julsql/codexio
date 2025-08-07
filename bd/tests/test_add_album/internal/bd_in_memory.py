@@ -1,16 +1,17 @@
 from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException
 from main.core.domain.model.album import Album
-from main.core.domain.ports.repositories.album_repository import AlbumRepository
+from main.core.domain.model.book import Book
+from main.core.domain.ports.repositories.add_album_repository import AddAlbumRepository
 
 
-class BdInMemory(AlbumRepository):
+class AddAlbumInMemory(AddAlbumRepository):
 
-    def __init__(self, name: str, data: Album) -> None:
+    def __init__(self, name: str, data: Album | Book) -> None:
         self.name = name
         self.data = {data.isbn: data}
         self.isbn = 0
 
-    def get_infos(self, isbn: int) -> Album:
+    def get_infos(self, isbn: int) -> Album | Book:
         self.isbn = isbn
         if isbn in self.data:
             return self.data[isbn]

@@ -90,6 +90,21 @@ class DateParserService:
             return None
 
     @classmethod
+    def parse_google_date(cls, date_str: Optional[str]) -> Optional[date]:
+        if not date_str:
+            return None
+        try:
+            # Formats possibles : "YYYY-MM-DD", "YYYY-MM", "YYYY"
+            if len(date_str) == 4:
+                return datetime.strptime(date_str, "%Y").date()
+            elif len(date_str) == 7:
+                return datetime.strptime(date_str, "%Y-%m").date()
+            else:
+                return datetime.strptime(date_str, "%Y-%m-%d").date()
+        except ValueError:
+            return None
+
+    @classmethod
     def _translate_month(cls, date_str: str) -> str:
         """Traduit les mois français en anglais pour le parsing"""
         date_lower = date_str.lower()
