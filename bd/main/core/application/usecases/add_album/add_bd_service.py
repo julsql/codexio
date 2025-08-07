@@ -5,24 +5,24 @@ from babel.dates import format_date
 from main.core.application.usecases.add_album.get_infos_service import GetInfosService
 from main.core.domain.exceptions.album_exceptions import AlbumAlreadyExistsException, AlbumNotFoundException
 from main.core.domain.model.album import Album
-from main.core.domain.ports.repositories.album_repository import AlbumRepository
+from main.core.domain.ports.repositories.add_album_repository import AddAlbumRepository
 from main.core.domain.ports.repositories.logger_repository import LoggerRepository
 from main.core.domain.ports.repositories.sheet_repository import SheetRepository
 
 
-class AddAlbumService:
+class AddBdService:
     def __init__(self,
-                 bd_repositories: list[AlbumRepository],
+                 bd_repositories: list[AddAlbumRepository],
                  sheet_repository: SheetRepository,
                  logging_repository: LoggerRepository) -> None:
         self.isbn = None
         self.connexion = sheet_repository
-        self.connexion.open()
         self.get_infos_service = GetInfosService(bd_repositories, logging_repository)
         self.logging_repository = logging_repository
 
     def main(self, isbn: int) -> None:
         self.isbn = isbn
+        self.connexion.open()
         self.add_album()
 
     def add_album(self) -> None:

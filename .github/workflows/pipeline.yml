@@ -31,6 +31,7 @@ jobs:
       DEBUG: false
       POST_TOKEN: ${{ secrets.POST_TOKEN }}
       GSHEET_CREDENTIALS: config/codexio.json
+      GOOGLE_KEY: ${{ secrets.GOOGLE_KEY }}
       DJANGO_ENV: test
       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}

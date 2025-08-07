@@ -27,8 +27,8 @@ class AddAlbumIntegrationTest(TestCase):
     @patch('main.core.application.usecases.authorization.authorization_service.AuthorizationService.verify_token')
     @patch(
         'main.core.infrastructure.interface_adapters.profile_type.profile_type_adapter.ProfileTypeAdapter.get_profile_type')
-    @patch('main.core.application.usecases.add_album.add_album_service.AddAlbumService.main')
-    def test_add_album_success(self, mock_add_album, mock_get_profile_type, mock_verify_token):
+    @patch('main.core.infrastructure.interface_adapters.views.add_album_view.AddBdService.main')
+    def test_add_bd_success(self, mock_add_album, mock_get_profile_type, mock_verify_token):
         # Mock les méthodes nécessaires
         mock_verify_token.return_value = self.collection
         mock_get_profile_type.return_value = ProfileType.BD
@@ -41,6 +41,7 @@ class AddAlbumIntegrationTest(TestCase):
         )
 
         # Vérifie la réponse
+        print("Response content:", response.content.decode())
         self.assertEqual(response.status_code, 200)
         self.assertIn("ajouté avec succès", response.content.decode())
 

@@ -1,8 +1,8 @@
 from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException
-from main.core.domain.ports.repositories.album_repository import AlbumRepository
+from main.core.domain.ports.repositories.add_album_repository import AddAlbumRepository
 
 
-class BdInMemoryError(AlbumRepository):
+class AddAlbumInMemoryError(AddAlbumRepository):
     def __init__(self, name: str) -> None:
         self.name = name
         self.isbn = 0

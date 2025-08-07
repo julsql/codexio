@@ -4,7 +4,7 @@ from typing import Union
 import gspread
 from google.auth import exceptions
 from google.oauth2 import service_account
-from gspread.exceptions import APIError
+from gspread.exceptions import APIError, SpreadsheetNotFound, WorksheetNotFound
 
 from config.settings import GSHEET_CREDENTIALS
 from main.core.domain.exceptions.sheet_exceptions import SheetConnexionException, SheetNamesException
@@ -39,7 +39,13 @@ class SheetAdapter(SheetRepository):
             except SheetNamesException as e:
                 raise SheetNamesException(f"{self.doc_name} ou {self.sheet_name} inexistant") from e
             except APIError as e:
-                raise SheetConnexionException(str(e)) from e
+                raise SheetConnexionException(f"{e} Erreur d'API") from e
+            except SpreadsheetNotFound as e:
+                raise SheetNamesException(f"Le doc {self.doc_name} n'existe pas") from e
+            except WorksheetNotFound as e:
+                raise SheetNamesException(f"La feuille {self.sheet_name} n'existe pas pour le doc {self.doc_name}") from e
+            except Exception as e:
+                raise SheetConnexionException(f"{e} Erreur inconnue") from e
         else:
             raise SheetNamesException("Il manque le nom du doc ou de la feuille")
 

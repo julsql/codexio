@@ -5,8 +5,8 @@ from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException
 from main.core.domain.model.album import Album
 from tests.album_data_set import ASTERIX
 from tests.test_add_album.album_large_data_set import ASTERIX_ISBN
-from tests.test_add_album.internal.bd_in_memory import BdInMemory
-from tests.test_add_album.internal.bd_in_memory_error import BdInMemoryError
+from tests.test_add_album.internal.bd_in_memory import AddAlbumInMemory
+from tests.test_add_album.internal.bd_in_memory_error import AddAlbumInMemoryError
 from tests.test_common.internal.logger_in_memory import LoggerInMemory
 
 
@@ -14,7 +14,7 @@ class TestGetInfosService(unittest.TestCase):
     def setUp(self):
         self.logging_repository = LoggerInMemory()
         # Repository avec informations complètes
-        self.complete_repo = BdInMemory("complete", ASTERIX)
+        self.complete_repo = AddAlbumInMemory("complete", ASTERIX)
 
         partial_asterix1 = ASTERIX.copy()
         partial_asterix1.colorist = ""
@@ -23,7 +23,7 @@ class TestGetInfosService(unittest.TestCase):
         partial_asterix1.synopsis = ""
 
         # Repository avec informations partielles
-        self.partial_repo_1 = BdInMemory("partial1", partial_asterix1)
+        self.partial_repo_1 = AddAlbumInMemory("partial1", partial_asterix1)
 
         partial_asterix2 = ASTERIX.copy()
         partial_asterix2.title = ""
@@ -32,11 +32,11 @@ class TestGetInfosService(unittest.TestCase):
         partial_asterix2.writer = ""
 
         # Repository avec autres informations partielles
-        self.partial_repo_2 = BdInMemory("partial2", partial_asterix2)
+        self.partial_repo_2 = AddAlbumInMemory("partial2", partial_asterix2)
 
         # Repository qui lève une exception
-        self.empty_repo = BdInMemory("error", Album(isbn=0))
-        self.error_repo = BdInMemoryError("error")
+        self.empty_repo = AddAlbumInMemory("error", Album(isbn=0))
+        self.error_repo = AddAlbumInMemoryError("error")
 
     def test_complete_repository(self):
         """Test avec un repository contenant toutes les informations"""
@@ -95,8 +95,8 @@ class TestGetInfosService(unittest.TestCase):
         """Test que les valeurs non vides ne sont pas écrasées"""
         album1 = Album(title="Premier titre", isbn=1)
         album2 = Album(title="Second titre", isbn=2)
-        repo1 = BdInMemory("repo1", album1)
-        repo2 = BdInMemory("repo2", album2)
+        repo1 = AddAlbumInMemory("repo1", album1)
+        repo2 = AddAlbumInMemory("repo2", album2)
 
         service = GetInfosService([repo1, repo2], self.logging_repository)
         result = service.main(1)
