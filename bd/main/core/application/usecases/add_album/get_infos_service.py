@@ -2,7 +2,6 @@ from decimal import Decimal
 
 from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException
 from main.core.domain.model.album import Album
-from main.core.domain.model.book import Book
 from main.core.domain.ports.repositories.add_album_repository import AddAlbumRepository
 from main.core.domain.ports.repositories.logger_repository import LoggerRepository
 
@@ -15,7 +14,7 @@ class GetInfosService:
         self.repositories = bd_repositories
         self.logging_repository = logging_repository
 
-    def main(self, isbn: int) -> Album | Book:
+    def main(self, isbn: int) -> Album:
         self.isbn = isbn
         album_complet = None
 
@@ -45,7 +44,7 @@ class GetInfosService:
 
         return album_complet
 
-    def fusionner_albums(self, album_base: Album | Book, album_nouveau: Album | Book) -> Album | Book:
+    def fusionner_albums(self, album_base: Album, album_nouveau: Album) -> Album:
         """Fusionne deux albums en ne remplaçant que les valeurs vides"""
         if not album_nouveau:
             return album_base

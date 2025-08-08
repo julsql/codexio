@@ -7,7 +7,6 @@ import requests
 from config.settings import GOOGLE_KEY
 from main.core.domain.exceptions.api_exceptions import ApiConnexionDataNotFound, ApiConnexionException
 from main.core.domain.model.album import Album
-from main.core.domain.model.book import Book
 from main.core.domain.ports.repositories.add_album_repository import AddAlbumRepository
 from main.core.domain.ports.repositories.logger_repository import LoggerRepository
 from main.core.infrastructure.api.internal.date_parser_service import DateParserService
@@ -52,8 +51,8 @@ class BookAdapter(AddAlbumRepository, ABC):
                 )
         return None
 
-    def get_infos(self, isbn: int) -> Album | Book:
-        book = Book(isbn=isbn)
+    def get_infos(self, isbn: int) -> Album:
+        book = Album(isbn=isbn)
 
         params = {
             "q": f"isbn:{isbn}",
