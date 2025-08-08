@@ -33,9 +33,9 @@ class ExistingAlbumView:
             sheet_repository = SheetAdapter(collection.doc_name, collection.sheet_name)
             service = ExistingAlbumService(sheet_repository)
             if service.execute(isbn):
-                message = f"Album {isbn} déjà enregistré"
+                message = f"Ouvrage {isbn} déjà enregistré"
             else:
-                message = f"Album {isbn} jamais enregistré"
+                message = f"Ouvrage {isbn} jamais enregistré"
             return self.response_adapter.success(message)
 
         except Exception as e:

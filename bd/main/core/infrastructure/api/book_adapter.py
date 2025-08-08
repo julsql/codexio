@@ -61,8 +61,6 @@ class BookAdapter(AddAlbumRepository, ABC):
 
         response = requests.get(self.api_url, params=params)
         if response.status_code != 200:
-            print(response.text)
-            print("Erreur lors de l'appel à l'API Google Books")
             raise ApiConnexionException(f"{response.text}: Erreur lors de l'appel à l'API Google Books", str(self), isbn)
 
         data = response.json()

@@ -41,7 +41,6 @@ class AddAlbumIntegrationTest(TestCase):
         )
 
         # Vérifie la réponse
-        print("Response content:", response.content.decode())
         self.assertEqual(response.status_code, 200)
         self.assertIn("ajouté avec succès", response.content.decode())
 

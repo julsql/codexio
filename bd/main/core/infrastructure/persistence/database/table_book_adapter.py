@@ -9,7 +9,6 @@ class TableBookAdapter(DatabaseRepository):
         DATABASE_MODEL_BOOK.objects.filter(collection=collection_id).delete()
 
     def insert(self, value: list[INTERNAL_MODEL_BOOK], collection: Collection) -> None:
-        print(value[0])
         objects = [
             DATABASE_MODEL_BOOK(
                 isbn=row.isbn,
