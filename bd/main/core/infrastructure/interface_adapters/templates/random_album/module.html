@@ -35,8 +35,13 @@
 
     <div class="album_description">
         <p>
-            {% if random_album.writer == random_album.illustrator %}
+            {% if random_album.writer == "" and random_album.illustrator == "" %}
+            {% elif random_album.writer == random_album.illustrator %}
                 {{ random_album.writer }} (Scénariste, Dessinateur)
+            {% elif random_album.illustrator == "" %}
+                {{ random_album.writer }} (Scénariste)
+            {% elif random_album.writer == "" %}
+                {{ random_album.illustrator }} (Dessinateur)
             {% else %}
                 {{ random_album.writer }} (Scénariste),<br/>{{ random_album.illustrator }} (Dessinateur)
             {% endif %}

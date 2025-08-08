@@ -7,7 +7,7 @@ from main.core.domain.ports.repositories.random_album_repository import RandomAl
 from main.core.infrastructure.persistence.database.models.bd import BD
 
 
-class RandomAlbumAdapter(RandomAlbumRepository, ABC):
+class RandomBdAdapter(RandomAlbumRepository, ABC):
 
     def get_random_album(self, collection_id: int) -> Optional[Album]:
         result = BD.objects.filter(collection=collection_id).values(

@@ -4,7 +4,7 @@ from babel.dates import format_date
 
 from main.core.application.usecases.add_album.get_infos_service import GetInfosService
 from main.core.domain.exceptions.album_exceptions import AlbumAlreadyExistsException, AlbumNotFoundException
-from main.core.domain.model.book import Book
+from main.core.domain.model.album import Album
 from main.core.domain.ports.repositories.add_album_repository import AddAlbumRepository
 from main.core.domain.ports.repositories.logger_repository import LoggerRepository
 from main.core.domain.ports.repositories.sheet_repository import SheetRepository
@@ -40,14 +40,14 @@ class AddBookService:
             )
         self.add_line(album)
 
-    def get_infos(self) -> Book:
+    def get_infos(self) -> Album:
         return self.get_infos_service.main(self.isbn)
 
-    def add_line(self, album: Book) -> None:
+    def add_line(self, album: Album) -> None:
         liste = self.map_to_list(album)
         self.connexion.append(liste)
 
-    def map_to_list(self, book: Book) -> list[Union[str, int, float]]:
+    def map_to_list(self, book: Album) -> list[Union[str, int, float]]:
         """Convertit un objet Book en liste de valeurs pour le stockage"""
         mapping = {
             "ISBN": book.isbn,

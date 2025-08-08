@@ -9,7 +9,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from main.core.infrastructure.persistence.database.random_album_adapter import RandomAlbumAdapter
+from main.core.infrastructure.persistence.database.random_bd_adapter import RandomBdAdapter
 from main.core.domain.model.album import Album
 from main.models import AppUser
 from main.core.infrastructure.persistence.database.models.bd import BD
@@ -20,7 +20,7 @@ class TestRandomAlbumConnexion(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.repository = RandomAlbumAdapter()
+        cls.repository = RandomBdAdapter()
 
         user = AppUser.objects.get(username="admin")
         cls.collection = Collection.objects.get(accounts=user)

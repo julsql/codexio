@@ -3,7 +3,7 @@ from datetime import date
 
 from main.core.application.usecases.add_album.add_book_service import AddBookService
 from main.core.domain.exceptions.album_exceptions import AlbumAlreadyExistsException, AlbumNotFoundException
-from main.core.domain.model.book import Book
+from main.core.domain.model.album import Album
 from test_add_album.book_large_data_set import BOVARY, BOVARY_ISBN
 from tests.test_add_album.internal.bd_in_memory import AddAlbumInMemory
 from tests.test_common.internal.logger_in_memory import LoggerInMemory
@@ -26,12 +26,12 @@ class TestAddBookService(unittest.TestCase):
         self.sheet_repository.clear()
 
     def test_convert_list_from_dict_empty_value_successfully(self) -> None:
-        liste = self.service.map_to_list(Book(isbn=0))
+        liste = self.service.map_to_list(Album(isbn=0))
         expected = [0 if i == 0 else "" for i in range(self.NB_COLUMN)]
         self.assertEqual(expected, liste)
 
     def test_convert_list_from_dict_successfully(self) -> None:
-        album = Book(isbn=0)
+        album = Album(isbn=0)
         album.title = "a"
         album.writer = "a"
         album.translator = "a"

@@ -1,12 +1,12 @@
 from datetime import date
 
-from main.core.domain.model.book import Book
+from main.core.domain.model.album import Album
 
 BOVARY_ISBN = 9782070413119
 
 # Données par source
 BOVARY_DATA = {
-    'BOOK': Book(isbn=9782070413119,
+    'BOOK': Album(isbn=9782070413119,
                  title='Madame Bovary',
                  writer='Gustave Flaubert, Thierry Laget',
                  translator='',
