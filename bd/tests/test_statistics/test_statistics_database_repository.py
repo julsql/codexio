@@ -11,7 +11,7 @@ django.setup()
 
 from main.core.domain.model.statistics import Statistics
 from main.core.infrastructure.persistence.database.models.bd import BD
-from main.core.infrastructure.persistence.database.statistics_database_adapter import StatisticsDatabaseAdapter
+from main.core.infrastructure.persistence.database.statistics_bd_database_adapter import StatisticsBdDatabaseAdapter
 from main.models import AppUser
 from main.core.infrastructure.persistence.database.models.collection import Collection
 
@@ -23,7 +23,7 @@ class TestStatisticsDatabaseConnexion(unittest.TestCase):
         user = AppUser.objects.get(username="admin")
         cls.collection = Collection.objects.get(accounts=user)
         cls.collection_id = cls.collection.id
-        cls.repository = StatisticsDatabaseAdapter()
+        cls.repository = StatisticsBdDatabaseAdapter()
         BD.objects.filter(collection=cls.collection).delete()
 
     def tearDown(self):

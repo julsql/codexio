@@ -79,7 +79,6 @@ class AddBookService:
                 liste.append(mapping[title])
             else:
                 self.logging_repository.error(f"{title} manque")
-                print(f"{title} manque")
                 raise IndexError(f"{title} manque")
 
         return liste

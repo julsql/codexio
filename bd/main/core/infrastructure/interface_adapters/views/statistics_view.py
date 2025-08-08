@@ -6,7 +6,8 @@ from main.core.application.usecases.statistics.statistics_service import Statist
 from main.core.domain.model.profile_type import ProfileType
 from main.core.infrastructure.interface_adapters.profile_type.profile_type_adapter import ProfileTypeAdapter
 from main.core.infrastructure.interface_adapters.responses.request_response_adapter import RequestResponseAdapter
-from main.core.infrastructure.persistence.database.statistics_database_adapter import StatisticsDatabaseAdapter
+from main.core.infrastructure.persistence.database.statistics_bd_database_adapter import StatisticsBdDatabaseAdapter
+from main.core.infrastructure.persistence.database.statistics_book_database_adapter import StatisticsBookDatabaseAdapter
 from main.core.infrastructure.persistence.file.paths import SIGNED_COPY_FOLDER, EXLIBRIS_FOLDER
 from main.core.infrastructure.persistence.file.statistics_attachment_adapter import StatisticsAttachmentAdapter
 
@@ -17,15 +18,20 @@ class StatisticsView:
         self.profile_type_adapter = ProfileTypeAdapter(self.response_adapter)
 
     def handle_request(self, request: HttpRequest) -> HttpResponse:
-        database_repository = StatisticsDatabaseAdapter()
         if request.user.current_collection:
             collection = request.user.current_collection
         else:
             collection = request.user.collections.all().first()
+        profile_type = self.profile_type_adapter.get_profile_type(collection)
 
         attachment_repository = StatisticsAttachmentAdapter(SIGNED_COPY_FOLDER(collection.id),
                                                             EXLIBRIS_FOLDER(collection.id))
-
+        if profile_type == ProfileType.BD:
+            database_repository = StatisticsBdDatabaseAdapter()
+        elif profile_type == ProfileType.BOOK:
+            database_repository = StatisticsBookDatabaseAdapter()
+        else:
+            return self.response_adapter.technical_error("Erreur dans la recherche de profils")
 
         service = StatisticsService(
             database_repository=database_repository,
@@ -37,7 +43,6 @@ class StatisticsView:
         signed_copies = statistics.signed_copies_count
         exlibris = statistics.ex_libris_count
 
-        profile_type = self.profile_type_adapter.get_profile_type(collection)
         if not isinstance(profile_type, ProfileType):
             return profile_type
 
