@@ -11,6 +11,7 @@ from main.core.infrastructure.interface_adapters.responses.api_response_adapter 
 from main.core.infrastructure.logging.python_logger_adapter import PythonLoggerAdapter
 from main.core.infrastructure.persistence.database.models import Collection
 from main.core.infrastructure.persistence.database.table_bd_adapter import TableBdAdapter
+from main.core.infrastructure.persistence.database.table_book_adapter import TableBookAdapter
 from main.core.infrastructure.persistence.sheet.sheet_adapter import SheetAdapter
 
 
@@ -43,18 +44,18 @@ class UpdateDatabaseView:
 
             if profile_type == ProfileType.BD:
                 database_repository = TableBdAdapter()
-                service = UpdateDatabaseService(sheet_repository, database_repository)
-                service.main(collection)
             elif profile_type == ProfileType.BOOK:
-                return self.response_adapter.technical_error("Impossible de mettre à jour les livres pour le moment")
+                database_repository = TableBookAdapter()
             else:
                 return self.response_adapter.technical_error("Erreur dans la recherche de profils")
 
+            service = UpdateDatabaseService(sheet_repository, database_repository)
+            service.main(collection)
             return self.response_adapter.success('Site web mis à jour correctement')
 
         except Exception as e:
             self.logger_adapter.error(str(e))
-            return self.response_adapter.server_error("Erreur interne")
+            return self.response_adapter.server_error(f"{e} Erreur interne")
 
 
 def update_database(

@@ -5,6 +5,7 @@ import unittest
 import django
 
 from main.core.domain.model.id import Id
+from test_update_database.internal.fake_collection import FakeCollection
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
@@ -23,7 +24,7 @@ class TestUpdateDatabaseService(unittest.TestCase):
         cls.sheet_repository = SheetInMemory()
         cls.database_repository = DatabaseInMemory()
         cls.service = UpdateDatabaseService(cls.sheet_repository, cls.database_repository)
-        cls.collection = Id(id=1)
+        cls.collection = FakeCollection(id=1)
 
     def setUp(self) -> None:
         self.sheet_repository.append(FIRST_LINE_SHEET)
