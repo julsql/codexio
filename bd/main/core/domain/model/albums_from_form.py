@@ -1,12 +1,13 @@
 from dataclasses import dataclass
 
-from main.core.application.forms.forms import RechercheForm
+from main.core.application.forms.bd_forms import RechercheBdForm
+from main.core.application.forms.book_forms import RechercheBookForm
 from main.core.domain.model.reduce_album import ReduceAlbum
 
 
 @dataclass
 class AlbumsFromForm:
-    form: RechercheForm
+    form: RechercheBdForm | RechercheBookForm
     albums: list[ReduceAlbum]
     is_form_send: bool
 

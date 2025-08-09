@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
 
-from main.core.application.forms.forms import LoginForm
+from main.core.application.forms.bd_forms import LoginForm
 
 
 class LoginView:

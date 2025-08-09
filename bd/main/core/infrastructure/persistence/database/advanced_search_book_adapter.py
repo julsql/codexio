@@ -9,15 +9,15 @@ from django.db.models import Value, Func
 from django.db.models.functions import Lower
 
 from main.core.domain.ports.repositories.advanced_search_repository import AdvancedSearchRepository
-from main.core.infrastructure.persistence.database.models.bd import BD
+from main.core.infrastructure.persistence.database.models.book import Book
 
 
-class AdvancedSearchAdapter(AdvancedSearchRepository, ABC):
+class AdvancedSearchBookAdapter(AdvancedSearchRepository, ABC):
 
-    def get_all(self, collection_id: int) -> QuerySet[BD, BD]:
-        return BD.objects.filter(collection=collection_id)
+    def get_all(self, collection_id: int) -> QuerySet[Book, Book]:
+        return Book.objects.filter(collection=collection_id)
 
-    def get_by_form(self, data: dict[str, Any], queryset: QuerySet[BD, BD]) -> QuerySet[BD, BD]:
+    def get_by_form(self, data: dict[str, Any], queryset: QuerySet[Book, Book]) -> QuerySet[Book, Book]:
         queryset = self.filter_contains(data, queryset)
         queryset = self.filter_equals(data, queryset)
         queryset = self.filter_synopsis(data, queryset)
@@ -45,7 +45,6 @@ class AdvancedSearchAdapter(AdvancedSearchRepository, ABC):
         filter_equals_mappings = {
             'isbn': 'isbn',
             'year_of_purchase': 'year_of_purchase',
-            'deluxe_edition': 'deluxe_edition',
         }
         for form_field, model_fields in filter_equals_mappings.items():
             value = data.get(form_field)
@@ -55,19 +54,18 @@ class AdvancedSearchAdapter(AdvancedSearchRepository, ABC):
 
     def filter_contains(self, data, queryset):
         filter_contains_mappings = {
-            'album': ['album', 'series', 'number'],
-            'number': ['number'],
-            'series': ['series'],
+            'title': ['title'],
             'writer': ['writer'],
-            'illustrator': ['illustrator'],
+            'collection_book': ['collection_book'],
             'publisher': ['publisher'],
             'edition': ['edition'],
+            'literary_genre': ['literary_genre'],
+            'style': ['style'],
+            'origin_language': ['origin_language'],
         }
 
-        onomastic_search = ['album',
-                            'series',
+        onomastic_search = ['title',
                             'writer',
-                            'illustrator',
                             'publisher',
                             'edition']
 
@@ -183,7 +181,7 @@ class AdvancedSearchAdapter(AdvancedSearchRepository, ABC):
             if word not in self.STOP_WORDS and len(word) > 2
         ]
 
-    def _search_synopsis(self, queryset: QuerySet[BD, BD], synopsis: str) -> QuerySet[BD, BD]:
+    def _search_synopsis(self, queryset: QuerySet[Book, Book], synopsis: str) -> QuerySet[Book, Book]:
         """
         Recherche avancée dans le synopsis avec gestion des caractères spéciaux et de la pertinence
         """

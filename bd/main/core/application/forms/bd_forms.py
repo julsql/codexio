@@ -1,8 +1,7 @@
 from django import forms
-from django.contrib.auth import get_user_model
 
 
-class RechercheForm(forms.Form):
+class RechercheBdForm(forms.Form):
     series = forms.CharField(required=False, label='Série', widget=forms.TextInput(attrs={"data_see": "true"}))
     album = forms.CharField(required=False, label='Album', widget=forms.TextInput(attrs={"data_see": "true"}))
     writer = forms.CharField(required=False, label='Scénariste', widget=forms.TextInput(attrs={"data_see": "true"}))
