@@ -12,10 +12,10 @@ from main.core.domain.ports.repositories.sheet_repository import SheetRepository
 
 
 class SheetAdapter(SheetRepository):
-    def __init__(self, doc_name, sheet_name) -> None:
+    def __init__(self, doc_id, sheet_name) -> None:
         self.__OFFSET__ = 1
         self.worksheet = None
-        self.doc_name = doc_name
+        self.doc_id = doc_id
         self.sheet_name = sheet_name
         __FILEPATH__ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         credentials_path = GSHEET_CREDENTIALS
@@ -33,17 +33,15 @@ class SheetAdapter(SheetRepository):
             )
 
     def open(self) -> None:
-        if self.doc_name and self.sheet_name:
+        if self.doc_id and self.sheet_name:
             try:
-                self.worksheet = self.client.open(self.doc_name).worksheet(self.sheet_name)
-            except SheetNamesException as e:
-                raise SheetNamesException(f"{self.doc_name} ou {self.sheet_name} inexistant") from e
+                self.worksheet = self.client.open_by_key(self.doc_id).worksheet(self.sheet_name)
             except APIError as e:
                 raise SheetConnexionException(f"{e} Erreur d'API") from e
             except SpreadsheetNotFound as e:
-                raise SheetNamesException(f"Le doc {self.doc_name} n'existe pas") from e
+                raise SheetNamesException(f"Le doc {self.doc_id} n'existe pas") from e
             except WorksheetNotFound as e:
-                raise SheetNamesException(f"La feuille {self.sheet_name} n'existe pas pour le doc {self.doc_name}") from e
+                raise SheetNamesException(f"La feuille {self.sheet_name} n'existe pas pour le document") from e
             except Exception as e:
                 raise SheetConnexionException(f"{e} Erreur inconnue") from e
         else:

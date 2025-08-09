@@ -12,7 +12,7 @@ def insert_initial_data(apps, schema_editor) -> None:
     users = AppUser.objects.exclude(username='admin').filter(is_active=True)
     for user in users:
         for collection in user.collections.all():
-            sheet_repository = SheetAdapter(collection.doc_name, collection.sheet_name)
+            sheet_repository = SheetAdapter(collection.doc_id, collection.sheet_name)
             database_repository = TableBdAdapter()
             service = UpdateDatabaseService(sheet_repository, database_repository)
             service.main(collection)
@@ -20,7 +20,6 @@ def insert_initial_data(apps, schema_editor) -> None:
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('main', '0001_initial'),
         ('main', '0002_create_users_and_profile_and_collection'),
     ]
 

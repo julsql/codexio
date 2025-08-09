@@ -36,7 +36,7 @@ class UpdateDatabaseView:
             return collection
 
         try:
-            sheet_repository = SheetAdapter(collection.doc_name, collection.sheet_name)
+            sheet_repository = SheetAdapter(collection.doc_id, collection.sheet_name)
 
             profile_type = self.profile_type_adapter.get_profile_type(collection)
             if not isinstance(profile_type, ProfileType):
