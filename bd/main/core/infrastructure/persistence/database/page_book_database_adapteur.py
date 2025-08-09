@@ -2,28 +2,29 @@ from abc import ABC
 from decimal import Decimal
 from typing import Optional
 
-from main.core.domain.model.bd import BD as INTERNAL_MODEL_BD
+from main.core.domain.model.book import Book as INTERNAL_MODEL_BOOK
 from main.core.domain.ports.repositories.page_bd_database_repository import WorkDatabaseRepository
-from main.core.infrastructure.persistence.database.models.bd import BD as DATABASE_MODEL_BD
+from main.core.infrastructure.persistence.database.models.book import Book as DATABASE_MODEL_BOOK
 
 
-class WorkDatabaseBdAdapter(WorkDatabaseRepository, ABC):
-    def page(self, isbn: int, collection_id: int) -> Optional[INTERNAL_MODEL_BD]:
-        result = DATABASE_MODEL_BD.objects.filter(collection=collection_id).filter(isbn=isbn).values().first()
+class WorkDatabaseBookAdapter(WorkDatabaseRepository, ABC):
+    def page(self, isbn: int, collection_id: int) -> Optional[INTERNAL_MODEL_BOOK]:
+        result = DATABASE_MODEL_BOOK.objects.filter(collection=collection_id).filter(isbn=isbn).values().first()
 
         if result:
-            return INTERNAL_MODEL_BD(
+            return INTERNAL_MODEL_BOOK(
                 isbn=int(result['isbn']),
-                title=result['album'],
-                number=result['number'],
-                series=result['series'],
+                title=result['title'],
                 writer=result['writer'],
-                illustrator=result['illustrator'],
-                colorist=result['colorist'],
+                translator=result['translator'],
                 publisher=result['publisher'],
+                collection_book=result['collection_book'],
                 publication_date=result['publication_date'],
                 edition=result['edition'],
                 number_of_pages=result['number_of_pages'],
+                literary_genre=result['literary_genre'],
+                style=result['style'],
+                origin_language=result['origin_language'],
                 purchase_price=Decimal(str(result['purchase_price'])) if result['purchase_price'] is not None else None,
                 year_of_purchase=result['year_of_purchase'],
                 place_of_purchase=result['place_of_purchase'],

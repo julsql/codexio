@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 
-from main.core.domain.model.bd import BD
+from main.core.domain.model.book import Book
 from main.core.domain.model.work_attachment import WorkAttachment
 
 
 @dataclass
-class BdWithAttachment:
-    album: BD
+class BookWithAttachment:
+    album: Book
     attachments: WorkAttachment
 
     def __str__(self) -> str:
-        return f"BdWithAttachment(album={self.album}, attachments={self.attachments})"
+        return f"BookWithAttachment(album={self.album}, attachments={self.attachments})"

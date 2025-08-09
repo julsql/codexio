@@ -9,7 +9,7 @@
                      alt="Couverture"
                      data-full="{{ image }}"
                      data-title="<h2>{{ series }}</h2>"
-                     data-info="<p>{{ album }}</p>"
+                     data-info="<p>{{ title }}</p>"
                      class="thumbnail"
                 />
             </div>
@@ -19,23 +19,10 @@
             <section>
                 <header>
                     <h2>
-                        {% if series and series != "" %}
-                            {{ series }}
+                        {% if title and title != "" %}
+                            {{ title }}
                         {% endif %}
                     </h2>
-                    <h3>
-                        {% if number and number != "" %}
-                            {% if album and album != "" %}
-                                Tome {{ number }} : {{ album }}
-                            {% else %}
-                                Tome {{ number }}
-                            {% endif %}
-                        {% else %}
-                            {% if album and album != "" %}
-                                {{ album }}
-                            {% endif %}
-                        {% endif %}
-                    </h3>
                 </header>
 
                 <div class="additional-infos">
@@ -45,7 +32,6 @@
                             {{ localisation }}
                         </div>
                     {% endif %}
-
                     {% if purchase_price and purchase_price != "" %}
                         <div class="text_icon" title="Prix">
                             <img class="icon" src="{% static 'main/icons/price.svg' %}" alt="price">
@@ -76,27 +62,15 @@
                 <div class="author-info">
 
                     {% if writer and writer != "" %}
-                        {% if writer == illustrator and illustrator == colorist %}
-                            <p><strong>{{ writer }}</strong> (Scénariste, Dessinateur, Couleurs),</p>
-                        {% elif writer == illustrator %}
-                            <p><strong>{{ writer }}</strong> (Scénariste, Dessinateur),</p>
-                        {% elif writer == colorist %}
-                            <p><strong>{{ writer }}</strong> (Scénariste, Couleurs),</p>
+                        {% if writer == translator %}
+                            <p><strong>{{ writer }}</strong> (Écrivain, Traducteur),</p>
                         {% else %}
-                            <p><strong>{{ writer }}</strong> (Scénariste),</p>
+                            <p><strong>{{ writer }}</strong> (Écrivain),</p>
                         {% endif %}
                     {% endif %}
 
-                    {% if illustrator and illustrator != "" %}
-                        {% if illustrator != writer and illustrator == colorist %}
-                            <p><strong>{{ illustrator }}</strong> (Dessinateur, Couleurs),</p>
-                        {% elif illustrator != writer and illustrator != colorist %}
-                            <p><strong>{{ illustrator }}</strong> (Dessinateur),</p>
-                        {% endif %}
-                    {% endif %}
-
-                    {% if colorist and colorist != "" and colorist != writer and colorist != illustrator %}
-                        <p><strong>{{ colorist }}</strong> (Couleurs),</p>
+                    {% if translator and translator != "" and translator != writer %}
+                        <p><strong>{{ translator }}</strong> (Traducteur),</p>
                     {% endif %}
 
                     {% if publisher and publisher != "" %}
@@ -153,29 +127,6 @@
                     {% endfor %}
                 </div>
                 <div class="next-carousel" id="next-dedicace">&gt;</div>
-            </div>
-        </section>
-    {% endif %}
-
-    {% if nb_exlibris > 0 %}
-        <section>
-            <header>
-                <h2>{{ nb_exlibris }} ex-libris</h2>
-            </header>
-            <div class="image_group carousel-container">
-                <div class="prev-carousel" id="prev-exlibris">&lt;</div>
-                <div class="carousel carousel-exlibris">
-                    {% for exlibris in ex_libris %}
-                        <img src="/media/main/images/{{ collection_id }}/exlibris/{{ isbn }}/{{ exlibris }}"
-                             alt="{{ isbn }}"
-                             data-full="/media/main/images/{{ collection_id }}/exlibris/{{ isbn }}/{{ exlibris }}"
-                             data-title="<h2>{{ exlibris }}</h2>"
-                             data-info="<p></p>"
-                             class="photo-exlibris thumbnail"
-                        />
-                    {% endfor %}
-                </div>
-                <div class="next-carousel" id="next-exlibris">&gt;</div>
             </div>
         </section>
     {% endif %}
