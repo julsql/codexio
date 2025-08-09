@@ -3,11 +3,15 @@
 {% block body %}
 
     <!-- Main Content -->
-    {% include 'advanced_search/module.html' %}
+    {% if user.current_collection.profile.name == "BD" %}
+        {% include 'bd_advanced_search/module.html' %}
+    {% elif user.current_collection.profile.name == "BOOK" %}
+        {% include 'book_advanced_search/module.html' %}
+    {% endif %}
 
     <section>
         <header>
-            <h2>Les Bandes Dessinées</h2>
+            <h2>Les {{ profile }}</h2>
             <h3>{{ total }} résultat{% if total > 1 %}s{% endif %}.</h3>
         </header>
 
@@ -16,22 +20,24 @@
                 <p>Aucun résultat. Veuillez retenter une nouvelle recherche.</p>
             {% else %}
                 {% for album in infos %}
-
+                    <a class="pagination-item" href="{% url 'ouvrage' album.ISBN %}">
                     {% if not album.Album and album.Album == "" and not album.Numero and album.Numero == "" and not album.Serie and album.Serie == "" %}
-                        <a class="pagination-item" href="{% url 'ouvrage' album.ISBN %}">Pas de titre</a>
+                        Pas de titre
                     {% else %}
-                        <a class="pagination-item" href="{% url 'ouvrage' album.ISBN %}">
-                            {% if album.Album and album.Album != "" %}
-                                {{ album.Album }}
-                            {% endif %}
-                            {% if album.Numero and album.Numero != "" %}
-                                Tome {{ album.Numero }} :
-                            {% endif %}
-                            {% if album.Serie and album.Serie != "" %}
-                                {{ album.Serie }}
-                            {% endif %}
-                        </a>
+                        {% if album.Album and album.Album != "" %}
+                            {{ album.Album }}
+                        {% endif %}
+                        {% if album.Numero and album.Numero != "" %}
+                            Tome {{ album.Numero }} :
+                        {% endif %}
+                        {% if album.Serie and album.Serie != "" %}
+                            {{ album.Serie }}
+                        {% endif %}
                     {% endif %}
+                {% if album.Scenariste and album.Scenariste != "" %}
+                    (de {{ album.Scenariste }})
+                {% endif %}
+                </a>
                 {% endfor %}
             {% endif %}
         </div>

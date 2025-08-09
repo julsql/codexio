@@ -9,8 +9,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from main.core.application.forms.forms import RechercheForm
-from main.core.application.usecases.advanced_search.advanced_search_service import AdvancedSearchService
+from main.core.application.forms.bd_forms import RechercheBdForm
+from main.core.application.usecases.advanced_search.advanced_search_bd_service import AdvancedSearchBdService
 from tests.test_advanced_search.internal.advanced_search_in_memory import InMemoryAdvancedSearchRepository
 
 
@@ -23,7 +23,7 @@ class TestAdvancedSearchService(unittest.TestCase):
     def setUp(self):
         # Utilisation du repository en mémoire
         self.repository = InMemoryAdvancedSearchRepository()
-        self.service = AdvancedSearchService(self.repository)
+        self.service = AdvancedSearchBdService(self.repository)
 
         # Ajout d'une BD de test dans le repository
         self.repository.add_bd(
@@ -50,7 +50,7 @@ class TestAdvancedSearchService(unittest.TestCase):
 
     def test_form_search_avec_form_valide(self):
         # Création d'un form avec des données valides
-        form = RechercheForm(data={
+        form = RechercheBdForm(data={
             'series': 'Série Test',
             'writer': 'Auteur Test'
         })
@@ -66,7 +66,7 @@ class TestAdvancedSearchService(unittest.TestCase):
 
     def test_form_search_avec_form_sans_resultats(self):
         # Création d'un form avec des données qui ne correspondent à aucune BD
-        form = RechercheForm(data={
+        form = RechercheBdForm(data={
             'series': 'Série Inexistante'
         })
         self.assertTrue(form.is_valid())
@@ -86,7 +86,7 @@ class TestAdvancedSearchService(unittest.TestCase):
         result = self.service.main(mock_request, self.collection)
 
         # Vérifications
-        self.assertIsInstance(result.form, RechercheForm)
+        self.assertIsInstance(result.form, RechercheBdForm)
         self.assertEqual(len(result.albums), 1)
         self.assertFalse(result.is_form_send)
         self.assertEqual(result.albums[0].isbn, 123456789)
@@ -103,7 +103,7 @@ class TestAdvancedSearchService(unittest.TestCase):
         result = self.service.main(mock_request, self.collection)
 
         # Vérifications
-        self.assertIsInstance(result.form, RechercheForm)
+        self.assertIsInstance(result.form, RechercheBdForm)
         self.assertEqual(len(result.albums), 1)
         self.assertTrue(result.is_form_send)
         self.assertEqual(result.albums[0].series, "Série Test")
@@ -120,7 +120,7 @@ class TestAdvancedSearchService(unittest.TestCase):
         result = self.service.main(mock_request, self.collection)
 
         # Vérifications
-        self.assertIsInstance(result.form, RechercheForm)
+        self.assertIsInstance(result.form, RechercheBdForm)
         self.assertEqual(len(result.albums), 0)
         self.assertTrue(result.is_form_send)
 

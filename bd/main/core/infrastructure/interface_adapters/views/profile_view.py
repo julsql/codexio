@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 
-from main.core.application.forms.forms import EmailUpdateForm
+from main.core.application.forms.bd_forms import EmailUpdateForm
 from main.core.infrastructure.persistence.database.models import Collection
 
 

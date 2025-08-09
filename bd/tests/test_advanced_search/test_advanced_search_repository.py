@@ -10,7 +10,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
 from django.db.models import QuerySet
-from main.core.infrastructure.persistence.database.advanced_search_adapter import AdvancedSearchAdapter
+from main.core.infrastructure.persistence.database.advanced_search_bd_adapter import AdvancedSearchBdAdapter
 from main.core.infrastructure.persistence.database.models.bd import BD
 from main.core.infrastructure.persistence.database.models.collection import Collection
 from main.models import AppUser
@@ -25,7 +25,7 @@ class TestAdvancedSearchRepository(unittest.TestCase):
         user = AppUser.objects.get(username="admin")
         cls.collection = Collection.objects.get(accounts=user)
         cls.collection_id = cls.collection.id
-        cls.repository = AdvancedSearchAdapter()
+        cls.repository = AdvancedSearchBdAdapter()
 
     def setUp(self):
         # Nettoyage de la base avant chaque test
