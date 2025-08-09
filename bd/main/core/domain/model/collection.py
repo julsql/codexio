@@ -8,7 +8,7 @@ from main.core.infrastructure.persistence.database.models.profile import Profile
 class Collection:
     title: str
     token: str
-    doc_name: str
+    doc_id: str
     sheet_name: str
     accounts: list[AppUser]
     profile: Profile

@@ -30,7 +30,7 @@ class ExistingAlbumView:
             return collection
 
         try:
-            sheet_repository = SheetAdapter(collection.doc_name, collection.sheet_name)
+            sheet_repository = SheetAdapter(collection.doc_id, collection.sheet_name)
             service = ExistingAlbumService(sheet_repository)
             if service.execute(isbn):
                 message = f"Ouvrage {isbn} déjà enregistré"

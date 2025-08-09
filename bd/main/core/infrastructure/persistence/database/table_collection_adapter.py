@@ -8,7 +8,7 @@ class TableCollectionAdapter(CreateDatabaseRepository):
                value: INTERNAL_MODEL_COLLECTION) -> DATABASE_MODEL_COLLECTION:
         collection = DATABASE_MODEL_COLLECTION.objects.create(title=value.title,
                                                               token=value.token,
-                                                              doc_name=value.doc_name,
+                                                              doc_id=value.doc_id,
                                                               sheet_name=value.sheet_name,
                                                               profile=value.profile,)
         collection.accounts.add(*value.accounts)

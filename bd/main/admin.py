@@ -57,8 +57,8 @@ class BookAdmin(admin.ModelAdmin):
 
 @admin.register(Collection)
 class CollectionAdmin(admin.ModelAdmin):
-    list_display = ('title', 'doc_name', 'sheet_name', 'profile', 'token', 'account_count')
-    search_fields = ('title', 'doc_name')
+    list_display = ('title', 'doc_id', 'sheet_name', 'profile', 'token', 'account_count')
+    search_fields = ('title', 'doc_id')
     filter_horizontal = ('accounts',)
     list_select_related = ('profile',)
 
