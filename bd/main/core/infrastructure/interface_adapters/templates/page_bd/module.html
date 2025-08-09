@@ -39,6 +39,13 @@
                 </header>
 
                 <div class="additional-infos">
+                    {% if localisation and localisation != "" %}
+                        <div class="text_icon" title="Emplacement">
+                            <img class="icon" src="{% static 'main/icons/books.svg' %}" alt="price">
+                            {{ localisation }}
+                        </div>
+                    {% endif %}
+
                     {% if purchase_price and purchase_price != "" %}
                         <div class="text_icon" title="Prix">
                             <img class="icon" src="{% static 'main/icons/price.svg' %}" alt="price">
@@ -107,10 +114,7 @@
                 <div class="achat-info">
                     <p>Acheté
                         {% if place_of_purchase and place_of_purchase != "" %}
-                            à <strong>{{ place_of_purchase }}</strong>
-                            {% if not year_of_purchase or year_of_purchase == "" %}
-                                .
-                            {% endif %}
+                            à <strong>{{ place_of_purchase }}</strong>{% if not year_of_purchase or year_of_purchase == "" %}.{% endif %}
                         {% endif %}
                         {% if year_of_purchase and year_of_purchase != "" %}
                             en {{ year_of_purchase }}.

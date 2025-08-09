@@ -3,7 +3,7 @@ from typing import Optional
 from django.contrib.auth.base_user import AbstractBaseUser
 
 from main.core.domain.model.bd import BD
-from main.core.domain.model.bd_attachment import BdAttachment
+from main.core.domain.model.work_attachment import WorkAttachment
 from main.core.domain.ports.repositories.page_bd_attachments_repository import WorkAttachmentsRepository
 from main.core.domain.ports.repositories.page_bd_database_repository import WorkDatabaseRepository
 
@@ -13,10 +13,10 @@ class WorkAttachmentsInMemory(WorkAttachmentsRepository):
         self.added_attachments = []
         self.last_isbn = None
 
-    def get_attachments(self, isbn) -> BdAttachment:
+    def get_attachments(self, isbn) -> WorkAttachment:
         self.last_isbn = isbn
         self.added_attachments.append(isbn)
-        return BdAttachment(signed_copies=[], ex_libris=[])
+        return WorkAttachment(signed_copies=[], ex_libris=[])
 
 
 class WorkDatabaseInMemory(WorkDatabaseRepository):

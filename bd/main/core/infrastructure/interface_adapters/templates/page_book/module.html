@@ -1,0 +1,175 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block body %}
+    <div id="body">
+        <div class="col-30">
+            <div class="image_group album-cover">
+                <img src="{{ image }}"
+                     alt="Couverture"
+                     data-full="{{ image }}"
+                     data-title="<h2>{{ series }}</h2>"
+                     data-info="<p>{{ title }}</p>"
+                     class="thumbnail"
+                />
+            </div>
+        </div>
+
+        <div class="col-80">
+            <section>
+                <header>
+                    <h2>
+                        {% if title and title != "" %}
+                            {{ title }}
+                        {% endif %}
+                    </h2>
+                </header>
+
+                <div class="additional-infos">
+                    {% if localisation and localisation != "" %}
+                        <div class="text_icon" title="Emplacement">
+                            <img class="icon" src="{% static 'main/icons/books.svg' %}" alt="price">
+                            {{ localisation }}
+                        </div>
+                    {% endif %}
+                    {% if purchase_price and purchase_price != "" %}
+                        <div class="text_icon" title="Prix">
+                            <img class="icon" src="{% static 'main/icons/price.svg' %}" alt="price">
+                            {{ purchase_price }}€
+                        </div>
+                    {% endif %}
+
+                    {% if publication_date and publication_date != "" %}
+                        <div class="text_icon" title="Date de parution">
+                            <img class="icon" src="{% static 'main/icons/date.svg' %}" alt="date">
+                            <p>{{ publication_date|date:"d/m/Y" }}</p>
+                        </div>
+                    {% endif %}
+
+                    {% if number_of_pages and number_of_pages != "" %}
+                        <div class="text_icon" title="Nombre de planches">
+                            <img class="icon" src="{% static 'main/icons/pages.svg' %}" alt="pages">
+                            {{ number_of_pages }}
+                        </div>
+                    {% endif %}
+
+                    <div class="text_icon" title="ISBN">
+                        <img class="icon" src="{% static 'main/icons/barcode.svg' %}" alt="pages">
+                        {{ isbn }}
+                    </div>
+                </div>
+
+                <div class="author-info">
+
+                    {% if writer and writer != "" %}
+                        {% if writer == translator %}
+                            <p><strong>{{ writer }}</strong> (Écrivain, Traducteur),</p>
+                        {% else %}
+                            <p><strong>{{ writer }}</strong> (Écrivain),</p>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if translator and translator != "" and translator != writer %}
+                        <p><strong>{{ translator }}</strong> (Traducteur),</p>
+                    {% endif %}
+
+                    {% if publisher and publisher != "" %}
+                        <p><strong>{{ publisher }}</strong> (Éditeur)</p>
+                    {% endif %}
+                    </p>
+                </div>
+
+                <div class="edition-info">
+                    {% if edition and edition != "" %}
+                        <p>{{ edition }}</p>
+                    {% endif %}
+                </div>
+
+                <div class="achat-info">
+                    <p>Acheté
+                        {% if place_of_purchase and place_of_purchase != "" %}
+                            à <strong>{{ place_of_purchase }}</strong>{% if not year_of_purchase or year_of_purchase == "" %}.{% endif %}
+                        {% endif %}
+                        {% if year_of_purchase and year_of_purchase != "" %}
+                            en {{ year_of_purchase }}.
+                        {% endif %}
+                    </p>
+                </div>
+
+                <div class="synopsis">
+                    <h4>Synopsis</h4>
+                    {% autoescape off %}
+                        <p>{{ synopsis }}</p>
+                    {% endautoescape %}
+                </div>
+            </section>
+        </div>
+    </div>
+
+    {% if nb_dedicace > 0 %}
+        <section>
+            <header>
+                <h2>{{ nb_dedicace }} dédicaces</h2>
+            </header>
+
+            <div class="image_group carousel-container">
+                <div class="prev-carousel" id="prev-dedicace">&lt;</div>
+                <div class="carousel carousel-dedicace">
+
+                    {% for dedicace in dedicaces %}
+                        <img src="/media/main/images/{{ collection_id }}/dedicaces/{{ isbn }}/{{ dedicace }}"
+                             alt="{{ isbn }}"
+                             data-full="/media/main/images/{{ collection_id }}/dedicaces/{{ isbn }}/{{ dedicace }}"
+                             data-title="<h2>{{ dedicace }}</h2>"
+                             data-info="<p></p>"
+                             class="photo-dedicace thumbnail"
+                        />
+                    {% endfor %}
+                </div>
+                <div class="next-carousel" id="next-dedicace">&gt;</div>
+            </div>
+        </section>
+    {% endif %}
+
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <div id="image-title"></div>
+            <div id="image-info"></div>
+
+            <img id="popup-img" src="" alt="Couverture"/>
+
+            <button class="popup_button close" id="close-popup">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <path d="M18 6L12 12L6 6L4.59 7.41L10.59 13.41L4.59 19.41L6 21L12 15L18 21L19.41 19.41L13.41 13.41L19.41 7.41L18 6Z"/>
+                </svg>
+            </button>
+
+            <button class="popup_button prev" id="prev-image">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+            </button>
+
+            <button class="popup_button next" id="next-image">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
+                    <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+                </svg>
+            </button>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script src="{% static 'main/scripts/image_popup.js' %}"></script>
+    <script src="{% static 'main/scripts/carousel.js' %}"></script>
+    <script>
+        {% if nb_dedicace > 0 %}
+            useCarousel(".carousel-dedicace", "#next-dedicace", "#prev-dedicace", ".photo-dedicace");
+        {% endif %}
+        {% if nb_exlibris > 0 %}
+            useCarousel(".carousel-exlibris", "#next-exlibris", "#prev-exlibris", ".photo-exlibris");
+        {% endif %}
+    </script>
+{% endblock %}

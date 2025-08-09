@@ -7,7 +7,7 @@ from main.core.domain.ports.repositories.page_bd_database_repository import Work
 from main.core.infrastructure.persistence.database.models.bd import BD as DATABASE_MODEL_BD
 
 
-class WorkDatabaseAdapter(WorkDatabaseRepository, ABC):
+class WorkDatabaseBdAdapter(WorkDatabaseRepository, ABC):
     def page(self, isbn: int, collection_id: int) -> Optional[INTERNAL_MODEL_BD]:
         result = DATABASE_MODEL_BD.objects.filter(collection=collection_id).filter(isbn=isbn).values().first()
 
@@ -27,6 +27,7 @@ class WorkDatabaseAdapter(WorkDatabaseRepository, ABC):
                 purchase_price=Decimal(str(result['purchase_price'])) if result['purchase_price'] is not None else None,
                 year_of_purchase=result['year_of_purchase'],
                 place_of_purchase=result['place_of_purchase'],
+                localisation=result['localisation'],
                 synopsis=result['synopsis'],
                 image=result['image'],
             )

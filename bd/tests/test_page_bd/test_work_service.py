@@ -8,9 +8,9 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
-from main.core.application.usecases.page_bd.page_bd_service import WorkService
+from main.core.application.usecases.page_bd.page_bd_service import BdService
 from main.core.domain.model.bd import BD
-from main.core.domain.model.bd_attachment import BdAttachment
+from main.core.domain.model.work_attachment import WorkAttachment
 from main.core.domain.model.bd_with_attachment import BdWithAttachment
 from tests.test_common.internal.logger_in_memory import LoggerInMemory
 from tests.test_page_bd.internal.page_bd_in_memory import WorkAttachmentsInMemory, WorkDatabaseInMemory
@@ -33,7 +33,7 @@ class TestWorkService(unittest.TestCase):
         self.attachments_repository = WorkAttachmentsInMemory()
         self.database_repository = WorkDatabaseInMemory()
         self.logging_repository = LoggerInMemory()
-        self.service = WorkService(self.attachments_repository, self.database_repository, self.logging_repository)
+        self.service = BdService(self.attachments_repository, self.database_repository, self.logging_repository)
 
     def test_main_with_existing_bd(self) -> None:
         # Arrange
@@ -43,7 +43,7 @@ class TestWorkService(unittest.TestCase):
         result = self.service.main(self.TEST_ISBN, self.collection)
 
         # Assert
-        self.assertEqual(BdWithAttachment(album=self.TEST_BD_INFO, attachments=BdAttachment()), result)
+        self.assertEqual(BdWithAttachment(album=self.TEST_BD_INFO, attachments=WorkAttachment()), result)
         self.assertEqual(self.TEST_ISBN, self.attachments_repository.last_isbn)
         self.assertEqual(1, len(self.attachments_repository.added_attachments))
 
@@ -84,7 +84,7 @@ class TestWorkService(unittest.TestCase):
         # Act & Assert
         for isbn, expected_info in test_data:
             result = self.service.main(isbn, self.collection)
-            self.assertEqual(BdWithAttachment(album=expected_info, attachments=BdAttachment()), result)
+            self.assertEqual(BdWithAttachment(album=expected_info, attachments=WorkAttachment()), result)
             self.assertEqual(isbn, self.attachments_repository.last_isbn)
 
         self.assertEqual(len(test_data), len(self.attachments_repository.added_attachments))

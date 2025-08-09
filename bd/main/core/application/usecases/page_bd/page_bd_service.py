@@ -6,7 +6,7 @@ from main.core.domain.ports.repositories.page_bd_attachments_repository import W
 from main.core.domain.ports.repositories.page_bd_database_repository import WorkDatabaseRepository
 
 
-class WorkService:
+class BdService:
 
     def __init__(self, attachments_repository: WorkAttachmentsRepository,
                  database_repository: WorkDatabaseRepository,
