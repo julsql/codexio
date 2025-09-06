@@ -21,7 +21,7 @@ pyasn1_modules==0.4.2
 pyparsing==3.2.3
 python-dateutil==2.9.0.post0
 python-decouple==3.8
-requests==2.32.3
+requests==2.32.4
 requests-oauthlib==2.0.0
 requests-toolbelt==1.0.0
 rsa==4.9.1
@@ -29,4 +29,4 @@ six==1.17.0
 soupsieve==2.7
 sqlparse==0.5.3
 typing_extensions==4.13.2
-urllib3==2.4.0
+urllib3==2.5.0
