@@ -27,7 +27,7 @@ BOVARY_DATA = {
                           "elle une maladie nerveuse. La naissance d'une fille la distrait "
                           'un peu, mais bientôt Emma cède aux avances de Rodolphe. Elle '
                           "veut s'enfuir avec son amant qui, lâche, l'abandonne... [RERO]",
-                 image='http://books.google.com/books/content?id=1ThlAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'),
+                 image='http://books.google.com/books/content?id=bzdlAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api'),
 }
 
 BOVARY = BOVARY_DATA['BOOK']
