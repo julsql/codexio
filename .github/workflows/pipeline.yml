@@ -58,7 +58,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Create service account key from secret
-        run: echo '${{ secrets.SERVICE_ACCOUNT_CONFIG }}' > bd/config/codexio.json
+        run: echo '${{ secrets.SERVICE_ACCOUNT_CONFIG }}' > src/config/codexio.json
 
       - name: Wait for PostgreSQL to be ready
         run: |
@@ -69,11 +69,11 @@ jobs:
 
       - name: Run init.sql manually
         run: |
-          PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -p 5452 -U $POSTGRES_USER -d $POSTGRES_DB -f bd/database/init.sql
+          PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -p 5452 -U $POSTGRES_USER -d $POSTGRES_DB -f src/database/init.sql
 
       - name: Run tests
         run: |
-          cd bd
+          cd src
           python manage.py migrate
           python manage.py test
 
@@ -90,7 +90,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /home/debian/websites/bd_website
+            cd /home/debian/websites/codexio
             git pull
             docker-compose down
             docker-compose build --no-cache

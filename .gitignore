@@ -1,5 +1,5 @@
-bd/media/
-bd/main/core/application/create_users.py
+src/media/
+src/main/core/application/create_users.py
 TODO.md
 
 # ide

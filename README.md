@@ -1,10 +1,10 @@
-# BD
+# Codexio
 
 This is the repo of my comics' collection website!
 
 It's a Django project that displays my collection of comics.
 
-> Website available at address: [bd.julsql.fr](http://bd.julsql.fr)
+> Website available at address: [codexio.julsql.fr](http://codexio.julsql.fr)
 
 ## Table of Contents
 
@@ -15,15 +15,15 @@ It's a Django project that displays my collection of comics.
 
 ## App Structure
 
-- [static/](bd/main/static): The files used by the website (images, documents, css & javascript…)
-- [templates/](bd/main/templates): The main html templates
-- [core/](bd/main/core): The core of the project, using an hexagonal architecture:
+- [static/](src/main/static): The files used by the website (images, documents, css & javascript…)
+- [templates/](src/main/templates): The main html templates
+- [core/](src/main/core): The core of the project, using an hexagonal architecture:
     - application: Application use cases (business logic orchestration)
     - domain: Domain layer: models, business rules, interfaces
     - infrastructure: Adapters for APIs, database, file system, views
-- [clean_data](main/clean_data): The script to clean the data
-- [bd/](bd/config): the settings files (urls, wsgi, settings) used by Django
-- [manage.py](bd/manage.py): the main file that runs the website
+- [clean_data](src/main/clean_data): The script to clean the data
+- [src/](src/config): the settings files (urls, wsgi, settings) used by Django
+- [manage.py](src/manage.py): the main file that runs the website
 
 ## Docker
 
@@ -43,9 +43,9 @@ docker-compose -f docker-compose-local.yml down
 
 ## Test
 
-Run tests in `bd/`
+Run tests in `src/`
 
-`./bd/manage.py test ./bd/tests`
+`./src/manage.py test ./src/tests`
 
 ## Installation
 
@@ -54,11 +54,11 @@ Run tests in `bd/`
 1. Clone git repository
 
     ```bash
-    git clone git@github.com:julsql/bd_website.git
+    git clone git@github.com:julsql/codexio.git
     ```
 
-2. Don't forget to add the .env file in `./bd/config/.env` and the Google sheet api keys file at
-   `./bd/config/google-project.json`. You will need to create a new project in Google could console, and enable the API:
+2. Don't forget to add the .env file in `./src/config/.env` and the Google sheet api keys file at
+   `./src/config/google-project.json`. You will need to create a new project in Google could console, and enable the API:
 - Google Drive API
 - Google Sheets API
 
@@ -75,7 +75,7 @@ Think to give access to the client_email in your sheet.
 
     ```bash
     pip install virtualenv
-    cd bd_website
+    cd codexio
     python3 -m venv env
     source env/bin/activate
     ```
@@ -89,7 +89,7 @@ Think to give access to the client_email in your sheet.
 5. Creation of the privates files
 
     ```bash
-    cd bd
+    cd src/
     
     nano config/.env
     nano config/google-project.json
@@ -105,8 +105,8 @@ Think to give access to the client_email in your sheet.
 6. Create the database
 
     ```bash
-    python manage.py makemigrations
-    python manage.py migrate
+    python3 manage.py makemigrations
+    python3 manage.py migrate
     ```
 
 7. Launch the website
@@ -127,8 +127,8 @@ The body request a form sending a file with key `file`.
 
 The urls are:
 
-- http://bd.julsql.fr/upload/dedicace/isbn/ for the dedicace
-- http://bd.julsql.fr/upload/exlibris/isbn/ for the ex-libris
+- http://codexio.julsql.fr/upload/dedicace/isbn/ for the dedicace
+- http://codexio.julsql.fr/upload/exlibris/isbn/ for the ex-libris
 
 ## Deploy
 
@@ -161,20 +161,20 @@ sudo nano /etc/apache2/sites-available/myconfig.conf
 
     AddDefaultCharset UTF-8
 
-    Alias /static /home/username/bd_website/bd/main/static/
-    <Directory /home/username/bd_website/bd/main/static/>
+    Alias /static /home/username/codexio/src/main/static/
+    <Directory /home/username/codexio/src/main/static/>
         Require all granted
     </Directory>
 
-    <Directory /home/username/bd_website/bd/config/>
+    <Directory /home/username/codexio/src/config/>
         <Files wsgi.py>
             Require all granted
         </Files>
     </Directory>
 
-    WSGIDaemonProcess bd_process python-home=/home/username/bd_website/env python-path=/home/username/bd_website/bd
-    WSGIProcessGroup bd_process
-    WSGIScriptAlias / /home/username/bd_website/bd/config/wsgi.py process-group=bd_process
+    WSGIDaemonProcess codexio_process python-home=/home/username/codexio/env python-path=/home/username/codexio/src
+    WSGIProcessGroup codexio_process
+    WSGIScriptAlias / /home/username/codexio/src/config/wsgi.py process-group=codexio_process
 
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined

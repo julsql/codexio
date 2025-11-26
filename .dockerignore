@@ -29,5 +29,5 @@ README.md
 .vscode
 TODO.md
 media
-bd/media
-bd/database
+src/media
+src/database

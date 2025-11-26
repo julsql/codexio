@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '***REMOVED***', 'bd.julsql.fr', 'bd', 'testserver', 'codexio.julsql.fr']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '***REMOVED***', 'testserver', 'codexio.julsql.fr', 'codexio']
 
 # Application definition
 
@@ -121,7 +121,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://bd.julsql.fr',
     'https://codexio.julsql.fr',
 ]
 
