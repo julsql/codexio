@@ -2,13 +2,13 @@ services:
   django:
     build:
       context: . # Emplacement du Dockerfile
-    container_name: bd
+    container_name: codexio
     ports:
       - "8000:8000" # Expose le port 8000
     volumes:
-      - ./bd/media:/app/bd/media # Monte le dossier local 'media' dans le conteneur
-      - ./bd/database:/app/bd/database
+      - ./src/media:/app/src/media # Monte le dossier local 'media' dans le conteneur
+      - ./src/database:/app/src/database
     environment:
       - DEBUG=True
     command: >
-      sh -c "python bd/manage.py migrate && python bd/manage.py runserver 0.0.0.0:8000"
+      sh -c "python src/manage.py migrate && python src/manage.py runserver 0.0.0.0:8000"
