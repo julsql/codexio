@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
 ]
+AUTH_USER_MODEL = 'main.AppUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -147,7 +148,6 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-AUTH_USER_MODEL = 'main.AppUser'
 AUTHENTICATION_FAILURE = _(
     'Veuillez entrer un nom d\'utilisateur et un mot de passe valides. Notez que les deux champs peuvent être sensibles à la casse.')
 LOGOUT_REDIRECT_URL = '/'
