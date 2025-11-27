@@ -2,47 +2,55 @@
 
 from django.db import migrations
 
-from main.core.domain.model.profile import Profile
-from main.core.domain.model.profile_type import ProfileType
-
-try:
-    from main.core.application.create_users import create_local_users
-except ImportError:
-    def create_local_users(profiles: dict[ProfileType, Profile]):
-        pass # Si aucun fichier d'initialisation est trouvé
-
 
 def insert_initial_data(apps, schema_editor) -> None:
-    Profile = apps.get_model('main', 'Profile')
-    Collection = apps.get_model('main', 'Collection')
-    AppUser = apps.get_model('main', 'AppUser')
+    profile_table = apps.get_model('main', 'Profile')
+    collection_table = apps.get_model('main', 'Collection')
+    app_user_table = apps.get_model('main', 'AppUser')
 
-    # Création des profils
-    profile_bd = Profile.objects.create(name="BD")
-    Profile.objects.create(name="BOOK")
+    # --- Profils ---
+    profile_bd, _ = profile_table.objects.get_or_create(name="BD")
+    profile_table.objects.get_or_create(name="BOOK")
 
-    # Création de l'admin
-    admin = AppUser.objects.create(
+    # --- Admin ---
+    admin, _ = app_user_table.objects.get_or_create(
         username="admin",
-        password="admin",
-        first_name="Admin",
-        email="admin@email.com"
+        defaults={
+            "first_name": "Admin",
+            "email": "admin@email.com",
+            "password": "admin",
+        }
     )
 
-    # Création de la collection
-    collection = Collection.objects.create(
+    # --- Collection de test ---
+    collection, _ = collection_table.objects.get_or_create(
         title="Collection de Test",
-        token="XIWzYF4RFb77U4obBcfBF2UfVFE0hK2Aq43UV9e8d1EpLye7wXxGPHFwCVmMExb8",
-        doc_name="1z4iFF1ROr_sXZkkFJS12kKk7ndUaA9fNconarZIAIxo",
-        sheet_name="Test",
-        profile=profile_bd
+        defaults={
+            "token": "XIWzYF4RFb77U4obBcfBF2UfVFE0hK2Aq43UV9e8d1EpLye7wXxGPHFwCVmMExb8",
+            "doc_id": "1z4iFF1ROr_sXZkkFJS12kKk7ndUaA9fNconarZIAIxo",
+            "sheet_name": "Test",
+            "profile": profile_bd,
+        }
     )
 
-    # Ajout de la relation ManyToMany
+    # Ajout admin → collection
     collection.accounts.add(admin)
 
+    # Définir la collection courante
     admin.current_collection = collection
     admin.save()
+
+
+def remove_initial_data(apps, schema_editor) -> None:
+    profile_table = apps.get_model('main', 'Profile')
+    collection_table = apps.get_model('main', 'Collection')
+    app_user_table = apps.get_model('main', 'AppUser')
+
+    # ⚠️ On ne supprime que ce que l’on a créé
+    collection_table.objects.filter(title="Collection de Test").delete()
+    profile_table.objects.filter(name__in=["BD", "BOOK"]).delete()
+    app_user_table.objects.filter(username="admin").delete()
+
 
 class Migration(migrations.Migration):
     dependencies = [
@@ -50,5 +58,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(insert_initial_data)
+        migrations.RunPython(insert_initial_data, remove_initial_data)
     ]
