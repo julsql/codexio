@@ -10,7 +10,8 @@ ASTERIX_ISBN = 9782864976165
 ASTERIX_URLS = {
     'BDPHILE': "https://www.bdphile.fr/album/view/160391/",
     'BDGEST': "https://www.bedetheque.com/BD-Asterix-Hors-Serie-C14-L-Empire-du-Milieu-467639.html",
-    'BDFUGUE': "https://www.bdfugue.com/catalogsearch/result/?q=9782864976165"
+    'BDFUGUE': "https://www.bdfugue.com/catalogsearch/result/?q=9782864976165",
+    'BDGOOGLE': "https://www.googleapis.com/books/v1/volumes?q=isbn:9782864976165"
 }
 
 # Données par source
@@ -80,7 +81,15 @@ ASTERIX_DATA = {
                               'Une histoire originale basée sur le scénario du film Astérix & '
                               "Obélix, L'Empire du Milieu réalisé par Guillaume Canet.",
                      image="https://www.bdfugue.com/media/catalog/product/cache/0d950bd4d3aaddc02a824ea154d9c41e/9/7/9782864976165_1_75.jpg"
-                     )
+                     ),
+    'BDGOOGLE': Album(isbn=9782864976165,
+                      title="Astérix 40 - L'Empire du Milieu",
+                      writer="René Goscinny",
+                      publication_date=date(2023, 2, 1),
+                      number_of_pages=0,
+                      synopsis="Adaptation du film d&#39;animation éponyme.",
+                      image="http://books.google.com/books/content?id=evqxzwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+                      )
 }
 
 # SAMBRE
@@ -171,7 +180,22 @@ SAMBRE_DATA = {
                  "quitter précipitamment la Bastide, dans l'espoir de la "
                  'retrouver...',
         image="https://www.bdfugue.com/media/catalog/product/cache/0d950bd4d3aaddc02a824ea154d9c41e/9/7/9782754801096_1_75.jpg"
-    )
+    ),
+    'BDGOOGLE': Album(
+        isbn=SAMBRE_ISBN,
+        title="Tome 3, Hiver 1831, La lune qui regarde",
+        series="Hugo & Iris",
+        writer="Yslaire",
+        publication_date=date(2009, 11, 25),
+        number_of_pages=58,
+        synopsis="La guerre des Sambre est une collection de romans d'amour, "
+                 "dont la série principale, Sambre, conte l'histoire de Bernard "
+                 "et Julie... Elle se poursuit aujourd'hui avec celle de leurs "
+                 "parents, Hugo & Iris. L'histoire de chaque génération se "
+                 'décline en trois ou quatre albums et peut se lire séparément, '
+                 "comme une oeuvre exeptionnelle, ou comme un cycle d'une folie "
+                 'amoureuse qui traverse les générations...'
+    ),
 }
 
 # THORGAL
@@ -246,7 +270,22 @@ THORGAL_DATA = {
                  "d'on ne sait qui et on ne sait où. Il doit son salut à une "
                  'magicienne qui le sauve en échange de son obéissance...',
         image="https://www.bdfugue.com/media/catalog/product/cache/0d950bd4d3aaddc02a824ea154d9c41e/9/7/9782803603589_1_75.jpg"
-    )
+    ),
+    'BDGOOGLE': Album(
+        isbn=THORGAL_ISBN,
+        title="La magicienne trahie ; suivi de Presque le paradis...",
+        writer="Jean van Hamme",
+        illustrator="Grzegorz Rosinski",
+        publisher="Les Editions du Lombard",
+        publication_date=date(2000, 8, 24),
+        number_of_pages=48,
+        synopsis='Thorgal Aegirson est en mauvaise posture : il est enchaîné à '
+                 'un rocher et est condamné à mourir, noyé par la marée '
+                 "montante. Son crime est d'avoir osé aimer Aaricia, la fille du "
+                 "roi des Vikings du Nord, lui, le bâtard né d'on ne sait qui et "
+                 'on ne sait où. Il doit son salut à une magicienne qui le sauve '
+                 'en échange de son obéissance...',
+    ),
 }
 
 # LE VENT DANS LES SAULES
@@ -336,5 +375,16 @@ SAULE_DATA = {
         synopsis="",
         purchase_price=Decimal('25.00'),
         image="https://www.bdfugue.com/media/catalog/product/cache/0d950bd4d3aaddc02a824ea154d9c41e/9/7/9782840551072_1_75.JPG"
-    )
+    ),
+    'BDGOOGLE': Album(
+        isbn=SAULE_ISBN,
+        title="Le bois sauvage",
+        writer="Michel Plessix",
+        illustrator="Kenneth Grahame",
+        publisher="Productions Guy Delcourt",
+        publication_date=date(1999, 8, 23),
+        number_of_pages=32,
+        synopsis="Adaptation en bande dessinée du roman de Kenneth Grahame "
+                 "\"Le Vente dans les saules\".",
+    ),
 }

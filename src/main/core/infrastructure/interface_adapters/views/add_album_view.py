@@ -7,6 +7,7 @@ from main.core.application.usecases.authorization.authorization_service import A
 from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException, AlbumAlreadyExistsException
 from main.core.domain.model.profile_type import ProfileType
 from main.core.infrastructure.api.bd_gest_adapter import BdGestAdapter
+from main.core.infrastructure.api.bd_google_adapter import BbGoogleAdapter
 from main.core.infrastructure.api.bd_phile_adapter import BdPhileAdapter
 from main.core.infrastructure.api.book_adapter import BookAdapter
 from main.core.infrastructure.interface_adapters.bearer_token.bearer_token_adapter import BearerTokenAdapter
@@ -48,15 +49,16 @@ class AddAlbumView:
             if profile_type == ProfileType.BD:
                 bdphile_repository = BdPhileAdapter(self.logger_adapter)
                 bdgest_repository = BdGestAdapter(self.logger_adapter)
-                service = AddBdService([bdphile_repository, bdgest_repository],
-                                          sheet_repository,
-                                          self.logger_adapter)
+                bdgoogle_repository = BbGoogleAdapter(self.logger_adapter)
+                service = AddBdService([bdphile_repository, bdgest_repository, bdgoogle_repository],
+                                       sheet_repository,
+                                       self.logger_adapter)
                 service.main(isbn)
             elif profile_type == ProfileType.BOOK:
                 book_repository = BookAdapter(self.logger_adapter)
                 service = AddBookService([book_repository],
-                                       sheet_repository,
-                                       self.logger_adapter)
+                                         sheet_repository,
+                                         self.logger_adapter)
                 service.main(isbn)
             else:
                 return self.response_adapter.technical_error("Erreur dans la recherche de profils")
