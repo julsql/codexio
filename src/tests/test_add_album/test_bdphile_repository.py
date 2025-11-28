@@ -8,6 +8,7 @@ from tests.test_add_album.album_large_data_set import ASTERIX_ISBN, ASTERIX_URLS
 from tests.test_common.internal.logger_in_memory import LoggerInMemory
 
 
+@unittest.skip("Scraping is not available")
 class TestBdPhileRepository(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:

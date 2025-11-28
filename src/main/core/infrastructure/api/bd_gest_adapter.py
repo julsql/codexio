@@ -135,7 +135,7 @@ class BdGestAdapter(BaseAlbumAdapter):
             # Si une date précise est trouvée, on la récupère
             jour, mois_fr, annee = match_precise.groups()
         else:
-            # Sinon, on récupère la date générique au début (MM/YYYY)
+            # Sinon, on récupère la date générique au début (MM/YYYY).
             match_generale = re.search(r"(\d{2})/(\d{4})", date_tag)
             mois_fr, annee = match_generale.groups()
             jour = "01"  # On met par défaut le premier jour du mois
