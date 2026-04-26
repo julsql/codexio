@@ -1,15 +1,15 @@
-name: Test and deploy
+name: Tests
 
 on:
   push:
     branches:
       - '**'
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# Définir les jobs
 jobs:
   test:
     name: Tests
@@ -76,23 +76,3 @@ jobs:
           cd src
           python manage.py migrate
           python manage.py test
-
-  deploy:
-    name: Deploy to server
-    if: github.ref == 'refs/heads/main'
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy over SSH
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            cd /home/debian/websites/codexio
-            git pull
-            docker-compose down
-            docker-compose build --no-cache
-            docker-compose up -d
-            docker image prune -f

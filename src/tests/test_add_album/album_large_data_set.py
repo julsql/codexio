@@ -9,7 +9,7 @@ from main.core.domain.model.album import Album
 ASTERIX_ISBN = 9782864976165
 ASTERIX_URLS = {
     'BDPHILE': "https://www.bdphile.fr/album/view/160391/",
-    'BDGEST': "https://www.bedetheque.com/BD-Asterix-Hors-Serie-C14-L-Empire-du-Milieu-467639.html",
+    'BDGEST': "https://www.bedetheque.com/BD-Asterix-Hors-Serie-C13-L-Empire-du-Milieu-467639.html",
     'BDFUGUE': "https://www.bdfugue.com/catalogsearch/result/?q=9782864976165",
     'BDGOOGLE': "https://www.googleapis.com/books/v1/volumes?q=isbn:9782864976165"
 }
@@ -38,7 +38,7 @@ ASTERIX_DATA = {
     'BDGEST': Album(isbn=9782864976165,
                     title="L'Empire du Milieu",
                     series="Astérix (Hors Série)",
-                    number="C14",
+                    number="C13",
                     writer="Olivier Gay",
                     illustrator="Fabrice Tarrin",
                     colorist="Thierry Mébarki",
@@ -83,11 +83,12 @@ ASTERIX_DATA = {
                      image="https://www.bdfugue.com/media/catalog/product/cache/0d950bd4d3aaddc02a824ea154d9c41e/9/7/9782864976165_1_75.jpg"
                      ),
     'BDGOOGLE': Album(isbn=9782864976165,
-                      title="Astérix 40 - L'Empire du Milieu",
-                      writer="René Goscinny",
-                      publication_date=date(2023, 2, 1),
+                      title="L'empire du milieu",
+                      writer="Olivier*Tarrin Gay (Fabrice)",
+                      illustrator="",
+                      publication_date=date(2023, 1, 1),
                       number_of_pages=0,
-                      synopsis="Adaptation du film d&#39;animation éponyme.",
+                      synopsis="Suite à un coup d&#39;Etat qui a renversé l&#39;impératrice, la princesse chinoise Fu Yi part demander de l&#39;aide aux irréductibles Gaulois. [electre]",
                       image="http://books.google.com/books/content?id=evqxzwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
                       )
 }
