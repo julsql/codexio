@@ -19,6 +19,7 @@ class TestBdGoogleRepository(unittest.TestCase):
 
     def test_get_correct_infos_from_asterix_isbn(self) -> None:
         infos = self.bd_repository.get_infos(ASTERIX_ISBN)
+        print(infos)
         self.assertEqual(ASTERIX_DATA['BDGOOGLE'], infos)
 
     def test_get_correct_infos_from_sambre_isbn(self) -> None:
