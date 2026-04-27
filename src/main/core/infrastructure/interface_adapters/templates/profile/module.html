@@ -40,6 +40,7 @@
             </section>
         </div>
 
+        {% if not user.is_demo %}
         <div class="col-50">
             <section>
                 <h2>Paramètres du compte</h2>
@@ -94,5 +95,6 @@
                 </form>
             </section>
         </div>
+        {% endif %}
     </div>
 {% endblock %}

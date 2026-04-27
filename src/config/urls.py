@@ -27,7 +27,7 @@ from main.core.infrastructure.interface_adapters.views.delete_photo_view import 
 from main.core.infrastructure.interface_adapters.views.errors_view import error_500_view, error_404_view
 from main.core.infrastructure.interface_adapters.views.existing_album_view import existing_album
 from main.core.infrastructure.interface_adapters.views.home_view import home_view
-from main.core.infrastructure.interface_adapters.views.login_view import login_view
+from main.core.infrastructure.interface_adapters.views.login_view import login_view, demo_login_view
 from main.core.infrastructure.interface_adapters.views.work_view import work_view
 from main.core.infrastructure.interface_adapters.views.profile_view import profile_view, change_collection_view
 from main.core.infrastructure.interface_adapters.views.statistics_view import statistics_view
@@ -41,6 +41,7 @@ handler404 = error_404_view
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/login/', login_view, name='login'),
+    path('accounts/demo-login/', demo_login_view, name='demo_login'),
     path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('accounts/', include('django.contrib.auth.urls')),
 

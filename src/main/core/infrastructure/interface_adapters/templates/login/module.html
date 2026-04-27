@@ -35,5 +35,10 @@
             <div id="see-more" class="see-more"></div>
             <button class="button-large" type="submit">Connexion</button>
         </form>
+
+        <form method="post" action="{% url 'demo_login' %}" class="demo-form">
+            {% csrf_token %}
+            <button class="button-large demo-button" type="submit">Visiter en mode témoin</button>
+        </form>
     </section>
 {% endblock %}

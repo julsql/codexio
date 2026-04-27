@@ -22,7 +22,7 @@ class ProfileView:
         else:
             current_collection_id = collections[0].id if collections else None
 
-        if request.method == "POST":
+        if request.method == "POST" and not getattr(user, 'is_demo', False):
             if "update_email" in request.POST:
                 email_form = EmailUpdateForm(request.POST)
                 if email_form.is_valid():

@@ -9,3 +9,4 @@ class AppUser(AbstractUser):
         on_delete=models.PROTECT,
         related_name='current_users'
     )
+    is_demo = models.BooleanField(default=False)
