@@ -1,8 +1,12 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, get_user_model, login
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
+from django.views.decorators.http import require_POST
 
 from main.core.application.forms.bd_forms import LoginForm
+
+
+DEMO_USERNAME = 'temoin'
 
 
 class LoginView:
@@ -28,3 +32,16 @@ class LoginView:
 def login_view(request: HttpRequest) -> HttpResponse:
     view = LoginView()
     return view.handle_request(request)
+
+
+@require_POST
+def demo_login_view(request: HttpRequest) -> HttpResponse:
+    User = get_user_model()
+    try:
+        demo_user = User.objects.get(username=DEMO_USERNAME, is_demo=True)
+    except User.DoesNotExist:
+        return redirect('login')
+
+    demo_user.backend = 'django.contrib.auth.backends.ModelBackend'
+    login(request, demo_user)
+    return redirect('home')
