@@ -44,14 +44,12 @@
                     {% if user.is_superuser and user.is_staff %}
                         <a href="{% url 'admin:index' %}">Mode administrateur</a>
                     {% endif %}
-                    <a href="{% url 'logout' %}">
-                        <form action="{% url 'logout' %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="logout-button">
-                                Se déconnecter
-                            </button>
-                        </form>
-                    </a>
+                    <form action="{% url 'logout' %}" method="post" class="logout-form">
+                        {% csrf_token %}
+                        <button type="submit" class="logout-button">
+                            Se déconnecter
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
