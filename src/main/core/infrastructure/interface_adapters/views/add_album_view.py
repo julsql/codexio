@@ -10,7 +10,9 @@ from main.core.infrastructure.api.bd_fugue_adapter import BdFugueAdapter
 from main.core.infrastructure.api.bd_gest_adapter import BdGestAdapter
 from main.core.infrastructure.api.bd_google_adapter import BdGoogleAdapter
 from main.core.infrastructure.api.bd_phile_adapter import BdPhileAdapter
+from main.core.infrastructure.api.bnf_adapter import BnfAdapter
 from main.core.infrastructure.api.book_adapter import BookAdapter
+from main.core.infrastructure.api.open_library_adapter import OpenLibraryAdapter
 from main.core.infrastructure.interface_adapters.bearer_token.bearer_token_adapter import BearerTokenAdapter
 from main.core.infrastructure.interface_adapters.profile_type.profile_type_adapter import ProfileTypeAdapter
 from main.core.infrastructure.interface_adapters.request_methods.request_method_adapter import RequestMethodAdapter
@@ -58,9 +60,13 @@ class AddAlbumView:
                 service.main(isbn)
             elif profile_type == ProfileType.BOOK:
                 book_repository = BookAdapter(self.logger_adapter)
-                service = AddBookService([book_repository],
-                                         sheet_repository,
-                                         self.logger_adapter)
+                bnf_repository = BnfAdapter(self.logger_adapter)
+                open_library_repository = OpenLibraryAdapter(self.logger_adapter)
+                service = AddBookService(
+                    [book_repository, bnf_repository, open_library_repository],
+                    sheet_repository,
+                    self.logger_adapter,
+                )
                 service.main(isbn)
             else:
                 return self.response_adapter.technical_error("Erreur dans la recherche de profils")
