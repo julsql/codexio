@@ -64,10 +64,10 @@ ASTERIX_DATA = {
                      number="1",
                      writer="Olivier Gay",
                      illustrator="Fabrice Tarrin",
-                     publisher="ALBERT RENE",
+                     publisher="Albert René",
                      publication_date=date(2023, 2, 8),
                      number_of_pages=48,
-                     purchase_price=Decimal('10.90'),
+                     purchase_price=Decimal('10.9'),
                      synopsis='NOUVEL ALBUM ILLUSTRÉ   Nous sommes en 50 av J.-C. Loin, très '
                               "loin du petit village d'Armorique que nous connaissons bien, "
                               "l'Impératrice de Chine est emprisonnée suite à coup d'état "
@@ -161,10 +161,10 @@ SAMBRE_DATA = {
         writer="Yslaire",
         illustrator="Jean Bastide,Vincent Mézil",
         colorist="Jean Bastide,Vincent Mézil",
-        publisher="GLENAT",
+        publisher="Glénat",
         publication_date=date(2009, 11, 25),
         number_of_pages=58,
-        purchase_price=Decimal('13.90'),
+        purchase_price=Decimal('10'),
         synopsis="Avec Hugo et Iris, Yslaire, revient sur la jeunesse d'Hugo "
                  "Sambre, le père de Bernard Sambre, sur l'écriture de son "
                  'manuscrit La guerre des yeux, sur sa passion funeste pour Iris, '
@@ -260,10 +260,11 @@ THORGAL_DATA = {
         number="1",
         writer="Jean Van Hamme",
         illustrator="Grzegorz Rosinski",
-        publisher="LOMBARD",
+        colorist="Grzegorz Rosinski",
+        publisher="Le Lombard",
         publication_date=date(1996, 6, 7),
         number_of_pages=48,
-        purchase_price=Decimal('6.00'),
+        purchase_price=Decimal('6'),
         synopsis="Dès le début de l'histoire, Thorgal Aegirson est en mauvaise "
                  'posture : il est enchaîné à un rocher et est condamné à mourir, '
                  "noyé par la marée montante. Son crime est d'avoir osé aimer "
@@ -370,11 +371,11 @@ SAULE_DATA = {
         writer="Michel Plessix",
         illustrator="Michel Plessix",
         colorist="Michel Plessix",
-        publisher="DELCOURT",
+        publisher="Delcourt",
         publication_date=date(2004, 1, 1),
         number_of_pages=0,
         synopsis="",
-        purchase_price=Decimal('25.00'),
+        purchase_price=Decimal('25'),
         image="https://www.bdfugue.com/media/catalog/product/cache/0d950bd4d3aaddc02a824ea154d9c41e/9/7/9782840551072_1_75.JPG"
     ),
     'BDGOOGLE': Album(
