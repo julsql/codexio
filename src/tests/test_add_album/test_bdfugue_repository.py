@@ -1,3 +1,4 @@
+import os
 import unittest
 
 from main.core.domain.exceptions.api_exceptions import ApiConnexionDataNotFound
@@ -7,6 +8,10 @@ from tests.test_add_album.album_large_data_set import ASTERIX_ISBN, ASTERIX_URLS
 from tests.test_common.internal.logger_in_memory import LoggerInMemory
 
 
+@unittest.skipIf(
+    os.getenv("CI") or os.getenv("GITHUB_ACTIONS"),
+    "Cloudflare bloque les IPs des runners GitHub Actions (HTTP 403)",
+)
 class TestBdFugueRepository(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
