@@ -17,6 +17,14 @@
     top: 2.2em;
     right: 30px;
     column-gap: 10px;
+    max-width: 50%;
+    justify-content: flex-end;
+}
+
+.col-80 > section > header {
+    padding-right: 50%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .synopsis {
@@ -32,6 +40,12 @@
     .additional-infos {
         position: initial;
         margin-bottom: 10px;
+        max-width: none;
+        justify-content: flex-start;
+    }
+
+    .col-80 > section > header {
+        padding-right: 0;
     }
 
     .author-info {
