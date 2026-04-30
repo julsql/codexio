@@ -1,4 +1,7 @@
+import random
 import re
+import string
+import time
 from decimal import Decimal
 
 from bs4 import BeautifulSoup
@@ -10,10 +13,36 @@ from main.core.domain.ports.repositories.logger_repository import LoggerReposito
 from main.core.infrastructure.api.base_album_adapter import BaseAlbumAdapter
 
 
+_BASE36 = string.digits + string.ascii_lowercase
+
+
+def _base36(n: int) -> str:
+    if n == 0:
+        return "0"
+    out = ""
+    while n:
+        n, r = divmod(n, 36)
+        out = _BASE36[r] + out
+    return out
+
+
 class BdPhileAdapter(BaseAlbumAdapter):
     def __init__(self, logger_repository: LoggerRepository) -> None:
         super().__init__(logger_repository)
         self.isbn = 0
+        self._session = None
+
+    def _get_session(self):
+        # Le serveur exige un cookie js_token (posé en JS dans main.js,
+        # format "<ts_b36>.<random_b36>", max-age 5 min) sinon /search/ renvoie "Oups".
+        if self._session is None:
+            self._session = cffi_requests.Session(impersonate="chrome131")
+        ts = _base36(int(time.time()))
+        rand = "".join(random.choices(_BASE36, k=8))
+        self._session.cookies.set(
+            "js_token", f"{ts}.{rand}", domain="www.bdphile.fr", path="/"
+        )
+        return self._session
 
     def __str__(self) -> str:
         return "BdPhileRepository"
@@ -159,28 +188,40 @@ class BdPhileAdapter(BaseAlbumAdapter):
         """Trouver lien BD bdphile.fr à partir de son ISBN"""
 
         search_link = "https://www.bdphile.fr/search/album/?q={}".format(self.isbn)
-        html = self.get_html(search_link)
-        soup = BeautifulSoup(html, 'html.parser')
-        if soup.find('title', string=re.compile(r"^Oups")):
+        try:
+            response = self._get_session().get(
+                search_link, timeout=30, headers={"Referer": "https://www.bdphile.fr/"}
+            )
+            response.raise_for_status()
+        except Exception as e:
+            self.logging_repository.error(f"La requête a échoué pour {search_link}: {e}")
+            raise ApiConnexionException(
+                f"Impossible d'afficher le code html de la page {search_link}", str(self)
+            )
+
+        # Une recherche sans résultat (ex. ISBN 0) renvoie un 302 vers la home.
+        if "/search/" not in str(response.url):
+            raise ApiConnexionDataNotFound(f"ISBN {self.isbn} introuvable", str(self), self.isbn)
+
+        soup = BeautifulSoup(response.text, "html.parser")
+        if soup.find("title", string=re.compile(r"^Oups")):
             raise ApiConnexionDataNotFound(
-                f"ISBN {self.isbn} introuvable (recherche bdphile.fr indisponible)",
+                f"ISBN {self.isbn} introuvable (cookie js_token rejeté ?)",
                 str(self),
                 self.isbn,
             )
         a_tag = soup.find(
-            'a',
-            href=lambda href: href and re.match(
-                r'^https://www\.bdphile\.fr/album/(view/\d+/|bd/\d+-)', href
-            ),
+            "a",
+            href=lambda href: href
+            and re.match(r"^https://www\.bdphile\.fr/album/(view/\d+/|bd/\d+-)", href),
         )
         if a_tag:
-            return a_tag.get('href')
-        else:
-            raise ApiConnexionDataNotFound(f"ISBN {self.isbn} introuvable", str(self), self.isbn)
+            return a_tag.get("href")
+        raise ApiConnexionDataNotFound(f"ISBN {self.isbn} introuvable", str(self), self.isbn)
 
     def get_html(self, url: str) -> str:
         try:
-            response = cffi_requests.get(url, impersonate="chrome131", timeout=30)
+            response = self._get_session().get(url, timeout=30)
             response.raise_for_status()
             return response.text
         except Exception as e:
