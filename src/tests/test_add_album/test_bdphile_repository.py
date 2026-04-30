@@ -8,7 +8,6 @@ from tests.test_add_album.album_large_data_set import ASTERIX_ISBN, ASTERIX_URLS
 from tests.test_common.internal.logger_in_memory import LoggerInMemory
 
 
-@unittest.skip("La recherche bdphile.fr est cassée côté site (page Oups), ISBN→URL impossible. À réactiver si le site rétablit /search/album/.")
 class TestBdPhileRepository(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
