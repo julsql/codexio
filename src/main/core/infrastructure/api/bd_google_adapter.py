@@ -7,18 +7,19 @@ import requests
 from config.settings import GOOGLE_KEY
 from main.core.domain.exceptions.api_exceptions import ApiConnexionDataNotFound, ApiConnexionException
 from main.core.domain.model.album import Album
-from main.core.domain.ports.repositories.add_album_repository import AddAlbumRepository
 from main.core.domain.ports.repositories.logger_repository import LoggerRepository
+from main.core.infrastructure.api.base_album_adapter import BaseAlbumAdapter
 from main.core.infrastructure.api.internal.date_parser_service import DateParserService
 
 
-class BbGoogleAdapter(AddAlbumRepository, ABC):
+class BdGoogleAdapter(BaseAlbumAdapter):
     def __init__(self, logging_repository: LoggerRepository):
+        super().__init__(logging_repository)
         self.logging_repository = logging_repository
         self.api_url = "https://www.googleapis.com/books/v1/volumes"
 
     def __str__(self) -> str:
-        return "BbGoogleAdapter"
+        return "BdGoogleAdapter"
 
     def _parse_publication_date(self, date_string: str, isbn: int) -> Optional[date]:
         if date_string:
@@ -61,7 +62,8 @@ class BbGoogleAdapter(AddAlbumRepository, ABC):
 
         response = requests.get(self.api_url, params=params)
         if response.status_code != 200:
-            raise ApiConnexionException(f"{response.text}: Erreur lors de l'appel à l'API Google Books", str(self), isbn)
+            raise ApiConnexionException(f"{response.text}: Erreur lors de l'appel à l'API Google Books", str(self),
+                                        isbn)
 
         data = response.json()
         if "items" not in data:

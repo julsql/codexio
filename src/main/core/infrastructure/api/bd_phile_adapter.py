@@ -1,8 +1,8 @@
 import re
 from decimal import Decimal
 
-import requests
 from bs4 import BeautifulSoup
+from curl_cffi import requests as cffi_requests
 
 from main.core.domain.exceptions.api_exceptions import ApiConnexionException, ApiConnexionDataNotFound
 from main.core.domain.model.album import Album
@@ -161,16 +161,28 @@ class BdPhileAdapter(BaseAlbumAdapter):
         search_link = "https://www.bdphile.fr/search/album/?q={}".format(self.isbn)
         html = self.get_html(search_link)
         soup = BeautifulSoup(html, 'html.parser')
-        a_tag = soup.find('a', href=lambda href: href and href.startswith("https://www.bdphile.fr/album/view/"))
+        if soup.find('title', string=re.compile(r"^Oups")):
+            raise ApiConnexionDataNotFound(
+                f"ISBN {self.isbn} introuvable (recherche bdphile.fr indisponible)",
+                str(self),
+                self.isbn,
+            )
+        a_tag = soup.find(
+            'a',
+            href=lambda href: href and re.match(
+                r'^https://www\.bdphile\.fr/album/(view/\d+/|bd/\d+-)', href
+            ),
+        )
         if a_tag:
             return a_tag.get('href')
         else:
             raise ApiConnexionDataNotFound(f"ISBN {self.isbn} introuvable", str(self), self.isbn)
 
     def get_html(self, url: str) -> str:
-        response = requests.get(url)
-        if response.status_code == 200:
+        try:
+            response = cffi_requests.get(url, impersonate="chrome131", timeout=30)
+            response.raise_for_status()
             return response.text
-        else:
-            self.logging_repository.error(f"La requête a échoué. Statut de la réponse : {response.status_code}")
-            raise ApiConnexionException(f"Impossible d'affiche le code html de la page {url}", str(self))
+        except Exception as e:
+            self.logging_repository.error(f"La requête a échoué pour {url}: {e}")
+            raise ApiConnexionException(f"Impossible d'afficher le code html de la page {url}", str(self))

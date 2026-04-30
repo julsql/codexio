@@ -6,8 +6,9 @@ from main.core.application.usecases.add_album.add_book_service import AddBookSer
 from main.core.application.usecases.authorization.authorization_service import AuthorizationService
 from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException, AlbumAlreadyExistsException
 from main.core.domain.model.profile_type import ProfileType
+from main.core.infrastructure.api.bd_fugue_adapter import BdFugueAdapter
 from main.core.infrastructure.api.bd_gest_adapter import BdGestAdapter
-from main.core.infrastructure.api.bd_google_adapter import BbGoogleAdapter
+from main.core.infrastructure.api.bd_google_adapter import BdGoogleAdapter
 from main.core.infrastructure.api.bd_phile_adapter import BdPhileAdapter
 from main.core.infrastructure.api.book_adapter import BookAdapter
 from main.core.infrastructure.interface_adapters.bearer_token.bearer_token_adapter import BearerTokenAdapter
@@ -49,8 +50,9 @@ class AddAlbumView:
             if profile_type == ProfileType.BD:
                 bdphile_repository = BdPhileAdapter(self.logger_adapter)
                 bdgest_repository = BdGestAdapter(self.logger_adapter)
-                bdgoogle_repository = BbGoogleAdapter(self.logger_adapter)
-                service = AddBdService([bdphile_repository, bdgest_repository, bdgoogle_repository],
+                bdgoogle_repository = BdGoogleAdapter(self.logger_adapter)
+                bdfugue_repository = BdFugueAdapter(self.logger_adapter)
+                service = AddBdService([bdphile_repository, bdgest_repository, bdfugue_repository, bdgoogle_repository],
                                        sheet_repository,
                                        self.logger_adapter)
                 service.main(isbn)
