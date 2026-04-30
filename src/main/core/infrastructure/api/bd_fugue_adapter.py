@@ -1,10 +1,8 @@
-import platform
-import random
 import re
 from decimal import Decimal
 
-import cloudscraper
 from bs4 import BeautifulSoup
+from curl_cffi import requests as cffi_requests
 
 from main.core.domain.exceptions.api_exceptions import ApiConnexionException, ApiConnexionDataNotFound
 from main.core.domain.model.album import Album
@@ -18,16 +16,9 @@ class BdFugueAdapter(BaseAlbumAdapter):
         super().__init__(logger_repository)
         self.header = {"Titre album": "Album", "Tome": "Numéro",
                        "Série": "Série", "Scénario": "Scénario",
-                       "Dessin": "Dessin", "Couleurs": "Couleurs", "editeur": "Éditeur",
-                       "date de parution": "Date de publication", "": "Édition",
+                       "Dessin": "Dessin", "Couleurs": "Couleurs", "Éditeur": "Éditeur",
+                       "date de parution": "Date de publication", "Édition": "Édition",
                        "Nombre de pages": "Pages"}
-
-        self.user_agents = [
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0',
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2.1 Safari/605.1.15'
-        ]
         self.isbn = 0
 
     def __str__(self) -> str:
@@ -46,8 +37,7 @@ class BdFugueAdapter(BaseAlbumAdapter):
 
         album = Album(isbn=isbn)
 
-        titles = soup.find_all("h1", {"class": [
-            "order-1 mt-4 mb-3 lg:mb-4 lg:mt-0 text-2xl lg:text-5xl text-center lg:text-left w-full font-bold text-black lg:w-1/2 lg:pl-12 lg:float-right"]})
+        titles = soup.find_all("h1", class_="font-bold")
         if len(titles) > 0:
             title = titles[0].text
             parts = title.split("-", 1)
@@ -62,8 +52,12 @@ class BdFugueAdapter(BaseAlbumAdapter):
                 album.title = title.strip()
 
         # Recherche des divs contenant les informations
-        divs = soup.find_all("div", {"class": ["col label w-1/3 product-attribute-label truncate",
-                                               "col data w-2/3 product-attribute-value font-semibold"]})
+        divs = soup.find_all(
+            "div",
+            class_=lambda c: c is not None and (
+                "product-attribute-label" in c or "product-attribute-value" in c
+            ),
+        )
 
         for i in range(0, len(divs), 2):
             label = divs[i].text.strip().split(":")[0].strip()
@@ -76,10 +70,6 @@ class BdFugueAdapter(BaseAlbumAdapter):
                 album.number = "1"
             elif label in self.header.keys():
                 self._handle_labels(label, value, album)
-
-        # Remplir l'album avec la série si nécessaire
-        if album.title != "" and album.series != "":
-            album.title = album.series
 
         # Extraction du prix
         self._extract_price(soup, album)
@@ -95,14 +85,11 @@ class BdFugueAdapter(BaseAlbumAdapter):
 
     def _handle_authors(self, value: str, album: Album) -> None:
         """ Gérer le traitement des auteurs """
-        personnes = value.split(" , ")
-        for personne in personnes:
-            match = re.search(r'^([\w\s-]+)\s+\(([^)]+)\)', personne.strip())
-            if match:
-                value = match.group(1)
-                attributs = [attr.strip() for attr in match.group(2).split(',')]
-                for fonction in attributs:
-                    self._handle_label(fonction, value, album)
+        for name, roles in re.findall(r'([^,()]+?)\s*\(([^)]+)\)', value):
+            personne = name.strip()
+            attributs = [attr.strip() for attr in roles.split(',')]
+            for fonction in attributs:
+                self._handle_label(fonction, personne, album)
         return None
 
     def _handle_labels(self, label: str, value: str, album: Album) -> None:
@@ -113,14 +100,11 @@ class BdFugueAdapter(BaseAlbumAdapter):
         """ Traiter les labels généraux """
         match fonction:
             case "Album":
-                if value not in album.title:
-                    album.title = album.title + ("," if album.title != "" else "") + value
+                album.title = value
             case "Numéro":
-                if value not in album.number:
-                    album.number = album.number + ("," if album.number != "" else "") + value
+                album.number = value
             case "Série":
-                if value not in album.series:
-                    album.series = album.series + ("," if album.series != "" else "") + value
+                album.series = value
             case "Scénario":
                 if value not in album.writer:
                     album.writer = album.writer + ("," if album.writer != "" else "") + value
@@ -131,17 +115,21 @@ class BdFugueAdapter(BaseAlbumAdapter):
                 if value not in album.colorist:
                     album.colorist = album.colorist + ("," if album.colorist != "" else "") + value
             case "Éditeur":
-                if value not in album.publisher:
-                    album.publisher = album.publisher + ("," if album.publisher != "" else "") + value
+                album.publisher = value
             case "Date de publication":
-                if value not in album.publication_date:
+                if album.publication_date is None:
                     album.publication_date = self._parse_publication_date(value, self.isbn)
             case "Édition":
                 if value not in album.edition:
                     album.edition = album.edition + ("," if album.edition != "" else "") + value
             case "Pages":
-                if value not in album.number_of_pages:
-                    album.number_of_pages = int(value)
+                if album.number_of_pages == 0:
+                    try:
+                        album.number_of_pages = int(value)
+                    except ValueError:
+                        self.logging_repository.warning(
+                            f"{value} est un nombre de pages incorrect", extra={"isbn": self.isbn}
+                        )
 
     def _extract_price(self, soup: BeautifulSoup, album: Album) -> None:
         """ Extraire le prix d'un album """
@@ -175,26 +163,8 @@ class BdFugueAdapter(BaseAlbumAdapter):
         return f"https://www.bdfugue.com/catalogsearch/result/?q={self.isbn}"
 
     def get_html(self, url: str) -> str:
-        os_platform = 'windows'
-        if platform.system().lower() == 'darwin':
-            os_platform = 'darwin'
-        elif platform.system().lower() == 'linux':
-            os_platform = 'linux'
-
-        scraper = cloudscraper.create_scraper(
-            browser={'browser': 'chrome', 'platform': os_platform, 'desktop': True},
-            delay=10
-        )
-
-        headers = {
-            'User-Agent': random.choice(self.user_agents),
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-            'Accept-Language': 'fr,fr-FR;q=0.8',
-            'DNT': '1',
-        }
-
         try:
-            response = scraper.get(url, headers=headers, timeout=30)
+            response = cffi_requests.get(url, impersonate="chrome131", timeout=30)
             response.raise_for_status()
             return response.text
 
