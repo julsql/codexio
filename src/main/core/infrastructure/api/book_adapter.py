@@ -56,6 +56,7 @@ class BookAdapter(AddAlbumRepository, ABC):
 
         params = {
             "q": f"isbn:{isbn}",
+            "country": "FR",
             "key": GOOGLE_KEY
         }
 
@@ -67,7 +68,16 @@ class BookAdapter(AddAlbumRepository, ABC):
         if "items" not in data:
             raise ApiConnexionDataNotFound(f"{isbn} introuvable", str(self), isbn)
 
-        volume = data["items"][0]["volumeInfo"]
+        target = str(isbn)
+        matching = [
+            item for item in data["items"]
+            if any(
+                ident.get("identifier") == target
+                for ident in item.get("volumeInfo", {}).get("industryIdentifiers", [])
+            )
+        ]
+        items = sorted(matching or data["items"], key=lambda i: i.get("id", ""), reverse=True)
+        volume = items[0]["volumeInfo"]
 
         book.title = volume.get("title", "")
         self.logging_repository.info(book.title, extra={"isbn": isbn})
