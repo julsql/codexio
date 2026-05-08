@@ -45,7 +45,7 @@ ASTERIX_DATA = {
                     publisher="Les Éditions Albert René",
                     publication_date=date(2023, 2, 8),
                     number_of_pages=44,
-                    purchase_price=Decimal('10.90'),
+                    purchase_price=Decimal('10.99'),
                     synopsis='Nous sommes en 50 av J.-C. Loin, très loin du petit village '
                              "d'Armorique que nous connaissons bien, l'Impératrice de Chine "
                              "est emprisonnée suite à un coup d'état fomenté par l'infâme Deng "
@@ -67,7 +67,7 @@ ASTERIX_DATA = {
                      publisher="Albert René",
                      publication_date=date(2023, 2, 8),
                      number_of_pages=48,
-                     purchase_price=Decimal('10.9'),
+                     purchase_price=Decimal('10.99'),
                      synopsis='NOUVEL ALBUM ILLUSTRÉ   Nous sommes en 50 av J.-C. Loin, très '
                               "loin du petit village d'Armorique que nous connaissons bien, "
                               "l'Impératrice de Chine est emprisonnée suite à coup d'état "
