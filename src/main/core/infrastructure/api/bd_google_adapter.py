@@ -57,6 +57,7 @@ class BdGoogleAdapter(BaseAlbumAdapter):
 
         params = {
             "q": f"isbn:{isbn}",
+            "country": "FR",
             "key": GOOGLE_KEY
         }
 
@@ -69,7 +70,15 @@ class BdGoogleAdapter(BaseAlbumAdapter):
         if "items" not in data:
             raise ApiConnexionDataNotFound(f"{isbn} introuvable", str(self), isbn)
 
-        items = data["items"]
+        target = str(isbn)
+        matching = [
+            item for item in data["items"]
+            if any(
+                ident.get("identifier") == target
+                for ident in item.get("volumeInfo", {}).get("industryIdentifiers", [])
+            )
+        ]
+        items = sorted(matching or data["items"], key=lambda i: i.get("id", ""), reverse=True)
         for item in reversed(items):
             volume = item.get("volumeInfo", {})
             search = item.get("searchInfo", {})
