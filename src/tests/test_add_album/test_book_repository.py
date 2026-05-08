@@ -1,6 +1,6 @@
 import unittest
 
-from main.core.domain.exceptions.api_exceptions import ApiConnexionDataNotFound
+from main.core.domain.exceptions.api_exceptions import ApiConnexionDataNotFound, ApiConnexionException
 from main.core.infrastructure.api.book_adapter import BookAdapter
 from tests.test_add_album.book_large_data_set import BOVARY_ISBN, BOVARY_DATA
 from tests.test_common.internal.logger_in_memory import LoggerInMemory
@@ -12,12 +12,27 @@ class TestBookRepository(unittest.TestCase):
         cls.logging_repository = LoggerInMemory()
         cls.bd_repository = BookAdapter(cls.logging_repository)
 
+    def _get_infos_or_skip(self, isbn: int):
+        try:
+            return self.bd_repository.get_infos(isbn)
+        except ApiConnexionException as exc:
+            message = str(exc)
+            if '503' in message or 'Service temporarily unavailable' in message:
+                self.skipTest(f"Google Books API indisponible (503) pour ISBN {isbn}")
+            raise
+
     def test_get_no_infos_from_empty_isbn(self) -> None:
-        with self.assertRaises(ApiConnexionDataNotFound):
-            self.bd_repository.get_infos(0)
+        try:
+            with self.assertRaises(ApiConnexionDataNotFound):
+                self.bd_repository.get_infos(0)
+        except ApiConnexionException as exc:
+            message = str(exc)
+            if '503' in message or 'Service temporarily unavailable' in message:
+                self.skipTest("Google Books API indisponible (503)")
+            raise
 
     def test_get_correct_infos_from_bovary_isbn(self) -> None:
-        infos = self.bd_repository.get_infos(BOVARY_ISBN)
+        infos = self._get_infos_or_skip(BOVARY_ISBN)
         expected = BOVARY_DATA['BOOK']
 
         self.assertRegex(

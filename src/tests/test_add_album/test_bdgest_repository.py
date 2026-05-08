@@ -1,5 +1,7 @@
 import unittest
 
+import requests
+
 from main.core.domain.exceptions.api_exceptions import ApiConnexionDataNotFound
 from main.core.infrastructure.api.bd_gest_adapter import BdGestAdapter
 from tests.test_add_album.album_large_data_set import ASTERIX_ISBN, ASTERIX_URLS, ASTERIX_DATA, SAMBRE_DATA, \
@@ -13,6 +15,12 @@ class TestBdGestRepository(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.logging_repository = LoggerInMemory()
         cls.bd_repository = BdGestAdapter(cls.logging_repository)
+
+    def _get_infos_or_skip(self, isbn: int):
+        try:
+            return self.bd_repository.get_infos(isbn)
+        except requests.exceptions.ConnectionError:
+            self.skipTest(f"bedetheque.com refuse la connexion pour ISBN {isbn}")
 
     def test_get_correct_url_from_isbn(self) -> None:
         self.bd_repository.isbn = ASTERIX_ISBN
@@ -29,19 +37,19 @@ class TestBdGestRepository(unittest.TestCase):
             self.bd_repository.get_infos(0)
 
     def test_get_correct_infos_from_asterix_isbn(self) -> None:
-        infos = self.bd_repository.get_infos(ASTERIX_ISBN)
+        infos = self._get_infos_or_skip(ASTERIX_ISBN)
         self.assertEqual(ASTERIX_DATA['BDGEST'], infos)
 
     def test_get_correct_infos_from_sambre_isbn(self) -> None:
-        infos = self.bd_repository.get_infos(SAMBRE_ISBN)
+        infos = self._get_infos_or_skip(SAMBRE_ISBN)
         self.assertEqual(SAMBRE_DATA['BDGEST'], infos)
 
     def test_get_correct_infos_from_thorgal_isbn(self) -> None:
-        infos = self.bd_repository.get_infos(THORGAL_ISBN)
+        infos = self._get_infos_or_skip(THORGAL_ISBN)
         self.assertEqual(THORGAL_DATA['BDGEST'], infos)
 
     def test_get_correct_infos_from_saule_isbn(self) -> None:
-        infos = self.bd_repository.get_infos(SAULE_ISBN)
+        infos = self._get_infos_or_skip(SAULE_ISBN)
         self.assertEqual(SAULE_DATA['BDGEST'], infos)
 
 
