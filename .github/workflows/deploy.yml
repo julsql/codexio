@@ -13,6 +13,8 @@ concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: false
 
+permissions: {}
+
 jobs:
   deploy:
     name: Deploy to server
