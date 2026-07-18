@@ -132,63 +132,17 @@ The urls are:
 
 ## Deploy
 
-You need to configure your VM.
+Deployment is fully automated and runs on k3s.
 
-Don't forget to download git, python, apache2, pip on your VM:
+1. On every push to `main`, the [`docker.yml`](.github/workflows/docker.yml) CI
+   workflow builds the Docker image and pushes it to GitHub Container Registry
+   (GHCR).
+2. On the k3s cluster, [Keel](https://keel.sh) polls GHCR and detects the new
+   image digest, then triggers a rolling update of the deployment automatically.
 
-```bash
-sudo apt-get update
-sudo apt-get install apache2
-sudo apt-get install postgresql
-sudo apt-get install python3
-sudo apt-get install python3-pip
-sudo apt-get install libapache2-mod-wsgi-py3
-sudo apt-get install git
-sudo apt-get install python3-venv
-```
-
-After installing the project as explained in [Installation](#installation)
-you can configure the VM as follows:
-
-```bash
-sudo nano /etc/apache2/sites-available/myconfig.conf
-```
-
-```
-<VirtualHost *:80>
-    ServerName url.domain.com
-    ServerAdmin admin@email.fr
-
-    AddDefaultCharset UTF-8
-
-    Alias /static /home/username/codexio/src/main/static/
-    <Directory /home/username/codexio/src/main/static/>
-        Require all granted
-    </Directory>
-
-    <Directory /home/username/codexio/src/config/>
-        <Files wsgi.py>
-            Require all granted
-        </Files>
-    </Directory>
-
-    WSGIDaemonProcess codexio_process python-home=/home/username/codexio/env python-path=/home/username/codexio/src
-    WSGIProcessGroup codexio_process
-    WSGIScriptAlias / /home/username/codexio/src/config/wsgi.py process-group=codexio_process
-
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>
-```
-
-You load the configuration and restart the apache server
-
-```bash
-sudo a2ensite myconfig.conf
-sudo service apache2 restart
-```
-
-> To unload a configuration: `sudo a2dissite myconfig.conf`
+The Kubernetes manifests (deployment, service, ingress…) live in the
+[`k3s-manifests`](https://github.com/julsql/k3s-manifests) repository. There is
+nothing to do by hand: merge to `main` and Keel rolls out the new image.
 
 ## Authors
 
