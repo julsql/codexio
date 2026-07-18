@@ -75,15 +75,15 @@ class AddAlbumView:
 
         except AlbumNotFoundException as e:
             self.logger_adapter.warning(str(e), extra={"isbn": isbn})
-            return self.response_adapter.not_found(str(e))
+            return self.response_adapter.not_found(f"Album {isbn} introuvable")
 
         except AlbumAlreadyExistsException as e:
             self.logger_adapter.info(str(e), extra={"isbn": isbn})
-            return self.response_adapter.conflict(str(e))
+            return self.response_adapter.conflict(f"L'album {isbn} existe déjà")
 
         except Exception as e:
-            self.logger_adapter.error(str(e))
-            return self.response_adapter.server_error(f"{e} Erreur interne")
+            self.logger_adapter.error(str(e), extra={"isbn": isbn})
+            return self.response_adapter.server_error("Erreur interne")
 
 
 def add_album(request: HttpRequest,

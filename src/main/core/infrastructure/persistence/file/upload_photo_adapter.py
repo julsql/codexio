@@ -7,6 +7,7 @@ from django.core.files.storage import FileSystemStorage
 from django.core.files.uploadedfile import UploadedFile
 
 from main.core.domain.ports.repositories.upload_photo_repository import UploadPhotoRepository
+from main.core.infrastructure.persistence.file.secure_path import secure_media_path
 
 
 class UploadPhotoAdapter(UploadPhotoRepository, ABC):
@@ -17,7 +18,9 @@ class UploadPhotoAdapter(UploadPhotoRepository, ABC):
     def upload_photo(self, isbn: int, uploaded_file: UploadedFile, folder: str) -> bool:
         if allowed_file := self.is_image_file(uploaded_file.name):
             file_extension = self.get_file_extension(uploaded_file.name)
-            path_folder = os.path.join(folder, str(isbn))
+            # int() neutralise toute tentative de traversée via l'isbn et
+            # secure_media_path garantit que le dossier reste dans le média root.
+            path_folder = secure_media_path(folder, str(int(isbn)))
             number = self.get_next_number(path_folder)
             fs = FileSystemStorage(location=path_folder)
             fs.save(f"{number}{file_extension}", uploaded_file)

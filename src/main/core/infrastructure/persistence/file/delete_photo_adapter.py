@@ -2,6 +2,7 @@ import os
 from abc import ABC
 
 from main.core.domain.ports.repositories.delete_photo_repository import DeletePhotoRepository
+from main.core.infrastructure.persistence.file.secure_path import secure_media_path
 
 
 class DeleteDeletePhotoAdapter(DeletePhotoRepository, ABC):
@@ -10,8 +11,9 @@ class DeleteDeletePhotoAdapter(DeletePhotoRepository, ABC):
         self.allowed_extensions = '.jpeg'
 
     def delete_photo(self, isbn: int, photo_id: int, folder: str) -> bool:
-        album_path = os.path.join(folder, str(isbn))
-        image_path = os.path.join(album_path, f"{photo_id}{self.allowed_extensions}")
+        # int() + secure_media_path neutralisent toute traversée via isbn/photo_id.
+        album_path = secure_media_path(folder, str(int(isbn)))
+        image_path = secure_media_path(album_path, f"{int(photo_id)}{self.allowed_extensions}")
         image_exists = os.path.exists(image_path)
         if image_exists:
             os.remove(image_path)
