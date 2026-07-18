@@ -1,3 +1,4 @@
+import os
 import unittest
 
 from main.core.infrastructure.persistence.sheet.sheet_adapter import SheetAdapter
@@ -5,6 +6,10 @@ from tests.album_data_set import FIRST_LINE_SHEET, ASTERIX_LIST
 from tests.test_add_album.album_large_data_set import ASTERIX_ISBN
 
 
+@unittest.skipIf(
+    os.getenv("CI") or os.getenv("GITHUB_ACTIONS"),
+    "Test d'intégration Google Sheets : necessite un credential service-account live (ecrit dans un vrai classeur)",
+)
 class TestSheetRepository(unittest.TestCase):
 
     @classmethod
