@@ -3,6 +3,7 @@ from abc import ABC
 
 from main.core.domain.model.work_attachment import WorkAttachment
 from main.core.domain.ports.repositories.page_bd_attachments_repository import WorkAttachmentsRepository
+from main.core.infrastructure.persistence.file.secure_path import secure_media_path
 
 
 class WorkAttachmentsAdapter(WorkAttachmentsRepository, ABC):
@@ -16,7 +17,8 @@ class WorkAttachmentsAdapter(WorkAttachmentsRepository, ABC):
         return WorkAttachment(signed_copies=signed_copies, ex_libris=ex_libris)
 
     def attachment_album(self, isbn: int, path: str) -> list[str]:
-        image_dir = os.path.join(path, str(isbn))
+        # int() + secure_media_path empêchent toute traversée de répertoire.
+        image_dir = secure_media_path(path, str(int(isbn)))
         return self.get_photo_dossier(image_dir)
 
     def get_photo_dossier(self, path: str) -> list[str]:

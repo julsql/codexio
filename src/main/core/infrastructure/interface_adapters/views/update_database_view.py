@@ -55,7 +55,7 @@ class UpdateDatabaseView:
 
         except Exception as e:
             self.logger_adapter.error(str(e))
-            return self.response_adapter.server_error(f"{e} Erreur interne")
+            return self.response_adapter.server_error("Erreur interne")
 
 
 def update_database(
