@@ -71,15 +71,15 @@ class AddAlbumView:
             else:
                 return self.response_adapter.technical_error("Erreur dans la recherche de profils")
 
-            return self.response_adapter.success(f'Album {isbn} ajouté avec succès')
+            return self.response_adapter.success(f'Album {int(isbn)} ajouté avec succès')
 
         except AlbumNotFoundException as e:
             self.logger_adapter.warning(str(e), extra={"isbn": isbn})
-            return self.response_adapter.not_found(f"Album {isbn} introuvable")
+            return self.response_adapter.not_found(f"Album {int(isbn)} introuvable")
 
         except AlbumAlreadyExistsException as e:
             self.logger_adapter.info(str(e), extra={"isbn": isbn})
-            return self.response_adapter.conflict(f"L'album {isbn} existe déjà")
+            return self.response_adapter.conflict(f"L'album {int(isbn)} existe déjà")
 
         except Exception as e:
             self.logger_adapter.error(str(e), extra={"isbn": isbn})
