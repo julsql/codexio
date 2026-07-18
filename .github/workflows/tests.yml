@@ -34,9 +34,6 @@ jobs:
           --health-retries 5
 
     env:
-      # Valeurs de test bidon (aucun secret) : le boot Django exige ces variables mais
-      # aucun test ne verifie de valeur de prod. Seul GOOGLE_KEY reste un vrai secret
-      # (tests Google Books = appels reseau reels, non skippes en CI).
       SECRET_KEY: dummy-test-secret-key
       DEBUG: false
       GSHEET_CREDENTIALS: config/codexio.json
