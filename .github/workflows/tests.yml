@@ -61,10 +61,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Placeholder Google credentials (Sheets tests skipped in CI)
-        # Le test d'integration Google Sheets est skippe en CI (@skipIf CI) et rien
-        # d'autre ne lit ce fichier -> un placeholder suffit, plus besoin du secret.
-        run: echo '{}' > src/config/codexio.json
+      - name: Create service account key from secret
+        # Le test d'integration Google Sheets tourne en CI (non skippe) et ecrit
+        # dans un vrai classeur -> credential service-account reel requis.
+        run: echo '${{ secrets.SERVICE_ACCOUNT_CONFIG }}' > src/config/codexio.json
 
       - name: Wait for PostgreSQL to be ready
         run: |
