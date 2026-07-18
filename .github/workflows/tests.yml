@@ -24,9 +24,9 @@ jobs:
         ports:
           - 5452:5432
         env:
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: $POSTGRES_DB
+          POSTGRES_USER: codexio
+          POSTGRES_PASSWORD: codexio
+          POSTGRES_DB: codexio
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -34,17 +34,18 @@ jobs:
           --health-retries 5
 
     env:
-      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      # Valeurs de test bidon (aucun secret) : le boot Django exige ces variables mais
+      # aucun test ne verifie de valeur de prod. Seul GOOGLE_KEY reste un vrai secret
+      # (tests Google Books = appels reseau reels, non skippes en CI).
+      SECRET_KEY: dummy-test-secret-key
       DEBUG: false
-      POST_TOKEN: ${{ secrets.POST_TOKEN }}
       GSHEET_CREDENTIALS: config/codexio.json
       GOOGLE_KEY: ${{ secrets.GOOGLE_KEY }}
       DJANGO_ENV: test
-      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-      POSTGRES_DB: $POSTGRES_DB
-      EMAIL_HOST_USER: $EMAIL_HOST_USER
-      EMAIL_HOST_PASSWORD: $EMAIL_HOST_PASSWORD
+      POSTGRES_USER: codexio
+      POSTGRES_PASSWORD: codexio
+      POSTGRES_DB: codexio
+      EMAIL_HOST_USER: test@example.com
 
     steps:
       - name: Checkout code
@@ -60,8 +61,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Create service account key from secret
-        run: echo '${{ secrets.SERVICE_ACCOUNT_CONFIG }}' > src/config/codexio.json
+      - name: Placeholder Google credentials (Sheets tests skipped in CI)
+        # Le test d'integration Google Sheets est skippe en CI (@skipIf CI) et rien
+        # d'autre ne lit ce fichier -> un placeholder suffit, plus besoin du secret.
+        run: echo '{}' > src/config/codexio.json
 
       - name: Wait for PostgreSQL to be ready
         run: |
