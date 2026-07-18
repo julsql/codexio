@@ -62,8 +62,6 @@ jobs:
           pip install -r requirements.txt
 
       - name: Create service account key from secret
-        # Le test d'integration Google Sheets tourne en CI (non skippe) et ecrit
-        # dans un vrai classeur -> credential service-account reel requis.
         run: echo '${{ secrets.SERVICE_ACCOUNT_CONFIG }}' > src/config/codexio.json
 
       - name: Wait for PostgreSQL to be ready
