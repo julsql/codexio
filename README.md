@@ -137,8 +137,8 @@ Deployment is fully automated and runs on k3s.
 1. On every push to `main`, the [`docker.yml`](.github/workflows/docker.yml) CI
    workflow builds the Docker image and pushes it to GitHub Container Registry
    (GHCR).
-2. On the k3s cluster, [Keel](https://keel.sh) polls GHCR and detects the new
-   image digest, then triggers a rolling update of the deployment automatically.
+2. Deployment is automatic: after the push, the CI pings the server (Keel
+   webhook), which updates its pods. No SSH, no manual `kubectl`.
 
 The Kubernetes manifests (deployment, service, ingress…) live in the
 [`k3s-manifests`](https://github.com/julsql/k3s-manifests) repository. There is
