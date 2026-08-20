@@ -64,6 +64,7 @@ ASTERIX_DATA = {
                      number="1",
                      writer="Olivier Gay",
                      illustrator="Fabrice Tarrin",
+                     colorist="Thierry Mébarki",
                      publisher="Albert René",
                      publication_date=date(2023, 2, 8),
                      number_of_pages=48,
