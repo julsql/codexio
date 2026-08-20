@@ -1,8 +1,8 @@
 import re
 from decimal import Decimal
 
-import requests
 from bs4 import BeautifulSoup
+from curl_cffi import requests as cffi_requests
 
 from main.core.domain.exceptions.api_exceptions import ApiConnexionException, ApiConnexionRefused, \
     ApiConnexionDataNotFound
@@ -20,6 +20,14 @@ class BdGestAdapter(BaseAlbumAdapter):
     def __init__(self, logger_repository: LoggerRepository) -> None:
         super().__init__(logger_repository)
         self.isbn = 0
+        self._session = None
+
+    def _get_session(self):
+        # bedetheque.com renvoie 403 aux clients `requests` (empreinte TLS non
+        # navigateur). curl_cffi imite Chrome et passe, comme pour bdphile/bdfugue.
+        if self._session is None:
+            self._session = cffi_requests.Session(impersonate="chrome131")
+        return self._session
 
     def __str__(self) -> str:
         return "BdGestRepository"
@@ -167,7 +175,7 @@ class BdGestAdapter(BaseAlbumAdapter):
 
         if album_id and eans and ean:
             url = f"https://www.bedetheque.com/ajax/album_bdfugue/idalbum/{album_id}/idbdfugue/{ean}/id/{eans}"
-            response = requests.get(url)
+            response = self._get_session().get(url, timeout=30)
 
             if response.status_code == 200:
                 result = response.json()
@@ -195,7 +203,7 @@ class BdGestAdapter(BaseAlbumAdapter):
 
         if album_id:
             url = f"https://www.bedetheque.com/ajax/resume/album/{album_id}"
-            response = requests.get(url)
+            response = self._get_session().get(url, timeout=30)
 
             if response.status_code == 200:
                 result = response.text
@@ -207,41 +215,40 @@ class BdGestAdapter(BaseAlbumAdapter):
     def get_url(self) -> str:
         """Trouver lien BD bdgest.fr à partir de son ISBN"""
 
-        with requests.Session() as session:
-            csrf_token = self.get_csrf_token(session)
-            params = {
-                "csrf_token_bel": csrf_token,
-                "RechISBN": self.isbn
-            }
-            headers = {
-                "User-Agent": "Mozilla/5.0",
-                "Referer": self.SEARCH_URL
-            }
-            response = session.get(self.SEARCH_URL, params=params, headers=headers)
+        session = self._get_session()
+        csrf_token = self.get_csrf_token(session)
+        params = {
+            "csrf_token_bel": csrf_token,
+            "RechISBN": self.isbn
+        }
+        headers = {
+            "Referer": self.SEARCH_URL
+        }
+        response = session.get(self.SEARCH_URL, params=params, headers=headers, timeout=30)
 
-            if response.status_code != 200:
-                self.logging_repository.error(f"La requête a échoué. Statut de la réponse : {response.status_code}",
-                                              extra={"isbn": self.isbn})
-                raise ApiConnexionException(f"Impossible d'affiche le code html de la page {self.SEARCH_URL}",
-                                            str(self))
+        if response.status_code != 200:
+            self.logging_repository.error(f"La requête a échoué. Statut de la réponse : {response.status_code}",
+                                          extra={"isbn": self.isbn})
+            raise ApiConnexionException(f"Impossible d'affiche le code html de la page {self.SEARCH_URL}",
+                                        str(self))
 
-            html = response.text
+        html = response.text
 
-            soup = BeautifulSoup(html, self.BS_FEATURE)
-            search_list = soup.find("ul", class_="search-list")
+        soup = BeautifulSoup(html, self.BS_FEATURE)
+        search_list = soup.find("ul", class_="search-list")
 
-            # Trouver le premier <li> dans cette liste
-            first_li = search_list.find("li") if search_list else None
+        # Trouver le premier <li> dans cette liste
+        first_li = search_list.find("li") if search_list else None
 
-            # Trouver la première balise <a> avec la classe "image-tooltip"
-            a_tag = first_li.find("a", class_="image-tooltip") if first_li else None
-            if a_tag:
-                return a_tag.get('href')
-            else:
-                raise ApiConnexionDataNotFound(f"ISBN {self.isbn} introuvable", str(self), self.isbn)
+        # Trouver la première balise <a> avec la classe "image-tooltip"
+        a_tag = first_li.find("a", class_="image-tooltip") if first_li else None
+        if a_tag:
+            return a_tag.get('href')
+        else:
+            raise ApiConnexionDataNotFound(f"ISBN {self.isbn} introuvable", str(self), self.isbn)
 
     def get_html(self, url: str) -> str:
-        response = requests.get(url)
+        response = self._get_session().get(url, timeout=30)
         # Vérifiez si la requête a réussi
         if response.status_code == 200:
             return response.text
@@ -251,7 +258,7 @@ class BdGestAdapter(BaseAlbumAdapter):
 
     def get_csrf_token(self, session):
         """Récupère dynamiquement le token CSRF depuis la page de recherche."""
-        response = session.get(self.SEARCH_URL)
+        response = session.get(self.SEARCH_URL, timeout=30)
 
         if response.status_code != 200:
             raise ApiConnexionException(f"Erreur {response.status_code} lors de l'accès au site.", str(self))

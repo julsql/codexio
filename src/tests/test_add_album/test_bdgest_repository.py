@@ -1,6 +1,6 @@
 import unittest
 
-import requests
+from curl_cffi import requests as cffi_requests
 
 from main.core.domain.exceptions.api_exceptions import ApiConnexionDataNotFound
 from main.core.infrastructure.api.bd_gest_adapter import BdGestAdapter
@@ -19,7 +19,7 @@ class TestBdGestRepository(unittest.TestCase):
     def _get_infos_or_skip(self, isbn: int):
         try:
             return self.bd_repository.get_infos(isbn)
-        except requests.exceptions.ConnectionError:
+        except cffi_requests.exceptions.RequestException:
             self.skipTest(f"bedetheque.com refuse la connexion pour ISBN {isbn}")
 
     def test_get_correct_url_from_isbn(self) -> None:
