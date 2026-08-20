@@ -86,7 +86,8 @@ class BdFugueAdapter(BaseAlbumAdapter):
     def _handle_authors(self, value: str, album: Album) -> None:
         """ Gérer le traitement des auteurs """
         for name, roles in re.findall(r'([^,()]+?)\s*\(([^)]+)\)', value):
-            personne = name.strip()
+            # bdfugue.com sépare les auteurs par « / » : « X (Scénario) / Y (Dessin) ».
+            personne = name.strip().lstrip('/').strip()
             attributs = [attr.strip() for attr in roles.split(',')]
             for fonction in attributs:
                 self._handle_label(fonction, personne, album)

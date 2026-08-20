@@ -1,6 +1,7 @@
+import os
 import unittest
 
-import requests
+from curl_cffi import requests as cffi_requests
 
 from main.core.domain.exceptions.api_exceptions import ApiConnexionDataNotFound
 from main.core.infrastructure.api.bd_gest_adapter import BdGestAdapter
@@ -10,6 +11,10 @@ from tests.test_add_album.album_large_data_set import ASTERIX_ISBN, ASTERIX_URLS
 from tests.test_common.internal.logger_in_memory import LoggerInMemory
 
 
+@unittest.skipIf(
+    os.getenv("CI") or os.getenv("GITHUB_ACTIONS"),
+    "bedetheque.com bloque les IPs des runners GitHub Actions (HTTP 403)",
+)
 class TestBdGestRepository(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -19,7 +24,7 @@ class TestBdGestRepository(unittest.TestCase):
     def _get_infos_or_skip(self, isbn: int):
         try:
             return self.bd_repository.get_infos(isbn)
-        except requests.exceptions.ConnectionError:
+        except cffi_requests.exceptions.RequestException:
             self.skipTest(f"bedetheque.com refuse la connexion pour ISBN {isbn}")
 
     def test_get_correct_url_from_isbn(self) -> None:
