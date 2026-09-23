@@ -1,22 +1,21 @@
 from django.http import HttpRequest, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, HttpResponseBadRequest, \
     HttpResponseServerError
 
-from main.core.application.usecases.add_album.add_bd_service import AddBdService
-from main.core.application.usecases.add_album.add_book_service import AddBookService
+from main.core.application.usecases.add_album.get_infos_service import GetInfosService
 from main.core.application.usecases.authorization.authorization_service import AuthorizationService
-from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException, AlbumAlreadyExistsException
+from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException
 from main.core.domain.model.profile_type import ProfileType
 from main.core.infrastructure.api.album_repositories_factory import build_album_repositories
 from main.core.infrastructure.interface_adapters.bearer_token.bearer_token_adapter import BearerTokenAdapter
 from main.core.infrastructure.interface_adapters.profile_type.profile_type_adapter import ProfileTypeAdapter
 from main.core.infrastructure.interface_adapters.request_methods.request_method_adapter import RequestMethodAdapter
 from main.core.infrastructure.interface_adapters.responses.api_response_adapter import ApiResponseAdapter
+from main.core.infrastructure.interface_adapters.views.formatters import album_to_dict
 from main.core.infrastructure.logging.python_logger_adapter import PythonLoggerAdapter
 from main.core.infrastructure.persistence.database.models import Collection
-from main.core.infrastructure.persistence.sheet.sheet_adapter import SheetAdapter
 
 
-class AddAlbumView:
+class AlbumInfosView:
     def __init__(self):
         self.logger_adapter = PythonLoggerAdapter()
         self.response_adapter = ApiResponseAdapter()
@@ -37,8 +36,6 @@ class AddAlbumView:
             return collection
 
         try:
-            sheet_repository = SheetAdapter(collection.doc_id, collection.sheet_name)
-
             profile_type = self.profile_type_adapter.get_profile_type(collection)
             if not isinstance(profile_type, ProfileType):
                 return profile_type
@@ -47,34 +44,21 @@ class AddAlbumView:
             if not repositories:
                 return self.response_adapter.technical_error("Erreur dans la recherche de profils")
 
-            if profile_type == ProfileType.BD:
-                service = AddBdService(repositories,
-                                       sheet_repository,
-                                       self.logger_adapter)
-            else:
-                service = AddBookService(
-                    repositories,
-                    sheet_repository,
-                    self.logger_adapter,
-                )
-            service.main(isbn)
+            service = GetInfosService(repositories, self.logger_adapter)
+            album = service.main(isbn)
 
-            return self.response_adapter.success(f'Album {int(isbn)} ajouté avec succès')
+            return self.response_adapter.json(album_to_dict(album))
 
         except AlbumNotFoundException as e:
-            self.logger_adapter.warning(str(e), extra={"isbn": isbn})
+            self.logger_adapter.warning(str(e), isbn=isbn)
             return self.response_adapter.not_found(f"Album {int(isbn)} introuvable")
 
-        except AlbumAlreadyExistsException as e:
-            self.logger_adapter.info(str(e), extra={"isbn": isbn})
-            return self.response_adapter.conflict(f"L'album {int(isbn)} existe déjà")
-
         except Exception as e:
-            self.logger_adapter.error(str(e), extra={"isbn": isbn})
+            self.logger_adapter.error(str(e), isbn=isbn)
             return self.response_adapter.server_error("Erreur interne")
 
 
-def add_album(request: HttpRequest,
-              isbn: int) -> HttpResponse | HttpResponseForbidden | HttpResponseNotFound | HttpResponseBadRequest | HttpResponseServerError:
-    view = AddAlbumView()
+def album_infos(request: HttpRequest,
+                isbn: int) -> HttpResponse | HttpResponseForbidden | HttpResponseNotFound | HttpResponseBadRequest | HttpResponseServerError:
+    view = AlbumInfosView()
     return view.handle_request(request, isbn)
