@@ -1,3 +1,4 @@
+import os
 import unittest
 
 import requests
@@ -10,6 +11,10 @@ from tests.test_add_album.album_large_data_set import ASTERIX_ISBN, ASTERIX_URLS
 from tests.test_common.internal.logger_in_memory import LoggerInMemory
 
 
+@unittest.skipIf(
+    os.getenv("CI") or os.getenv("GITHUB_ACTIONS"),
+    "bedetheque.com renvoie une page anti-bot aux runners GitHub Actions (HTML non exploitable)",
+)
 class TestBdGestRepository(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
