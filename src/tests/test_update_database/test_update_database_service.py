@@ -5,7 +5,7 @@ import unittest
 import django
 
 from main.core.domain.model.id import Id
-from test_update_database.internal.fake_collection import FakeCollection
+from tests.test_update_database.internal.fake_collection import FakeCollection
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
