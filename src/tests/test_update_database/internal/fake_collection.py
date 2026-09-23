@@ -1,4 +1,4 @@
-from test_update_database.internal.fake_profile import FakeProfile
+from tests.test_update_database.internal.fake_profile import FakeProfile
 
 
 class FakeCollection:
