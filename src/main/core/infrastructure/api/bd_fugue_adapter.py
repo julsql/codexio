@@ -8,9 +8,11 @@ from main.core.domain.exceptions.api_exceptions import ApiConnexionException, Ap
 from main.core.domain.model.album import Album
 from main.core.domain.ports.repositories.logger_repository import LoggerRepository
 from main.core.infrastructure.api.base_album_adapter import BaseAlbumAdapter
+from main.core.infrastructure.api.internal.http_retry_service import HttpRetryService, TransientHttpError
 
 
 class BdFugueAdapter(BaseAlbumAdapter):
+    RETRYABLE_STATUS = (403, 429, 500, 502, 503, 504)
 
     def __init__(self, logger_repository: LoggerRepository) -> None:
         super().__init__(logger_repository)
@@ -165,10 +167,18 @@ class BdFugueAdapter(BaseAlbumAdapter):
 
     def get_html(self, url: str) -> str:
         try:
-            response = cffi_requests.get(url, impersonate="chrome131", timeout=30)
-            response.raise_for_status()
-            return response.text
+            return HttpRetryService.call(
+                lambda: self._read_page(url),
+                retryable=(TransientHttpError,),
+            )
 
         except Exception as e:
             self.logging_repository.error(f"Erreur lors de l'accès à {url}: {str(e)}")
             raise ApiConnexionException(f"Impossible d'accéder à la page {url}", str(self))
+
+    def _read_page(self, url: str) -> str:
+        response = cffi_requests.get(url, impersonate="chrome131", timeout=30)
+        if response.status_code in self.RETRYABLE_STATUS:
+            raise TransientHttpError(f"{url} a répondu {response.status_code}")
+        response.raise_for_status()
+        return response.text
