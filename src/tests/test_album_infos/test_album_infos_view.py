@@ -100,6 +100,21 @@ class AlbumInfosIntegrationTest(TestCase):
 
         self.assertEqual(response.status_code, 500)
 
+    def test_album_infos_without_authorization_header(self):
+        response = self.client.get(
+            reverse('album_infos', kwargs={'isbn': self.isbn})
+        )
+
+        self.assertEqual(response.status_code, 403)
+
+    def test_album_infos_with_unknown_token(self):
+        response = self.client.get(
+            reverse('album_infos', kwargs={'isbn': self.isbn}),
+            HTTP_AUTHORIZATION='Bearer unknown-token'
+        )
+
+        self.assertEqual(response.status_code, 403)
+
     @patch('main.core.application.usecases.authorization.authorization_service.AuthorizationService.verify_token')
     def test_album_infos_method_not_allowed(self, mock_verify_token):
         mock_verify_token.return_value = self.collection

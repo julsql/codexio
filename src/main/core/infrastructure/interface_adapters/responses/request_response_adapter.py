@@ -16,7 +16,7 @@ class RequestResponseAdapter(ResponseRepository):
         pass
 
     def json(self, data: dict, status: int = 200) -> JsonResponse:
-        pass
+        raise NotImplementedError("Les pages web ne renvoient pas de JSON")
 
     def forbidden(self, content: str) -> HttpResponseForbidden:
         raise Http404(content)

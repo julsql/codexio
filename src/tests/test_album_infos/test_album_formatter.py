@@ -1,4 +1,5 @@
 import unittest
+from dataclasses import fields
 from datetime import date
 from decimal import Decimal
 
@@ -41,16 +42,18 @@ class TestAlbumToDict(unittest.TestCase):
         self.assertEqual(result["title"], "")
         self.assertEqual(result["number_of_pages"], 0)
 
-    def test_all_keys_present(self):
+    def test_free_album_keeps_zero_price(self):
+        """Un prix nul doit rester 0, pas devenir null (indiscernable d'un prix inconnu)"""
+        result = album_to_dict(Album(isbn=1234567890, purchase_price=Decimal("0")))
+
+        self.assertEqual(result["purchase_price"], 0.0)
+        self.assertIsNotNone(result["purchase_price"])
+
+    def test_all_album_fields_are_exposed(self):
+        """Tout champ ajouté à Album doit être exposé par l'endpoint"""
         result = album_to_dict(Album(isbn=1234567890))
 
-        expected_keys = {
-            "isbn", "title", "number", "series", "writer", "illustrator", "translator",
-            "colorist", "publisher", "collection_book", "literary_genre", "style",
-            "origin_language", "publication_date", "edition", "number_of_pages",
-            "purchase_price", "synopsis", "image",
-        }
-        self.assertEqual(set(result.keys()), expected_keys)
+        self.assertEqual(set(result.keys()), {field.name for field in fields(Album)})
 
 
 if __name__ == "__main__":
