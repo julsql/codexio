@@ -4,7 +4,7 @@ from datetime import date
 from main.core.application.usecases.add_album.add_book_service import AddBookService
 from main.core.domain.exceptions.album_exceptions import AlbumAlreadyExistsException, AlbumNotFoundException
 from main.core.domain.model.album import Album
-from test_add_album.book_large_data_set import BOVARY, BOVARY_ISBN
+from tests.test_add_album.book_large_data_set import BOVARY, BOVARY_ISBN
 from tests.test_add_album.internal.bd_in_memory import AddAlbumInMemory
 from tests.test_common.internal.logger_in_memory import LoggerInMemory
 from tests.test_common.internal.sheet_in_memory import SheetInMemory
