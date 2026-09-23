@@ -4,6 +4,7 @@ from main.core.domain.exceptions.api_exceptions import ApiConnexionDataNotFound,
 from main.core.domain.model.album import Album
 from main.core.domain.ports.repositories.logger_repository import LoggerRepository
 from main.core.infrastructure.api.base_album_adapter import BaseAlbumAdapter
+from main.core.infrastructure.api.internal.http_retry_service import HttpRetryService
 
 LANGUAGE_MAP = {"fre": "fr", "eng": "en", "ita": "it", "spa": "es", "ger": "de",
                 "deu": "de", "por": "pt", "jpn": "ja", "rus": "ru", "ara": "ar",
@@ -14,6 +15,7 @@ TRANSLATOR_MARKERS = ("trad.", "traduit", "traduction")
 
 class OpenLibraryAdapter(BaseAlbumAdapter):
     BASE_URL = "https://openlibrary.org"
+    REQUEST_TIMEOUT = 30
     COVER_URL = "https://covers.openlibrary.org/b/id/{cover_id}-L.jpg"
 
     def __init__(self, logging_repository: LoggerRepository) -> None:
@@ -52,7 +54,10 @@ class OpenLibraryAdapter(BaseAlbumAdapter):
 
     def _fetch_json(self, url: str, isbn: int) -> dict:
         try:
-            response = requests.get(url, timeout=20, headers={"User-Agent": "codexio/1.0"})
+            response = HttpRetryService.call(
+                lambda: requests.get(url, timeout=self.REQUEST_TIMEOUT, headers={"User-Agent": "codexio/1.0"}),
+                retryable=(requests.ConnectionError, requests.Timeout),
+            )
         except requests.RequestException as e:
             raise ApiConnexionException(f"Erreur réseau OpenLibrary: {e}", str(self), isbn)
         if response.status_code == 404:
