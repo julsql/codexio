@@ -2,7 +2,8 @@ from typing import Optional, Sequence
 
 from django.http import (
     HttpResponse, HttpResponseForbidden, HttpResponseNotFound,
-    HttpResponseNotAllowed, HttpResponseBadRequest, HttpResponseServerError, Http404
+    HttpResponseNotAllowed, HttpResponseBadRequest, HttpResponseServerError, Http404,
+    JsonResponse
 )
 
 from main.core.domain.ports.repositories.response_repository import ResponseRepository
@@ -13,6 +14,9 @@ class RequestResponseAdapter(ResponseRepository):
 
     def success(self, content: str, status: int = 200) -> HttpResponse:
         pass
+
+    def json(self, data: dict, status: int = 200) -> JsonResponse:
+        raise NotImplementedError("Les pages web ne renvoient pas de JSON")
 
     def forbidden(self, content: str) -> HttpResponseForbidden:
         raise Http404(content)

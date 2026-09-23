@@ -2,7 +2,8 @@ from typing import Optional, Sequence
 
 from django.http import (
     HttpResponse, HttpResponseForbidden, HttpResponseNotFound,
-    HttpResponseNotAllowed, HttpResponseBadRequest, HttpResponseServerError
+    HttpResponseNotAllowed, HttpResponseBadRequest, HttpResponseServerError,
+    JsonResponse
 )
 
 from main.core.domain.ports.repositories.response_repository import ResponseRepository
@@ -16,6 +17,12 @@ class ApiResponseAdapter(ResponseRepository):
             content,
             status=status,
             content_type=self.CONTENT_TYPE
+        )
+
+    def json(self, data: dict, status: int = 200) -> JsonResponse:
+        return JsonResponse(
+            data,
+            status=status
         )
 
     def forbidden(self, content: str) -> HttpResponseForbidden:

@@ -9,6 +9,11 @@ class ResponseRepository(ABC):
         pass
 
     @abstractmethod
+    def json(self, data: dict, status: int = 200) -> Any:
+        """Crée une réponse réussie au format JSON"""
+        pass
+
+    @abstractmethod
     def forbidden(self, content: str) -> Any:
         """Crée une réponse interdite"""
         pass

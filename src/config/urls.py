@@ -21,6 +21,7 @@ from django.urls import path, include
 from django.contrib import admin
 
 from main.core.infrastructure.interface_adapters.views.add_album_view import add_album
+from main.core.infrastructure.interface_adapters.views.album_infos_view import album_infos
 from main.core.infrastructure.interface_adapters.views.attachments_view import exlibris_view, signed_copies_view
 from main.core.infrastructure.interface_adapters.views.search_view import search_view
 from main.core.infrastructure.interface_adapters.views.delete_photo_view import delete_dedicace, delete_exlibris
@@ -74,6 +75,7 @@ urlpatterns = [
     path('delete/dedicace/<int:isbn>/<int:photo_id>', delete_dedicace, name='delete_dedicace'),
     path('delete/exlibris/<int:isbn>/<int:photo_id>', delete_exlibris, name='delete_exlibris'),
     path('add/<int:isbn>/', add_album, name='add_album'),
+    path('infos/<int:isbn>/', album_infos, name='album_infos'),
     path('possede/<int:isbn>/', existing_album, name='possede'),
 ]
 
