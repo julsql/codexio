@@ -21,3 +21,11 @@ class AlbumAlreadyExistsException(AlbumException):
 class InvalidAlbumDataException(AlbumException):
     """Données d'album invalides"""
     pass
+
+
+class AlbumSourcesUnavailableException(AlbumException):
+    """Aucune donnée obtenue alors qu'au moins une source a échoué techniquement"""
+
+    def __init__(self, message: str, isbn: int = None, sources: list[str] = None):
+        super().__init__(message, isbn)
+        self.sources = sources or []
