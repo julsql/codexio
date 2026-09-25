@@ -4,7 +4,7 @@ This is the repo of my comics' collection website!
 
 It's a Django project that displays my collection of comics.
 
-> Website available at address: [codexio.julsql.fr](http://codexio.julsql.fr)
+> Website available at address: [codexio.julsql.fr](https://codexio.julsql.fr)
 
 ## Table of Contents
 
@@ -127,15 +127,15 @@ The body request a form sending a file with key `file`.
 
 The urls are:
 
-- http://codexio.julsql.fr/upload/dedicace/isbn/ for the dedicace
-- http://codexio.julsql.fr/upload/exlibris/isbn/ for the ex-libris
+- https://codexio.julsql.fr/upload/dedicace/isbn/ for the dedicace
+- https://codexio.julsql.fr/upload/exlibris/isbn/ for the ex-libris
 
 ### Album infos
 
 Fetch the metadata for an ISBN as JSON, without writing anything to the sheet:
 
 ```bash
-curl -H "Authorization: Bearer <token>" http://codexio.julsql.fr/infos/<isbn>/
+curl -H "Authorization: Bearer <token>" https://codexio.julsql.fr/infos/<isbn>/
 ```
 
 By default every provider of the collection's profile is queried and the results
@@ -148,7 +148,7 @@ whether a given site is reachable from the server:
 | BOOK    | `googlebooks`, `bnf`, `openlibrary` |
 
 ```bash
-curl -H "Authorization: Bearer <token>" "http://codexio.julsql.fr/infos/<isbn>/?source=bdgest"
+curl -H "Authorization: Bearer <token>" "https://codexio.julsql.fr/infos/<isbn>/?source=bdgest"
 ```
 
 An unknown source answers `400` with the list of valid ones.
