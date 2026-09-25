@@ -100,6 +100,45 @@ class AlbumInfosIntegrationTest(TestCase):
 
         self.assertEqual(response.status_code, 500)
 
+    @patch('main.core.application.usecases.authorization.authorization_service.AuthorizationService.verify_token')
+    @patch(
+        'main.core.infrastructure.interface_adapters.profile_type.profile_type_adapter.ProfileTypeAdapter.get_profile_type')
+    @patch('main.core.infrastructure.interface_adapters.views.album_infos_view.GetInfosService.main')
+    def test_album_infos_queries_only_the_requested_source(self, mock_get_infos, mock_get_profile_type,
+                                                           mock_verify_token):
+        mock_verify_token.return_value = self.collection
+        mock_get_profile_type.return_value = ProfileType.BD
+        mock_get_infos.return_value = ASTERIX
+
+        with patch(
+                'main.core.infrastructure.interface_adapters.views.album_infos_view.build_album_repositories'
+        ) as mock_build:
+            mock_build.return_value = [object()]
+            response = self.client.get(
+                reverse('album_infos', kwargs={'isbn': self.isbn}) + '?source=bdgest',
+                **self.headers
+            )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual('bdgest', mock_build.call_args.args[2])
+
+    @patch('main.core.application.usecases.authorization.authorization_service.AuthorizationService.verify_token')
+    @patch(
+        'main.core.infrastructure.interface_adapters.profile_type.profile_type_adapter.ProfileTypeAdapter.get_profile_type')
+    def test_album_infos_rejects_unknown_source(self, mock_get_profile_type, mock_verify_token):
+        mock_verify_token.return_value = self.collection
+        mock_get_profile_type.return_value = ProfileType.BD
+
+        response = self.client.get(
+            reverse('album_infos', kwargs={'isbn': self.isbn}) + '?source=inconnu',
+            **self.headers
+        )
+
+        self.assertEqual(response.status_code, 400)
+        body = response.content.decode()
+        self.assertIn("bdphile", body)
+        self.assertNotIn("inconnu", body)
+
     def test_album_infos_without_authorization_header(self):
         response = self.client.get(
             reverse('album_infos', kwargs={'isbn': self.isbn})
