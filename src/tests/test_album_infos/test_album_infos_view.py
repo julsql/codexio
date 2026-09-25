@@ -130,14 +130,32 @@ class AlbumInfosIntegrationTest(TestCase):
         mock_get_profile_type.return_value = ProfileType.BD
 
         response = self.client.get(
-            reverse('album_infos', kwargs={'isbn': self.isbn}) + '?source=inconnu',
+            reverse('album_infos', kwargs={'isbn': self.isbn}) + '?source=bdquelquechose',
             **self.headers
         )
 
         self.assertEqual(response.status_code, 400)
         body = response.content.decode()
         self.assertIn("bdphile", body)
-        self.assertNotIn("inconnu", body)
+        self.assertNotIn("bdquelquechose", body)
+
+    @patch('main.core.application.usecases.authorization.authorization_service.AuthorizationService.verify_token')
+    @patch(
+        'main.core.infrastructure.interface_adapters.profile_type.profile_type_adapter.ProfileTypeAdapter.get_profile_type')
+    def test_album_infos_never_echoes_the_submitted_source(self, mock_get_profile_type, mock_verify_token):
+        """La valeur soumise ne doit jamais être renvoyée dans la réponse (CodeQL py/reflective-xss)"""
+        mock_verify_token.return_value = self.collection
+        mock_get_profile_type.return_value = ProfileType.BD
+
+        response = self.client.get(
+            reverse('album_infos', kwargs={'isbn': self.isbn}) + '?source=%3Cscript%3Ealert(1)%3C/script%3E',
+            **self.headers
+        )
+
+        self.assertEqual(response.status_code, 400)
+        body = response.content.decode()
+        self.assertNotIn("<script>", body)
+        self.assertNotIn("alert(1)", body)
 
     def test_album_infos_without_authorization_header(self):
         response = self.client.get(
