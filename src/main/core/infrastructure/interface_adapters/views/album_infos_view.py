@@ -5,7 +5,7 @@ from main.core.application.usecases.add_album.get_infos_service import GetInfosS
 from main.core.application.usecases.authorization.authorization_service import AuthorizationService
 from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException
 from main.core.domain.model.profile_type import ProfileType
-from main.core.infrastructure.api.album_repositories_factory import build_album_repositories
+from main.core.infrastructure.api.album_repositories_factory import available_sources, build_album_repositories
 from main.core.infrastructure.interface_adapters.bearer_token.bearer_token_adapter import BearerTokenAdapter
 from main.core.infrastructure.interface_adapters.profile_type.profile_type_adapter import ProfileTypeAdapter
 from main.core.infrastructure.interface_adapters.request_methods.request_method_adapter import RequestMethodAdapter
@@ -40,8 +40,14 @@ class AlbumInfosView:
             if not isinstance(profile_type, ProfileType):
                 return profile_type
 
-            repositories = build_album_repositories(profile_type, self.logger_adapter)
+            source = request.GET.get('source')
+            repositories = build_album_repositories(profile_type, self.logger_adapter, source)
             if not repositories:
+                if source is not None:
+                    return self.response_adapter.bad_request(
+                        "Source inconnue, sources disponibles : "
+                        + ", ".join(available_sources(profile_type))
+                    )
                 return self.response_adapter.technical_error("Erreur dans la recherche de profils")
 
             service = GetInfosService(repositories, self.logger_adapter)
