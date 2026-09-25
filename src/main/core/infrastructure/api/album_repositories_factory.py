@@ -9,21 +9,39 @@ from main.core.infrastructure.api.bnf_adapter import BnfAdapter
 from main.core.infrastructure.api.book_adapter import BookAdapter
 from main.core.infrastructure.api.open_library_adapter import OpenLibraryAdapter
 
+# Sources interrogées pour chaque profil, dans l'ordre de priorité de la fusion
+SOURCES_BY_PROFILE = {
+    ProfileType.BD: {
+        "bdphile": BdPhileAdapter,
+        "bdgest": BdGestAdapter,
+        "bdfugue": BdFugueAdapter,
+        "bdgoogle": BdGoogleAdapter,
+    },
+    ProfileType.BOOK: {
+        "googlebooks": BookAdapter,
+        "bnf": BnfAdapter,
+        "openlibrary": OpenLibraryAdapter,
+    },
+}
+
+
+def available_sources(profile_type: ProfileType) -> list[str]:
+    """Noms des sources interrogeables pour un type de profil"""
+    return list(SOURCES_BY_PROFILE.get(profile_type, {}))
+
 
 def build_album_repositories(profile_type: ProfileType,
-                             logger_repository: LoggerRepository) -> list[AddAlbumRepository]:
-    """Construit la liste des repositories d'API externes à interroger pour un type de profil"""
-    if profile_type == ProfileType.BD:
-        return [
-            BdPhileAdapter(logger_repository),
-            BdGestAdapter(logger_repository),
-            BdFugueAdapter(logger_repository),
-            BdGoogleAdapter(logger_repository),
-        ]
-    elif profile_type == ProfileType.BOOK:
-        return [
-            BookAdapter(logger_repository),
-            BnfAdapter(logger_repository),
-            OpenLibraryAdapter(logger_repository),
-        ]
-    return []
+                             logger_repository: LoggerRepository,
+                             source: str | None = None) -> list[AddAlbumRepository]:
+    """Construit les repositories d'API externes à interroger pour un type de profil
+
+    Sans source, toutes celles du profil sont renvoyées dans l'ordre de fusion.
+    Avec une source, seule celle-ci est renvoyée ; un nom inconnu renvoie une liste vide.
+    """
+    adapters = SOURCES_BY_PROFILE.get(profile_type, {})
+
+    if source is not None:
+        adapter = adapters.get(source)
+        return [adapter(logger_repository)] if adapter else []
+
+    return [adapter(logger_repository) for adapter in adapters.values()]
