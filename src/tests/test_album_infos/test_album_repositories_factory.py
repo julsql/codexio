@@ -4,6 +4,8 @@ from main.core.domain.model.profile_type import ProfileType
 from main.core.infrastructure.api.album_repositories_factory import available_sources, build_album_repositories
 from main.core.infrastructure.api.bd_gest_adapter import BdGestAdapter
 from main.core.infrastructure.api.bnf_adapter import BnfAdapter
+from main.core.infrastructure.api.cached_album_repository import CachedAlbumRepository
+from tests.test_common.internal.album_cache_in_memory import AlbumCacheInMemory
 from tests.test_common.internal.logger_in_memory import LoggerInMemory
 
 
@@ -42,6 +44,29 @@ class TestAlbumRepositoriesFactory(unittest.TestCase):
     def test_source_of_another_profile_returns_nothing(self):
         """Une source livre ne doit pas être interrogeable depuis un profil BD"""
         self.assertEqual([], build_album_repositories(ProfileType.BD, self.logger, "bnf"))
+
+    def test_without_cache_the_adapters_are_returned_as_is(self):
+        repositories = build_album_repositories(ProfileType.BD, self.logger)
+
+        self.assertFalse(any(isinstance(r, CachedAlbumRepository) for r in repositories))
+
+    def test_with_a_cache_every_source_is_wrapped(self):
+        repositories = build_album_repositories(ProfileType.BD, self.logger, None, AlbumCacheInMemory())
+
+        self.assertEqual(4, len(repositories))
+        self.assertTrue(all(isinstance(r, CachedAlbumRepository) for r in repositories))
+        self.assertEqual(
+            ["BdPhileRepository", "BdGestRepository", "BdFugueRepository", "BdGoogleAdapter"],
+            [str(r) for r in repositories],
+            "le nom de la source doit rester lisible à travers le cache",
+        )
+
+    def test_a_single_source_is_wrapped_too(self):
+        repositories = build_album_repositories(ProfileType.BD, self.logger, "bdgest", AlbumCacheInMemory())
+
+        self.assertEqual(1, len(repositories))
+        self.assertIsInstance(repositories[0], CachedAlbumRepository)
+        self.assertEqual("BdGestRepository", str(repositories[0]))
 
     def test_available_sources(self):
         self.assertEqual(["bdphile", "bdgest", "bdfugue", "bdgoogle"], available_sources(ProfileType.BD))
