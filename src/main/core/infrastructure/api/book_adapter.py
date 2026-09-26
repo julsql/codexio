@@ -4,7 +4,7 @@ from typing import Optional
 
 import requests
 
-from config.settings import GOOGLE_KEY
+from config.settings import GOOGLE_BOOK_KEY
 from main.core.domain.exceptions.api_exceptions import ApiConnexionDataNotFound, ApiConnexionException
 from main.core.domain.model.album import Album
 from main.core.domain.ports.repositories.add_album_repository import AddAlbumRepository
@@ -57,7 +57,7 @@ class BookAdapter(AddAlbumRepository, ABC):
         params = {
             "q": f"isbn:{isbn}",
             "country": "FR",
-            "key": GOOGLE_KEY
+            "key": GOOGLE_BOOK_KEY
         }
 
         response = requests.get(self.api_url, params=params)

@@ -142,7 +142,7 @@ USE_TZ = True
 APPEND_SLASH = True
 
 GSHEET_CREDENTIALS = BASE_DIR / config('GSHEET_CREDENTIALS')
-GOOGLE_KEY = config('GOOGLE_KEY')
+GOOGLE_BOOK_KEY = config('GOOGLE_BOOK_KEY')
 
 # Durée de validité des notices mémorisées des sources externes (0 désactive le cache)
 ALBUM_CACHE_TTL_DAYS = config('ALBUM_CACHE_TTL_DAYS', default=30, cast=int)
