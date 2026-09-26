@@ -37,7 +37,7 @@ jobs:
       SECRET_KEY: dummy-test-secret-key
       DEBUG: false
       GSHEET_CREDENTIALS: config/codexio.json
-      GOOGLE_KEY: ${{ secrets.GOOGLE_KEY }}
+      GOOGLE_BOOK_KEY: ${{ secrets.GOOGLE_BOOK_KEY }}
       DJANGO_ENV: test
       POSTGRES_USER: codexio
       POSTGRES_PASSWORD: codexio
