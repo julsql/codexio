@@ -1,6 +1,7 @@
 from django.http import HttpRequest, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, HttpResponseBadRequest, \
     HttpResponseServerError
 
+from config.settings import ALBUM_CACHE_TTL_DAYS
 from main.core.application.usecases.add_album.add_bd_service import AddBdService
 from main.core.application.usecases.add_album.add_book_service import AddBookService
 from main.core.application.usecases.authorization.authorization_service import AuthorizationService
@@ -13,6 +14,7 @@ from main.core.infrastructure.interface_adapters.profile_type.profile_type_adapt
 from main.core.infrastructure.interface_adapters.request_methods.request_method_adapter import RequestMethodAdapter
 from main.core.infrastructure.interface_adapters.responses.api_response_adapter import ApiResponseAdapter
 from main.core.infrastructure.logging.python_logger_adapter import PythonLoggerAdapter
+from main.core.infrastructure.persistence.database.album_cache_adapter import AlbumCacheAdapter
 from main.core.infrastructure.persistence.database.models import Collection
 from main.core.infrastructure.persistence.sheet.sheet_adapter import SheetAdapter
 
@@ -20,6 +22,7 @@ from main.core.infrastructure.persistence.sheet.sheet_adapter import SheetAdapte
 class AddAlbumView:
     def __init__(self):
         self.logger_adapter = PythonLoggerAdapter()
+        self.cache_adapter = AlbumCacheAdapter(self.logger_adapter, ALBUM_CACHE_TTL_DAYS)
         self.response_adapter = ApiResponseAdapter()
         self.request_method_adapter = RequestMethodAdapter(self.response_adapter)
         self.profile_type_adapter = ProfileTypeAdapter(self.response_adapter)
@@ -44,7 +47,8 @@ class AddAlbumView:
             if not isinstance(profile_type, ProfileType):
                 return profile_type
 
-            repositories = build_album_repositories(profile_type, self.logger_adapter)
+            repositories = build_album_repositories(profile_type, self.logger_adapter,
+                                                   cache_repository=self.cache_adapter)
             if not repositories:
                 return self.response_adapter.technical_error("Erreur dans la recherche de profils")
 

@@ -153,6 +153,11 @@ curl -H "Authorization: Bearer <token>" "https://codexio.julsql.fr/infos/<isbn>/
 
 An unknown source answers `400` with the list of valid ones.
 
+Provider answers are cached in Postgres, so the same ISBN is never scraped
+twice from the same site. `ALBUM_CACHE_TTL_DAYS` sets how long an entry stays
+valid (default 30 days, `0` disables the cache). Only successful lookups are
+stored: a quota error or a blocked request never gets frozen in the cache.
+
 ## Deploy
 
 Deployment is fully automated and runs on k3s.
