@@ -22,6 +22,14 @@ class BdFugueAdapter(BaseAlbumAdapter):
                        "date de parution": "Date de publication", "Édition": "Édition",
                        "Nombre de pages": "Pages"}
         self.isbn = 0
+        self._session = None
+
+    def _get_session(self):
+        # Une session conserve les cookies posés par Cloudflare : sans elle, chaque
+        # requête repart sans clairance et se fait challenger (403), comme pour bdgest
+        if self._session is None:
+            self._session = cffi_requests.Session(impersonate="chrome131")
+        return self._session
 
     def __str__(self) -> str:
         return "BdFugueRepository"
@@ -177,7 +185,7 @@ class BdFugueAdapter(BaseAlbumAdapter):
             raise ApiConnexionException(f"Impossible d'accéder à la page {url}", str(self))
 
     def _read_page(self, url: str) -> str:
-        response = cffi_requests.get(url, impersonate="chrome131", timeout=30)
+        response = self._get_session().get(url, timeout=30)
         if response.status_code in self.RETRYABLE_STATUS:
             raise TransientHttpError(f"{url} a répondu {response.status_code}")
         response.raise_for_status()
