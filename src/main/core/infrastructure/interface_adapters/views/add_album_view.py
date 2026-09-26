@@ -4,7 +4,8 @@ from django.http import HttpRequest, HttpResponse, HttpResponseForbidden, HttpRe
 from main.core.application.usecases.add_album.add_bd_service import AddBdService
 from main.core.application.usecases.add_album.add_book_service import AddBookService
 from main.core.application.usecases.authorization.authorization_service import AuthorizationService
-from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException, AlbumAlreadyExistsException
+from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException, AlbumAlreadyExistsException, \
+    AlbumSourcesUnavailableException
 from main.core.domain.model.profile_type import ProfileType
 from main.core.infrastructure.api.album_repositories_factory import build_album_repositories
 from main.core.infrastructure.interface_adapters.bearer_token.bearer_token_adapter import BearerTokenAdapter
@@ -60,6 +61,12 @@ class AddAlbumView:
             service.main(isbn)
 
             return self.response_adapter.success(f'Album {int(isbn)} ajouté avec succès')
+
+        except AlbumSourcesUnavailableException as e:
+            self.logger_adapter.error(str(e), isbn=isbn)
+            return self.response_adapter.technical_error(
+                "Sources indisponibles : " + ", ".join(e.sources)
+            )
 
         except AlbumNotFoundException as e:
             self.logger_adapter.warning(str(e), extra={"isbn": isbn})

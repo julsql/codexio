@@ -3,7 +3,8 @@ from django.http import HttpRequest, HttpResponse, HttpResponseForbidden, HttpRe
 
 from main.core.application.usecases.add_album.get_infos_service import GetInfosService
 from main.core.application.usecases.authorization.authorization_service import AuthorizationService
-from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException
+from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException, \
+    AlbumSourcesUnavailableException
 from main.core.domain.model.profile_type import ProfileType
 from main.core.infrastructure.api.album_repositories_factory import available_sources, build_album_repositories
 from main.core.infrastructure.interface_adapters.bearer_token.bearer_token_adapter import BearerTokenAdapter
@@ -54,6 +55,12 @@ class AlbumInfosView:
             album = service.main(isbn)
 
             return self.response_adapter.json(album_to_dict(album))
+
+        except AlbumSourcesUnavailableException as e:
+            self.logger_adapter.error(str(e), isbn=isbn)
+            return self.response_adapter.technical_error(
+                "Sources indisponibles : " + ", ".join(e.sources)
+            )
 
         except AlbumNotFoundException as e:
             self.logger_adapter.warning(str(e), isbn=isbn)

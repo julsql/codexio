@@ -1,6 +1,8 @@
 from decimal import Decimal
 
-from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException
+from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException, \
+    AlbumSourcesUnavailableException
+from main.core.domain.exceptions.api_exceptions import ApiConnexionDataNotFound
 from main.core.domain.model.album import Album
 from main.core.domain.ports.repositories.add_album_repository import AddAlbumRepository
 from main.core.domain.ports.repositories.logger_repository import LoggerRepository
@@ -17,6 +19,7 @@ class GetInfosService:
     def main(self, isbn: int) -> Album:
         self.isbn = isbn
         album_complet = None
+        sources_en_echec = []
 
         if not self.repositories:
             raise AlbumNotFoundException(f"Aucun repository disponible pour l'ISBN {isbn}", isbn)
@@ -34,12 +37,25 @@ class GetInfosService:
                 if album_complet.is_complete():
                     break
 
+            except (ApiConnexionDataNotFound, AlbumNotFoundException) as e:
+                # La source répond mais ne connaît pas cet ISBN : ce n'est pas une panne
+                self.logging_repository.info(
+                    f"Aucune donnée sur {str(repository)}: {str(e)}"
+                )
+
             except Exception as e:
+                sources_en_echec.append(str(repository))
                 self.logging_repository.error(
                     f"Erreur lors de la récupération des informations depuis {str(repository)}: {str(e)}"
                 )
 
         if album_complet is None or album_complet.is_empty():
+            if sources_en_echec:
+                raise AlbumSourcesUnavailableException(
+                    f"Aucune donnée, sources en échec : {', '.join(sources_en_echec)}",
+                    isbn,
+                    sources_en_echec
+                )
             raise AlbumNotFoundException(f"Album {isbn} non trouvé", isbn)
 
         return album_complet
