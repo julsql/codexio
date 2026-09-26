@@ -10,6 +10,7 @@ from main.core.domain.model.album import Album
 from main.core.domain.ports.repositories.add_album_repository import AddAlbumRepository
 from main.core.domain.ports.repositories.logger_repository import LoggerRepository
 from main.core.infrastructure.api.internal.date_parser_service import DateParserService
+from main.core.infrastructure.api.internal.synopsis_picker_service import SynopsisPickerService
 
 
 class BookAdapter(AddAlbumRepository, ABC):
@@ -88,5 +89,5 @@ class BookAdapter(AddAlbumRepository, ABC):
         book.literary_genre = ", ".join(volume.get("categories", []))
         book.origin_language = volume.get("language", "")
         book.image = self._get_best_cover_image(volume)
-        book.synopsis = volume.get("description", "")
+        book.synopsis = SynopsisPickerService.pick([item["volumeInfo"].get("description", "") for item in items])
         return book

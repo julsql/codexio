@@ -10,6 +10,7 @@ from main.core.domain.model.album import Album
 from main.core.domain.ports.repositories.logger_repository import LoggerRepository
 from main.core.infrastructure.api.base_album_adapter import BaseAlbumAdapter
 from main.core.infrastructure.api.internal.date_parser_service import DateParserService
+from main.core.infrastructure.api.internal.synopsis_picker_service import SynopsisPickerService
 
 
 class BdGoogleAdapter(BaseAlbumAdapter):
@@ -81,7 +82,6 @@ class BdGoogleAdapter(BaseAlbumAdapter):
         items = sorted(matching or data["items"], key=lambda i: i.get("id", ""), reverse=True)
         for item in reversed(items):
             volume = item.get("volumeInfo", {})
-            search = item.get("searchInfo", {})
 
             title = volume.get("title", None)
             subtitle = volume.get("subtitle", None)
@@ -104,8 +104,12 @@ class BdGoogleAdapter(BaseAlbumAdapter):
                 album.number_of_pages = number_of_pages
             if image := self._get_best_cover_image(volume):
                 album.image = image
-            if synopsis := volume.get("description", search.get("textSnippet", "")):
-                album.synopsis = synopsis
+
+        if synopsis := SynopsisPickerService.pick([
+            item.get("volumeInfo", {}).get("description", item.get("searchInfo", {}).get("textSnippet", ""))
+            for item in items
+        ]):
+            album.synopsis = synopsis
 
         self.logging_repository.info(album.title, extra={"isbn": isbn})
         return album
