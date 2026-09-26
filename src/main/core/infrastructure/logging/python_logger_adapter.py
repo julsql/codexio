@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 from typing import Any
 
 from config.settings import LOGS_FILE
@@ -23,8 +24,14 @@ class PythonLoggerAdapter(LoggerRepository):
 
             file_handler = logging.FileHandler(LOGS_FILE)
             file_handler.setFormatter(formatter)
-
             logger.addHandler(file_handler)
+
+            # En conteneur, seul stdout est collecté : le fichier n'est lisible
+            # qu'en entrant dans le pod et disparaît à chaque redémarrage
+            stdout_handler = logging.StreamHandler(sys.stdout)
+            stdout_handler.setFormatter(formatter)
+            logger.addHandler(stdout_handler)
+
             logger.setLevel(logging.DEBUG)
 
         return logger
