@@ -1,6 +1,7 @@
 from django.http import HttpRequest, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, HttpResponseBadRequest, \
     HttpResponseServerError
 
+from config.settings import ALBUM_CACHE_TTL_DAYS
 from main.core.application.usecases.add_album.get_infos_service import GetInfosService
 from main.core.application.usecases.authorization.authorization_service import AuthorizationService
 from main.core.domain.exceptions.album_exceptions import AlbumNotFoundException, \
@@ -13,12 +14,14 @@ from main.core.infrastructure.interface_adapters.request_methods.request_method_
 from main.core.infrastructure.interface_adapters.responses.api_response_adapter import ApiResponseAdapter
 from main.core.infrastructure.interface_adapters.views.formatters import album_to_dict
 from main.core.infrastructure.logging.python_logger_adapter import PythonLoggerAdapter
+from main.core.infrastructure.persistence.database.album_cache_adapter import AlbumCacheAdapter
 from main.core.infrastructure.persistence.database.models import Collection
 
 
 class AlbumInfosView:
     def __init__(self):
         self.logger_adapter = PythonLoggerAdapter()
+        self.cache_adapter = AlbumCacheAdapter(self.logger_adapter, ALBUM_CACHE_TTL_DAYS)
         self.response_adapter = ApiResponseAdapter()
         self.request_method_adapter = RequestMethodAdapter(self.response_adapter)
         self.profile_type_adapter = ProfileTypeAdapter(self.response_adapter)
@@ -42,7 +45,8 @@ class AlbumInfosView:
                 return profile_type
 
             source = request.GET.get('source')
-            repositories = build_album_repositories(profile_type, self.logger_adapter, source)
+            repositories = build_album_repositories(profile_type, self.logger_adapter, source,
+                                                   self.cache_adapter)
             if not repositories:
                 if source is not None:
                     return self.response_adapter.bad_request(
