@@ -147,6 +147,9 @@ whether a given site is reachable from the server:
 | BD      | `bdphile`, `bdgest`, `bdfugue`, `bdgoogle` |
 | BOOK    | `googlebooks`, `bnf`, `openlibrary` |
 
+`bdfugue` is left out of the default merge (Cloudflare challenges the server) but
+can still be queried alone with `?source=bdfugue`.
+
 ```bash
 curl -H "Authorization: Bearer <token>" "https://codexio.julsql.fr/infos/<isbn>/?source=bdgest"
 ```
