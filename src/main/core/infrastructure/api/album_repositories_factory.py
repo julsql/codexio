@@ -26,6 +26,10 @@ SOURCES_BY_PROFILE = {
     },
 }
 
+# Sources interrogeables une à une (?source=) mais écartées de la fusion par défaut :
+# Cloudflare challenge bdfugue.com depuis le serveur, chaque ajout ferait un appel voué à l'échec
+ON_DEMAND_SOURCES = {"bdfugue"}
+
 
 def available_sources(profile_type: ProfileType) -> list[str]:
     """Noms des sources interrogeables pour un type de profil"""
@@ -38,7 +42,7 @@ def build_album_repositories(profile_type: ProfileType,
                              cache_repository: AlbumCacheRepository | None = None) -> list[AddAlbumRepository]:
     """Construit les repositories d'API externes à interroger pour un type de profil
 
-    Sans source, toutes celles du profil sont renvoyées dans l'ordre de fusion.
+    Sans source, toutes celles du profil sont renvoyées dans l'ordre de fusion, sauf ON_DEMAND_SOURCES.
     Avec une source, seule celle-ci est renvoyée ; un nom inconnu renvoie une liste vide.
     Avec un cache, chaque source est enveloppée pour ne pas être réinterrogée inutilement.
     """
@@ -50,7 +54,7 @@ def build_album_repositories(profile_type: ProfileType,
             return []
         selected = [adapter]
     else:
-        selected = list(adapters.values())
+        selected = [adapter for name, adapter in adapters.items() if name not in ON_DEMAND_SOURCES]
 
     repositories = [adapter(logger_repository) for adapter in selected]
 

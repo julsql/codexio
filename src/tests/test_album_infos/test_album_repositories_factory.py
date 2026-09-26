@@ -2,6 +2,7 @@ import unittest
 
 from main.core.domain.model.profile_type import ProfileType
 from main.core.infrastructure.api.album_repositories_factory import available_sources, build_album_repositories
+from main.core.infrastructure.api.bd_fugue_adapter import BdFugueAdapter
 from main.core.infrastructure.api.bd_gest_adapter import BdGestAdapter
 from main.core.infrastructure.api.bnf_adapter import BnfAdapter
 from main.core.infrastructure.api.cached_album_repository import CachedAlbumRepository
@@ -17,7 +18,7 @@ class TestAlbumRepositoriesFactory(unittest.TestCase):
         repositories = build_album_repositories(ProfileType.BD, self.logger)
 
         self.assertEqual(
-            ["BdPhileRepository", "BdGestRepository", "BdFugueRepository", "BdGoogleAdapter"],
+            ["BdPhileRepository", "BdGestRepository", "BdGoogleAdapter"],
             [str(repository) for repository in repositories],
         )
 
@@ -31,6 +32,17 @@ class TestAlbumRepositoriesFactory(unittest.TestCase):
 
         self.assertEqual(1, len(repositories))
         self.assertIsInstance(repositories[0], BdGestAdapter)
+
+    def test_on_demand_source_is_left_out_of_the_merge(self):
+        repositories = build_album_repositories(ProfileType.BD, self.logger)
+
+        self.assertFalse(any(isinstance(r, BdFugueAdapter) for r in repositories))
+
+    def test_on_demand_source_can_still_be_queried_alone(self):
+        repositories = build_album_repositories(ProfileType.BD, self.logger, "bdfugue")
+
+        self.assertEqual(1, len(repositories))
+        self.assertIsInstance(repositories[0], BdFugueAdapter)
 
     def test_single_book_source(self):
         repositories = build_album_repositories(ProfileType.BOOK, self.logger, "bnf")
@@ -53,10 +65,10 @@ class TestAlbumRepositoriesFactory(unittest.TestCase):
     def test_with_a_cache_every_source_is_wrapped(self):
         repositories = build_album_repositories(ProfileType.BD, self.logger, None, AlbumCacheInMemory())
 
-        self.assertEqual(4, len(repositories))
+        self.assertEqual(3, len(repositories))
         self.assertTrue(all(isinstance(r, CachedAlbumRepository) for r in repositories))
         self.assertEqual(
-            ["BdPhileRepository", "BdGestRepository", "BdFugueRepository", "BdGoogleAdapter"],
+            ["BdPhileRepository", "BdGestRepository", "BdGoogleAdapter"],
             [str(r) for r in repositories],
             "le nom de la source doit rester lisible à travers le cache",
         )
