@@ -1,6 +1,14 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
+{% block title %}Connexion à Codexio – votre collection de BD et de livres{% endblock %}
+
+{% block seo %}
+    <meta name="description"
+          content="Connectez-vous à Codexio pour retrouver votre collection de BD ou de livres, ou visitez la collection de démonstration en mode témoin, sans créer de compte."/>
+    <link rel="canonical" href="{{ SITE_URL }}{% url 'login' %}"/>
+{% endblock %}
+
 {% block body %}
     <section>
         <header>

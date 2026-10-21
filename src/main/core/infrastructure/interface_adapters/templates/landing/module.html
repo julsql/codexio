@@ -1,0 +1,116 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Codexio – Gérez votre collection de BD et de livres{% endblock %}
+
+{% block seo %}
+    {% with title="Codexio – Gérez votre collection de BD et de livres" description="Codexio répertorie votre collection de bandes dessinées et de livres : recherche avancée, fiches détaillées, dédicaces, ex-libris et statistiques en ligne." %}
+        <meta name="description" content="{{ description }}"/>
+        <meta name="robots" content="index, follow"/>
+        <link rel="canonical" href="{{ SITE_URL }}/"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:locale" content="fr_FR"/>
+        <meta property="og:site_name" content="Codexio"/>
+        <meta property="og:title" content="{{ title }}"/>
+        <meta property="og:description" content="{{ description }}"/>
+        <meta property="og:url" content="{{ SITE_URL }}/"/>
+        <meta property="og:image" content="{{ SITE_URL }}{% static 'main/images/og-image.png' %}"/>
+        <meta property="og:image:width" content="256"/>
+        <meta property="og:image:height" content="256"/>
+        <meta property="og:image:alt" content="Logo de Codexio : une plume orange"/>
+        <meta name="twitter:card" content="summary"/>
+        <meta name="twitter:title" content="{{ title }}"/>
+        <meta name="twitter:description" content="{{ description }}"/>
+        <meta name="twitter:image" content="{{ SITE_URL }}{% static 'main/images/og-image.png' %}"/>
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@graph": [
+                    {
+                        "@type": "WebSite",
+                        "@id": "{{ SITE_URL }}/#website",
+                        "name": "Codexio",
+                        "url": "{{ SITE_URL }}/",
+                        "inLanguage": "fr"
+                    },
+                    {
+                        "@type": "WebApplication",
+                        "name": "Codexio",
+                        "url": "{{ SITE_URL }}/",
+                        "description": "{{ description }}",
+                        "applicationCategory": "LifestyleApplication",
+                        "operatingSystem": "Web",
+                        "inLanguage": "fr",
+                        "image": "{{ SITE_URL }}{% static 'main/images/og-image.png' %}",
+                        "isPartOf": {"@id": "{{ SITE_URL }}/#website"},
+                        "author": {"@type": "Person", "name": "Jul SQL"}
+                    }
+                ]
+            }
+        </script>
+    {% endwith %}
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'main/styles/landing.css' %}"/>
+{% endblock %}
+
+{% block body %}
+    <section class="landing-hero" aria-labelledby="landing-title">
+        <header>
+            <h2 id="landing-title">Votre collection de BD et de livres, toujours sous la main</h2>
+        </header>
+        <p class="landing-lead">
+            Codexio est une application web pour répertorier une collection de bandes dessinées
+            ou de livres&nbsp;: chaque ouvrage a sa fiche, la collection se parcourt avec une
+            recherche avancée et ses chiffres se lisent en un coup d'œil.
+        </p>
+        <div class="landing-actions">
+            <a class="button-large" href="{% url 'login' %}">Se connecter</a>
+            <form method="post" action="{% url 'demo_login' %}">
+                {% csrf_token %}
+                <button class="button-large demo-button" type="submit">Visiter en mode témoin</button>
+            </form>
+        </div>
+        <p class="landing-note">
+            Le mode témoin ouvre une collection de démonstration, sans créer de compte.
+        </p>
+    </section>
+
+    <section class="landing-features" aria-labelledby="features-title">
+        <header>
+            <h2 id="features-title">Ce que propose Codexio</h2>
+        </header>
+        <ul class="landing-grid">
+            <li>
+                <h3>Bandes dessinées ou livres</h3>
+                <p>Chaque collection suit un profil BD ou livres, et un même compte peut passer
+                    d'une collection à l'autre.</p>
+            </li>
+            <li>
+                <h3>Recherche avancée</h3>
+                <p>Retrouvez un ouvrage par série, titre, scénariste, dessinateur, éditeur, date
+                    de parution, édition ou ISBN.</p>
+            </li>
+            <li>
+                <h3>Fiches détaillées</h3>
+                <p>Couverture, synopsis, nombre de pages, date de parution et prix d'achat
+                    réunis sur la fiche de chaque ouvrage.</p>
+            </li>
+            <li>
+                <h3>Ajout par ISBN</h3>
+                <p>Les informations d'un ouvrage sont récupérées à partir de son ISBN auprès de
+                    sources comme BDGest, bdphile, Google Books, la BnF ou Open Library.</p>
+            </li>
+            <li>
+                <h3>Dédicaces et ex-libris</h3>
+                <p>Ajoutez les photos des dédicaces et, pour les BD, des ex-libris, puis
+                    parcourez-les dans leur galerie.</p>
+            </li>
+            <li>
+                <h3>Statistiques</h3>
+                <p>Une page de statistiques résume l'état de la collection.</p>
+            </li>
+        </ul>
+    </section>
+{% endblock %}

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'main',
 ]
 AUTH_USER_MODEL = 'main.AppUser'
@@ -67,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'main.core.infrastructure.interface_adapters.context_processors.site_url',
             ],
         },
     },
@@ -154,6 +156,9 @@ AUTHENTICATION_BACKENDS = (
 AUTHENTICATION_FAILURE = _(
     'Veuillez entrer un nom d\'utilisateur et un mot de passe valides. Notez que les deux champs peuvent être sensibles à la casse.')
 LOGOUT_REDIRECT_URL = '/'
+
+# URL publique absolue du site (canonical, Open Graph, sitemap)
+SITE_URL = config('SITE_URL', default='https://codexio.julsql.fr')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
