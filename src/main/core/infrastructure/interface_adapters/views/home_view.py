@@ -1,4 +1,3 @@
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render
 
@@ -72,7 +71,8 @@ class HomeView:
                            'image': random_album.image}
                        })
 
-@login_required
 def home_view(request: HttpRequest) -> HttpResponse:
+    if not request.user.is_authenticated:
+        return render(request, 'landing/module.html')
     view = HomeView()
     return view.handle_request(request)

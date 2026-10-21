@@ -1,0 +1,61 @@
+.landing-lead {
+    font-size: 1.25em;
+    line-height: 1.4;
+    max-width: 50em;
+}
+
+.landing-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1em;
+    margin-top: 2em;
+}
+
+#content .landing-actions a.button-large {
+    color: #fff;
+    line-height: 50px;
+}
+
+.landing-actions a.button-large:focus-visible,
+.landing-actions button:focus-visible {
+    outline: 3px solid #373f42;
+    outline-offset: 3px;
+}
+
+.landing-note {
+    margin-top: 1em;
+    color: #5c666a;
+}
+
+.landing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16em, 1fr));
+    gap: 1.5em 2em;
+    list-style: none;
+}
+
+.landing-grid li {
+    margin: 0;
+}
+
+.landing-grid h3 {
+    color: #545e63;
+    margin-bottom: 0.4em;
+}
+
+.landing-grid p {
+    line-height: 1.35;
+}
+
+@media (max-width: 1070px) {
+    .landing-actions .button-large {
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .landing-actions form {
+        width: 100%;
+    }
+}

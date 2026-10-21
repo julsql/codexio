@@ -19,11 +19,13 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
 
 from main.core.infrastructure.interface_adapters.views.add_album_view import add_album
 from main.core.infrastructure.interface_adapters.views.album_infos_view import album_infos
 from main.core.infrastructure.interface_adapters.views.attachments_view import exlibris_view, signed_copies_view
 from main.core.infrastructure.interface_adapters.views.search_view import search_view
+from main.core.infrastructure.interface_adapters.views.seo_view import SITEMAPS, robots_txt_view
 from main.core.infrastructure.interface_adapters.views.delete_photo_view import delete_dedicace, delete_exlibris
 from main.core.infrastructure.interface_adapters.views.errors_view import error_500_view, error_404_view
 from main.core.infrastructure.interface_adapters.views.existing_album_view import existing_album
@@ -40,6 +42,9 @@ handler500 = error_500_view
 handler404 = error_404_view
 
 urlpatterns = [
+    path('robots.txt', robots_txt_view, name='robots_txt'),
+    path('sitemap.xml', sitemap, {'sitemaps': SITEMAPS},
+         name='django.contrib.sitemaps.views.sitemap'),
     path('admin/', admin.site.urls),
     path('accounts/login/', login_view, name='login'),
     path('accounts/demo-login/', demo_login_view, name='demo_login'),

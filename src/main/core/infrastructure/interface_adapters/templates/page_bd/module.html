@@ -144,7 +144,8 @@
 
                     {% for dedicace in dedicaces %}
                         <img src="/media/main/images/{{ collection_id }}/dedicaces/{{ isbn }}/{{ dedicace }}"
-                             alt="{{ isbn }}"
+                             alt="Dédicace de l'ouvrage {{ isbn }}"
+                             loading="lazy" decoding="async"
                              data-full="/media/main/images/{{ collection_id }}/dedicaces/{{ isbn }}/{{ dedicace }}"
                              data-title="<h2>{{ dedicace }}</h2>"
                              data-info="<p></p>"
@@ -167,7 +168,8 @@
                 <div class="carousel carousel-exlibris">
                     {% for exlibris in ex_libris %}
                         <img src="/media/main/images/{{ collection_id }}/exlibris/{{ isbn }}/{{ exlibris }}"
-                             alt="{{ isbn }}"
+                             alt="Ex-libris de l'ouvrage {{ isbn }}"
+                             loading="lazy" decoding="async"
                              data-full="/media/main/images/{{ collection_id }}/exlibris/{{ isbn }}/{{ exlibris }}"
                              data-title="<h2>{{ exlibris }}</h2>"
                              data-info="<p></p>"

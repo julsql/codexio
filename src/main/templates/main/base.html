@@ -2,9 +2,17 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <title>Codexio</title>
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>{% block title %}Codexio{% endblock %}</title>
+    {% block seo %}{% endblock %}
+    <meta name="theme-color" content="#3B4346"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link rel="preload" as="style"
+          href="https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz:wght@200;300;400&display=swap"/>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz:wght@200;300;400&display=swap"/>
     <link rel="stylesheet" href="{% static 'main/styles/main.css' %}"/>
     <link rel="stylesheet" href="{% static 'main/styles/header.css' %}"/>
     <link rel="stylesheet" href="{% static 'main/styles/home.css' %}"/>
@@ -20,7 +28,8 @@
     <link rel="stylesheet" href="{% static 'main/styles/statistics.css' %}"/>
     <link rel="stylesheet" href="{% static 'main/styles/profile.css' %}"/>
     <link rel="stylesheet" href="{% static 'main/styles/login.css' %}"/>
-    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <link rel="icon" href="{% static 'favicon.ico' %}" sizes="any"/>
+    <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}"/>
     <script defer src="https://stats.julsql.fr/js/app.js" data-website-id="48d17bf6-9a55-459d-af16-42b3a9dd5c83" data-domains="codexio.julsql.fr"></script>
 
     {% block head %}{% endblock %}
@@ -76,7 +85,7 @@
                     {% endif %}
                 </a></h1>
 
-                <button id="menu-toggle">&#9776;</button>
+                <button id="menu-toggle" type="button" aria-label="Ouvrir le menu">&#9776;</button>
                 <!-- Nav -->
                 {% if user.is_authenticated %}
                     <nav id="nav">
@@ -100,11 +109,11 @@
 
     </section>
 
-    <section id="content">
+    <main id="content">
         <div class="container">
             {% block body %}{% endblock %}
         </div>
-    </section>
+    </main>
 </div>
 
 <!-- Scripts -->
