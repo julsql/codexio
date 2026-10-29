@@ -9,6 +9,10 @@ It's a Django project that displays my collection of comics.
 ## Screenshots
 
 <p align="center">
+  <img src="docs/screenshots/album.jpg" alt="Comic sheet: cover, details, synopsis and signed copies" width="90%">
+</p>
+
+<p align="center">
   <img src="docs/screenshots/search.png" alt="Collection search with a comic sheet" width="49%">
   <img src="docs/screenshots/stats.png" alt="Collection statistics" width="49%">
 </p>
