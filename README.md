@@ -6,6 +6,15 @@ It's a Django project that displays my collection of comics.
 
 > Website available at address: [codexio.julsql.fr](https://codexio.julsql.fr)
 
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/search.png" alt="Collection search with a comic sheet" width="49%">
+  <img src="docs/screenshots/stats.png" alt="Collection statistics" width="49%">
+</p>
+
+<sub>Screenshots taken in demo mode ("mode témoin"), with sample data.</sub>
+
 ## Table of Contents
 
 - [App Structure](#app-structure)
