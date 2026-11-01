@@ -117,6 +117,17 @@ Think to give access to the client_email in your sheet.
 
 6. Create the database
 
+   Start the local PostgreSQL 18 database (port 5442):
+
+    ```bash
+    docker compose -f local-database.yml up -d
+    ```
+
+   > PostgreSQL 18 images store data under `/var/lib/postgresql/18/docker`, so the volume is
+   > mounted on `/var/lib/postgresql`. A volume created with the former PostgreSQL 15 setup is
+   > not compatible: dump it first (`pg_dump`), then `docker compose -f local-database.yml down -v`
+   > and restore the dump in the new container.
+
     ```bash
     python3 manage.py makemigrations
     python3 manage.py migrate
