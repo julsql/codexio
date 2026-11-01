@@ -26,7 +26,7 @@ def insert_initial_data(apps, schema_editor) -> None:
     collection, _ = collection_table.objects.get_or_create(
         title="Collection de Test",
         defaults={
-            "token": "XIWzYF4RFb77U4obBcfBF2UfVFE0hK2Aq43UV9e8d1EpLye7wXxGPHFwCVmMExb8",
+            "token": "XIWzYF4RFb77U4obBcfBF2UfVFE0hK2Aq43UV9e8d1EpLye7wXxGPHFwCVmMExb8",  # ggignore : jeton de la collection de test, public volontairement
             "doc_id": "1z4iFF1ROr_sXZkkFJS12kKk7ndUaA9fNconarZIAIxo",
             "sheet_name": "Test",
             "profile": profile_bd,
